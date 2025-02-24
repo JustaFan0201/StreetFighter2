@@ -1,6 +1,7 @@
 #ifndef APP_HPP
 #define APP_HPP
-
+#include "SceneManager.hpp"
+#include "Scene.hpp"
 #include "pch.hpp" // IWYU pragma: export
 
 class App {
@@ -24,6 +25,8 @@ private:
 
 private:
     State m_CurrentState = State::START;
+    Util::SceneManager m_SceneManager; // 場景管理器
+    bool m_IsInitialized = false; // 是否已經初始化
 };
 
 #endif

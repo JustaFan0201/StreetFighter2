@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(REPLACE_WITH_YOUR_PROJECT_NAME)
+project(StreetFighter2)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -33,8 +33,20 @@ list(TRANSFORM INCLUDE_FILES PREPEND ${INCLUDE_DIR}/)
 
 add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
-    ${SRC_FILES}
-    ${HEADER_FILES}
+        ${SRC_FILES}
+            src/Scene.cpp
+            src/StartScene.cpp
+            src/SceneManager.cpp
+            src/SlectScene.cpp
+        ${HEADER_FILES}
+            include/Scene.hpp
+            include/StartScene.hpp
+            include/SceneManager.hpp
+            include/SlectScene.hpp
+
+            include/ImageSpace.hpp
+            include/AnimationSpace.hpp
+            include/Word.hpp
 )
 
 if(MSVC)

@@ -1,19 +1,24 @@
 #include "App.hpp"
 
-#include "Util/Image.hpp"
-#include "Util/Input.hpp"
-#include "Util/Keycode.hpp"
-#include "Util/Logger.hpp"
-
 void App::Start() {
     LOG_TRACE("Start");
-    m_CurrentState = State::UPDATE;
+
+    // 初始化場景管理器並推入 StartScene
+    if (!m_IsInitialized) {
+        std::shared_ptr<Util::StartScene> startScene = std::make_shared<Util::StartScene>();
+        m_SceneManager.PushScene(startScene);
+        m_IsInitialized = true;
+    }
+
+    m_CurrentState = State::UPDATE; // 當前狀態切換為 UPDATE
 }
 
 void App::Update() {
-    
-    //TODO: do your things here and delete this line <3
-    
+    // 更新當前場景
+    m_SceneManager.Update();
+    m_SceneManager.Render();
+
+
     /*
      * Do not touch the code below as they serve the purpose for
      * closing the window.
