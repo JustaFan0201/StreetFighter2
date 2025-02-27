@@ -1,6 +1,6 @@
 // StartScene.cpp
 
-#include "StartScene.hpp"
+#include "Scenes/StartScene.hpp"
 
 namespace Util {
     StartScene::StartScene() {}

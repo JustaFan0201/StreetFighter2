@@ -1,7 +1,7 @@
 #ifndef APP_HPP
 #define APP_HPP
-#include "SceneManager.hpp"
-#include "Scene.hpp"
+#include "Scenes/SceneManager.hpp"
+#include "Scenes/Scene.hpp"
 #include "pch.hpp" // IWYU pragma: export
 
 class App {

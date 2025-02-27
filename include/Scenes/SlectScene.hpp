@@ -4,7 +4,8 @@
 
 #ifndef SLECTSCENE_HPP
 #define SLECTSCENE_HPP
-#include "Scene.hpp"
+#include "Scenes/Scene.hpp"
+
 namespace Util {
     class SlectScene : public Scene {
     private:
@@ -12,20 +13,23 @@ namespace Util {
         unsigned long start = Time::GetElapsedTimeMs();
         std::shared_ptr<SFX> soundEffect_slect = std::make_shared<SFX>("../voice/01 Select Screen & World Map/SFII_02 - Move Cursor.wav");
         std::shared_ptr<SFX> soundEffect_enter = std::make_shared<SFX>("../voice/01 Select Screen & World Map/SFII_03 - Selection.wav");
-        std::shared_ptr<ImageSpace> character;
+
+        std::shared_ptr<ImageSpace> character=std::make_shared<ImageSpace>("../sencepicture/slect/ryu_face.png");//角色
         std::shared_ptr<ImageSpace> character_match_country;
-        std::shared_ptr<ImageSpace> first_player;
-        std::shared_ptr<ImageSpace> first_player_screen;
-        std::vector<std::shared_ptr<ImageSpace>> characters = {
-            std::make_shared<ImageSpace>("../sencepicture/slect/ryu_face.png"),
-            std::make_shared<ImageSpace>("../sencepicture/slect/honda_face.png"),
-            std::make_shared<ImageSpace>("../sencepicture/slect/blanka_face.png"),
-            std::make_shared<ImageSpace>("../sencepicture/slect/guile_face.png"),
-            std::make_shared<ImageSpace>("../sencepicture/slect/ken_face.png"),
-            std::make_shared<ImageSpace>("../sencepicture/slect/chunli_face.png"),
-            std::make_shared<ImageSpace>("../sencepicture/slect/zangief_face.png"),
-            std::make_shared<ImageSpace>("../sencepicture/slect/dhalsim_face.png")
+        std::shared_ptr<ImageSpace> first_player = std::make_shared<ImageSpace>("../sencepicture/slect/1p.png");//1p
+        std::shared_ptr<ImageSpace> first_player_screen = std::make_shared<ImageSpace>("../sencepicture/slect/1p_screen.png");//1p框框
+
+        std::vector<std::shared_ptr<Fighter>> characters = {
+            std::make_shared<Ryu>(),    // 指向子類 Ryu
+            std::make_shared<Honda>(),  // 指向子類 Honda
+            std::make_shared<Blanka>(), // 指向子類 Blanka
+            std::make_shared<Guile>(),  // 指向子類 Guile
+            std::make_shared<Ken>(),    // 指向子類 Ken
+            std::make_shared<Chunli>(), // 指向子類 Chunli
+            std::make_shared<Zangief>(),// 指向子類 Zangief
+            std::make_shared<Dhalsim>() // 指向子類 Dhalsim
         };
+
         std::vector<std::shared_ptr<ImageSpace>> countries = {
             std::make_shared<ImageSpace>("../sencepicture/slect/japan.png"),
             std::make_shared<ImageSpace>("../sencepicture/slect/japan.png"),

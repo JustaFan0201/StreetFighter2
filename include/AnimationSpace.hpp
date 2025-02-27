@@ -35,7 +35,7 @@ namespace Util {
         }
         void SetFullScreen() {
             SetDraw({{0, 0},0,{1,1}},
-                {Core::Context::GetInstance()->GetWindowWidth(),Core::Context::GetInstance()->GetWindowHeight()},
+                {1280,720},
                 0.0f);
         }
         std::shared_ptr<Core::Drawable> GetDrawable() {

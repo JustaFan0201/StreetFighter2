@@ -34,19 +34,39 @@ list(TRANSFORM INCLUDE_FILES PREPEND ${INCLUDE_DIR}/)
 add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
         ${SRC_FILES}
-            src/Scene.cpp
-            src/StartScene.cpp
-            src/SceneManager.cpp
-            src/SlectScene.cpp
-        ${HEADER_FILES}
-            include/Scene.hpp
-            include/StartScene.hpp
-            include/SceneManager.hpp
-            include/SlectScene.hpp
+            src/Scenes/Scene.cpp
+            src/Scenes/StartScene.cpp
+            src/Scenes/SceneManager.cpp
+            src/Scenes/SlectScene.cpp
 
+            src/Fighters/Fighter.cpp
+            src/Fighters/Ken.cpp
+            src/Fighters/Ryu.cpp
+            src/Fighters/Chunli.cpp
+            src/Fighters/Blanka.cpp
+            src/Fighters/Honda.cpp
+            src/Fighters/Guile.cpp
+            src/Fighters/Dhalsim.cpp
+            src/Fighters/Zangief.cpp
+        ${HEADER_FILES}
             include/ImageSpace.hpp
             include/AnimationSpace.hpp
             include/Word.hpp
+
+            include/Scenes/Scene.hpp
+            include/Scenes/StartScene.hpp
+            include/Scenes/SceneManager.hpp
+            include/Scenes/SlectScene.hpp
+            include/Fighters/Fighter.hpp
+
+            include/Fighters/Ken.hpp
+            include/Fighters/Ryu.hpp
+            include/Fighters/Chunli.hpp
+            include/Fighters/Blanka.hpp
+            include/Fighters/Honda.hpp
+            include/Fighters/Guile.hpp
+            include/Fighters/Dhalsim.hpp
+            include/Fighters/Zangief.hpp
 )
 
 if(MSVC)

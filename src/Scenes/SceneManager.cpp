@@ -2,7 +2,7 @@
 // Created by FanFan on 2025/1/27.
 //
 
-#include "SceneManager.hpp"
+#include "Scenes/SceneManager.hpp"
 
 #include <iostream>
 #include <ostream>

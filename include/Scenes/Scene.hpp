@@ -18,6 +18,16 @@
 #include "ImageSpace.hpp"
 #include "Word.hpp"
 
+#include "Fighters/Fighter.hpp"
+#include "Fighters/Ryu.hpp"
+#include "Fighters/Guile.hpp"
+#include "Fighters/Zangief.hpp"
+#include "Fighters/Chunli.hpp"
+#include "Fighters/Dhalsim.hpp"
+#include "Fighters/Blanka.hpp"
+#include "Fighters/Ken.hpp"
+#include "Fighters/Honda.hpp"
+
 namespace Util {
     class Scene {
     public:

@@ -5,11 +5,11 @@
 #ifndef SCENEMANAGER_HPP
 #define SCENEMANAGER_HPP
 
-#include "../include/Scene.hpp"
+#include "Scenes/Scene.hpp"
 #include <memory>
 #include <stack>
-#include "StartScene.hpp"
-#include "SlectScene.hpp"
+#include "Scenes/StartScene.hpp"
+#include "Scenes/SlectScene.hpp"
 namespace Util {
 
     class SceneManager {

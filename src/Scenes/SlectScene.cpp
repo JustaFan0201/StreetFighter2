@@ -2,7 +2,7 @@
 // Created by FanFan on 2025/2/2.
 //
 
-#include "SlectScene.hpp"
+#include "Scenes/SlectScene.hpp"
 namespace Util {
     SlectScene::SlectScene(){}
     void SlectScene::Init() {
@@ -22,25 +22,21 @@ namespace Util {
 
         character_match_country=countries[0];
 
-        character = std::make_shared<ImageSpace>("../sencepicture/slect/ryu_face.png");//角色
         character->SetDraw({{-420, -180},0,{1,1}},
                 {288, 345},
                 1.0f);
 
-
-        first_player = std::make_shared<ImageSpace>("../sencepicture/slect/1p.png");//1p
         first_player->SetDraw({{-420, 20},0,{1,1}},
                 {162, 84},
                 1.0f);
 
-        first_player_screen = std::make_shared<ImageSpace>("../sencepicture/slect/1p_screen.png");//1p框框
         first_player_screen->SetDraw({{-160, -150},0,{1,1}},
                 {120, 144},
                 1.0f);
 
         int j = 0;  // 定義並初始化 j
         for (auto i : countries_dark) {
-            i->SetDraw(country_position[j],
+            i->SetDraw(characters[j]->GetCountryPosition(),
                        {72, 58},
                        1.0f);
             j++;
@@ -81,12 +77,12 @@ namespace Util {
         if (Input::IsKeyDown(Keycode::RETURN)) {
             soundEffect_enter->Play(0);
         }
-        character_match_country=countries[chooseIndex];//角色的國家
-        character_match_country->SetDraw(country_position[chooseIndex],
+        character_match_country=characters[chooseIndex]->GetCountry();//角色的國家
+        character_match_country->SetDraw(characters[chooseIndex]->GetCountryPosition(),
                     {72, 58},
                     2.0f);
 
-        character = characters[chooseIndex]; //角色
+        character = characters[chooseIndex]->GetFace(); //角色
         character->SetDraw({{-420, -180},0,{1,1}},
                     {288, 345},
                     1.0f);

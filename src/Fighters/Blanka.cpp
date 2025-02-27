@@ -1,0 +1,12 @@
+//
+// Created by asus on 2025/2/27.
+//
+
+#include "Fighters/Blanka.hpp"
+namespace Util {
+    Blanka::Blanka() {
+        face=std::make_shared<ImageSpace>("../sencepicture/Fighters/Blanka/Blanka_face.png");
+        country=std::make_shared<ImageSpace>("../sencepicture/slect/brazil.png");
+        country_position={{323, 23},0,{1,1}};
+    }
+}
