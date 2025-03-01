@@ -38,6 +38,7 @@ add_executable(${PROJECT_NAME}
             src/Scenes/StartScene.cpp
             src/Scenes/SceneManager.cpp
             src/Scenes/SlectScene.cpp
+            src/Scenes/PassScene.cpp
 
             src/Fighters/Fighter.cpp
             src/Fighters/Ken.cpp
@@ -57,8 +58,9 @@ add_executable(${PROJECT_NAME}
             include/Scenes/StartScene.hpp
             include/Scenes/SceneManager.hpp
             include/Scenes/SlectScene.hpp
-            include/Fighters/Fighter.hpp
+            include/Scenes/PassScene.hpp
 
+            include/Fighters/Fighter.hpp
             include/Fighters/Ken.hpp
             include/Fighters/Ryu.hpp
             include/Fighters/Chunli.hpp

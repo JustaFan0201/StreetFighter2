@@ -3,7 +3,7 @@
 #include "Scenes/StartScene.hpp"
 
 namespace Util {
-    StartScene::StartScene() {}
+    StartScene::StartScene() = default;
 
     void StartScene::Init() {
         m_Animation = std::make_shared<AnimationSpace>(
@@ -15,7 +15,7 @@ namespace Util {
             true,
             2000,
             false,
-            100
+            0
         );
         m_Animation->SetFullScreen();
         m_BGM = std::make_shared<BGM>("../music/title.mp3");
@@ -25,14 +25,12 @@ namespace Util {
     }
 
     void StartScene::Update() {
-        if (Time::GetElapsedTimeMs() - start > 4000) {
+        if (Time::GetElapsedTimeMs() - start_time > 4000) {
             if (m_WaitingForEnter) {
                 if (Input::IsKeyDown(Keycode::RETURN)) {
                     m_WaitingForEnter = false;
-                    Word_1 = std::make_shared<Word>("../streetfighter.ttf", 32, "Story mode", Color(255, 127, 80));
-                    Word_2 = std::make_shared<Word>("../streetfighter.ttf", 32, "Battle mode", Color(255, 255, 255));
-                    Word_1->SetDraw({{-180, -180},0,{1,1}},Word_1->GetDrawable()->GetSize(),0.0f);
-                    Word_2->SetDraw({{180, -180},0,{1,1}},Word_1->GetDrawable()->GetSize(),0.0f);
+                    Word_1->SetDrawData({{-180, -180},0,{1,1}},Word_1->GetDrawable()->GetSize(),1.0f);
+                    Word_2->SetDrawData({{180, -180},0,{1,1}},Word_1->GetDrawable()->GetSize(),1.0f);
 
                     soundEffect->Play(0);
 

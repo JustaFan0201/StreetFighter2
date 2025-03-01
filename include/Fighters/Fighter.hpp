@@ -21,14 +21,19 @@
 namespace Util {
     class Fighter  {
     public:
+        Fighter(const std::string& name)
+                    : m_name(name) {}
         virtual ~Fighter() = default;
         // 初始化場景
 
         std::shared_ptr<ImageSpace> GetFace() const { return face; }
+        std::shared_ptr<ImageSpace> GetNameTag() const { return nametag; }
         std::shared_ptr<ImageSpace> GetCountry() const { return country; }
         Transform GetCountryPosition() const { return country_position; }
+        std::string GetName() const { return m_name; }
     protected:
         std::shared_ptr<ImageSpace> face;
+        std::shared_ptr<ImageSpace> nametag;
         std::shared_ptr<ImageSpace> country;
         Transform country_position;
 

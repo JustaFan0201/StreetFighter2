@@ -6,6 +6,7 @@
 #define SCENE_HPP
 #include <memory>
 #include <iostream>
+
 #include "Core/Context.hpp"
 #include "Util/BGM.hpp"
 #include "Util/Input.hpp"
@@ -39,12 +40,11 @@ namespace Util {
         // 渲染場景
         virtual void Render() = 0;
         bool getSenseEnd() const;//判斷場景是否能結束
-        int getmode() const;//取得選擇的模式
     protected:
         std::shared_ptr<AnimationSpace> m_Animation;
         std::shared_ptr<BGM> m_BGM;
         bool SenseEnd=false;
-        int mode=0;//0=story 1=battle
+        float start_time = Time::GetElapsedTimeMs();
     };
 } // namespace Util
 

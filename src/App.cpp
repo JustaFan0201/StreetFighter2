@@ -6,7 +6,7 @@ void App::Start() {
     // 初始化場景管理器並推入 StartScene
     if (!m_IsInitialized) {
         std::shared_ptr<Util::StartScene> startScene = std::make_shared<Util::StartScene>();
-        m_SceneManager.PushScene(startScene);
+        m_SceneManager.ChangeScene(startScene);
         m_IsInitialized = true;
     }
 

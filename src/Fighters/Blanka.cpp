@@ -4,8 +4,9 @@
 
 #include "Fighters/Blanka.hpp"
 namespace Util {
-    Blanka::Blanka() {
+    Blanka::Blanka(): Fighter("Blanka") {
         face=std::make_shared<ImageSpace>("../sencepicture/Fighters/Blanka/Blanka_face.png");
+        nametag=std::make_shared<ImageSpace>("../sencepicture/Fighters/Blanka/Blanka_nametag.png");
         country=std::make_shared<ImageSpace>("../sencepicture/slect/brazil.png");
         country_position={{323, 23},0,{1,1}};
     }

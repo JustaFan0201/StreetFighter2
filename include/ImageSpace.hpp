@@ -25,10 +25,18 @@ namespace Util {
 
             m_Drawable->Draw(data);
         }
-        void SetDraw(Transform transform,glm::vec2 size,float index) {
+        void SetDrawData(Transform transform,glm::vec2 size,float index) {
             custom_size=size;
             m_Transform=transform;
             SetZIndex(index);
+        }
+        void SetTransform(Transform transform) {
+            m_Transform=transform;
+        }
+        void SetFullScreen() {
+            SetDrawData({{0, 0},0,{1,1}},
+                {1280,720},
+                0.0f);
         }
         std::shared_ptr<Core::Drawable> GetDrawable() {
             return m_Drawable;
