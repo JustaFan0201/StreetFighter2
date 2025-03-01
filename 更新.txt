@@ -10,3 +10,5 @@
 新增Fighter作為角色的父類
 3/1 	
 新增PassScene會判斷角色分別將圖像設定好 並顯示(完成)
+3/2
+新增BattleScene的背景(雛形)-Gson

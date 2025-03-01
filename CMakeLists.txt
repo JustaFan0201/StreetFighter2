@@ -69,6 +69,8 @@ add_executable(${PROJECT_NAME}
             include/Fighters/Guile.hpp
             include/Fighters/Dhalsim.hpp
             include/Fighters/Zangief.hpp
+        include/Scenes/BattleScene.hpp
+        src/Scenes/BattleScene.cpp
 )
 
 if(MSVC)

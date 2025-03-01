@@ -20,7 +20,7 @@ namespace Util {
             50,
             true,
             0
-        );
+        );//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑過場動畫
         start_time=Time::GetElapsedTimeMs();
         vs->SetFullScreen();
         m_Animation->SetFullScreen();
