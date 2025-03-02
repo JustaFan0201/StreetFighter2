@@ -7,7 +7,6 @@
 #include <iostream>
 #include <ostream>
 
-#include "Scenes/BattleScene.hpp"
 
 namespace Util {
     void SceneManager::ChangeScene(std::shared_ptr<Scene> scene) {
@@ -37,14 +36,23 @@ namespace Util {
         if (m_NowScene!=nullptr && m_NowScene->getSenseEnd() && NowSceneType==SceneType::Slect) {
             EnemySlect();
             std::shared_ptr<Scene> nextScene;
-            nextScene = std::make_shared<PassScene>(player,enemy); // 切換到 Pass 畫面
+            if (stage_count<7) {
+                enemy=Enemies[stage_count++];
+            }
+            nextScene = std::make_shared<PassScene>(player,enemy); // pass
             NowSceneType=SceneType::Pass;
             ChangeScene(nextScene);
         }
         if (m_NowScene!=nullptr && m_NowScene->getSenseEnd() && NowSceneType==SceneType::Pass) {
             std::shared_ptr<Scene> nextScene;
-            nextScene = std::make_shared<BattleScene>(); // 切換到 Pass 畫面
+            nextScene = std::make_shared<BattleScene>(player,enemy); // battle
             NowSceneType=SceneType::Battle;
+            ChangeScene(nextScene);
+        }
+        if (m_NowScene!=nullptr && m_NowScene->getSenseEnd() && NowSceneType==SceneType::Battle) {
+            std::shared_ptr<Scene> nextScene;
+            nextScene = std::make_shared<SlectScene>();
+            NowSceneType=SceneType::Slect;
             ChangeScene(nextScene);
         }
     }

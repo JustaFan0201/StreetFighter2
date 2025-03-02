@@ -30,12 +30,15 @@ namespace Util {
         std::shared_ptr<ImageSpace> GetNameTag() const { return nametag; }
         std::shared_ptr<ImageSpace> GetCountry() const { return country; }
         Transform GetCountryPosition() const { return country_position; }
+        std::vector<std::string> GetStageBackground() { return stage_background; }
         std::string GetName() const { return m_name; }
+        void BackgroundInit(int picture_number);
     protected:
         std::shared_ptr<ImageSpace> face;
         std::shared_ptr<ImageSpace> nametag;
         std::shared_ptr<ImageSpace> country;
         Transform country_position;
+        std::vector<std::string> stage_background;
 
         std::shared_ptr<AnimationSpace> m_image;
         std::shared_ptr<BGM> m_BGM;

@@ -10,9 +10,10 @@
 namespace Util {
     class BattleScene : public Scene {
     private:
-        std::shared_ptr<ImageSpace> background;  // 背景圖片
+        std::shared_ptr<Fighter> player;
+        std::shared_ptr<Fighter> enemy;
     public:
-        BattleScene();
+        BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy):player(player),enemy(enemy){}
         void Init() override;
         void Update() override;
         void Render() override;

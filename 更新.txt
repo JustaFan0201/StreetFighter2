@@ -11,4 +11,5 @@
 3/1 	
 新增PassScene會判斷角色分別將圖像設定好 並顯示(完成)
 3/2
-新增BattleScene的背景(雛形)-Gson
+新增BattleScene的背景-Gson
+新增八隻角色背景

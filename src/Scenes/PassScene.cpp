@@ -8,12 +8,9 @@ namespace Util {
         std::vector<std::string> frames;
         for (int i = 1; i <= 30; ++i) {
             std::string num = std::to_string(i);
-            if (i < 10) num = "00" + num;
-            else if (i < 100) num = "0" + num;
-            std::string filename = "../sencepicture/Pass/Speed/ezgif-frame-" + num + ".png";
+            std::string filename = "../sencepicture/Pass/speed/frame ("+num+").png";
             frames.push_back(filename);
         }
-
         m_Animation = std::make_shared<AnimationSpace>(
             frames,
             true,

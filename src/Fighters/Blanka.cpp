@@ -9,5 +9,6 @@ namespace Util {
         nametag=std::make_shared<ImageSpace>("../sencepicture/Fighters/Blanka/Blanka_nametag.png");
         country=std::make_shared<ImageSpace>("../sencepicture/slect/brazil.png");
         country_position={{323, 23},0,{1,1}};
+        BackgroundInit(4);
     }
 }

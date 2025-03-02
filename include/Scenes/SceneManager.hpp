@@ -4,13 +4,12 @@
 
 #ifndef SCENEMANAGER_HPP
 #define SCENEMANAGER_HPP
-
-#include "Scenes/Scene.hpp"
 #include <memory>
-#include <stack>
+#include "Scenes/Scene.hpp"
 #include "Scenes/StartScene.hpp"
 #include "Scenes/SlectScene.hpp"
 #include "Scenes/PassScene.hpp"
+#include "Scenes/BattleScene.hpp"
 namespace Util {
     enum class SceneType {
         Start,
@@ -46,6 +45,7 @@ namespace Util {
             std::make_shared<Dhalsim>() // 指向子類 Dhalsim
         };
         std::vector<std::shared_ptr<Fighter>> Enemies = {};
+        int stage_count=2;
     };
 
 } // namespace Util
