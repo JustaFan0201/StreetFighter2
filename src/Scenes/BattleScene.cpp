@@ -18,9 +18,9 @@ namespace Util {
 
         maxOffsetX = m_Animation->GetScaledSize().x * (720 / m_Animation->GetScaledSize().y);
 
-        cameraPos.x = maxOffsetX / 2 - 940;
+        //cameraPos.x = maxOffsetX / 2 - 940;
+        cameraPos.x = 0;
 
-        // 拉伸背景圖片，確保高度為 720，寬度按比例擴展
         m_Animation->SetDrawData({{0,0},0,{1,1}},
                     {maxOffsetX, 720},
                     0);
@@ -31,10 +31,10 @@ namespace Util {
     void BattleScene::Update() {
         int moveSpeed = 10;
 
-        if (Input::IsKeyDown(Keycode::A)) {
+        if (Input::IsKeyPressed(Keycode::A)) {
             cameraPos.x -= moveSpeed;
         }
-        else if (Input::IsKeyDown(Keycode::D)) {
+        else if (Input::IsKeyPressed(Keycode::D)) {
             cameraPos.x += moveSpeed;
         }
 
