@@ -45,7 +45,7 @@ namespace Util {
             std::make_shared<Dhalsim>() // 指向子類 Dhalsim
         };
         std::vector<std::shared_ptr<Fighter>> Enemies = {};
-        int stage_count=2;
+        int stage_count=0;
     };
 
 } // namespace Util
