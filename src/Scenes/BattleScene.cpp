@@ -2,6 +2,7 @@
 // Created by Gson 25-3-2.
 //
 
+#include "Scenes/BattleScene.hpp"
 
 #include "Scenes/BattleScene.hpp"
 
@@ -16,35 +17,27 @@ namespace Util {
             0
         );
 
-        maxOffsetX = m_Animation->GetScaledSize().x * (720 / m_Animation->GetScaledSize().y);
-
-        //cameraPos.x = maxOffsetX / 2 - 940;
+        maxOffsetX = m_Animation->GetScaledSize().x * (720 / m_Animation->GetScaledSize().y)/2;
         cameraPos.x = 0;
-
         m_Animation->SetDrawData({{0,0},0,{1,1}},
-                    {maxOffsetX, 720},
+                    {m_Animation->GetScaledSize().x * (720 / m_Animation->GetScaledSize().y), 720},
                     0);
-
         start_time = Time::GetElapsedTimeMs();
     }
 
     void BattleScene::Update() {
         int moveSpeed = 10;
-
         if (Input::IsKeyPressed(Keycode::A)) {
             cameraPos.x -= moveSpeed;
         }
         else if (Input::IsKeyPressed(Keycode::D)) {
             cameraPos.x += moveSpeed;
         }
-
-        if (cameraPos.x < 0) cameraPos.x = 0;
-        if (cameraPos.x + 1880 > maxOffsetX) cameraPos.x = maxOffsetX - 1880;
-        // !!!!!!!!寬是1880!!!!!!!!
-
+        if (cameraPos.x < -maxOffsetX + 640) cameraPos.x = -maxOffsetX + 640;
+        if (cameraPos.x >  maxOffsetX - 640) cameraPos.x = maxOffsetX - 640;
 
         m_Animation->SetDrawData({{-cameraPos.x, 0}, 0, {1,1}},
-                    {maxOffsetX, 720},
+                    {m_Animation->GetScaledSize().x * (720 / m_Animation->GetScaledSize().y), 720},
                     0);
 
         if (Input::IsKeyDown(Keycode::RETURN)){

@@ -10,6 +10,5 @@ namespace Util {
         country=std::make_shared<ImageSpace>("../sencepicture/slect/japan.png");
         country_position={{28, 168},0,{1,1}};
         BackgroundInit(7);
-
     }
 }
