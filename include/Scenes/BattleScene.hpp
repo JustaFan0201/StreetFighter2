@@ -12,7 +12,7 @@ namespace Util {
     private:
         std::shared_ptr<Fighter> player;
         std::shared_ptr<Fighter> enemy;
-        int maxOffsetX, minOffsetX;
+        int maxOffsetX;
         struct { int x, y; } cameraPos = {0, 0};
     public:
         BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy):player(player),enemy(enemy){}

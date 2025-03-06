@@ -17,7 +17,7 @@ namespace Util {
             0
         );
 
-        maxOffsetX = m_Animation->GetScaledSize().x * (720 / m_Animation->GetScaledSize().y)/2;
+        maxOffsetX = m_Animation->GetScaledSize().x * (720 / m_Animation->GetScaledSize().y)/2- 640;
         cameraPos.x = 0;
         m_Animation->SetDrawData({{0,0},0,{1,1}},
                     {m_Animation->GetScaledSize().x * (720 / m_Animation->GetScaledSize().y), 720},
@@ -33,8 +33,8 @@ namespace Util {
         else if (Input::IsKeyPressed(Keycode::D)) {
             cameraPos.x += moveSpeed;
         }
-        if (cameraPos.x < -maxOffsetX + 640) cameraPos.x = -maxOffsetX + 640;
-        if (cameraPos.x >  maxOffsetX - 640) cameraPos.x = maxOffsetX - 640;
+        if (cameraPos.x < -maxOffsetX ) cameraPos.x = -maxOffsetX ;
+        if (cameraPos.x >  maxOffsetX ) cameraPos.x = maxOffsetX ;
 
         m_Animation->SetDrawData({{-cameraPos.x, 0}, 0, {1,1}},
                     {m_Animation->GetScaledSize().x * (720 / m_Animation->GetScaledSize().y), 720},
