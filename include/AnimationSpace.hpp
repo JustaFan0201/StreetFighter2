@@ -4,9 +4,9 @@
 
 #ifndef ANIMATIONSPACE_HPP
 #define ANIMATIONSPACE_HPP
-#include "Util/GameObject.hpp"
-#include "Util/Animation.hpp"
-#include "Util/TransformUtils.hpp"
+#include "../../PTSD/include/Util/GameObject.hpp"
+#include "../../PTSD/include/Util/Animation.hpp"
+#include "../../PTSD/include/Util/TransformUtils.hpp"
 
 namespace Util {
     class AnimationSpace : public GameObject {

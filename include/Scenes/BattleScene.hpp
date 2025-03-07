@@ -6,16 +6,18 @@
 #define BATTLESCENE_HPP
 
 #include "Scene.hpp"
+#include  "Scenes/Camera.hpp"
 
 namespace Util {
-    class BattleScene : public Scene {
+    class BattleScene : public Scene{
     private:
         std::shared_ptr<Fighter> player;
         std::shared_ptr<Fighter> enemy;
-        int maxOffsetX;
-        struct { int x, y; } cameraPos = {0, 0};
+        std::shared_ptr<Camera> camera;
+
     public:
-        BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy):player(player),enemy(enemy){}
+        BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy)
+            : player(player), enemy(enemy), camera(std::make_shared<Camera>()) {}
         void Init() override;
         void Update() override;
         void Render() override;

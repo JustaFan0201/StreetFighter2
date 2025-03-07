@@ -40,6 +40,7 @@ add_executable(${PROJECT_NAME}
             src/Scenes/SlectScene.cpp
             src/Scenes/PassScene.cpp
             src/Scenes/BattleScene.cpp
+            src/Scenes/Camera.cpp
 
             src/Fighters/Fighter.cpp
             src/Fighters/Ken.cpp
@@ -50,6 +51,7 @@ add_executable(${PROJECT_NAME}
             src/Fighters/Guile.cpp
             src/Fighters/Dhalsim.cpp
             src/Fighters/Zangief.cpp
+
         ${HEADER_FILES}
             include/ImageSpace.hpp
             include/AnimationSpace.hpp
@@ -61,6 +63,7 @@ add_executable(${PROJECT_NAME}
             include/Scenes/SlectScene.hpp
             include/Scenes/PassScene.hpp
             include/Scenes/BattleScene.hpp
+            include/Scenes/Camera.hpp
 
             include/Fighters/Fighter.hpp
             include/Fighters/Ken.hpp

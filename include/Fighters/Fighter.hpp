@@ -32,7 +32,13 @@ namespace Util {
         Transform GetCountryPosition() const { return country_position; }
         std::vector<std::string> GetStageBackground() { return stage_background; }
         std::string GetName() const { return m_name; }
+        std::shared_ptr<BGM> GetBGM() { return m_BGM; }
+
         void BackgroundInit(int picture_number);
+        std::vector<std::string> ActionInit(int picture_number,std::string Action);
+
+        void Upload();
+        void DrawCharacter();
     protected:
         std::shared_ptr<ImageSpace> face;
         std::shared_ptr<ImageSpace> nametag;
@@ -40,10 +46,11 @@ namespace Util {
         Transform country_position;
         std::vector<std::string> stage_background;
 
-        std::shared_ptr<AnimationSpace> m_image;
+        std::vector<std::string> Idle;
+
+        std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<BGM> m_BGM;
         std::string m_name;
-        Transform m_transform;
         int velocity = 0;
     };
 }
