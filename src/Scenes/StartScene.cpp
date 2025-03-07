@@ -17,13 +17,13 @@ namespace Util {
             false,
             0
         );
-        //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑開場動畫
+        //開場動畫
         m_Animation->SetFullScreen();
         m_BGM = std::make_shared<BGM>("../music/title.mp3");
         m_BGM->SetVolume(15);
         m_BGM->Play(-1);
         soundEffect->SetVolume(30);
-        //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑開場音樂
+        //開場音樂
     }
 
     void StartScene::Update() {
@@ -47,11 +47,10 @@ namespace Util {
                     );
                     m_Animation->SetFullScreen();
                 }
-                //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑選模式(單人/雙人)
-            } else {
+            }//選模式(Story and Battle)
+            else {
                 if (Word_1) Word_1->custom_Draw();
                 if (Word_2) Word_2->custom_Draw();
-
                 if (Input::IsKeyPressed(Keycode::A) && mode == 1) {
                     Word_1->SetColor(Color(255, 127, 80));
                     Word_2->SetColor(Color(255, 255, 255));
@@ -63,12 +62,12 @@ namespace Util {
                     Word_1->SetColor(Color(255, 255, 255));
                     soundEffect->Play(0);
                     mode = 1;
-                }//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑選中改色
+                }//選中改色
                 if (Input::IsKeyDown(Keycode::RETURN)) {
                     soundEffect->Play(0);
                     SDL_Delay(600);
                     SenseEnd = true;
-                }//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑選中音效
+                }//選中音效
             }
         }
     }

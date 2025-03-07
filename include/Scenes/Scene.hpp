@@ -29,24 +29,19 @@
 #include "Fighters/Ken.hpp"
 #include "Fighters/Honda.hpp"
 
-
 namespace Util {
     class Scene {
     public:
         virtual ~Scene() = default;
-        // 初始化場景
-        virtual void Init() = 0;
-        // 更新場景
-        virtual void Update() = 0;
-        // 渲染場景
-        virtual void Render() = 0;
-        bool getSenseEnd() const;//判斷場景是否能結束
+        virtual void Init() = 0;//初始化
+        virtual void Update() = 0;//更新
+        virtual void Render() = 0;//渲染
+        bool getSenseEnd() const;//判斷場景能否結束 true=結束 false=繼續
     protected:
-        std::shared_ptr<AnimationSpace> m_Animation;
+        std::shared_ptr<AnimationSpace> m_Animation;//背景
         std::shared_ptr<BGM> m_BGM;
         bool SenseEnd=false;
-        float start_time = Time::GetElapsedTimeMs();
+        float start_time = Time::GetElapsedTimeMs();//進場景開始計時
     };
-} // namespace Util
-
+}
 #endif // SCENE_HPP

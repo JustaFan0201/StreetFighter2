@@ -6,6 +6,7 @@
 #define FIGHTER_HPP
 #include <memory>
 #include <iostream>
+#include <string>
 #include "Core/Context.hpp"
 #include "Util/BGM.hpp"
 #include "Util/Input.hpp"
@@ -21,10 +22,8 @@
 namespace Util {
     class Fighter  {
     public:
-        Fighter(const std::string& name)
-                    : m_name(name) {}
+        Fighter(const std::string& name): m_name(name) {}
         virtual ~Fighter() = default;
-        // 初始化場景
 
         std::shared_ptr<ImageSpace> GetFace() const { return face; }
         std::shared_ptr<ImageSpace> GetNameTag() const { return nametag; }
@@ -36,6 +35,7 @@ namespace Util {
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
+        //輸入frame (num)圖數量 圖放在對應角色資料夾 Action輸入資料夾名稱
 
         void Upload();
         void DrawCharacter();

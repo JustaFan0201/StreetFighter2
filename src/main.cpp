@@ -9,26 +9,24 @@ int main(int, char**) {
     context->SetWindowIcon("../sencepicture/start/icon.png");
 
     App app;
-    // 啟動遊戲
     app.Start();
 
     while (!context->GetExit()) {
         switch (app.GetCurrentState()) {
             case App::State::START:
-                app.Start();  // 如果有需要可以重新進入啟動狀態
+                app.Start();
                 break;
 
             case App::State::UPDATE:
-                app.Update();  // 更新遊戲邏輯
+                app.Update();
                 break;
 
             case App::State::END:
-                app.End();  // 結束遊戲
+                app.End();
                 context->SetExit(true);
                 break;
         }
-
-        context->Update();  // 更新應用程式上下文（視窗管理等）
+        context->Update();
     }
 
     return 0;

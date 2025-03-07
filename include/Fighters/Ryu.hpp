@@ -4,14 +4,8 @@
 
 #ifndef RYU_HPP
 #define RYU_HPP
-#include <memory>
-#include <string>
 
-#include "AnimationSpace.hpp"
 #include "Fighters/Fighter.hpp"
-#include "ImageSpace.hpp"
-#include "Util/BGM.hpp"
-#include "Util/Transform.hpp"
 
 namespace Util {
     class Ryu : public Fighter  {

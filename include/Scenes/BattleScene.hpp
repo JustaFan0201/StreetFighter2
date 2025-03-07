@@ -6,7 +6,7 @@
 #define BATTLESCENE_HPP
 
 #include "Scene.hpp"
-#include  "Scenes/Camera.hpp"
+#include "Camera.hpp"
 
 namespace Util {
     class BattleScene : public Scene{
@@ -14,7 +14,6 @@ namespace Util {
         std::shared_ptr<Fighter> player;
         std::shared_ptr<Fighter> enemy;
         std::shared_ptr<Camera> camera;
-
     public:
         BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy)
             : player(player), enemy(enemy), camera(std::make_shared<Camera>()) {}

@@ -4,12 +4,12 @@
 
 #ifndef SCENEMANAGER_HPP
 #define SCENEMANAGER_HPP
-#include <memory>
-#include "Scenes/Scene.hpp"
-#include "Scenes/StartScene.hpp"
-#include "Scenes/SlectScene.hpp"
-#include "Scenes/PassScene.hpp"
-#include "Scenes/BattleScene.hpp"
+
+#include "Scene.hpp"
+#include "StartScene.hpp"
+#include "SlectScene.hpp"
+#include "PassScene.hpp"
+#include "BattleScene.hpp"
 namespace Util {
     enum class SceneType {
         Start,
@@ -19,18 +19,15 @@ namespace Util {
     };
     class SceneManager {
     public:
-        // 切換場景
-        void ChangeScene(std::shared_ptr<Scene> scene);
-        // 更新當前場景
+        void ChangeScene(std::shared_ptr<Scene> scene);//切場景
         void Update();
-        // 渲染當前場景
         void Render();
-        int GetMode() const;
-        void EnemySlect();
+        int GetMode() const;//取模式
+        void EnemySlect();//生成敵人vector Enemies
     private:
-        SceneType NowSceneType=SceneType::Start;
-        std::shared_ptr<Scene> m_NowScene=nullptr;
-        int mode=0;
+        SceneType NowSceneType=SceneType::Start;//目前階段
+        std::shared_ptr<Scene> m_NowScene=nullptr;//目前場景
+        int mode=0;//0=story 1=battle
         std::shared_ptr<Fighter> player=std::make_shared<Ryu>();
         std::shared_ptr<Fighter> enemy=std::make_shared<Ken>();
 
@@ -44,10 +41,9 @@ namespace Util {
             std::make_shared<Zangief>(),// 指向子類 Zangief
             std::make_shared<Dhalsim>() // 指向子類 Dhalsim
         };
-        std::vector<std::shared_ptr<Fighter>> Enemies = {};
-        int stage_count=0;
+        std::vector<std::shared_ptr<Fighter>> Enemies = {};//敵人vector
+        int stage_count=0;//目前關卡
     };
-
-} // namespace Util
+}
 
 #endif // SCENEMANAGER_HPP

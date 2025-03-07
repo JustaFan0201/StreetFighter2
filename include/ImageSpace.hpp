@@ -13,7 +13,7 @@ namespace Util {
         ImageSpace(const std::string &imagePath, float zIndex = 0.0f)
             : GameObject(std::make_shared<Image>(imagePath), zIndex) {}
 
-        void custom_Draw() {
+        void custom_Draw() {//自訂義畫出
             if (!m_Visible || m_Drawable == nullptr) {
                 return;
             }
@@ -25,15 +25,15 @@ namespace Util {
 
             m_Drawable->Draw(data);
         }
-        void SetDrawData(Transform transform,glm::vec2 size,float index) {
+        void SetDrawData(Transform transform,glm::vec2 size,float index) {//設定x,y,size,z
             custom_size=size;
             m_Transform=transform;
             SetZIndex(index);
         }
-        void SetTransform(Transform transform) {
+        void SetTransform(Transform transform) {//設定x,y
             m_Transform=transform;
         }
-        void SetFullScreen() {
+        void SetFullScreen() {//全螢幕
             SetDrawData({{0, 0},0,{1,1}},
                 {1280,720},
                 0.0f);

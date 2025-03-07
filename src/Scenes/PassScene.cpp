@@ -17,15 +17,15 @@ namespace Util {
             50,
             true,
             0
-        );//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑過場動畫
+        );
         start_time=Time::GetElapsedTimeMs();
-        vs->SetFullScreen();
         m_Animation->SetFullScreen();
-
+        //過場動畫
         m_BGM = std::make_shared<BGM>("../music/04 Start Battle.mp3");//14s
         m_BGM->SetVolume(30);
         m_BGM->Play(0);
-
+        //BGM設定
+        vs->SetFullScreen();
         vs->SetZIndex(3.0f);
         player_face->SetDrawData({{-350, 0},0,{1,1}},
                 {288, 306},
@@ -39,9 +39,10 @@ namespace Util {
         enemy_nametag->SetDrawData({{350, -200},0,{1,1}},
                 {288,63},
                 2.0f);
+        //位置設定
     }
     void PassScene::Update() {
-        if (Time::GetElapsedTimeMs() - start_time > 5000){
+        if (Time::GetElapsedTimeMs() - start_time > 4500){
             SenseEnd=true;
         }
     }

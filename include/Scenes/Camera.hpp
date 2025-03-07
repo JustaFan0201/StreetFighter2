@@ -15,7 +15,7 @@ namespace Util {
     public:
         void Upload();
         void Init();
-        void SetMaxOffsetX(int a);
+        void SetMaxOffsetX(int border);
         int GetMaxOffsetX();
         glm::vec2 GetCameraPos();
     };

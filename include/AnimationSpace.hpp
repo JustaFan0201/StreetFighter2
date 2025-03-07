@@ -4,9 +4,9 @@
 
 #ifndef ANIMATIONSPACE_HPP
 #define ANIMATIONSPACE_HPP
-#include "../../PTSD/include/Util/GameObject.hpp"
-#include "../../PTSD/include/Util/Animation.hpp"
-#include "../../PTSD/include/Util/TransformUtils.hpp"
+#include "Util/GameObject.hpp"
+#include "Util/Animation.hpp"
+#include "Util/TransformUtils.hpp"
 
 namespace Util {
     class AnimationSpace : public GameObject {
@@ -16,7 +16,7 @@ namespace Util {
                        float zIndex = 0.0f)
             : GameObject(std::make_shared<Animation>(frames, loop, duration, autoStart, 100), zIndex) {}
 
-        void custom_Draw() {
+        void custom_Draw() {//自訂義畫出
             if (!m_Visible || m_Drawable == nullptr) {
                 return;
             }
@@ -28,15 +28,15 @@ namespace Util {
 
             m_Drawable->Draw(data);
         }
-        void SetDrawData(Transform transform,glm::vec2 size,float index) {
+        void SetDrawData(Transform transform,glm::vec2 size,float index) {//設定x,y,size,z
             custom_size=size;
             m_Transform=transform;
             SetZIndex(index);
         }
-        void SetTransform(Transform transform) {
+        void SetTransform(Transform transform) {//設定x,y
             m_Transform=transform;
         }
-        void SetFullScreen() {
+        void SetFullScreen() {//設定全螢幕
             SetDrawData({{0, 0},0,{1,1}},
                 {1280,720},
                 0.0f);
@@ -44,8 +44,6 @@ namespace Util {
         std::shared_ptr<Core::Drawable> GetDrawable() {
             return m_Drawable;
         }
-
-
     private:
         glm::vec2 custom_size;
     };

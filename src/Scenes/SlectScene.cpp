@@ -7,7 +7,7 @@ namespace Util {
     SlectScene::SlectScene()= default;
     void SlectScene::Init() {
         m_Animation = std::make_shared<AnimationSpace>(
-            std::vector<std::string> {//每一張動畫圖片
+            std::vector<std::string> {
                 "../sencepicture/slect/map.png"
             },
             true,
@@ -16,9 +16,11 @@ namespace Util {
             100
         );
         m_Animation->SetFullScreen();
+        //世界地圖
         m_BGM = std::make_shared<BGM>("../music/03 Player Select.mp3");
-        m_BGM->SetVolume(20);  // 設定音量
-        m_BGM->Play(-1); // 播放
+        m_BGM->SetVolume(20);
+        m_BGM->Play(-1);
+        //BGM設定
         character_nametag->SetDrawData({{-420, -320},0,{1,1}},
                     {288,63},
                     1.0f);
@@ -41,6 +43,7 @@ namespace Util {
                        1.0f);
             j++;
         }
+        //各物件位置
     }
 
     void SlectScene::Update() {
@@ -80,6 +83,7 @@ namespace Util {
                 SenseEnd = true;
             }
         }
+        //選擇角色
         character_nametag=characters[chooseIndex]->GetNameTag();
         character_nametag->SetDrawData({{-420, -320},0,{1,1}},
                     {288,63},
@@ -93,10 +97,10 @@ namespace Util {
                     {72, 58},
                     2.0f);
         first_player_screen->SetTransform(position);
+        //更新位置
     }
 
     void SlectScene::Render() {
-        // 在這裡渲染動畫的當前幀
         m_Animation->custom_Draw();
         AllPictures={character,character_match_country,first_player,first_player_screen,character_nametag};
         for(const auto& i:AllPictures) {

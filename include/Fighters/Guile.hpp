@@ -4,14 +4,8 @@
 
 #ifndef GUILE_HPP
 #define GUILE_HPP
-#include <memory>
-#include <string>
 
-#include "AnimationSpace.hpp"
 #include "Fighter.hpp"
-#include "ImageSpace.hpp"
-#include "Util/BGM.hpp"
-#include "Util/Transform.hpp"
 
 namespace Util {
     class Guile : public Fighter  {

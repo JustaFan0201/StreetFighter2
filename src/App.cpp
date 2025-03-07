@@ -2,23 +2,18 @@
 
 void App::Start() {
     LOG_TRACE("Start");
-
-    // 初始化場景管理器並推入 StartScene
+    //初始化Manager and 推入StartScene
     if (!m_IsInitialized) {
         std::shared_ptr<Util::StartScene> startScene = std::make_shared<Util::StartScene>();
         m_SceneManager.ChangeScene(startScene);
         m_IsInitialized = true;
     }
-
-    m_CurrentState = State::UPDATE; // 當前狀態切換為 UPDATE
+    m_CurrentState = State::UPDATE;
 }
-
 void App::Update() {
-    // 更新當前場景
+    //更新and渲染目前場景
     m_SceneManager.Update();
     m_SceneManager.Render();
-
-
     /*
      * Do not touch the code below as they serve the purpose for
      * closing the window.
@@ -28,7 +23,6 @@ void App::Update() {
         m_CurrentState = State::END;
     }
 }
-
 void App::End() { // NOLINT(this method will mutate members in the future)
     LOG_TRACE("End");
 }

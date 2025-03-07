@@ -4,14 +4,8 @@
 
 #ifndef DHALSIM_HPP
 #define DHALSIM_HPP
-#include <memory>
-#include <string>
 
-#include "AnimationSpace.hpp"
 #include "Fighter.hpp"
-#include "ImageSpace.hpp"
-#include "Util/BGM.hpp"
-#include "Util/Transform.hpp"
 
 namespace Util {
     class Dhalsim : public Fighter  {

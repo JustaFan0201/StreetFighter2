@@ -20,9 +20,8 @@ namespace Util {
         if (cameraPos.x < -maxOffsetX ) cameraPos.x = -maxOffsetX ;
         if (cameraPos.x >  maxOffsetX ) cameraPos.x = maxOffsetX ;
     }
-
-    void Camera::SetMaxOffsetX( int a) {
-        maxOffsetX = a;
+    void Camera::SetMaxOffsetX( int border) {
+        maxOffsetX = border;
     }
     int Camera::GetMaxOffsetX() {
         return maxOffsetX;

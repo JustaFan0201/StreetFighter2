@@ -20,7 +20,7 @@ namespace Util {
             true,
             5
         );
-        ActionNow->SetDrawData({{-350, -160},0,{1,1}},
+        ActionNow->SetDrawData({{-350, -170},0,{1,1}},
                 {ActionNow->GetScaledSize().x*3,ActionNow->GetScaledSize().y*3},
                 2.0f);
     }
