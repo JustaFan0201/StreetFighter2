@@ -4,7 +4,7 @@
 
 #include "Fighters/Honda.hpp"
 namespace Util {
-    Honda::Honda():Fighter("Honda"){
+    Honda::Honda():Fighter("Honda",5){
         face=std::make_shared<ImageSpace>("../sencepicture/Fighters/Honda/Honda_face.png");
         nametag=std::make_shared<ImageSpace>("../sencepicture/Fighters/Honda/Honda_nametag.png");
         country=std::make_shared<ImageSpace>("../sencepicture/slect/japan.png");

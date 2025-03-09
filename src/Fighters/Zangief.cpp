@@ -4,7 +4,7 @@
 
 #include "Fighters/Zangief.hpp"
 namespace Util {
-    Zangief::Zangief(): Fighter("Zangief") {
+    Zangief::Zangief(): Fighter("Zangief",5) {
         face=std::make_shared<ImageSpace>("../sencepicture/Fighters/Zangief/Zangief_face.png");
         nametag=std::make_shared<ImageSpace>("../sencepicture/Fighters/Zangief/Zangief_nametag.png");
         country=std::make_shared<ImageSpace>("../sencepicture/slect/ussr.png");

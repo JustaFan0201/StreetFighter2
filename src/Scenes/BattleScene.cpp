@@ -26,15 +26,17 @@ namespace Util {
         m_BGM->Play(-1);
         //BGM設定
         start_time = Time::GetElapsedTimeMs();
+        player->InitPosition({-350, -170},1);
+        enemy->InitPosition({350, -170},-1);
     }
 
     void BattleScene::Update() {
-        camera->Upload();
-        player->Upload();
+        //camera->Upload();
+        player->Upload(Time::GetDeltaTimeMs());
+        enemy->Upload(Time::GetDeltaTimeMs());
         m_Animation->SetDrawData({{-camera->GetCameraPos().x, 0}, 0, {1,1}},
                     {m_Animation->GetScaledSize().x * (720.0f / m_Animation->GetScaledSize().y), 720},
                     0);
-
         if (Input::IsKeyDown(Keycode::RETURN)) {
             SenseEnd = true;
         }
@@ -42,5 +44,6 @@ namespace Util {
     void BattleScene::Render() {
         m_Animation->custom_Draw();
         player->DrawCharacter();
+        enemy->DrawCharacter();
     }
 }

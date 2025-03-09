@@ -28,6 +28,7 @@ namespace Util {
 
             m_Drawable->Draw(data);
         }
+
         void SetDrawData(Transform transform,glm::vec2 size,float index) {//設定x,y,size,z
             custom_size=size;
             m_Transform=transform;

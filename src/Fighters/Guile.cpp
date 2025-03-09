@@ -4,7 +4,7 @@
 
 #include "Fighters/Guile.hpp"
 namespace Util {
-    Guile::Guile():Fighter("Guile"){
+    Guile::Guile():Fighter("Guile",5){
         face=std::make_shared<ImageSpace>("../sencepicture/Fighters/Guile/Guile_face.png");
         nametag=std::make_shared<ImageSpace>("../sencepicture/Fighters/Guile/Guile_nametag.png");
         country=std::make_shared<ImageSpace>("../sencepicture/slect/usa.png");

@@ -4,7 +4,7 @@
 
 #include "Fighters/Ryu.hpp"
 namespace Util {
-    Ryu::Ryu(): Fighter("Ryu") {
+    Ryu::Ryu(): Fighter("Ryu",200) {
         face=std::make_shared<ImageSpace>("../sencepicture/Fighters/Ryu/Ryu_face.png");
         nametag=std::make_shared<ImageSpace>("../sencepicture/Fighters/Ryu/Ryu_nametag.png");
         country=std::make_shared<ImageSpace>("../sencepicture/slect/japan.png");
@@ -12,17 +12,16 @@ namespace Util {
         country_position={{14,90},0,{1,1}};
         BackgroundInit(15);
         Idle=ActionInit(5,"Idle");
-
+        Back=ActionInit(6,"Back");
+        Forward=ActionInit(6,"Forward");
         ActionNow = std::make_shared<AnimationSpace>(
             Idle,
             true,
-            500,
+            60,
             true,
             5
         );
-        ActionNow->SetDrawData({{-350, -170},0,{1,1}},
-                {ActionNow->GetScaledSize().x*3,ActionNow->GetScaledSize().y*3},
-                2.0f);
+
     }
 
 }

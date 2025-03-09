@@ -4,7 +4,7 @@
 
 #include "Fighters/Chunli.hpp"
 namespace Util {
-    Chunli::Chunli(): Fighter("Chunli") {
+    Chunli::Chunli(): Fighter("Chunli",5) {
         face=std::make_shared<ImageSpace>("../sencepicture/Fighters/Chunli/Chunli_face.png");
         nametag=std::make_shared<ImageSpace>("../sencepicture/Fighters/Chunli/Chunli_nametag.png");
         country=std::make_shared<ImageSpace>("../sencepicture/slect/china.png");

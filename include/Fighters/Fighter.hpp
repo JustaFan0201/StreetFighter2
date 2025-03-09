@@ -20,9 +20,14 @@
 #include "Word.hpp"
 
 namespace Util {
+    enum class State {
+        Idle,
+        Forward,
+        Back
+    };
     class Fighter  {
     public:
-        Fighter(const std::string& name): m_name(name) {}
+        Fighter(const std::string& name,int velocity): m_name(name),velocity(velocity) {}
         virtual ~Fighter() = default;
 
         std::shared_ptr<ImageSpace> GetFace() const { return face; }
@@ -36,8 +41,8 @@ namespace Util {
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
         //輸入frame (num)圖數量 圖放在對應角色資料夾 Action輸入資料夾名稱
-
-        void Upload();
+        void InitPosition(glm::vec2 position,int side);
+        void Upload(ms_t SecPassed);
         void DrawCharacter();
     protected:
         std::shared_ptr<ImageSpace> face;
@@ -47,11 +52,15 @@ namespace Util {
         std::vector<std::string> stage_background;
 
         std::vector<std::string> Idle;
+        std::vector<std::string> Back;
+        std::vector<std::string> Forward;
+        State now=State::Idle;
 
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<BGM> m_BGM;
         std::string m_name;
         int velocity = 0;
+        int direction;
     };
 }
 #endif //FIGHTER_HPP

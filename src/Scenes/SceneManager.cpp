@@ -33,7 +33,7 @@ namespace Util {
             EnemySlect();
             std::shared_ptr<Scene> nextScene;
             if (stage_count<7) {
-                enemy=Enemies[stage_count++];//每過一關+1
+                //enemy=Enemies[stage_count++];//每過一關+1
             }
             nextScene = std::make_shared<PassScene>(player,enemy); //pass scene
             NowSceneType=SceneType::Pass;
