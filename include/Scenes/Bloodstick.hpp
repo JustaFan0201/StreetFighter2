@@ -7,19 +7,19 @@
 
 #include <memory>
 #include <string>
-#include "AnimationSpace.hpp"  // 假設這是你處理動畫的類別
-#include "Scene.hpp"
+#include "ImageSpace.hpp"
+
 
 
 namespace Util {
     class Bloodstick {
     private:
-        std::string original;  // 血條圖片的路徑
-        std::shared_ptr<ImageSpace> bloodstick_image;  // 用於顯示血條圖片的對象
+        std::string original;
+        std::shared_ptr<ImageSpace> bloodstick_image;
 
     public:
         Bloodstick();
-        void DrawBloodstick();  // 用來繪製血條
+        void DrawBloodstick();
     };
 }
 
