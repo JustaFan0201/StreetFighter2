@@ -1,5 +1,5 @@
 //
-// Created by Gson 25-3-2.
+// Created by Gs0n 25-3-2.
 //
 
 #include "Scenes/BattleScene.hpp"
@@ -27,6 +27,7 @@ namespace Util {
         start_time = Time::GetElapsedTimeMs();
         player->InitPosition({-350, -170},1);
         enemy->InitPosition({350, -170},-1);
+
     }
 
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {
@@ -43,5 +44,6 @@ namespace Util {
         m_Animation->custom_Draw();
         player->DrawCharacter();
         enemy->DrawCharacter();
+        bloodstick->DrawBloodstick();
     }
 }

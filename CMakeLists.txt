@@ -74,6 +74,8 @@ add_executable(${PROJECT_NAME}
             include/Fighters/Guile.hpp
             include/Fighters/Dhalsim.hpp
             include/Fighters/Zangief.hpp
+        include/Scenes/Bloodstick.hpp
+        src/Scenes/Bloodstick.cpp
 
 )
 
