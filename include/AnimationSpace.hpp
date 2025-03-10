@@ -30,17 +30,15 @@ namespace Util {
         }
 
         void SetDrawData(Transform transform,glm::vec2 size,float index) {//設定x,y,size,z
-            custom_size=size;
-            m_Transform=transform;
+            SetSize(size);
+            SetTransform(transform);
             SetZIndex(index);
         }
-        void SetTransform(Transform transform) {//設定x,y
+        void SetTransform(Transform transform) {
             m_Transform=transform;
         }
-        void SetFullScreen() {//設定全螢幕
-            SetDrawData({{0, 0},0,{1,1}},
-                {1280,720},
-                0.0f);
+        void SetSize(glm::vec2 size){
+            custom_size=size;
         }
         std::shared_ptr<Core::Drawable> GetDrawable() {
             return m_Drawable;

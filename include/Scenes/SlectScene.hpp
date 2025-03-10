@@ -25,11 +25,11 @@ namespace Util {
             std::make_shared<Dhalsim>() // 指向子類 Dhalsim
         };
 
-        std::shared_ptr<ImageSpace> character=characters[0]->GetFace();//角色
-        std::shared_ptr<ImageSpace> character_match_country=characters[0]->GetCountry();//當前角色國家
-        std::shared_ptr<ImageSpace> character_nametag=characters[0]->GetNameTag();//當前角色Nametag
-        std::shared_ptr<ImageSpace> first_player = std::make_shared<ImageSpace>("../sencepicture/slect/1p.png");//1p
-        std::shared_ptr<ImageSpace> first_player_screen = std::make_shared<ImageSpace>("../sencepicture/slect/1p_screen.png");//1p框框
+        std::shared_ptr<ImageSpace> character;//角色
+        std::shared_ptr<ImageSpace> character_match_country;//當前角色國家
+        std::shared_ptr<ImageSpace> character_nametag;//當前角色Nametag
+        std::shared_ptr<ImageSpace> first_player;//1p
+        std::shared_ptr<ImageSpace> first_player_screen;//1p框框
 
         std::vector<std::shared_ptr<ImageSpace>> AllPictures={};//要渲染的圖
 
@@ -46,8 +46,8 @@ namespace Util {
         int chooseIndex = 0;//0~7 characters角色選擇
         public:
         SlectScene();
-        void Init() override;
-        void Update() override;
+        void Init(std::shared_ptr<Core::Context> context) override;
+        void Update(std::shared_ptr<Core::Context> context) override;
         void Render() override;
         std::shared_ptr<Fighter> GetPlayerCharacter(){return characters[chooseIndex];}//回傳1p玩家角色
     };

@@ -7,6 +7,7 @@
 #include <memory>
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "Core/Context.hpp"
 #include "Util/BGM.hpp"
 #include "Util/Input.hpp"
@@ -30,9 +31,9 @@ namespace Util {
         Fighter(const std::string& name,int velocity): m_name(name),velocity(velocity) {}
         virtual ~Fighter() = default;
 
-        std::shared_ptr<ImageSpace> GetFace() const { return face; }
-        std::shared_ptr<ImageSpace> GetNameTag() const { return nametag; }
-        std::shared_ptr<ImageSpace> GetCountry() const { return country; }
+        std::string GetFace() const { return face; }
+        std::string GetNameTag() const { return nametag; }
+        std::string GetCountry() const { return country; }
         Transform GetCountryPosition() const { return country_position; }
         std::vector<std::string> GetStageBackground() { return stage_background; }
         std::string GetName() const { return m_name; }
@@ -42,12 +43,12 @@ namespace Util {
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
         //輸入frame (num)圖數量 圖放在對應角色資料夾 Action輸入資料夾名稱
         void InitPosition(glm::vec2 position,int side);
-        void Upload(ms_t SecPassed);
+        void Upload(std::shared_ptr<Core::Context> context);
         void DrawCharacter();
     protected:
-        std::shared_ptr<ImageSpace> face;
-        std::shared_ptr<ImageSpace> nametag;
-        std::shared_ptr<ImageSpace> country;
+        std::string face;
+        std::string nametag;
+        std::string country;
         Transform country_position;
         std::vector<std::string> stage_background;
 

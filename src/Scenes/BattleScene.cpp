@@ -5,20 +5,19 @@
 #include "Scenes/BattleScene.hpp"
 
 namespace Util {
-    void BattleScene::Init() {
+    void BattleScene::Init(std::shared_ptr<Core::Context> context) {
         m_Animation = std::make_shared<AnimationSpace>(
             enemy->GetStageBackground(),
             true,
-            250,
+            60,
             true,
             0
         );
-        //設置背景
-        float scaleFactor = 720.0f / m_Animation->GetScaledSize().y;
-        camera->SetMaxOffsetX(m_Animation->GetScaledSize().x * scaleFactor / 2 - 640);
-        //設定相機最大可移動範圍
+        //設置背景 相機最大可移動範圍
+        float scaleFactor = context->GetWindowHeight() / m_Animation->GetScaledSize().y;
+        camera->SetMaxOffsetX((m_Animation->GetScaledSize().x * scaleFactor - context->GetWindowWidth())/2);
         m_Animation->SetDrawData({{0, 0}, 0, {1,1}},
-                    {m_Animation->GetScaledSize().x * scaleFactor, 720},
+                    {m_Animation->GetScaledSize().x * scaleFactor, context->GetWindowHeight()},
                     0);
         //背景初始位置
         m_BGM = enemy->GetBGM();
@@ -30,13 +29,12 @@ namespace Util {
         enemy->InitPosition({350, -170},-1);
     }
 
-    void BattleScene::Update() {
-        //camera->Upload();
-        player->Upload(Time::GetDeltaTimeMs());
-        enemy->Upload(Time::GetDeltaTimeMs());
-        m_Animation->SetDrawData({{-camera->GetCameraPos().x, 0}, 0, {1,1}},
-                    {m_Animation->GetScaledSize().x * (720.0f / m_Animation->GetScaledSize().y), 720},
-                    0);
+    void BattleScene::Update(std::shared_ptr<Core::Context> context) {
+        camera->Upload();
+        player->Upload(context);
+        enemy->Upload(context);
+        m_Animation->SetTransform({{-camera->GetCameraPos().x, 0}, 0, {1,1}});
+
         if (Input::IsKeyDown(Keycode::RETURN)) {
             SenseEnd = true;
         }

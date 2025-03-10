@@ -17,8 +17,8 @@ namespace Util {
     public:
         BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy)
             : player(player), enemy(enemy), camera(std::make_shared<Camera>()) {}
-        void Init() override;
-        void Update() override;
+        void Init(std::shared_ptr<Core::Context> context) override;
+        void Update(std::shared_ptr<Core::Context> context) override;
         void Render() override;
     };
 }

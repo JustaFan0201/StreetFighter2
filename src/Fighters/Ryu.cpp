@@ -5,9 +5,9 @@
 #include "Fighters/Ryu.hpp"
 namespace Util {
     Ryu::Ryu(): Fighter("Ryu",200) {
-        face=std::make_shared<ImageSpace>("../sencepicture/Fighters/Ryu/Ryu_face.png");
-        nametag=std::make_shared<ImageSpace>("../sencepicture/Fighters/Ryu/Ryu_nametag.png");
-        country=std::make_shared<ImageSpace>("../sencepicture/slect/japan.png");
+        face=std::string("../sencepicture/Fighters/Ryu/Ryu_face.png");
+        nametag=std::string("../sencepicture/Fighters/Ryu/Ryu_nametag.png");
+        country=std::string("../sencepicture/slect/japan.png");
         m_BGM=std::make_shared<BGM>("../music/05 Ryu.mp3");
         country_position={{14,90},0,{1,1}};
         BackgroundInit(15);

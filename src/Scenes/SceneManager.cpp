@@ -5,14 +5,17 @@
 #include "Scenes/SceneManager.hpp"
 
 namespace Util {
+    void SceneManager::SetContext(std::shared_ptr<Core::Context> context) {
+        this->context = context;
+    }
     void SceneManager::ChangeScene(std::shared_ptr<Scene> scene) {
         m_NowScene=scene;
-        m_NowScene->Init();
+        m_NowScene->Init(context);
     }
 
     void SceneManager::Update() {
         if (m_NowScene!=nullptr) {
-            m_NowScene->Update();
+            m_NowScene->Update(context);
         }
 
         if (m_NowScene!=nullptr && m_NowScene->getSenseEnd() && NowSceneType==SceneType::Start) {

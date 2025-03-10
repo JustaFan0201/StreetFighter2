@@ -25,18 +25,17 @@ namespace Util {
         direction = side; // 設定角色初始方向
     }
     
-    void Fighter::Upload(ms_t SecPassed) {
+    void Fighter::Upload(std::shared_ptr<Core::Context> context) {
         State previous_state = now; // 記錄之前的狀態
-
         // 移動判斷
         if (Input::IsKeyPressed(Keycode::A)) {
             // 當角色朝右時 (direction > 0)，A 為後退；朝左時 (direction < 0)，A 為前進
-            ActionNow->m_Transform.translation.x -= velocity * SecPassed / 1000;
+            ActionNow->m_Transform.translation.x -= velocity * Time::GetDeltaTimeMs() / 1000;
             now = (direction > 0) ? State::Back : State::Forward;
         }
         else if (Input::IsKeyPressed(Keycode::D)) {
             // 當角色朝右時 (direction > 0)，D 為前進；朝左時 (direction < 0)，D 為後退
-            ActionNow->m_Transform.translation.x += velocity * SecPassed / 1000;
+            ActionNow->m_Transform.translation.x += velocity * Time::GetDeltaTimeMs() / 1000;
             now = (direction > 0) ? State::Forward : State::Back;
         }
         else {
@@ -57,23 +56,16 @@ namespace Util {
                     newFrames = Forward;
                     break;
             }
-
-            // 創建新的 Animation 物件
-            auto newAnimation = std::make_shared<Util::Animation>(newFrames, true, 60, true);
-            ActionNow->SetDrawable(newAnimation);
+            ActionNow->SetDrawable(std::make_shared<Util::Animation>(newFrames, true, 60, true));
         }
-
-        // 邊界檢測並翻轉角色
-        float posX = ActionNow->m_Transform.translation.x;
-        float maxX = 640 - abs(ActionNow->GetScaledSize().x) * 3 / 2;
-        float minX = -640 + abs(ActionNow->GetScaledSize().x) * 3 / 2;
-
-        if (posX > maxX || posX < minX) {
+        int MaxWidth=context->GetWindowWidth()/2;
+        if (ActionNow->m_Transform.translation.x > MaxWidth - abs(ActionNow->GetScaledSize().x) * 3 / 2||
+            ActionNow->m_Transform.translation.x < -MaxWidth + abs(ActionNow->GetScaledSize().x) * 3 / 2) {
             // 限制角色位置
-            ActionNow->m_Transform.translation.x = std::clamp(posX, minX, maxX);
+            ActionNow->m_Transform.translation.x = std::clamp(ActionNow->m_Transform.translation.x,
+                -MaxWidth + abs(ActionNow->GetScaledSize().x) * 3 / 2,
+                MaxWidth - abs(ActionNow->GetScaledSize().x) * 3 / 2);
             // 反轉角色朝向
-            direction *= -1;  
-            ActionNow->m_Transform.scale.x *= -1;
         }
     }
 

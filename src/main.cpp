@@ -9,12 +9,12 @@ int main(int, char**) {
     context->SetWindowIcon("../sencepicture/start/icon.png");
 
     App app;
-    app.Start();
+    app.Start(context);
 
     while (!context->GetExit()) {
         switch (app.GetCurrentState()) {
             case App::State::START:
-                app.Start();
+                app.Start(context);
                 break;
 
             case App::State::UPDATE:

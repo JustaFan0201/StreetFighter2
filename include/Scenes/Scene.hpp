@@ -33,8 +33,8 @@ namespace Util {
     class Scene {
     public:
         virtual ~Scene() = default;
-        virtual void Init() = 0;//初始化
-        virtual void Update() = 0;//更新
+        virtual void Init(std::shared_ptr<Core::Context> context) = 0;//初始化
+        virtual void Update(std::shared_ptr<Core::Context> context) = 0;//更新
         virtual void Render() = 0;//渲染
         bool getSenseEnd() const;//判斷場景能否結束 true=結束 false=繼續
     protected:

@@ -5,7 +5,7 @@
 namespace Util {
     StartScene::StartScene() = default;
 
-    void StartScene::Init() {
+    void StartScene::Init(std::shared_ptr<Core::Context> context) {
         m_Animation = std::make_shared<AnimationSpace>(
             std::vector<std::string> {
                 "../sencepicture/start/start_1.png",
@@ -18,15 +18,15 @@ namespace Util {
             0
         );
         //開場動畫
-        m_Animation->SetFullScreen();
         m_BGM = std::make_shared<BGM>("../music/title.mp3");
         m_BGM->SetVolume(15);
         m_BGM->Play(-1);
         soundEffect->SetVolume(30);
         //開場音樂
+        m_Animation->SetSize({context->GetWindowWidth(),context->GetWindowHeight()});
     }
 
-    void StartScene::Update() {
+    void StartScene::Update(std::shared_ptr<Core::Context> context) {
         if (Time::GetElapsedTimeMs() - start_time > 4000) {
             if (m_WaitingForEnter) {
                 if (Input::IsKeyDown(Keycode::RETURN)) {
@@ -36,16 +36,12 @@ namespace Util {
 
                     soundEffect->Play(0);
 
-                    m_Animation = std::make_shared<AnimationSpace>(
-                        std::vector<std::string> {
-                            "../sencepicture/start/start_4.png"
-                        },
+                    m_Animation->SetDrawable(std::make_shared<Animation>(
+                        std::vector<std::string>{"../sencepicture/start/start_4.png"},
                         true,
                         2000,
                         false,
-                        100
-                    );
-                    m_Animation->SetFullScreen();
+                        100));
                 }
             }//選模式(Story and Battle)
             else {

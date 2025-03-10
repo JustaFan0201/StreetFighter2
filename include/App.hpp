@@ -12,9 +12,9 @@ public:
         END,
     };
 
-    State GetCurrentState() const { return m_CurrentState; }
+    [[nodiscard]] State GetCurrentState() const { return m_CurrentState; }
 
-    void Start();
+    void Start(std::shared_ptr<Core::Context> context);
 
     void Update();
 
@@ -22,8 +22,6 @@ public:
 
 private:
     void ValidTask();
-
-private:
     State m_CurrentState = State::START;
     Util::SceneManager m_SceneManager; // 場景管理器
     bool m_IsInitialized = false; // 是否已經初始化

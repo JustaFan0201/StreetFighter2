@@ -24,8 +24,10 @@ namespace Util {
         void Render();
         int GetMode() const;//取模式
         void EnemySlect();//生成敵人vector Enemies
+        void SetContext(std::shared_ptr<Core::Context> context);
     private:
         SceneType NowSceneType=SceneType::Start;//目前階段
+        std::shared_ptr<Core::Context> context;
         std::shared_ptr<Scene> m_NowScene=nullptr;//目前場景
         int mode=0;//0=story 1=battle
         std::shared_ptr<Fighter> player=std::make_shared<Ryu>();

@@ -19,8 +19,8 @@ namespace Util {
         std::shared_ptr<Word> Word_2 = std::make_shared<Word>("../streetfighter.ttf", 32, "Battle mode", Color(255, 255, 255));//battle
     public:
         StartScene();
-        void Init() override;
-        void Update() override;
+        void Init(std::shared_ptr<Core::Context> context) override;
+        void Update(std::shared_ptr<Core::Context> context) override;
         void Render() override;
         int getmode() const { return mode; }//取得當前模式
     };

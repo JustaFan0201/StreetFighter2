@@ -4,7 +4,7 @@
 
 #include "Scenes/PassScene.hpp"
 namespace Util {
-    void PassScene::Init() {
+    void PassScene::Init(std::shared_ptr<Core::Context> context) {
         std::vector<std::string> frames;
         for (int i = 1; i <= 30; ++i) {
             std::string num = std::to_string(i);
@@ -19,14 +19,20 @@ namespace Util {
             0
         );
         start_time=Time::GetElapsedTimeMs();
-        m_Animation->SetFullScreen();
+        m_Animation->SetSize({context->GetWindowWidth(),context->GetWindowHeight()});
         //過場動畫
         m_BGM = std::make_shared<BGM>("../music/04 Start Battle.mp3");//14s
         m_BGM->SetVolume(30);
         m_BGM->Play(0);
         //BGM設定
-        vs->SetFullScreen();
+        vs->SetSize({context->GetWindowWidth(),context->GetWindowHeight()});
         vs->SetZIndex(3.0f);
+
+        player_face=std::make_shared<ImageSpace>(player->GetFace());
+        player_nametag=std::make_shared<ImageSpace>(player->GetNameTag());
+        enemy_face=std::make_shared<ImageSpace>(enemy->GetFace());
+        enemy_nametag=std::make_shared<ImageSpace>(enemy->GetNameTag());
+
         player_face->SetDrawData({{-350, 0},0,{1,1}},
                 {288, 306},
                 2.0f);
@@ -41,7 +47,7 @@ namespace Util {
                 2.0f);
         //位置設定
     }
-    void PassScene::Update() {
+    void PassScene::Update(std::shared_ptr<Core::Context> context) {
         if (Time::GetElapsedTimeMs() - start_time > 4500){
             SenseEnd=true;
         }

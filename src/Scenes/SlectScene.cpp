@@ -5,7 +5,7 @@
 #include "Scenes/SlectScene.hpp"
 namespace Util {
     SlectScene::SlectScene()= default;
-    void SlectScene::Init() {
+    void SlectScene::Init(std::shared_ptr<Core::Context> context) {
         m_Animation = std::make_shared<AnimationSpace>(
             std::vector<std::string> {
                 "../sencepicture/slect/map.png"
@@ -13,14 +13,20 @@ namespace Util {
             true,
             2000,
             false,
-            100
+            0
         );
-        m_Animation->SetFullScreen();
+        m_Animation->SetSize({context->GetWindowWidth(),context->GetWindowHeight()});
         //世界地圖
         m_BGM = std::make_shared<BGM>("../music/03 Player Select.mp3");
         m_BGM->SetVolume(20);
         m_BGM->Play(-1);
         //BGM設定
+        character_nametag=std::make_shared<ImageSpace>(characters[chooseIndex]->GetNameTag());
+        character=std::make_shared<ImageSpace>(characters[chooseIndex]->GetFace());
+        character_match_country=std::make_shared<ImageSpace>(characters[chooseIndex]->GetCountry());
+        first_player = std::make_shared<ImageSpace>("../sencepicture/slect/1p.png");
+        first_player_screen = std::make_shared<ImageSpace>("../sencepicture/slect/1p_screen.png");
+
         character_nametag->SetDrawData({{-420, -320},0,{1,1}},
                     {288,63},
                     1.0f);
@@ -46,14 +52,8 @@ namespace Util {
         //各物件位置
     }
 
-    void SlectScene::Update() {
-        /*if (Input::IsKeyPressed(Keycode::MOUSE_LB)) {
-            glm::vec2 mousePos = Input::GetCursorPosition(); // 取得滑鼠座標
-            std::cout << "Mouse Clicked at: (" << mousePos.x << ", " << mousePos.y << ")" << std::endl;
-        }*/
-        Transform position = {{first_player_screen->GetTransform().translation.x,first_player_screen->GetTransform().translation.y}
-            ,0
-            ,{1,1}};
+    void SlectScene::Update(std::shared_ptr<Core::Context> context) {
+        Transform position = first_player_screen->GetTransform();
         int row = chooseIndex / 4;
         int col = chooseIndex % 4;
         if (!SenseEnd) {
@@ -84,18 +84,10 @@ namespace Util {
             }
         }
         //選擇角色
-        character_nametag=characters[chooseIndex]->GetNameTag();
-        character_nametag->SetDrawData({{-420, -320},0,{1,1}},
-                    {288,63},
-                    1.0f);
-        character = characters[chooseIndex]->GetFace(); //角色
-        character->SetDrawData({{-420, -150},0,{1,1}},
-                    {288, 288},
-                    1.0f);
-        character_match_country=characters[chooseIndex]->GetCountry();//角色的國家
-        character_match_country->SetDrawData(characters[chooseIndex]->GetCountryPosition(),
-                    {72, 58},
-                    2.0f);
+        character_nametag->SetDrawable(std::make_shared<Image>(characters[chooseIndex]->GetNameTag()));//1p Nametag
+        character->SetDrawable(std::make_shared<Image>(characters[chooseIndex]->GetFace())); //角色
+        character_match_country->SetDrawable(std::make_shared<Image>(characters[chooseIndex]->GetCountry()));//角色的國家
+        character_match_country->SetTransform(characters[chooseIndex]->GetCountryPosition());
         first_player_screen->SetTransform(position);
         //更新位置
     }
