@@ -14,7 +14,7 @@ namespace Util {
         AnimationSpace(const std::vector<std::string> &frames, bool loop = true,
                        int duration = 2000, bool autoStart = false,
                        float zIndex = 0.0f)
-            : GameObject(std::make_shared<Animation>(frames, loop, duration, autoStart, 100), zIndex) {}
+            : GameObject(std::make_shared<Animation>(frames, loop, duration, autoStart, 0), zIndex) {}
 
         void custom_Draw() {//自訂義畫出
             if (!m_Visible || m_Drawable == nullptr) {
@@ -33,6 +33,9 @@ namespace Util {
             SetSize(size);
             SetTransform(transform);
             SetZIndex(index);
+        }
+        void SetMatchFloor(float groundLevel) {//讓角色底部對齊地板
+            m_Transform.translation.y = groundLevel + custom_size.y / 2;
         }
         void SetTransform(Transform transform) {
             m_Transform=transform;

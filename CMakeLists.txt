@@ -40,7 +40,10 @@ add_executable(${PROJECT_NAME}
             src/Scenes/SlectScene.cpp
             src/Scenes/PassScene.cpp
             src/Scenes/BattleScene.cpp
-            src/Scenes/Camera.cpp
+
+            include/Others/FighterInfo.hpp
+            include/Others/Camera.hpp
+            include/Others/Bloodstick.hpp
 
             src/Fighters/Fighter.cpp
             src/Fighters/Ken.cpp
@@ -63,7 +66,9 @@ add_executable(${PROJECT_NAME}
             include/Scenes/SlectScene.hpp
             include/Scenes/PassScene.hpp
             include/Scenes/BattleScene.hpp
-            include/Scenes/Camera.hpp
+
+            src/Others/Camera.cpp
+            src/Others/Bloodstick.cpp
 
             include/Fighters/Fighter.hpp
             include/Fighters/Ken.hpp
@@ -74,8 +79,6 @@ add_executable(${PROJECT_NAME}
             include/Fighters/Guile.hpp
             include/Fighters/Dhalsim.hpp
             include/Fighters/Zangief.hpp
-        include/Scenes/Bloodstick.hpp
-        src/Scenes/Bloodstick.cpp
 
 )
 

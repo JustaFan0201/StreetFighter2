@@ -6,8 +6,9 @@
 #define BATTLESCENE_HPP
 
 #include "Scene.hpp"
-#include "Camera.hpp"
-#include "Bloodstick.hpp"
+#include "Others/FighterInfo.hpp"
+#include "Others/Camera.hpp"
+#include "Others/Bloodstick.hpp"
 
 namespace Util {
     class BattleScene : public Scene{

@@ -2,9 +2,7 @@
 // Created by Gs0n on 25-3-10.
 //
 
-#include "Scenes/Bloodstick.hpp"
-
-#include "Scenes/Bloodstick.hpp"
+#include "Others/Bloodstick.hpp"
 
 namespace Util {
     Bloodstick::Bloodstick() {

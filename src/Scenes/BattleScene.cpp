@@ -25,8 +25,8 @@ namespace Util {
         m_BGM->Play(-1);
         //BGM設定
         start_time = Time::GetElapsedTimeMs();
-        player->InitPosition({-350, -170},1);
-        enemy->InitPosition({350, -170},-1);
+        player->InitPosition({-350, 0},Left,StageFloor);
+        enemy->InitPosition({350, 0},Right,StageFloor);
 
     }
 

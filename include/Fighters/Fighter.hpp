@@ -42,7 +42,7 @@ namespace Util {
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
         //輸入frame (num)圖數量 圖放在對應角色資料夾 Action輸入資料夾名稱
-        void InitPosition(glm::vec2 position,int side);
+        void InitPosition(glm::vec2 position,int side,float Floor);
         void Upload(std::shared_ptr<Core::Context> context);
         void DrawCharacter();
     protected:

@@ -2,7 +2,7 @@
 // Created by Gs0n on 25-3-7.
 //
 
-#include "Scenes/Camera.hpp"
+#include "Others/Camera.hpp"
 
 namespace Util {
     void Camera::Init() {

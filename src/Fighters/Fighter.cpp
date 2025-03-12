@@ -18,11 +18,12 @@ namespace Util {
         return Allframe;
     }
     
-    void Fighter::InitPosition(glm::vec2 position, int side) {
+    void Fighter::InitPosition(glm::vec2 position, int side, float Floor) {
         ActionNow->SetDrawData({position, 0, {side, 1}},
                                {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
                                2.0f);
-        direction = side; // 設定角色初始方向
+        direction = side;
+        ActionNow->SetMatchFloor(Floor);
     }
     
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {
