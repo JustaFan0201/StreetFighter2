@@ -11,9 +11,12 @@ namespace Util {
         m_BGM=std::make_shared<BGM>("../music/05 Ryu.mp3");
         country_position={{14,90},0,{1,1}};
         BackgroundInit(15);
+
         Idle=ActionInit(5,"Idle");
         Back=ActionInit(6,"Back");
         Forward=ActionInit(6,"Forward");
+        Lightpunch=ActionInit(2, "Lightpunch");
+        Heavypunch=ActionInit(3, "Heavypunch");
         ActionNow = std::make_shared<AnimationSpace>(
             Idle,
             true,

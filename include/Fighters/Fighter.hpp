@@ -24,7 +24,9 @@ namespace Util {
     enum class State {
         Idle,
         Forward,
-        Back
+        Back,
+        Lightpunch,
+        Heavypunch
     };
     class Fighter  {
     public:
@@ -55,6 +57,8 @@ namespace Util {
         std::vector<std::string> Idle;
         std::vector<std::string> Back;
         std::vector<std::string> Forward;
+        std::vector<std::string> Lightpunch;
+        std::vector<std::string> Heavypunch;
         State now=State::Idle;
 
         std::shared_ptr<AnimationSpace> ActionNow;
@@ -62,6 +66,7 @@ namespace Util {
         std::string m_name;
         int velocity = 0;
         int direction;
+        float recoveryTime = 0.0f;
     };
 }
 #endif //FIGHTER_HPP
