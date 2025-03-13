@@ -8,7 +8,7 @@ namespace Util {
             stage_background.push_back(filename);
         }
     }
-    
+
     std::vector<std::string> Fighter::ActionInit(int picture_number,std::string Action) {
         std::vector<std::string> Allframe;
         for (int i = 1; i <= picture_number; i++) {
@@ -18,21 +18,36 @@ namespace Util {
         }
         return Allframe;
     }
-    
+
     void Fighter::InitPosition(glm::vec2 position, int side, float Floor) {
+        float size_x=ActionNow->GetOriginalSize().x * 3;
+        float size_y=ActionNow->GetOriginalSize().y * 3;
         ActionNow->SetDrawData({position, 0, {side, 1}},
-                               {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
+                               {size_x, size_y},
                                2.0f);
         direction = side;
         ActionNow->SetMatchFloor(Floor);
     }
+    void Fighter::ReSize() {
+        float size_x = ActionNow->GetOriginalSize().x * 3;
+        float size_y = ActionNow->GetOriginalSize().y * 3;
+        ActionNow->SetDrawData(
+            {ActionNow->m_Transform.translation, 0, {direction, 1}},
+            {size_x, size_y},
+            2.0f
+        );
+    }
+    void Fighter::BorderDection(int MaxWidth) {
+        if (ActionNow->m_Transform.translation.x > MaxWidth - abs(ActionNow->GetCustomSize().x) / 2||
+            ActionNow->m_Transform.translation.x < -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2) {
+            ActionNow->m_Transform.translation.x = std::clamp(ActionNow->m_Transform.translation.x,
+                -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2,
+                MaxWidth - abs(ActionNow->GetCustomSize().x)  / 2);
+            }
+    }
 
-
-    
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {
-
         State previous_state = now; // 記錄之前的狀態
-
         if (recoveryTime > 0) {
             recoveryTime -= Time::GetDeltaTimeMs() / 1000;  // 減少後搖時間
             if (recoveryTime <= 0) {
@@ -43,22 +58,25 @@ namespace Util {
         }
         // 移動判斷
         if (Input::IsKeyPressed(Keycode::A)) {
-            // 當角色朝右時 (direction > 0)，A 為後退；朝左時 (direction < 0)，A 為前進
             ActionNow->m_Transform.translation.x -= velocity * Time::GetDeltaTimeMs() / 1000;
             now = (direction > 0) ? State::Back : State::Forward;
         }
         else if (Input::IsKeyPressed(Keycode::D)) {
-            // 當角色朝右時 (direction > 0)，D 為前進；朝左時 (direction < 0)，D 為後退
             ActionNow->m_Transform.translation.x += velocity * Time::GetDeltaTimeMs() / 1000;
             now = (direction > 0) ? State::Forward : State::Back;
         }
         else if (Input::IsKeyPressed(Keycode::J)) {
+            ActionNow->SetTransform({{ActionNow->m_Transform.translation.x+2*direction, ActionNow->m_Transform.translation.y}, 0, {direction, 1}});
+            ReSize();
             now = State::Lightpunch;
         }
         else if (Input::IsKeyPressed(Keycode::U)) {
+            ActionNow->SetTransform({{ActionNow->m_Transform.translation.x+2*direction, ActionNow->m_Transform.translation.y}, 0, {direction, 1}});
+            ReSize();
             now = State::Heavypunch;
         }
         else {
+            ReSize();
             now = State::Idle;
         }
 
@@ -82,46 +100,9 @@ namespace Util {
                     newFrames = Heavypunch;
                     break;
             }
-            ActionNow->SetDrawable(std::make_shared<Util::Animation>(newFrames, true, 60, true));
+            ActionNow->SetDrawable(std::make_shared<Animation>(newFrames, true, 60, true));
         }
-
-        //------------------------------------------------------------------之後搬走-----------------------------------------------
-        if (now == State::Lightpunch || now == State::Heavypunch) {
-            if (direction > 0) {
-                ActionNow->SetDrawData(
-                {{ActionNow->m_Transform.translation.x+2, ActionNow->m_Transform.translation.y}, 0, {direction, 1}},
-                {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
-                2.0f
-                );
-            }
-            else {
-                ActionNow->SetDrawData(
-                {{ActionNow->m_Transform.translation.x-2, ActionNow->m_Transform.translation.y}, 0, {direction, 1}},
-                {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
-                2.0f
-                );
-            }
-        }
-        else {ActionNow->SetDrawData(
-           {ActionNow->m_Transform.translation, 0, {direction, 1}},
-           {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
-           2.0f
-           );
-        }
-
-        //-----------------------------------------------------------------------------------------------------------------
-
-        int MaxWidth=context->GetWindowWidth()/2;
-        if (ActionNow->m_Transform.translation.x > MaxWidth - abs(ActionNow->GetScaledSize().x) * 3 / 2||
-            ActionNow->m_Transform.translation.x < -MaxWidth + abs(ActionNow->GetScaledSize().x) * 3 / 2) {
-            // 限制角色位置
-
-
-            ActionNow->m_Transform.translation.x = std::clamp(ActionNow->m_Transform.translation.x,
-                -MaxWidth + abs(ActionNow->GetScaledSize().x) * 3 / 2,
-                MaxWidth - abs(ActionNow->GetScaledSize().x) * 3 / 2);
-            // 反轉角色朝向
-        }
+        BorderDection(context->GetWindowWidth()/2);
     }
 
     void Fighter::DrawCharacter() {
