@@ -87,37 +87,19 @@ namespace Util {
 
         //------------------------------------------------------------------之後搬走-----------------------------------------------
         if (now == State::Lightpunch || now == State::Heavypunch) {
-            if (GetName() == "Ryu") {
-                if (direction > 0) {
-                    ActionNow->SetDrawData(
-                    {{ActionNow->m_Transform.translation.x+2, ActionNow->m_Transform.translation.y}, 0, {direction, 1}},
-                    {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
-                    2.0f
-                    );
-                }
-                else {
-                    ActionNow->SetDrawData(
-                    {{ActionNow->m_Transform.translation.x-2, ActionNow->m_Transform.translation.y}, 0, {direction, 1}},
-                    {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
-                    2.0f
-                    );
-                }
+            if (direction > 0) {
+                ActionNow->SetDrawData(
+                {{ActionNow->m_Transform.translation.x+2, ActionNow->m_Transform.translation.y}, 0, {direction, 1}},
+                {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
+                2.0f
+                );
             }
-            else if (GetName() == "Ken") {
-                if (direction > 0) {
-                    ActionNow->SetDrawData(
-                    {{ActionNow->m_Transform.translation.x-2, ActionNow->m_Transform.translation.y}, 0, {direction, 1}},
-                    {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
-                    2.0f
-                    );
-                }
-                else {
-                    ActionNow->SetDrawData(
-                    {{ActionNow->m_Transform.translation.x+2, ActionNow->m_Transform.translation.y}, 0, {direction, 1}},
-                    {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
-                    2.0f
-                    );
-                }
+            else {
+                ActionNow->SetDrawData(
+                {{ActionNow->m_Transform.translation.x-2, ActionNow->m_Transform.translation.y}, 0, {direction, 1}},
+                {ActionNow->GetScaledSize().x * 3, ActionNow->GetScaledSize().y * 3},
+                2.0f
+                );
             }
         }
         else {ActionNow->SetDrawData(
