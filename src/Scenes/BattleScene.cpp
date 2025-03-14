@@ -25,8 +25,8 @@ namespace Util {
         m_BGM->Play(-1);
         //BGM設定
         start_time = Time::GetElapsedTimeMs();
-        player->InitPosition({-350, 0},Left,StageFloor);
-        enemy->InitPosition({350, 0},Right,StageFloor);
+        player->InitPosition({-350, 0},static_cast<int>(FighterDirection::Left),StageFloor);
+        enemy->InitPosition({350, 0},static_cast<int>(FighterDirection::Right),StageFloor);
 
     }
 
@@ -34,7 +34,7 @@ namespace Util {
         camera->Upload();
         player->Upload(context);
         enemy->Upload(context);
-        m_Animation->SetTransform({{-camera->GetCameraPos().x, 0}, 0, {1,1}});
+        m_Animation->SetTransform({{camera->GetCameraPos().x, 0}, 0, {1,1}});
 
         if (Input::IsKeyDown(Keycode::RETURN)) {
             SenseEnd = true;

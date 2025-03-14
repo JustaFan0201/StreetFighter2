@@ -14,8 +14,8 @@ namespace Util {
         Idle=ActionInit(4,"Idle");
         Back=ActionInit(12,"Back");
         Forward=ActionInit(12,"Forward");
-        Lightpunch=ActionInit(5,"Lightpunch");
-        Heavypunch=ActionInit(5, "Heavypunch");
+        LP=ActionInit(5,"LP");
+        MP=ActionInit(5, "MP");
         ActionNow = std::make_shared<AnimationSpace>(
             Idle,
             true,

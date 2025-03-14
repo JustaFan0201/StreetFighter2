@@ -6,7 +6,7 @@
 #define FIGHTERINFO_HPP
 
 namespace Util {
-    enum FighterDirection {
+    enum class FighterDirection {
         Left  = 1,
         Right = -1
     };

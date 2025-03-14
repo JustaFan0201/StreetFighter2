@@ -16,23 +16,53 @@
 #include "Util/Time.hpp"
 #include "Util/SFX.hpp"
 
+#include "Others/FighterInfo.hpp"
 #include "AnimationSpace.hpp"
 #include "ImageSpace.hpp"
 #include "Word.hpp"
 
 namespace Util {
-    enum class State {
-        Idle,
-        Forward,
-        Back,
-        Lightpunch,
-        Heavypunch
-    };
-    class Fighter  {
+    class Fighter : public std::enable_shared_from_this<Fighter>{
     public:
+        class FighterState {
+        public:
+            virtual ~FighterState() = default;
+            virtual void Enter(std::shared_ptr<Fighter> fighter) = 0;
+            virtual void Update(std::shared_ptr<Fighter> fighter) = 0;
+        };
+
+        class IdleState : public FighterState {
+        public:
+            void Enter(std::shared_ptr<Fighter> fighter) override;
+            void Update(std::shared_ptr<Fighter> fighter) override;
+        };
+
+        class ForwardState : public FighterState {
+        public:
+            void Enter(std::shared_ptr<Fighter> fighter) override;
+            void Update(std::shared_ptr<Fighter> fighter) override;
+        };
+
+        class BackState : public FighterState {
+        public:
+            void Enter(std::shared_ptr<Fighter> fighter) override;
+            void Update(std::shared_ptr<Fighter> fighter) override;
+        };
+
+        class LPState : public FighterState {
+        public:
+            void Enter(std::shared_ptr<Fighter> fighter) override;
+            void Update(std::shared_ptr<Fighter> fighter) override;
+        };
+
+        class MPState : public FighterState {
+        public:
+            void Enter(std::shared_ptr<Fighter> fighter) override;
+            void Update(std::shared_ptr<Fighter> fighter) override;
+        };
+
         Fighter(const std::string& name,int velocity): m_name(name),velocity(velocity) {}
         virtual ~Fighter() = default;
-
         std::string GetFace() const { return face; }
         std::string GetNameTag() const { return nametag; }
         std::string GetCountry() const { return country; }
@@ -47,6 +77,7 @@ namespace Util {
         void InitPosition(glm::vec2 position,int side,float Floor);
         void BorderDection(int MaxWidth);
 
+        void ChangeState(std::shared_ptr<FighterState> newState);
         void ReSize();
         void Upload(std::shared_ptr<Core::Context> context);
         void DrawCharacter();
@@ -60,9 +91,9 @@ namespace Util {
         std::vector<std::string> Idle;
         std::vector<std::string> Back;
         std::vector<std::string> Forward;
-        std::vector<std::string> Lightpunch;
-        std::vector<std::string> Heavypunch;
-        State now=State::Idle;
+        std::vector<std::string> LP;
+        std::vector<std::string> MP;
+        std::shared_ptr<FighterState> currentState=std::make_shared<IdleState>();
 
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<BGM> m_BGM;

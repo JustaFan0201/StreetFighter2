@@ -8,8 +8,7 @@
 #include <memory>
 #include <string>
 #include "ImageSpace.hpp"
-
-
+#include "Util/Time.hpp"
 
 namespace Util {
     class Bloodstick {

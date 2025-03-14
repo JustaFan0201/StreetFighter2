@@ -4,7 +4,7 @@
 
 #include "Fighters/Ken.hpp"
 namespace Util {
-    Ken::Ken(): Fighter("Ken",200) {
+    Ken::Ken(): Fighter("Ken",0) {
         face=std::string("../sencepicture/Fighters/Ken/Ken_face.png");
         nametag=std::string("../sencepicture/Fighters/Ken/Ken_nametag.png");
         country=std::string("../sencepicture/slect/usa.png");
@@ -14,8 +14,8 @@ namespace Util {
         Idle=ActionInit(5,"Idle");
         Back=ActionInit(6,"Back");
         Forward=ActionInit(6,"Forward");
-        Lightpunch=ActionInit(3, "Lightpunch");
-        Heavypunch=ActionInit(3, "Heavypunch");
+        LP=ActionInit(3, "LP");
+        MP=ActionInit(3, "MP");
         ActionNow = std::make_shared<AnimationSpace>(
             Idle,
             true,

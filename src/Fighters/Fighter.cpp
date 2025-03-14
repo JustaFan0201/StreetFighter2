@@ -1,6 +1,64 @@
 #include "Fighters/Fighter.hpp"
 #include <iostream>
 namespace Util {
+    void Fighter::IdleState::Enter(std::shared_ptr<Fighter> fighter) {
+        fighter->ActionNow->SetDrawable(std::make_shared<Animation>(fighter->Idle, true, 60, true));
+    }
+    void Fighter::IdleState::Update(std::shared_ptr<Fighter> fighter) {
+        fighter->velocity=0;
+        if (Input::IsKeyPressed(Keycode::D)) {
+            if (fighter->direction > 0) {fighter->ChangeState(std::make_shared<ForwardState>());}
+            else {fighter->ChangeState(std::make_shared<BackState>());}
+        }
+        else if (Input::IsKeyPressed(Keycode::A)) {
+            if (fighter->direction < 0) {fighter->ChangeState(std::make_shared<ForwardState>());}
+            else {fighter->ChangeState(std::make_shared<BackState>());}
+        }
+        else if (Input::IsKeyPressed(Keycode::T)) {
+            fighter->ChangeState(std::make_shared<LPState>());
+        }
+        else if (Input::IsKeyPressed(Keycode::Y)) {
+            fighter->ChangeState(std::make_shared<MPState>());
+        }
+    }
+
+    void Fighter::ForwardState::Enter(std::shared_ptr<Fighter> fighter) {
+        fighter->ActionNow->SetDrawable(std::make_shared<Animation>(fighter->Forward, true, 60, true));
+    }
+    void Fighter::ForwardState::Update(std::shared_ptr<Fighter> fighter) {
+        fighter->velocity=150;
+        if (Input::IsKeyUp(Keycode::D)&&fighter->direction>0||Input::IsKeyUp(Keycode::A)&&fighter->direction<0) {
+            fighter->ChangeState(std::make_shared<IdleState>());
+        }
+    }
+
+    void Fighter::BackState::Enter(std::shared_ptr<Fighter> fighter) {
+        fighter->ActionNow->SetDrawable(std::make_shared<Animation>(fighter->Back, true, 60, true));
+    }
+    void Fighter::BackState::Update(std::shared_ptr<Fighter> fighter) {
+        fighter->velocity=-150;
+        if (Input::IsKeyUp(Keycode::A)&&fighter->direction>0||Input::IsKeyUp(Keycode::D)&&fighter->direction<0) {
+            fighter->ChangeState(std::make_shared<IdleState>());
+        }
+    }
+
+    void Fighter::LPState::Enter(std::shared_ptr<Fighter> fighter) {
+        fighter->ActionNow->SetDrawable(std::make_shared<Animation>(fighter->LP, true, 60, true));
+    }
+    void Fighter::LPState::Update(std::shared_ptr<Fighter> fighter) {
+        if (Input::IsKeyUp(Keycode::T)) {
+            fighter->ChangeState(std::make_shared<IdleState>());
+        }
+    }
+    void Fighter::MPState::Enter(std::shared_ptr<Fighter> fighter) {
+        fighter->ActionNow->SetDrawable(std::make_shared<Animation>(fighter->MP, true, 60, true));
+    }
+    void Fighter::MPState::Update(std::shared_ptr<Fighter> fighter) {
+        if (Input::IsKeyUp(Keycode::Y)) {
+            fighter->ChangeState(std::make_shared<IdleState>());
+        }
+    }
+
     void Fighter::BackgroundInit(int picture_number) {
         for (int i = 1; i <= picture_number; i++) {
             std::string num = std::to_string(i);
@@ -28,7 +86,9 @@ namespace Util {
         direction = side;
         ActionNow->SetMatchFloor(Floor);
     }
+
     void Fighter::ReSize() {
+        if (!ActionNow) return;  // 確保 ActionNow 不為 nullptr
         float size_x = ActionNow->GetOriginalSize().x * 3;
         float size_y = ActionNow->GetOriginalSize().y * 3;
         ActionNow->SetDrawData(
@@ -37,6 +97,14 @@ namespace Util {
             2.0f
         );
     }
+
+    void Fighter::ChangeState(std::shared_ptr<FighterState> newState) {
+        currentState = newState;
+        if (currentState) {
+            currentState->Enter(shared_from_this());
+        }
+    }
+
     void Fighter::BorderDection(int MaxWidth) {
         if (ActionNow->m_Transform.translation.x > MaxWidth - abs(ActionNow->GetCustomSize().x) / 2||
             ActionNow->m_Transform.translation.x < -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2) {
@@ -47,61 +115,11 @@ namespace Util {
     }
 
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {
-        State previous_state = now; // 記錄之前的狀態
-        if (recoveryTime > 0) {
-            recoveryTime -= Time::GetDeltaTimeMs() / 1000;  // 減少後搖時間
-            if (recoveryTime <= 0) {
-                recoveryTime = 0;  // 確保不會變成負數
-                now = State::Idle; // 後搖結束回到待機狀態
-            }
-            return; // 在後搖期間，禁止其他動作
+        ActionNow->SetTransform({{ActionNow->GetTransform().translation.x+direction*velocity*Time::GetDeltaTimeMs()/1000,ActionNow->GetTransform().translation.y},0,{direction,1}});
+        if (currentState) {
+            currentState->Update(shared_from_this());
         }
-        // 移動判斷
-        if (Input::IsKeyPressed(Keycode::A)) {
-            ActionNow->m_Transform.translation.x -= velocity * Time::GetDeltaTimeMs() / 1000;
-            now = (direction > 0) ? State::Back : State::Forward;
-        }
-        else if (Input::IsKeyPressed(Keycode::D)) {
-            ActionNow->m_Transform.translation.x += velocity * Time::GetDeltaTimeMs() / 1000;
-            now = (direction > 0) ? State::Forward : State::Back;
-        }
-        else if (Input::IsKeyPressed(Keycode::J)) {
-            ActionNow->SetTransform({{ActionNow->m_Transform.translation.x+2*direction, ActionNow->m_Transform.translation.y}, 0, {direction, 1}});
-            ReSize();
-            now = State::Lightpunch;
-        }
-        else if (Input::IsKeyPressed(Keycode::U)) {
-            ActionNow->SetTransform({{ActionNow->m_Transform.translation.x+2*direction, ActionNow->m_Transform.translation.y}, 0, {direction, 1}});
-            ReSize();
-            now = State::Heavypunch;
-        }
-        else {
-            ReSize();
-            now = State::Idle;
-        }
-
-        // 如果狀態改變，則更換動畫
-        if (now != previous_state) {
-            std::vector<std::string> newFrames;
-            switch (now) {
-                case State::Idle:
-                    newFrames = Idle;
-                    break;
-                case State::Back:
-                    newFrames = Back;
-                    break;
-                case State::Forward:
-                    newFrames = Forward;
-                    break;
-                case State::Lightpunch:
-                    newFrames = Lightpunch;
-                    break;
-                case State::Heavypunch:
-                    newFrames = Heavypunch;
-                    break;
-            }
-            ActionNow->SetDrawable(std::make_shared<Animation>(newFrames, true, 60, true));
-        }
+        ReSize();
         BorderDection(context->GetWindowWidth()/2);
     }
 

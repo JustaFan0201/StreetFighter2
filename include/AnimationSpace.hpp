@@ -43,6 +43,7 @@ namespace Util {
         void SetSize(glm::vec2 size){
             custom_size=size;
         }
+
         std::shared_ptr<Core::Drawable> GetDrawable() {
             return m_Drawable;
         }
@@ -52,6 +53,7 @@ namespace Util {
         glm::vec2 GetOriginalSize() {
             return m_Drawable->GetSize();
         }
+
     private:
         glm::vec2 custom_size;
     };

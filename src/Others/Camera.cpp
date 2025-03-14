@@ -12,10 +12,10 @@ namespace Util {
     void Camera::Upload() {
         int moveSpeed = 10;
         if (Input::IsKeyPressed(Keycode::A)) {
-            cameraPos.x -= moveSpeed;
+            cameraPos.x += moveSpeed;
         }
         else if (Input::IsKeyPressed(Keycode::D)) {
-            cameraPos.x += moveSpeed;
+            cameraPos.x -= moveSpeed;
         }
         if (cameraPos.x < -maxOffsetX ) cameraPos.x = -maxOffsetX ;
         if (cameraPos.x >  maxOffsetX ) cameraPos.x = maxOffsetX ;
