@@ -62,7 +62,7 @@ namespace Util {
     void Fighter::BackgroundInit(int picture_number) {
         for (int i = 1; i <= picture_number; i++) {
             std::string num = std::to_string(i);
-            std::string filename = "../sencepicture/Battle/"+ GetName() +"/frame ("+num+").png";
+            std::string filename = RESOURCE_DIR"/ScenePicture/Battle/"+ GetName() +"/frame ("+num+").png";
             stage_background.push_back(filename);
         }
     }
@@ -71,7 +71,7 @@ namespace Util {
         std::vector<std::string> Allframe;
         for (int i = 1; i <= picture_number; i++) {
             std::string num = std::to_string(i);
-            std::string filename = "../sencepicture/Fighters/"+ GetName() +"/"+ Action +"/frame (" + num +").png";
+            std::string filename = RESOURCE_DIR"/ScenePicture/Fighters/"+ GetName() +"/"+ Action +"/frame (" + num +").png";
             Allframe.push_back(filename);
         }
         return Allframe;

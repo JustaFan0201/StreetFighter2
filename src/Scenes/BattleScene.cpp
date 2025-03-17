@@ -21,7 +21,7 @@ namespace Util {
                     0);
         //背景初始位置
         m_BGM = enemy->GetBGM();
-        m_BGM->SetVolume(25);
+        m_BGM->SetVolume(20);
         m_BGM->Play(-1);
         //BGM設定
         start_time = Time::GetElapsedTimeMs();

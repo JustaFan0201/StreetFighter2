@@ -11,6 +11,7 @@ namespace Util {
     class Ryu : public Fighter  {
     public:
         Ryu();
+
     };
 }
 #endif //RYU_HPP

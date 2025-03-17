@@ -4,11 +4,11 @@
 
 #include "Fighters/Chunli.hpp"
 namespace Util {
-    Chunli::Chunli(): Fighter("Chunli",200) {
-        face=std::string("../sencepicture/Fighters/Chunli/Chunli_face.png");
-        nametag=std::string("../sencepicture/Fighters/Chunli/Chunli_nametag.png");
-        country=std::string("../sencepicture/slect/china.png");
-        m_BGM=std::make_shared<BGM>("../music/10 Chun Li.mp3");
+    Chunli::Chunli(): Fighter("Chunli",0) {
+        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_face.png");
+        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_nametag.png");
+        country=std::string(RESOURCE_DIR"/ScenePicture/slect/china.png");
+        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/ChunliTheme.mp3");
         country_position={{-113, 193},0,{1,1}};
         BackgroundInit(29);
         Idle=ActionInit(4,"Idle");

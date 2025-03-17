@@ -8,7 +8,7 @@ namespace Util {
         std::vector<std::string> frames;
         for (int i = 1; i <= 30; ++i) {
             std::string num = std::to_string(i);
-            std::string filename = "../sencepicture/Pass/speed/frame ("+num+").png";
+            std::string filename = RESOURCE_DIR"/ScenePicture/Pass/speed/frame ("+num+").png";
             frames.push_back(filename);
         }
         m_Animation = std::make_shared<AnimationSpace>(
@@ -21,7 +21,7 @@ namespace Util {
         start_time=Time::GetElapsedTimeMs();
         m_Animation->SetSize({context->GetWindowWidth(),context->GetWindowHeight()});
         //過場動畫
-        m_BGM = std::make_shared<BGM>("../music/04 Start Battle.mp3");//14s
+        m_BGM = std::make_shared<BGM>(RESOURCE_DIR"/music/04 Start Battle.mp3");//14s
         m_BGM->SetVolume(30);
         m_BGM->Play(0);
         //BGM設定

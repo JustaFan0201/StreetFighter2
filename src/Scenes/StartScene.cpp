@@ -8,9 +8,9 @@ namespace Util {
     void StartScene::Init(std::shared_ptr<Core::Context> context) {
         m_Animation = std::make_shared<AnimationSpace>(
             std::vector<std::string> {
-                "../sencepicture/start/start_1.png",
-                "../sencepicture/start/start_2.png",
-                "../sencepicture/start/start_3.png"
+                RESOURCE_DIR"/ScenePicture/start/start_1.png",
+                RESOURCE_DIR"/ScenePicture/start/start_2.png",
+                RESOURCE_DIR"/ScenePicture/start/start_3.png"
             },
             true,
             2000,
@@ -18,7 +18,7 @@ namespace Util {
             0
         );
         //開場動畫
-        m_BGM = std::make_shared<BGM>("../music/title.mp3");
+        m_BGM = std::make_shared<BGM>(RESOURCE_DIR"/music/title.mp3");
         m_BGM->SetVolume(15);
         m_BGM->Play(-1);
         soundEffect->SetVolume(30);
@@ -37,7 +37,7 @@ namespace Util {
                     soundEffect->Play(0);
 
                     m_Animation->SetDrawable(std::make_shared<Animation>(
-                        std::vector<std::string>{"../sencepicture/start/start_4.png"},
+                        std::vector<std::string>{RESOURCE_DIR"/ScenePicture/start/start_4.png"},
                         true,
                         2000,
                         false,

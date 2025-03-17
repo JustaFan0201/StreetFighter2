@@ -6,7 +6,7 @@
 
 namespace Util {
     Bloodstick::Bloodstick() {
-        original = "../sencepicture/Battle/others/bloodstick.png";
+        original = RESOURCE_DIR"/ScenePicture/Battle/others/bloodstick.png";
         bloodstick_image = std::make_shared<ImageSpace>(original);
     }
 

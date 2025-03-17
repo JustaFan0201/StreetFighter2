@@ -5,10 +5,10 @@
 #include "Fighters/Ken.hpp"
 namespace Util {
     Ken::Ken(): Fighter("Ken",0) {
-        face=std::string("../sencepicture/Fighters/Ken/Ken_face.png");
-        nametag=std::string("../sencepicture/Fighters/Ken/Ken_nametag.png");
-        country=std::string("../sencepicture/slect/usa.png");
-        m_BGM=std::make_shared<BGM>("../music/09 Ken.mp3");
+        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_face.png");
+        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_nametag.png");
+        country=std::string(RESOURCE_DIR"/ScenePicture/slect/usa.png");
+        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/KenTheme.mp3");
         country_position={{338, 245},0,{1,1}};
         BackgroundInit(14);
         Idle=ActionInit(5,"Idle");
@@ -24,4 +24,5 @@ namespace Util {
             5
         );
     }
+
 }

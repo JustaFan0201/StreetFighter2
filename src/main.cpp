@@ -6,7 +6,7 @@
 
 int main(int, char**) {
     auto context = Core::Context::GetInstance();
-    context->SetWindowIcon("../sencepicture/start/icon.png");
+    context->SetWindowIcon(RESOURCE_DIR"/ScenePicture/start/icon.png");
 
     App app;
     app.Start(context);

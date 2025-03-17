@@ -13,10 +13,10 @@ namespace Util {
         int mode=0;//0=story 1=battle
         bool m_WaitingForEnter=true;
         //enter音效
-        std::shared_ptr<SFX> soundEffect = std::make_shared<Util::SFX>("../voice/01 Select Screen & World Map/SFII_01 - Mode Select.wav");
+        std::shared_ptr<SFX> soundEffect = std::make_shared<Util::SFX>(RESOURCE_DIR"/voice/01 Select Screen & World Map/SFII_01 - Mode Select.wav");
         //Story跟Battle文字顯示
-        std::shared_ptr<Word> Word_1 = std::make_shared<Word>("../streetfighter.ttf", 32, "Story mode", Color(255, 127, 80));//story
-        std::shared_ptr<Word> Word_2 = std::make_shared<Word>("../streetfighter.ttf", 32, "Battle mode", Color(255, 255, 255));//battle
+        std::shared_ptr<Word> Word_1 = std::make_shared<Word>(RESOURCE_DIR"/streetfighter.ttf", 32, "Story mode", Color(255, 127, 80));//story
+        std::shared_ptr<Word> Word_2 = std::make_shared<Word>(RESOURCE_DIR"/streetfighter.ttf", 32, "Battle mode", Color(255, 255, 255));//battle
     public:
         StartScene();
         void Init(std::shared_ptr<Core::Context> context) override;

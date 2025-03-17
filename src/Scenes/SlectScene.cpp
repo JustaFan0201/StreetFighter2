@@ -8,7 +8,7 @@ namespace Util {
     void SlectScene::Init(std::shared_ptr<Core::Context> context) {
         m_Animation = std::make_shared<AnimationSpace>(
             std::vector<std::string> {
-                "../sencepicture/slect/map.png"
+                RESOURCE_DIR"/ScenePicture/slect/map.png"
             },
             true,
             2000,
@@ -17,15 +17,15 @@ namespace Util {
         );
         m_Animation->SetSize({context->GetWindowWidth(),context->GetWindowHeight()});
         //世界地圖
-        m_BGM = std::make_shared<BGM>("../music/03 Player Select.mp3");
+        m_BGM = std::make_shared<BGM>(RESOURCE_DIR"/music/03 Player Select.mp3");
         m_BGM->SetVolume(20);
         m_BGM->Play(-1);
         //BGM設定
         character_nametag=std::make_shared<ImageSpace>(characters[chooseIndex]->GetNameTag());
         character=std::make_shared<ImageSpace>(characters[chooseIndex]->GetFace());
         character_match_country=std::make_shared<ImageSpace>(characters[chooseIndex]->GetCountry());
-        first_player = std::make_shared<ImageSpace>("../sencepicture/slect/1p.png");
-        first_player_screen = std::make_shared<ImageSpace>("../sencepicture/slect/1p_screen.png");
+        first_player = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/1p.png");
+        first_player_screen = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/1p_screen.png");
 
         character_nametag->SetDrawData({{-420, -320},0,{1,1}},
                     {288,63},

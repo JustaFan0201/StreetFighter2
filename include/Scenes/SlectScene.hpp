@@ -11,8 +11,8 @@ namespace Util {
         private:
         bool m_WaitingForEnter=true;
         //音效 enter跟左右
-        std::shared_ptr<SFX> soundEffect_slect = std::make_shared<SFX>("../voice/01 Select Screen & World Map/SFII_02 - Move Cursor.wav");
-        std::shared_ptr<SFX> soundEffect_enter = std::make_shared<SFX>("../voice/01 Select Screen & World Map/SFII_03 - Selection.wav");
+        std::shared_ptr<SFX> soundEffect_slect = std::make_shared<SFX>(RESOURCE_DIR"/voice/01 Select Screen & World Map/SFII_02 - Move Cursor.wav");
+        std::shared_ptr<SFX> soundEffect_enter = std::make_shared<SFX>(RESOURCE_DIR"/voice/01 Select Screen & World Map/SFII_03 - Selection.wav");
         //全部角色vector
         std::vector<std::shared_ptr<Fighter>> characters = {
             std::make_shared<Ryu>(),    // 指向子類 Ryu
@@ -34,14 +34,14 @@ namespace Util {
         std::vector<std::shared_ptr<ImageSpace>> AllPictures={};//要渲染的圖
 
         std::vector<std::shared_ptr<ImageSpace>> countries_dark = {
-                std::make_shared<ImageSpace>("../sencepicture/slect/japan_dark.png"),
-               std::make_shared<ImageSpace>("../sencepicture/slect/japan_dark.png"),
-               std::make_shared<ImageSpace>("../sencepicture/slect/brazil_dark.png"),
-               std::make_shared<ImageSpace>("../sencepicture/slect/usa_dark.png"),
-               std::make_shared<ImageSpace>("../sencepicture/slect/usa_dark.png"),
-               std::make_shared<ImageSpace>("../sencepicture/slect/china_dark.png"),
-               std::make_shared<ImageSpace>("../sencepicture/slect/ussr_dark.png"),
-               std::make_shared<ImageSpace>("../sencepicture/slect/india_dark.png")
+               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/japan_dark.png"),
+               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/japan_dark.png"),
+               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/brazil_dark.png"),
+               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/usa_dark.png"),
+               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/usa_dark.png"),
+               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/china_dark.png"),
+               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/ussr_dark.png"),
+               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/india_dark.png")
         };
         int chooseIndex = 0;//0~7 characters角色選擇
         public:
