@@ -31,24 +31,23 @@ namespace Util {
 
         virtual void IdleStateEnter(){}
         virtual void IdleStateUpload(){}
-        virtual void ForwardStateEnter(){}
-        virtual void ForwardStateUpload(){}
-        virtual void BackwardStateEnter(){}
-        virtual void BackwardStateUpload(){}
+
+        virtual void WalkStateEnter(){}
+        virtual void WalkStateUpload(){}
+        virtual void JumpStateEnter(){}
+        virtual void JumpStateUpload(){}
+
         virtual void LPStateEnter(){}
         virtual void LPStateUpload(){}
         virtual void MPStateEnter(){}
         virtual void MPStateUpload(){}
-        virtual void JumpUPStateEnter(){}
-        virtual void JumpUPStateUpload(){}
+
         virtual void LKStateEnter(){}
         virtual void LKStateUpload(){}
         virtual void MKStateEnter(){}
         virtual void MKStateUpload(){}
         virtual void HKStateEnter(){}
         virtual void HKStateUpload(){}
-
-
 
         virtual void LoadAnimations()=0;
         void SetAnimation(FighterState action,std::vector<int> intervals);
@@ -60,7 +59,7 @@ namespace Util {
         std::vector<std::string> GetStageBackground() { return stage_background; }
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
-        bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();};
+        bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
@@ -81,17 +80,16 @@ namespace Util {
         std::vector<std::string> stage_background;
 
         FighterState currentState;
-        std::unordered_map<FighterState, std::vector<std::string>> animations; // 動作動畫
+        std::unordered_map<FighterState, std::vector<std::string>> animations;
         std::unordered_map<FighterState, std::vector<int>> frames;
 
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<BGM> m_BGM;
 
-        float Gravity=-4200;
+        float Gravity=-5200;
         velocity velocity;
         Initialvelocity Initialvelocity;
         int direction;
-        float recoveryTime = 0.0f;
     };
 }
 #endif //FIGHTER_HPP

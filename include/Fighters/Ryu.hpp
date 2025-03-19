@@ -14,16 +14,16 @@ namespace Util {
         void LoadAnimations() override;
         void IdleStateEnter()override;
         void IdleStateUpload()override;
-        void ForwardStateEnter()override;
-        void ForwardStateUpload()override;
-        void BackwardStateEnter()override;
-        void BackwardStateUpload()override;
+
+        void WalkStateEnter()override;
+        void WalkStateUpload()override;
+        void JumpStateEnter()override;
+        void JumpStateUpload()override;
+
         void LPStateEnter()override;
         void LPStateUpload()override;
         void MPStateEnter()override;
         void MPStateUpload()override;
-        void JumpUPStateEnter()override;
-        void JumpUPStateUpload()override;
         void LKStateEnter()override;
         void LKStateUpload()override;
         void MKStateEnter()override;

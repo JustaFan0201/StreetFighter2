@@ -15,9 +15,6 @@ namespace Util {
         int x=0;
         int y=0;
     };
-    struct Initialvelocity {
-        int Jump=1600;
-    };
     enum class FighterState {
         Idle,
         Forward,
@@ -45,6 +42,10 @@ namespace Util {
         JumpLK,
         JumpMK,
         JumpHK
+    };
+    struct Initialvelocity {
+        std::unordered_map<FighterState,float> x;
+        std::unordered_map<FighterState,float> y;
     };
 }
 

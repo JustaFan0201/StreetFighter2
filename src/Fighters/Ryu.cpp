@@ -19,32 +19,42 @@ namespace Util {
             true,
             5
         );
+        Initialvelocity.x[FighterState::Forward]=150;
+        Initialvelocity.x[FighterState::Backward]=-150;
+        Initialvelocity.x[FighterState::JumpForward]=200;
+        Initialvelocity.x[FighterState::JumpBackward]=-200;
+        Initialvelocity.y[FighterState::JumpForward]=1600;
+        Initialvelocity.y[FighterState::JumpBackward]=1600;
+        Initialvelocity.y[FighterState::JumpUP]=1600;
     }
     void Ryu::LoadAnimations() {
         animations[FighterState::Idle] = ActionInit(5,"Idle");
         animations[FighterState::Backward] = ActionInit(6,"Backward");
         animations[FighterState::Forward] = ActionInit(6,"Forward");
+        animations[FighterState::JumpUP] = ActionInit(7, "JumpUP");
+        animations[FighterState::JumpForward] = ActionInit(6, "JumpForward");
+        animations[FighterState::JumpBackward] = ActionInit(6, "JumpBackward");
         animations[FighterState::LP] = ActionInit(3, "LP");
         animations[FighterState::MP] = ActionInit(5, "MP");
-        animations[FighterState::JumpUP] = ActionInit(7, "JumpUP");
         animations[FighterState::LK] = ActionInit(4, "LK");
-        animations[FighterState::MK] = ActionInit(4, "MK");
+        animations[FighterState::MK] = ActionInit(5, "MK");
         animations[FighterState::HK] = ActionInit(5, "HK");
-
 
         frames[FighterState::Idle]={100, 150, 200, 150, 100};
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120, 120, 120};
+        frames[FighterState::JumpUP]={120,120,120,120,120,120,120};
+        frames[FighterState::JumpForward]={120,120,120,120,120,120};
+        frames[FighterState::JumpBackward]={120,120,120,120,120,120};
         frames[FighterState::LP]={180,240,180};
         frames[FighterState::MP]={120,120,300,120,120};
-        frames[FighterState::JumpUP]={120,120,120,120,120,120,120};
-        frames[FighterState::LK]={120,120,120};
-        frames[FighterState::MK]={120,120,120};
+        frames[FighterState::LK]={120,120,120,120};
+        frames[FighterState::MK]={120,120,120,120,120};
         frames[FighterState::HK]={120,120,120,120,120};
     }
     void Ryu::IdleStateEnter(){
         velocity={0,0};
-        SetAnimation(FighterState::Idle,frames[FighterState::Idle]);
+        SetAnimation(currentState,frames[currentState]);
     }
     void Ryu::IdleStateUpload() {
         if (Input::IsKeyPressed(Keycode::D)) {
@@ -55,14 +65,15 @@ namespace Util {
             if (direction < 0) {ChangeState(FighterState::Forward);}
             else {ChangeState(FighterState::Backward);}
         }
+
+        else if (Input::IsKeyDown(Keycode::W)) {
+            ChangeState(FighterState::JumpUP);
+        }
         else if (Input::IsKeyDown(Keycode::T)) {
             ChangeState(FighterState::LP);
         }
         else if (Input::IsKeyDown(Keycode::Y)) {
             ChangeState(FighterState::MP);
-        }
-        else if (Input::IsKeyDown(Keycode::W)) {
-            ChangeState(FighterState::JumpUP);
         }
         else if (Input::IsKeyDown(Keycode::G)) {
             ChangeState(FighterState::LK);
@@ -74,26 +85,51 @@ namespace Util {
             ChangeState(FighterState::HK);
         }
     }
-    void Ryu::ForwardStateEnter() {
-        velocity.x=direction*150;
-        SetAnimation(FighterState::Forward,frames[FighterState::Forward]);
+
+    void Ryu::WalkStateEnter() {
+        velocity.x=direction*Initialvelocity.x[currentState];
+        SetAnimation(currentState,frames[currentState]);
     }
-    void Ryu::ForwardStateUpload() {
-        if ((Input::IsKeyUp(Keycode::D)&&direction>0)||(Input::IsKeyUp(Keycode::A)&&direction<0)) {
+    void Ryu::WalkStateUpload() {
+        switch (currentState) {
+            case FighterState::Forward:
+                if (Input::IsKeyDown(Keycode::W)) {
+                    if (direction > 0) {ChangeState(FighterState::JumpForward);}
+                    else {ChangeState(FighterState::JumpBackward);}
+                }
+                if ((Input::IsKeyUp(Keycode::D)&&direction>0)||(Input::IsKeyUp(Keycode::A)&&direction<0)) {
+                    ChangeState(FighterState::Idle);
+                }
+            break;
+            case FighterState::Backward:
+                if (Input::IsKeyDown(Keycode::W)) {
+                    if (direction < 0) {ChangeState(FighterState::JumpForward);}
+                    else {ChangeState(FighterState::JumpBackward);}
+                }
+                if ((Input::IsKeyUp(Keycode::A)&&direction>0)||(Input::IsKeyUp(Keycode::D)&&direction<0)) {
+                    ChangeState(FighterState::Idle);
+                }
+            break;
+            default:
+                break;
+        }
+    }
+
+    void Ryu::JumpStateEnter(){
+        velocity.x=direction*Initialvelocity.x[currentState];
+        velocity.y=Initialvelocity.y[currentState];
+        SetAnimation(currentState,frames[currentState]);
+    }
+    void Ryu::JumpStateUpload(){
+        velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
+        if (GetAnimationIsEnd()) {
             ChangeState(FighterState::Idle);
         }
     }
-    void Ryu::BackwardStateEnter() {
-        velocity.x=direction*-150;
-        SetAnimation(FighterState::Backward,frames[FighterState::Backward]);
-    }
-    void Ryu::BackwardStateUpload() {
-        if ((Input::IsKeyUp(Keycode::A)&&direction>0)||(Input::IsKeyUp(Keycode::D)&&direction<0)) {
-            ChangeState(FighterState::Idle);
-        }
-    }
+
+
     void Ryu::LPStateEnter() {
-        SetAnimation(FighterState::LP,frames[FighterState::LP]);
+        SetAnimation(currentState,frames[currentState]);
     }
     void Ryu::LPStateUpload() {
         if (GetAnimationIsEnd()) {
@@ -101,25 +137,15 @@ namespace Util {
         }
     }
     void Ryu::MPStateEnter(){
-        SetAnimation(FighterState::MP,frames[FighterState::MP]);
+        SetAnimation(currentState,frames[currentState]);
     }
     void Ryu::MPStateUpload() {
         if (GetAnimationIsEnd()) {
             ChangeState(FighterState::Idle);
         }
     }
-    void Ryu::JumpUPStateEnter(){
-        velocity.y=Initialvelocity.Jump;
-        SetAnimation(FighterState::JumpUP,frames[FighterState::JumpUP]);
-    }
-    void Ryu::JumpUPStateUpload() {
-        velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
-        if (GetAnimationIsEnd()) {
-            ChangeState(FighterState::Idle);
-        }
-    }
     void Ryu::LKStateEnter() {
-        SetAnimation(FighterState::LK,frames[FighterState::LK]);
+        SetAnimation(currentState,frames[currentState]);
     }
     void Ryu::LKStateUpload() {
         if (GetAnimationIsEnd()) {
@@ -127,7 +153,7 @@ namespace Util {
         }
     }
     void Ryu::MKStateEnter() {
-        SetAnimation(FighterState::MK,frames[FighterState::MK]);
+        SetAnimation(currentState,frames[currentState]);
     }
     void Ryu::MKStateUpload() {
         if (GetAnimationIsEnd()) {
@@ -135,7 +161,7 @@ namespace Util {
         }
     }
     void Ryu::HKStateEnter() {
-        SetAnimation(FighterState::HK,frames[FighterState::HK]);
+        SetAnimation(currentState,frames[currentState]);
     }
     void Ryu::HKStateUpload() {
         if (GetAnimationIsEnd()) {

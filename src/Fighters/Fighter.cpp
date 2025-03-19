@@ -3,11 +3,13 @@
 namespace Util {
     void Fighter::StateDealing() {
         if (currentState == FighterState::Idle) {IdleStateUpload();}
-        else if (currentState == FighterState::Forward) {ForwardStateUpload();}
-        else if (currentState == FighterState::Backward) {BackwardStateUpload();}
+        else if (currentState == FighterState::Forward) {WalkStateUpload();}
+        else if (currentState == FighterState::Backward) {WalkStateUpload();}
+        else if (currentState == FighterState::JumpUP) {JumpStateUpload();}
+        else if (currentState == FighterState::JumpForward) {JumpStateUpload();}
+        else if (currentState == FighterState::JumpBackward) {JumpStateUpload();}
         else if (currentState == FighterState::LP) {LPStateUpload();}
         else if (currentState == FighterState::MP) {MPStateUpload();}
-        else if (currentState == FighterState::JumpUP) {JumpUPStateUpload();}
         else if (currentState == FighterState::LK) {LKStateUpload();}
         else if (currentState == FighterState::MK) {MKStateUpload();}
         else if (currentState == FighterState::HK) {LKStateUpload();}
@@ -20,19 +22,19 @@ namespace Util {
                     IdleStateEnter();
                 break;
                 case FighterState::Forward:
-                    ForwardStateEnter();
-                break;
                 case FighterState::Backward:
-                    BackwardStateEnter();
+                    WalkStateEnter();
+                break;
+                case FighterState::JumpUP:
+                case FighterState::JumpForward:
+                case FighterState::JumpBackward:
+                    JumpStateEnter();
                 break;
                 case FighterState::LP:
                     LPStateEnter();
                 break;
                 case FighterState::MP:
                     MPStateEnter();
-                break;
-                case FighterState::JumpUP:
-                    JumpUPStateEnter();
                 break;
                 case FighterState::LK:
                     LKStateEnter();
@@ -106,6 +108,7 @@ namespace Util {
         if (ActionNow->m_Transform.translation.y < StageFloor+ActionNow->GetCustomSize().y/2) {
             ActionNow->m_Transform.translation.y=StageFloor+ActionNow->GetCustomSize().y/2;
         }
+        std::cout<<ActionNow->m_Transform.translation.y<<"||"<<StageFloor+ActionNow->GetCustomSize().y/2<<std::endl;
     }
 
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {
