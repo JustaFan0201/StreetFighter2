@@ -11,6 +11,7 @@ namespace Util {
     class Dhalsim : public Fighter  {
     public:
         Dhalsim();
+        void LoadAnimations() override;
     };
 }
 #endif //DHALSIM_HPP

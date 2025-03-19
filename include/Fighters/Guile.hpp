@@ -11,6 +11,8 @@ namespace Util {
     class Guile : public Fighter  {
     public:
         Guile();
+        void LoadAnimations() override;
     };
+
 }
 #endif //GUILE_HPP

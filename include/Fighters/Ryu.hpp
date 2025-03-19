@@ -5,13 +5,25 @@
 #ifndef RYU_HPP
 #define RYU_HPP
 
-#include "Fighters/Fighter.hpp"
+#include "Fighter.hpp"
 
 namespace Util {
     class Ryu : public Fighter  {
     public:
         Ryu();
-
+        void LoadAnimations() override;
+        void IdleStateEnter()override;
+        void IdleStateUpload()override;
+        void ForwardStateEnter()override;
+        void ForwardStateUpload()override;
+        void BackwardStateEnter()override;
+        void BackwardStateUpload()override;
+        void LPStateEnter()override;
+        void LPStateUpload()override;
+        void MPStateEnter()override;
+        void MPStateUpload()override;
+        void JumpUPStateEnter()override;
+        void JumpUPStateUpload()override;
     };
 }
 #endif //RYU_HPP

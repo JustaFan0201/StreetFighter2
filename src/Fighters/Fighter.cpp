@@ -1,61 +1,45 @@
 #include "Fighters/Fighter.hpp"
 #include <iostream>
 namespace Util {
-    void Fighter::IdleState::Enter(std::shared_ptr<Fighter> fighter) {
-        fighter->ActionNow->SetDrawable(std::make_shared<Animation>(fighter->Idle, true, 60, true));
+    void Fighter::StateDealing() {
+        if (currentState == FighterState::Idle) {IdleStateUpload();}
+        else if (currentState == FighterState::Forward) {ForwardStateUpload();}
+        else if (currentState == FighterState::Backward) {BackwardStateUpload();}
+        else if (currentState == FighterState::LP) {LPStateUpload();}
+        else if (currentState == FighterState::MP) {MPStateUpload();}
+        else if (currentState == FighterState::JumpUP) {JumpUPStateUpload();}
     }
-    void Fighter::IdleState::Update(std::shared_ptr<Fighter> fighter) {
-        fighter->velocity=0;
-        if (Input::IsKeyPressed(Keycode::D)) {
-            if (fighter->direction > 0) {fighter->ChangeState(std::make_shared<ForwardState>());}
-            else {fighter->ChangeState(std::make_shared<BackState>());}
-        }
-        else if (Input::IsKeyPressed(Keycode::A)) {
-            if (fighter->direction < 0) {fighter->ChangeState(std::make_shared<ForwardState>());}
-            else {fighter->ChangeState(std::make_shared<BackState>());}
-        }
-        else if (Input::IsKeyPressed(Keycode::T)) {
-            fighter->ChangeState(std::make_shared<LPState>());
-        }
-        else if (Input::IsKeyPressed(Keycode::Y)) {
-            fighter->ChangeState(std::make_shared<MPState>());
-        }
-    }
-
-    void Fighter::ForwardState::Enter(std::shared_ptr<Fighter> fighter) {
-        fighter->ActionNow->SetDrawable(std::make_shared<Animation>(fighter->Forward, true, 60, true));
-    }
-    void Fighter::ForwardState::Update(std::shared_ptr<Fighter> fighter) {
-        fighter->velocity=150;
-        if (Input::IsKeyUp(Keycode::D)&&fighter->direction>0||Input::IsKeyUp(Keycode::A)&&fighter->direction<0) {
-            fighter->ChangeState(std::make_shared<IdleState>());
-        }
-    }
-
-    void Fighter::BackState::Enter(std::shared_ptr<Fighter> fighter) {
-        fighter->ActionNow->SetDrawable(std::make_shared<Animation>(fighter->Back, true, 60, true));
-    }
-    void Fighter::BackState::Update(std::shared_ptr<Fighter> fighter) {
-        fighter->velocity=-150;
-        if (Input::IsKeyUp(Keycode::A)&&fighter->direction>0||Input::IsKeyUp(Keycode::D)&&fighter->direction<0) {
-            fighter->ChangeState(std::make_shared<IdleState>());
+    void Fighter::ChangeState(FighterState newState) {
+        if (currentState != newState) {
+            currentState = newState;
+            switch (currentState) {
+                case FighterState::Idle:
+                    IdleStateEnter();
+                break;
+                case FighterState::Forward:
+                    ForwardStateEnter();
+                break;
+                case FighterState::Backward:
+                    BackwardStateEnter();
+                break;
+                case FighterState::LP:
+                    LPStateEnter();
+                break;
+                case FighterState::MP:
+                    MPStateEnter();
+                break;
+                case FighterState::JumpUP:
+                    JumpUPStateEnter();
+                break;
+                default:
+                    break;
+            }
         }
     }
-
-    void Fighter::LPState::Enter(std::shared_ptr<Fighter> fighter) {
-        fighter->ActionNow->SetDrawable(std::make_shared<Animation>(fighter->LP, true, 60, true));
-    }
-    void Fighter::LPState::Update(std::shared_ptr<Fighter> fighter) {
-        if (Input::IsKeyUp(Keycode::T)) {
-            fighter->ChangeState(std::make_shared<IdleState>());
-        }
-    }
-    void Fighter::MPState::Enter(std::shared_ptr<Fighter> fighter) {
-        fighter->ActionNow->SetDrawable(std::make_shared<Animation>(fighter->MP, true, 60, true));
-    }
-    void Fighter::MPState::Update(std::shared_ptr<Fighter> fighter) {
-        if (Input::IsKeyUp(Keycode::Y)) {
-            fighter->ChangeState(std::make_shared<IdleState>());
+    void Fighter::SetAnimation(FighterState action,std::vector<int> intervals) {
+        if (animations.find(action) != animations.end()) {
+            ActionNow->SetDrawable(std::make_shared<Animation>(animations[action], true, 60, true));
+            ActionNow->SetFrameIntervals(intervals);
         }
     }
 
@@ -77,18 +61,20 @@ namespace Util {
         return Allframe;
     }
 
-    void Fighter::InitPosition(glm::vec2 position, int side, float Floor) {
+    void Fighter::InitPosition(glm::vec2 position, int side) {
         float size_x=ActionNow->GetOriginalSize().x * 3;
         float size_y=ActionNow->GetOriginalSize().y * 3;
         ActionNow->SetDrawData({position, 0, {side, 1}},
                                {size_x, size_y},
                                2.0f);
         direction = side;
-        ActionNow->SetMatchFloor(Floor);
+        if(direction==1){ActionNow->SetLeftDownBeCenter();}
+        else if(direction==-1){ActionNow->SetRightDownBeCenter();}
+        currentState = FighterState::Idle;
     }
 
     void Fighter::ReSize() {
-        if (!ActionNow) return;  // 確保 ActionNow 不為 nullptr
+        if (!ActionNow) return;
         float size_x = ActionNow->GetOriginalSize().x * 3;
         float size_y = ActionNow->GetOriginalSize().y * 3;
         ActionNow->SetDrawData(
@@ -98,13 +84,6 @@ namespace Util {
         );
     }
 
-    void Fighter::ChangeState(std::shared_ptr<FighterState> newState) {
-        currentState = newState;
-        if (currentState) {
-            currentState->Enter(shared_from_this());
-        }
-    }
-
     void Fighter::BorderDection(int MaxWidth) {
         if (ActionNow->m_Transform.translation.x > MaxWidth - abs(ActionNow->GetCustomSize().x) / 2||
             ActionNow->m_Transform.translation.x < -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2) {
@@ -112,13 +91,16 @@ namespace Util {
                 -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2,
                 MaxWidth - abs(ActionNow->GetCustomSize().x)  / 2);
             }
+        if (ActionNow->m_Transform.translation.y < StageFloor+ActionNow->GetCustomSize().y/2) {
+            ActionNow->m_Transform.translation.y=StageFloor+ActionNow->GetCustomSize().y/2;
+        }
     }
 
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {
-        ActionNow->SetTransform({{ActionNow->GetTransform().translation.x+direction*velocity*Time::GetDeltaTimeMs()/1000,ActionNow->GetTransform().translation.y},0,{direction,1}});
-        if (currentState) {
-            currentState->Update(shared_from_this());
-        }
+        StateDealing();
+        glm::vec2 position={ActionNow->GetTransform().translation.x+velocity.x*Time::GetDeltaTimeMs()/1000,
+            ActionNow->GetTransform().translation.y+velocity.y*Time::GetDeltaTimeMs()/1000};
+        ActionNow->SetTransform({position,0,{direction,1}});
         ReSize();
         BorderDection(context->GetWindowWidth()/2);
     }
@@ -126,5 +108,4 @@ namespace Util {
     void Fighter::DrawCharacter() {
         ActionNow->custom_Draw();
     }
-
 }

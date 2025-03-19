@@ -11,6 +11,7 @@ namespace Util {
     class Zangief : public Fighter  {
     public:
         Zangief();
+        void LoadAnimations() override;
     };
 }
 #endif //ZANGIEF_HPP

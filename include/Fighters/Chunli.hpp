@@ -11,6 +11,7 @@ namespace Util {
     class Chunli : public Fighter  {
     public:
         Chunli();
+        void LoadAnimations() override;
     };
 }
 #endif //CHUNLI_HPP

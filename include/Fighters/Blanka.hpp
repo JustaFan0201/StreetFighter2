@@ -13,6 +13,7 @@ namespace Util {
     class Blanka : public Fighter  {
     public:
         Blanka();
+        void LoadAnimations() override;
     };
 }
 #endif //BLANKA_HPP

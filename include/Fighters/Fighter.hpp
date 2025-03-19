@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <cmath>
 #include "Core/Context.hpp"
 #include "Util/BGM.hpp"
 #include "Util/Input.hpp"
@@ -24,45 +25,26 @@
 namespace Util {
     class Fighter : public std::enable_shared_from_this<Fighter>{
     public:
-        class FighterState {
-        public:
-            virtual ~FighterState() = default;
-            virtual void Enter(std::shared_ptr<Fighter> fighter) = 0;
-            virtual void Update(std::shared_ptr<Fighter> fighter) = 0;
-        };
 
-        class IdleState : public FighterState {
-        public:
-            void Enter(std::shared_ptr<Fighter> fighter) override;
-            void Update(std::shared_ptr<Fighter> fighter) override;
-        };
-
-        class ForwardState : public FighterState {
-        public:
-            void Enter(std::shared_ptr<Fighter> fighter) override;
-            void Update(std::shared_ptr<Fighter> fighter) override;
-        };
-
-        class BackState : public FighterState {
-        public:
-            void Enter(std::shared_ptr<Fighter> fighter) override;
-            void Update(std::shared_ptr<Fighter> fighter) override;
-        };
-
-        class LPState : public FighterState {
-        public:
-            void Enter(std::shared_ptr<Fighter> fighter) override;
-            void Update(std::shared_ptr<Fighter> fighter) override;
-        };
-
-        class MPState : public FighterState {
-        public:
-            void Enter(std::shared_ptr<Fighter> fighter) override;
-            void Update(std::shared_ptr<Fighter> fighter) override;
-        };
-
-        Fighter(const std::string& name,int velocity): m_name(name),velocity(velocity) {}
+        Fighter(const std::string& name,velocity velocity): m_name(name),velocity(velocity) {}
         virtual ~Fighter() = default;
+
+        virtual void IdleStateEnter(){}
+        virtual void IdleStateUpload(){}
+        virtual void ForwardStateEnter(){}
+        virtual void ForwardStateUpload(){}
+        virtual void BackwardStateEnter(){}
+        virtual void BackwardStateUpload(){}
+        virtual void LPStateEnter(){}
+        virtual void LPStateUpload(){}
+        virtual void MPStateEnter(){}
+        virtual void MPStateUpload(){}
+        virtual void JumpUPStateEnter(){}
+        virtual void JumpUPStateUpload(){}
+
+        virtual void LoadAnimations()=0;
+        void SetAnimation(FighterState action,std::vector<int> intervals);
+
         std::string GetFace() const { return face; }
         std::string GetNameTag() const { return nametag; }
         std::string GetCountry() const { return country; }
@@ -70,35 +52,36 @@ namespace Util {
         std::vector<std::string> GetStageBackground() { return stage_background; }
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
+        bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();};
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
-        //輸入frame (num)圖數量 圖放在對應角色資料夾 Action輸入資料夾名稱
-        void InitPosition(glm::vec2 position,int side,float Floor);
-        void BorderDection(int MaxWidth);
+        void InitPosition(glm::vec2 position,int side);
 
-        void ChangeState(std::shared_ptr<FighterState> newState);
+        void StateDealing();
+        void ChangeState(FighterState newState);
+        void BorderDection(int MaxWidth);
         void ReSize();
         void Upload(std::shared_ptr<Core::Context> context);
         void DrawCharacter();
     protected:
+        std::string m_name;
         std::string face;
         std::string nametag;
         std::string country;
         Transform country_position;
         std::vector<std::string> stage_background;
 
-        std::vector<std::string> Idle;
-        std::vector<std::string> Back;
-        std::vector<std::string> Forward;
-        std::vector<std::string> LP;
-        std::vector<std::string> MP;
-        std::shared_ptr<FighterState> currentState=std::make_shared<IdleState>();
+        FighterState currentState;
+        std::unordered_map<FighterState, std::vector<std::string>> animations; // 動作動畫
+        std::unordered_map<FighterState, std::vector<int>> frames;
 
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<BGM> m_BGM;
-        std::string m_name;
-        int velocity = 0;
+
+        float Gravity=-4200;
+        velocity velocity;
+        Initialvelocity Initialvelocity;
         int direction;
         float recoveryTime = 0.0f;
     };

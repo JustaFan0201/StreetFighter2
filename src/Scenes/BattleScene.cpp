@@ -9,7 +9,7 @@ namespace Util {
         m_Animation = std::make_shared<AnimationSpace>(
             enemy->GetStageBackground(),
             true,
-            60,
+            120,
             true,
             0
         );
@@ -21,12 +21,12 @@ namespace Util {
                     0);
         //背景初始位置
         m_BGM = enemy->GetBGM();
-        m_BGM->SetVolume(20);
+        m_BGM->SetVolume(15);
         m_BGM->Play(-1);
         //BGM設定
         start_time = Time::GetElapsedTimeMs();
-        player->InitPosition({-350, 0},static_cast<int>(FighterDirection::Left),StageFloor);
-        enemy->InitPosition({350, 0},static_cast<int>(FighterDirection::Right),StageFloor);
+        player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left));
+        enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right));
 
     }
 

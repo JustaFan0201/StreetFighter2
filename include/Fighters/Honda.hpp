@@ -11,6 +11,7 @@ namespace Util {
     class Honda : public Fighter  {
     public:
         Honda();
+        void LoadAnimations() override;
     };
 }
 #endif //HONDA_HPP
