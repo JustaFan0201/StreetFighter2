@@ -24,6 +24,14 @@ namespace Util {
         void MPStateUpload()override;
         void JumpUPStateEnter()override;
         void JumpUPStateUpload()override;
+        void LKStateEnter()override;
+        void LKStateUpload()override;
+        void MKStateEnter()override;
+        void MKStateUpload()override;
+        void HKStateEnter()override;
+        void HKStateUpload()override;
+
+
     };
 }
 #endif //RYU_HPP

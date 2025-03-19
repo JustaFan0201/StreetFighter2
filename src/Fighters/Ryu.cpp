@@ -27,6 +27,10 @@ namespace Util {
         animations[FighterState::LP] = ActionInit(3, "LP");
         animations[FighterState::MP] = ActionInit(5, "MP");
         animations[FighterState::JumpUP] = ActionInit(7, "JumpUP");
+        animations[FighterState::LK] = ActionInit(4, "LK");
+        animations[FighterState::MK] = ActionInit(4, "MK");
+        animations[FighterState::HK] = ActionInit(5, "HK");
+
 
         frames[FighterState::Idle]={100, 150, 200, 150, 100};
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120};
@@ -34,6 +38,9 @@ namespace Util {
         frames[FighterState::LP]={180,240,180};
         frames[FighterState::MP]={120,120,300,120,120};
         frames[FighterState::JumpUP]={120,120,120,120,120,120,120};
+        frames[FighterState::LK]={120,120,120};
+        frames[FighterState::MK]={120,120,120};
+        frames[FighterState::HK]={120,120,120,120,120};
     }
     void Ryu::IdleStateEnter(){
         velocity={0,0};
@@ -56,6 +63,15 @@ namespace Util {
         }
         else if (Input::IsKeyDown(Keycode::W)) {
             ChangeState(FighterState::JumpUP);
+        }
+        else if (Input::IsKeyDown(Keycode::G)) {
+            ChangeState(FighterState::LK);
+        }
+        else if (Input::IsKeyDown(Keycode::H)) {
+            ChangeState(FighterState::MK);
+        }
+        else if (Input::IsKeyDown(Keycode::J)) {
+            ChangeState(FighterState::HK);
         }
     }
     void Ryu::ForwardStateEnter() {
@@ -98,6 +114,30 @@ namespace Util {
     }
     void Ryu::JumpUPStateUpload() {
         velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
+        if (GetAnimationIsEnd()) {
+            ChangeState(FighterState::Idle);
+        }
+    }
+    void Ryu::LKStateEnter() {
+        SetAnimation(FighterState::LK,frames[FighterState::LK]);
+    }
+    void Ryu::LKStateUpload() {
+        if (GetAnimationIsEnd()) {
+            ChangeState(FighterState::Idle);
+        }
+    }
+    void Ryu::MKStateEnter() {
+        SetAnimation(FighterState::MK,frames[FighterState::MK]);
+    }
+    void Ryu::MKStateUpload() {
+        if (GetAnimationIsEnd()) {
+            ChangeState(FighterState::Idle);
+        }
+    }
+    void Ryu::HKStateEnter() {
+        SetAnimation(FighterState::HK,frames[FighterState::HK]);
+    }
+    void Ryu::HKStateUpload() {
         if (GetAnimationIsEnd()) {
             ChangeState(FighterState::Idle);
         }

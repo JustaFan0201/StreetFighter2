@@ -41,6 +41,14 @@ namespace Util {
         virtual void MPStateUpload(){}
         virtual void JumpUPStateEnter(){}
         virtual void JumpUPStateUpload(){}
+        virtual void LKStateEnter(){}
+        virtual void LKStateUpload(){}
+        virtual void MKStateEnter(){}
+        virtual void MKStateUpload(){}
+        virtual void HKStateEnter(){}
+        virtual void HKStateUpload(){}
+
+
 
         virtual void LoadAnimations()=0;
         void SetAnimation(FighterState action,std::vector<int> intervals);

@@ -8,6 +8,9 @@ namespace Util {
         else if (currentState == FighterState::LP) {LPStateUpload();}
         else if (currentState == FighterState::MP) {MPStateUpload();}
         else if (currentState == FighterState::JumpUP) {JumpUPStateUpload();}
+        else if (currentState == FighterState::LK) {LKStateUpload();}
+        else if (currentState == FighterState::MK) {MKStateUpload();}
+        else if (currentState == FighterState::HK) {LKStateUpload();}
     }
     void Fighter::ChangeState(FighterState newState) {
         if (currentState != newState) {
@@ -30,6 +33,15 @@ namespace Util {
                 break;
                 case FighterState::JumpUP:
                     JumpUPStateEnter();
+                break;
+                case FighterState::LK:
+                    LKStateEnter();
+                break;
+                case FighterState::MK:
+                    MKStateEnter();
+                break;
+                case FighterState::HK:
+                    HKStateEnter();
                 break;
                 default:
                     break;

@@ -12,7 +12,7 @@ namespace Util {
     public:
         Ken();
         void LoadAnimations() override;
-        /*void IdleStateEnter()override;
+        void IdleStateEnter()override;
         void IdleStateUpload()override;
         void ForwardStateEnter()override;
         void ForwardStateUpload()override;
@@ -21,7 +21,15 @@ namespace Util {
         void LPStateEnter()override;
         void LPStateUpload()override;
         void MPStateEnter()override;
-        void MPStateUpload()override;*/
+        void MPStateUpload()override;
+        void JumpUPStateEnter()override;
+        void JumpUPStateUpload()override;
+        void LKStateEnter()override;
+        void LKStateUpload()override;
+        void MKStateEnter()override;
+        void MKStateUpload()override;
+        void HKStateEnter()override;
+        void HKStateUpload()override;
     };
 }
 #endif //KEN_HPP
