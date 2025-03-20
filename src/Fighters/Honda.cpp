@@ -9,6 +9,7 @@ namespace Util {
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/japan.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/HondaTheme.mp3");
+        m_name = "Honda";
         country_position={{28, 168},0,{1,1}};
         BackgroundInit(7);
         Honda::LoadAnimations();

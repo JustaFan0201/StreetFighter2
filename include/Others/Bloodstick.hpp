@@ -8,16 +8,34 @@
 #include <memory>
 #include <string>
 #include "ImageSpace.hpp"
+#include "Util/Transform.hpp"
+#include"AnimationSpace.hpp"
 #include "Util/Time.hpp"
+#include "Scenes/Scene.hpp"
+//#include "Fighters/Fighter.hpp"
+#include <stdio.h>
 
 namespace Util {
     class Bloodstick {
     private:
         std::string original;
-        std::shared_ptr<ImageSpace> bloodstick_image;
+        std::shared_ptr<ImageSpace> bloodback_image;
+        std::shared_ptr<ImageSpace> ko_image;
+        std::shared_ptr<ImageSpace> bloodfrontPlayer_image;
+        std::shared_ptr<ImageSpace> bloodfrontEnemy_image;
 
+        std::string player;
+        std::string enemy;
+        std::vector<std::string> namebox = {"Ryu", "Honda", "Blanka", "Guile", "Ken", "Chunli", "Zangief", "Dhalsim"};
+        std::vector<int> offsetnum = {0, 0};
+        std::vector<int> offset = {430, 375, 360, 405, 430, 370, 360, 360};
+        float playerblood = 100;
+        float enemyblood = 100;
+        std::shared_ptr<ImageSpace> playername_image;
+        std::shared_ptr<ImageSpace> enemyname_image;
     public:
         Bloodstick();
+        void Update(std::string p1, std::string p2);
         void DrawBloodstick();
     };
 }

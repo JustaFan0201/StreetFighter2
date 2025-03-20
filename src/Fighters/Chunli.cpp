@@ -9,6 +9,7 @@ namespace Util {
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/china.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/ChunliTheme.mp3");
+        m_name = "Chunli";
         country_position={{-113, 193},0,{1,1}};
         BackgroundInit(29);
         Chunli::LoadAnimations();

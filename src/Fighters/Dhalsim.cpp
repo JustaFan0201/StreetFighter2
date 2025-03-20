@@ -9,6 +9,7 @@ namespace Util {
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/Dhalsim_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/india.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/DhalsimTheme.mp3");
+        m_name="Dhalsim";
         country_position={{-228, 97},0,{1,1}};
         BackgroundInit(13);
         Dhalsim::LoadAnimations();

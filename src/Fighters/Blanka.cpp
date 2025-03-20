@@ -10,6 +10,7 @@ namespace Util {
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/brazil.png");
         country_position={{323, 23},0,{1,1}};
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/BlankaTheme.mp3");
+        m_name = "Blanka";
         BackgroundInit(4);
         Blanka::LoadAnimations();
         ActionNow = std::make_shared<AnimationSpace>(

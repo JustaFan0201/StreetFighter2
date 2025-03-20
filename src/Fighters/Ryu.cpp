@@ -9,6 +9,7 @@ namespace Util {
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/japan.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/RyuTheme.mp3");
+        m_name="Ryu";
         country_position={{14,90},0,{1,1}};
         BackgroundInit(15);
         Ryu::LoadAnimations();

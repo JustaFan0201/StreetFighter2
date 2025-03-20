@@ -9,6 +9,7 @@ namespace Util {
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Zangief/Zangief_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/ussr.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/ZangiefTheme.mp3");
+        m_name = "Zangief";
         country_position={{-244, 220},0,{1,1}};
         BackgroundInit(8);
         Zangief::LoadAnimations();

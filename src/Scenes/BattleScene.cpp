@@ -33,11 +33,13 @@ namespace Util {
         camera->Upload();
         player->Upload(context);
         enemy->Upload(context);
+        bloodstick->Update(player->GetName(), enemy->GetName());
         m_Animation->SetTransform({{camera->GetCameraPos().x, 0}, 0, {1,1}});
 
         if (Input::IsKeyDown(Keycode::RETURN)) {
             SenseEnd = true;
         }
+
     }
     void BattleScene::Render() {
         m_Animation->custom_Draw();
