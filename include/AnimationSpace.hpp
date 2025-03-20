@@ -19,16 +19,16 @@ namespace Util {
                 return;
             }
 
-            // 获取当前帧的间隔
             auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
             int currentInterval = GetIntervalForFrame(animation->GetCurrentFrameIndex());
-
-            // 更新动画间隔
             animation->SetInterval(currentInterval);
 
-            auto data = Util::ConvertToUniformBufferData(
-                m_Transform, custom_size, m_ZIndex);
-            data.m_Model = glm::translate(
+            glm::vec2 currentOffset = Getoffset(animation->GetCurrentFrameIndex());
+            Transform transform={m_Transform.translation+currentOffset,0,m_Transform.scale};
+
+            auto data = ConvertToUniformBufferData(
+                transform, custom_size, m_ZIndex);
+            data.m_Model = translate(
                 data.m_Model, glm::vec3{m_Pivot / custom_size, 0} * -1.0F);
 
             m_Drawable->Draw(data);
@@ -39,14 +39,8 @@ namespace Util {
             SetZIndex(index);
         }
 
-        void SetLeftDownBeCenter() {
-            m_Transform.translation.y += custom_size.y / 2;
-            m_Transform.translation.x += custom_size.x / 2;
-        }
-
-        void SetRightDownBeCenter() {
-            m_Transform.translation.y += custom_size.y / 2;
-            m_Transform.translation.x -= custom_size.x / 2;
+        void SetTransformXY(glm::vec2 postion) {
+            m_Transform.translation=postion;
         }
 
         void SetTransform(Transform transform) {
@@ -95,9 +89,28 @@ namespace Util {
             return animation->GetInterval();
         }
 
+        void Setoffset(const std::vector<glm::vec2>& offsets) {
+            frameOffset = offsets;
+        }
+
+        glm::vec2 Getoffset(std::size_t frameIndex) {
+            auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
+            if (frameIndex < frameOffset.size()) {
+                return frameOffset[frameIndex];
+            }
+            return {0,0};
+        }
+        void SetOriginalPostion(const glm::vec2 Original) {
+            originalPostion=Original;
+        }
+        glm::vec2 GetOriginalPostion() const {
+            return originalPostion;
+        }
     private:
         glm::vec2 custom_size;
-        std::vector<int> frameIntervals;  // 儲存每幀的間隔
+        std::vector<int> frameIntervals;
+        std::vector<glm::vec2> frameOffset;
+        glm::vec2 originalPostion;
     };
 } // namespace Util
 #endif //ANIMATIONSPACE_HPP

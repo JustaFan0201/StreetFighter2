@@ -12,6 +12,8 @@ namespace Util {
     public:
         Ryu();
         void LoadAnimations() override;
+        void LoadOffsetVelocity() override;
+
         void IdleStateEnter()override;
         void IdleStateUpload()override;
 

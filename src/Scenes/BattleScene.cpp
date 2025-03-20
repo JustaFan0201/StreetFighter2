@@ -27,7 +27,6 @@ namespace Util {
         start_time = Time::GetElapsedTimeMs();
         player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left));
         enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right));
-
     }
 
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {

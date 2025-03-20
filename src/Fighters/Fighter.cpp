@@ -50,10 +50,11 @@ namespace Util {
             }
         }
     }
-    void Fighter::SetAnimation(FighterState action,std::vector<int> intervals) {
+    void Fighter::SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets) {
         if (animations.find(action) != animations.end()) {
             ActionNow->SetDrawable(std::make_shared<Animation>(animations[action], true, 60, true));
             ActionNow->SetFrameIntervals(intervals);
+            ActionNow->Setoffset(offsets);
         }
     }
 
@@ -82,8 +83,8 @@ namespace Util {
                                {size_x, size_y},
                                2.0f);
         direction = side;
-        if(direction==1){ActionNow->SetLeftDownBeCenter();}
-        else if(direction==-1){ActionNow->SetRightDownBeCenter();}
+        //if(direction==1){ActionNow->SetLeftDownBeCenter();}
+        //else if(direction==-1){ActionNow->SetRightDownBeCenter();}
         currentState = FighterState::Idle;
     }
 
@@ -105,10 +106,10 @@ namespace Util {
                 -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2,
                 MaxWidth - abs(ActionNow->GetCustomSize().x)  / 2);
             }
-        if (ActionNow->m_Transform.translation.y < StageFloor+ActionNow->GetCustomSize().y/2) {
-            ActionNow->m_Transform.translation.y=StageFloor+ActionNow->GetCustomSize().y/2;
+        if (ActionNow->m_Transform.translation.y < StageFloor) {
+            ActionNow->m_Transform.translation.y=StageFloor;
         }
-        std::cout<<ActionNow->m_Transform.translation.y<<"||"<<StageFloor+ActionNow->GetCustomSize().y/2<<std::endl;
+        std::cout<<GetName()<<"x and y :"<<ActionNow->m_Transform.translation.x<<ActionNow->m_Transform.translation.y<<std::endl;
     }
 
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {

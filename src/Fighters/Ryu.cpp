@@ -12,6 +12,7 @@ namespace Util {
         country_position={{14,90},0,{1,1}};
         BackgroundInit(15);
         Ryu::LoadAnimations();
+        Ryu::LoadOffsetVelocity();
         ActionNow = std::make_shared<AnimationSpace>(
             animations[FighterState::Idle],
             true,
@@ -19,13 +20,6 @@ namespace Util {
             true,
             5
         );
-        Initialvelocity.x[FighterState::Forward]=150;
-        Initialvelocity.x[FighterState::Backward]=-150;
-        Initialvelocity.x[FighterState::JumpForward]=200;
-        Initialvelocity.x[FighterState::JumpBackward]=-200;
-        Initialvelocity.y[FighterState::JumpForward]=1600;
-        Initialvelocity.y[FighterState::JumpBackward]=1600;
-        Initialvelocity.y[FighterState::JumpUP]=1600;
     }
     void Ryu::LoadAnimations() {
         animations[FighterState::Idle] = ActionInit(5,"Idle");
@@ -52,9 +46,30 @@ namespace Util {
         frames[FighterState::MK]={120,120,120,120,120};
         frames[FighterState::HK]={120,120,120,120,120};
     }
+    void Ryu::LoadOffsetVelocity() {
+        Initialvelocity.x[FighterState::Forward]=400;
+        Initialvelocity.x[FighterState::Backward]=-400;
+        Initialvelocity.x[FighterState::JumpForward]=500;
+        Initialvelocity.x[FighterState::JumpBackward]=-500;
+        Initialvelocity.y[FighterState::JumpForward]=1700;
+        Initialvelocity.y[FighterState::JumpBackward]=1700;
+        Initialvelocity.y[FighterState::JumpUP]=1600;
+
+        offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::Forward]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::Backward]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::JumpUP]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::JumpForward]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::JumpBackward]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::LP]={{0,0},{0,0},{0,0}};
+        offset[FighterState::MP]={{0,0},{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::LK]={{0,0},{0,0},{0,0},{0,0},};
+        offset[FighterState::MK]={{0,0},{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::HK]={{-90,9},{-72,9},{-46,9},{-72,0},{-99,0}};
+    }
     void Ryu::IdleStateEnter(){
         velocity={0,0};
-        SetAnimation(currentState,frames[currentState]);
+        SetAnimation(currentState,frames[currentState],offset[currentState]);
     }
     void Ryu::IdleStateUpload() {
         if (Input::IsKeyPressed(Keycode::D)) {
@@ -88,7 +103,7 @@ namespace Util {
 
     void Ryu::WalkStateEnter() {
         velocity.x=direction*Initialvelocity.x[currentState];
-        SetAnimation(currentState,frames[currentState]);
+        SetAnimation(currentState,frames[currentState],offset[currentState]);
     }
     void Ryu::WalkStateUpload() {
         switch (currentState) {
@@ -118,18 +133,18 @@ namespace Util {
     void Ryu::JumpStateEnter(){
         velocity.x=direction*Initialvelocity.x[currentState];
         velocity.y=Initialvelocity.y[currentState];
-        SetAnimation(currentState,frames[currentState]);
+        SetAnimation(currentState,frames[currentState],offset[currentState]);
     }
     void Ryu::JumpStateUpload(){
         velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
-        if (GetAnimationIsEnd()) {
+        if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {
             ChangeState(FighterState::Idle);
         }
     }
 
 
     void Ryu::LPStateEnter() {
-        SetAnimation(currentState,frames[currentState]);
+        SetAnimation(currentState,frames[currentState],offset[currentState]);
     }
     void Ryu::LPStateUpload() {
         if (GetAnimationIsEnd()) {
@@ -137,7 +152,7 @@ namespace Util {
         }
     }
     void Ryu::MPStateEnter(){
-        SetAnimation(currentState,frames[currentState]);
+        SetAnimation(currentState,frames[currentState],offset[currentState]);
     }
     void Ryu::MPStateUpload() {
         if (GetAnimationIsEnd()) {
@@ -145,7 +160,7 @@ namespace Util {
         }
     }
     void Ryu::LKStateEnter() {
-        SetAnimation(currentState,frames[currentState]);
+        SetAnimation(currentState,frames[currentState],offset[currentState]);
     }
     void Ryu::LKStateUpload() {
         if (GetAnimationIsEnd()) {
@@ -153,7 +168,7 @@ namespace Util {
         }
     }
     void Ryu::MKStateEnter() {
-        SetAnimation(currentState,frames[currentState]);
+        SetAnimation(currentState,frames[currentState],offset[currentState]);
     }
     void Ryu::MKStateUpload() {
         if (GetAnimationIsEnd()) {
@@ -161,7 +176,7 @@ namespace Util {
         }
     }
     void Ryu::HKStateEnter() {
-        SetAnimation(currentState,frames[currentState]);
+        SetAnimation(currentState,frames[currentState],offset[currentState]);
     }
     void Ryu::HKStateUpload() {
         if (GetAnimationIsEnd()) {

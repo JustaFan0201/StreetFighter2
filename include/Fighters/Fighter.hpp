@@ -49,8 +49,10 @@ namespace Util {
         virtual void HKStateEnter(){}
         virtual void HKStateUpload(){}
 
-        virtual void LoadAnimations()=0;
-        void SetAnimation(FighterState action,std::vector<int> intervals);
+        virtual void LoadAnimations(){}
+        virtual void LoadOffsetVelocity(){}
+
+        void SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
 
         std::string GetFace() const { return face; }
         std::string GetNameTag() const { return nametag; }
@@ -60,6 +62,7 @@ namespace Util {
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
+        bool GetCharacterIsOnFloor() const {return ActionNow->m_Transform.translation.y==StageFloor;}
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
@@ -82,6 +85,7 @@ namespace Util {
         FighterState currentState;
         std::unordered_map<FighterState, std::vector<std::string>> animations;
         std::unordered_map<FighterState, std::vector<int>> frames;
+        std::unordered_map<FighterState, std::vector<glm::vec2>> offset;
 
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<BGM> m_BGM;
