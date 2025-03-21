@@ -9,7 +9,6 @@ namespace Util {
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/japan.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/RyuTheme.mp3");
-        m_name="Ryu";
         country_position={{14,90},0,{1,1}};
         BackgroundInit(15);
         StateInit();
@@ -67,10 +66,11 @@ namespace Util {
         offset[FighterState::MP]={{0,0},{0,0},{0,0},{0,0},{0,0}};
         offset[FighterState::LK]={{0,0},{0,0},{0,0},{0,0},};
         offset[FighterState::MK]={{0,0},{0,0},{0,0},{0,0},{0,0}};
-        offset[FighterState::HK]={{-90,9},{-72,9},{-46,9},{-72,0},{-99,0}};
+        offset[FighterState::HK]={{-90,9},{-72,9},{-46,9},{-72,-12},{-99,-9}};
     }
     void Ryu::IdleStateEnter(){
         velocity={0,0};
+        SetNowEqualOriginalPostion();
         SetAnimation(currentState,frames[currentState],offset[currentState]);
     }
     void Ryu::IdleStateUpload() {
@@ -102,9 +102,13 @@ namespace Util {
             ChangeState(FighterState::HK);
         }
     }
+    void Ryu::IdleStateExit(){
+        SetOriginalPostion(ActionNow->m_Transform.translation);
+    }
 
     void Ryu::WalkStateEnter() {
         velocity.x=direction*Initialvelocity.x[currentState];
+        SetNowEqualOriginalPostion();
         SetAnimation(currentState,frames[currentState],offset[currentState]);
     }
     void Ryu::WalkStateUpload() {
@@ -131,8 +135,12 @@ namespace Util {
                 break;
         }
     }
+    void Ryu::WalkStateExit(){
+        SetOriginalPostion(ActionNow->m_Transform.translation);
+    }
 
     void Ryu::JumpStateEnter(){
+        SetNowEqualOriginalPostion();
         velocity.x=direction*Initialvelocity.x[currentState];
         velocity.y=Initialvelocity.y[currentState];
         SetAnimation(currentState,frames[currentState],offset[currentState]);
@@ -143,7 +151,9 @@ namespace Util {
             ChangeState(FighterState::Idle);
         }
     }
-
+    void Ryu::JumpStateExit(){
+        SetOriginalPostion(ActionNow->m_Transform.translation);
+    }
 
     void Ryu::LPStateEnter() {
         SetAnimation(currentState,frames[currentState],offset[currentState]);
@@ -153,6 +163,7 @@ namespace Util {
             ChangeState(FighterState::Idle);
         }
     }
+
     void Ryu::MPStateEnter(){
         SetAnimation(currentState,frames[currentState],offset[currentState]);
     }

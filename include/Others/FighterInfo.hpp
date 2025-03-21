@@ -10,7 +10,7 @@ namespace Util {
         Left  = 1,
         Right = -1
     };
-    constexpr float StageFloor = -180.0f;
+    constexpr float StageFloor = -320.0f;
     struct velocity {
         int x=0;
         int y=0;

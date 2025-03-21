@@ -5,6 +5,7 @@
 #include "Util/TransformUtils.hpp"
 #include <unordered_map>
 #include <vector>
+#include <iostream>
 
 namespace Util {
     class AnimationSpace : public GameObject {
@@ -100,12 +101,15 @@ namespace Util {
             }
             return {0,0};
         }
-        void SetOriginalPostion(const glm::vec2 Original) {
-            originalPostion=Original;
+        void TestPostion() {
+            auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
+            glm::vec2 currentOffset = Getoffset(animation->GetCurrentFrameIndex());
+            Transform transform={m_Transform.translation+currentOffset,0,m_Transform.scale};
+            std::cout<<animation->GetCurrentFrameIndex()<<std::endl;
+            std::cout<<"NoOffset: "<<m_Transform.translation.x<<" "<<m_Transform.translation.y<<std::endl;
+            std::cout<<"Offset: "<<transform.translation.x<<" "<<transform.translation.y<<std::endl;
         }
-        glm::vec2 GetOriginalPostion() const {
-            return originalPostion;
-        }
+
     private:
         glm::vec2 custom_size;
         std::vector<int> frameIntervals;

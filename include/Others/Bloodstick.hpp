@@ -23,7 +23,11 @@ namespace Util {
         std::shared_ptr<ImageSpace> ko_image;
         std::shared_ptr<ImageSpace> bloodfrontPlayer_image;
         std::shared_ptr<ImageSpace> bloodfrontEnemy_image;
+        std::shared_ptr<ImageSpace> timerTens_image;
+        std::shared_ptr<ImageSpace> timerUnits_image;
 
+        float start_time = Time::GetElapsedTimeMs();
+        float now_time = Time::GetElapsedTimeMs();
         std::string player;
         std::string enemy;
         std::vector<std::string> namebox = {"Ryu", "Honda", "Blanka", "Guile", "Ken", "Chunli", "Zangief", "Dhalsim"};
@@ -33,6 +37,8 @@ namespace Util {
         float enemyblood = 100;
         std::shared_ptr<ImageSpace> playername_image;
         std::shared_ptr<ImageSpace> enemyname_image;
+        std::vector<int> timer = {0,0};
+
     public:
         Bloodstick();
         void Update(std::string p1, std::string p2);
@@ -41,5 +47,3 @@ namespace Util {
 }
 
 #endif //BLOODSTICK_HPP
-
-

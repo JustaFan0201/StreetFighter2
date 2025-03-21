@@ -3,6 +3,10 @@
 namespace Util {
     void Fighter::ChangeState(FighterState newState) {
         if (currentState != newState) {
+            auto currentExit = StateExit.find(currentState);
+            if (currentExit != StateExit.end()) {
+                currentExit->second();
+            }
             currentState = newState;
             auto currentEnter = StateEnter.find(currentState);
             if (currentEnter != StateEnter.end()) {
@@ -27,29 +31,36 @@ namespace Util {
     }
 
     void Fighter::StateInit() {
-        StateEnter[FighterState::Idle] = std::bind(&Fighter::IdleStateEnter, this);
-        StateEnter[FighterState::Forward] = std::bind(&Fighter::WalkStateEnter, this);
-        StateEnter[FighterState::Backward] = std::bind(&Fighter::WalkStateEnter, this);
-        StateEnter[FighterState::JumpUP] = std::bind(&Fighter::JumpStateEnter, this);
-        StateEnter[FighterState::JumpForward] = std::bind(&Fighter::JumpStateEnter, this);
-        StateEnter[FighterState::JumpBackward] = std::bind(&Fighter::JumpStateEnter, this);
-        StateEnter[FighterState::LP] = std::bind(&Fighter::LPStateEnter, this);
-        StateEnter[FighterState::MP] = std::bind(&Fighter::MPStateEnter, this);
-        StateEnter[FighterState::LK] = std::bind(&Fighter::LKStateEnter, this);
-        StateEnter[FighterState::MK] = std::bind(&Fighter::MKStateEnter, this);
-        StateEnter[FighterState::HK] = std::bind(&Fighter::HKStateEnter, this);
+        StateEnter[FighterState::Idle] = [this] { IdleStateEnter(); };
+        StateEnter[FighterState::Forward] = [this] { WalkStateEnter(); };
+        StateEnter[FighterState::Backward] = [this] { WalkStateEnter(); };
+        StateEnter[FighterState::JumpUP] = [this] { JumpStateEnter(); };
+        StateEnter[FighterState::JumpForward] = [this] { JumpStateEnter(); };
+        StateEnter[FighterState::JumpBackward] = [this] { JumpStateEnter(); };
+        StateEnter[FighterState::LP] = [this] { LPStateEnter(); };
+        StateEnter[FighterState::MP] = [this] { MPStateEnter(); };
+        StateEnter[FighterState::LK] = [this] { LKStateEnter(); };
+        StateEnter[FighterState::MK] = [this] { MKStateEnter(); };
+        StateEnter[FighterState::HK] = [this] { HKStateEnter(); };
 
-        StateUpload[FighterState::Idle] = std::bind(&Fighter::IdleStateUpload, this);
-        StateUpload[FighterState::Forward] = std::bind(&Fighter::WalkStateUpload, this);
-        StateUpload[FighterState::Backward] = std::bind(&Fighter::WalkStateUpload, this);
-        StateUpload[FighterState::JumpUP] = std::bind(&Fighter::JumpStateUpload, this);
-        StateUpload[FighterState::JumpForward] = std::bind(&Fighter::JumpStateUpload, this);
-        StateUpload[FighterState::JumpBackward] = std::bind(&Fighter::JumpStateUpload, this);
-        StateUpload[FighterState::LP] = std::bind(&Fighter::LPStateUpload, this);
-        StateUpload[FighterState::MP] = std::bind(&Fighter::MPStateUpload, this);
-        StateUpload[FighterState::LK] = std::bind(&Fighter::LKStateUpload, this);
-        StateUpload[FighterState::MK] = std::bind(&Fighter::MKStateUpload, this);
-        StateUpload[FighterState::HK] = std::bind(&Fighter::HKStateUpload, this);
+        StateUpload[FighterState::Idle] = [this] { IdleStateUpload(); };
+        StateUpload[FighterState::Forward] = [this] { WalkStateUpload(); };
+        StateUpload[FighterState::Backward] = [this] { WalkStateUpload(); };
+        StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
+        StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
+        StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
+        StateUpload[FighterState::LP] = [this] { LPStateUpload(); };
+        StateUpload[FighterState::MP] = [this] { MPStateUpload(); };
+        StateUpload[FighterState::LK] = [this] { LKStateUpload(); };
+        StateUpload[FighterState::MK] = [this] { MKStateUpload(); };
+        StateUpload[FighterState::HK] = [this] { ActionNow->TestPostion();HKStateUpload();};
+
+        StateExit[FighterState::Idle] = [this] { IdleStateExit(); };
+        StateExit[FighterState::Forward] = [this] { WalkStateExit(); };
+        StateExit[FighterState::Backward] = [this] { WalkStateExit(); };
+        StateExit[FighterState::JumpUP] = [this] { JumpStateExit(); };
+        StateExit[FighterState::JumpForward] = [this] { JumpStateExit(); };
+        StateExit[FighterState::JumpBackward] = [this] { JumpStateExit(); };
     }
 
     std::vector<std::string> Fighter::ActionInit(int picture_number,std::string Action) {
@@ -65,11 +76,14 @@ namespace Util {
     void Fighter::InitPosition(glm::vec2 position, int side) {
         float size_x=ActionNow->GetOriginalSize().x * 3;
         float size_y=ActionNow->GetOriginalSize().y * 3;
+        FloorOfCharacter=ActionNow->GetOriginalSize().y * 3/2 + position.y;
         ActionNow->SetDrawData({position, 0, {side, 1}},
                                {size_x, size_y},
                                2.0f);
         direction = side;
         currentState = FighterState::Idle;
+        SetOriginalPostion(position);
+
     }
 
     void Fighter::ReSize() {
@@ -84,16 +98,26 @@ namespace Util {
     }
 
     void Fighter::BorderDection(int MaxWidth) {
-        if (ActionNow->m_Transform.translation.x > MaxWidth - abs(ActionNow->GetCustomSize().x) / 2||
-            ActionNow->m_Transform.translation.x < -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2) {
-            ActionNow->m_Transform.translation.x = std::clamp(ActionNow->m_Transform.translation.x,
-                -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2,
-                MaxWidth - abs(ActionNow->GetCustomSize().x)  / 2);
-            }
-        if (ActionNow->m_Transform.translation.y < StageFloor) {
-            ActionNow->m_Transform.translation.y=StageFloor;
+        switch (currentState) {
+            case FighterState::Idle:
+            case FighterState::Forward:
+            case FighterState::Backward:
+            case FighterState::JumpUP:
+            case FighterState::JumpForward:
+            case FighterState::JumpBackward:
+                if (ActionNow->m_Transform.translation.x > MaxWidth - abs(ActionNow->GetCustomSize().x) / 2||
+                    ActionNow->m_Transform.translation.x < -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2) {
+                    ActionNow->m_Transform.translation.x = std::clamp(ActionNow->m_Transform.translation.x,
+                        -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2,
+                        MaxWidth - abs(ActionNow->GetCustomSize().x)  / 2);
+                    }
+                if (ActionNow->m_Transform.translation.y < FloorOfCharacter) {
+                    ActionNow->m_Transform.translation.y=FloorOfCharacter;
+                }
+                break;
+            default:
+                break;
         }
-        std::cout<<GetName()<<"x and y :"<<ActionNow->m_Transform.translation.x<<ActionNow->m_Transform.translation.y<<std::endl;
     }
 
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {

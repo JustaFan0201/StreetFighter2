@@ -31,6 +31,9 @@ namespace Util {
             }
             NowSceneType=SceneType::Slect;
             ChangeScene(nextScene);
+            /*nextScene = std::make_shared<BattleScene>(player,enemy);
+            NowSceneType=SceneType::Battle;
+            ChangeScene(nextScene);*/
         }
         if (m_NowScene!=nullptr && m_NowScene->getSenseEnd() && NowSceneType==SceneType::Slect) {
             EnemySlect();

@@ -9,7 +9,6 @@ namespace Util {
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/usa.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/KenTheme.mp3");
-        m_name = "Ken";
         country_position={{338, 245},0,{1,1}};
         BackgroundInit(14);
         StateInit();
