@@ -12,6 +12,7 @@ namespace Util {
         m_name = "Chunli";
         country_position={{-113, 193},0,{1,1}};
         BackgroundInit(29);
+        StateInit();
         Chunli::LoadAnimations();
         ActionNow = std::make_shared<AnimationSpace>(
             animations[FighterState::Idle],

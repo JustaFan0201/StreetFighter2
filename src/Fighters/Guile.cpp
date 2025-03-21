@@ -12,6 +12,7 @@ namespace Util {
         m_name = "Guile";
         country_position={{350, 140},0,{1,1}};
         BackgroundInit(5);
+        StateInit();
         Guile::LoadAnimations();
         ActionNow = std::make_shared<AnimationSpace>(
             animations[FighterState::Idle],

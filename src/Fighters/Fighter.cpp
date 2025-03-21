@@ -1,52 +1,12 @@
 #include "Fighters/Fighter.hpp"
 #include <iostream>
 namespace Util {
-    void Fighter::StateDealing() {
-        if (currentState == FighterState::Idle) {IdleStateUpload();}
-        else if (currentState == FighterState::Forward) {WalkStateUpload();}
-        else if (currentState == FighterState::Backward) {WalkStateUpload();}
-        else if (currentState == FighterState::JumpUP) {JumpStateUpload();}
-        else if (currentState == FighterState::JumpForward) {JumpStateUpload();}
-        else if (currentState == FighterState::JumpBackward) {JumpStateUpload();}
-        else if (currentState == FighterState::LP) {LPStateUpload();}
-        else if (currentState == FighterState::MP) {MPStateUpload();}
-        else if (currentState == FighterState::LK) {LKStateUpload();}
-        else if (currentState == FighterState::MK) {MKStateUpload();}
-        else if (currentState == FighterState::HK) {LKStateUpload();}
-    }
     void Fighter::ChangeState(FighterState newState) {
         if (currentState != newState) {
             currentState = newState;
-            switch (currentState) {
-                case FighterState::Idle:
-                    IdleStateEnter();
-                break;
-                case FighterState::Forward:
-                case FighterState::Backward:
-                    WalkStateEnter();
-                break;
-                case FighterState::JumpUP:
-                case FighterState::JumpForward:
-                case FighterState::JumpBackward:
-                    JumpStateEnter();
-                break;
-                case FighterState::LP:
-                    LPStateEnter();
-                break;
-                case FighterState::MP:
-                    MPStateEnter();
-                break;
-                case FighterState::LK:
-                    LKStateEnter();
-                break;
-                case FighterState::MK:
-                    MKStateEnter();
-                break;
-                case FighterState::HK:
-                    HKStateEnter();
-                break;
-                default:
-                    break;
+            auto currentEnter = StateEnter.find(currentState);
+            if (currentEnter != StateEnter.end()) {
+                currentEnter->second();
             }
         }
     }
@@ -66,6 +26,32 @@ namespace Util {
         }
     }
 
+    void Fighter::StateInit() {
+        StateEnter[FighterState::Idle] = std::bind(&Fighter::IdleStateEnter, this);
+        StateEnter[FighterState::Forward] = std::bind(&Fighter::WalkStateEnter, this);
+        StateEnter[FighterState::Backward] = std::bind(&Fighter::WalkStateEnter, this);
+        StateEnter[FighterState::JumpUP] = std::bind(&Fighter::JumpStateEnter, this);
+        StateEnter[FighterState::JumpForward] = std::bind(&Fighter::JumpStateEnter, this);
+        StateEnter[FighterState::JumpBackward] = std::bind(&Fighter::JumpStateEnter, this);
+        StateEnter[FighterState::LP] = std::bind(&Fighter::LPStateEnter, this);
+        StateEnter[FighterState::MP] = std::bind(&Fighter::MPStateEnter, this);
+        StateEnter[FighterState::LK] = std::bind(&Fighter::LKStateEnter, this);
+        StateEnter[FighterState::MK] = std::bind(&Fighter::MKStateEnter, this);
+        StateEnter[FighterState::HK] = std::bind(&Fighter::HKStateEnter, this);
+
+        StateUpload[FighterState::Idle] = std::bind(&Fighter::IdleStateUpload, this);
+        StateUpload[FighterState::Forward] = std::bind(&Fighter::WalkStateUpload, this);
+        StateUpload[FighterState::Backward] = std::bind(&Fighter::WalkStateUpload, this);
+        StateUpload[FighterState::JumpUP] = std::bind(&Fighter::JumpStateUpload, this);
+        StateUpload[FighterState::JumpForward] = std::bind(&Fighter::JumpStateUpload, this);
+        StateUpload[FighterState::JumpBackward] = std::bind(&Fighter::JumpStateUpload, this);
+        StateUpload[FighterState::LP] = std::bind(&Fighter::LPStateUpload, this);
+        StateUpload[FighterState::MP] = std::bind(&Fighter::MPStateUpload, this);
+        StateUpload[FighterState::LK] = std::bind(&Fighter::LKStateUpload, this);
+        StateUpload[FighterState::MK] = std::bind(&Fighter::MKStateUpload, this);
+        StateUpload[FighterState::HK] = std::bind(&Fighter::HKStateUpload, this);
+    }
+
     std::vector<std::string> Fighter::ActionInit(int picture_number,std::string Action) {
         std::vector<std::string> Allframe;
         for (int i = 1; i <= picture_number; i++) {
@@ -83,8 +69,6 @@ namespace Util {
                                {size_x, size_y},
                                2.0f);
         direction = side;
-        //if(direction==1){ActionNow->SetLeftDownBeCenter();}
-        //else if(direction==-1){ActionNow->SetRightDownBeCenter();}
         currentState = FighterState::Idle;
     }
 
@@ -113,7 +97,9 @@ namespace Util {
     }
 
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {
-        StateDealing();
+        auto currentEnter = StateUpload.find(currentState);
+        currentEnter->second();
+
         glm::vec2 position={ActionNow->GetTransform().translation.x+velocity.x*Time::GetDeltaTimeMs()/1000,
             ActionNow->GetTransform().translation.y+velocity.y*Time::GetDeltaTimeMs()/1000};
         ActionNow->SetTransform({position,0,{direction,1}});

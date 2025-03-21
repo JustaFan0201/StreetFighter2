@@ -9,6 +9,9 @@
 #include <string>
 #include <algorithm>
 #include <cmath>
+#include <any>
+#include <functional>
+
 #include "Core/Context.hpp"
 #include "Util/BGM.hpp"
 #include "Util/Input.hpp"
@@ -67,8 +70,8 @@ namespace Util {
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
         void InitPosition(glm::vec2 position,int side);
+        void StateInit();
 
-        void StateDealing();
         void ChangeState(FighterState newState);
         void BorderDection(int MaxWidth);
         void ReSize();
@@ -83,6 +86,8 @@ namespace Util {
         std::vector<std::string> stage_background;
 
         FighterState currentState;
+        std::unordered_map<FighterState, std::function<void()>> StateEnter;
+        std::unordered_map<FighterState, std::function<void()>> StateUpload;
         std::unordered_map<FighterState, std::vector<std::string>> animations;
         std::unordered_map<FighterState, std::vector<int>> frames;
         std::unordered_map<FighterState, std::vector<glm::vec2>> offset;

@@ -12,6 +12,7 @@ namespace Util {
         m_name = "Zangief";
         country_position={{-244, 220},0,{1,1}};
         BackgroundInit(8);
+        StateInit();
         Zangief::LoadAnimations();
         ActionNow = std::make_shared<AnimationSpace>(
             animations[FighterState::Idle],

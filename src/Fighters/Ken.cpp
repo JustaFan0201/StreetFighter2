@@ -12,6 +12,7 @@ namespace Util {
         m_name = "Ken";
         country_position={{338, 245},0,{1,1}};
         BackgroundInit(14);
+        StateInit();
         Ken::LoadAnimations();
         ActionNow = std::make_shared<AnimationSpace>(
             animations[FighterState::Idle],

@@ -12,6 +12,7 @@ namespace Util {
         m_name="Ryu";
         country_position={{14,90},0,{1,1}};
         BackgroundInit(15);
+        StateInit();
         Ryu::LoadAnimations();
         Ryu::LoadOffsetVelocity();
         ActionNow = std::make_shared<AnimationSpace>(

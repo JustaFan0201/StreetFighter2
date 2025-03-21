@@ -12,6 +12,7 @@ namespace Util {
         m_name = "Honda";
         country_position={{28, 168},0,{1,1}};
         BackgroundInit(7);
+        StateInit();
         Honda::LoadAnimations();
         ActionNow = std::make_shared<AnimationSpace>(
             animations[FighterState::Idle],

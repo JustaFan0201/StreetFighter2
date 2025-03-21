@@ -12,6 +12,7 @@ namespace Util {
         m_name="Dhalsim";
         country_position={{-228, 97},0,{1,1}};
         BackgroundInit(13);
+        StateInit();
         Dhalsim::LoadAnimations();
         ActionNow = std::make_shared<AnimationSpace>(
             animations[FighterState::Idle],
