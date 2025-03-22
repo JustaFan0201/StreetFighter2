@@ -39,7 +39,6 @@ namespace Util {
         if (Input::IsKeyDown(Keycode::RETURN)) {
             SenseEnd = true;
         }
-
     }
     void BattleScene::Render() {
         m_Animation->custom_Draw();

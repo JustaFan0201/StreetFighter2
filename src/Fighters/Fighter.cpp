@@ -1,12 +1,7 @@
 #include "Fighters/Fighter.hpp"
-#include <iostream>
 namespace Util {
     void Fighter::ChangeState(FighterState newState) {
         if (currentState != newState) {
-            auto currentExit = StateExit.find(currentState);
-            if (currentExit != StateExit.end()) {
-                currentExit->second();
-            }
             currentState = newState;
             auto currentEnter = StateEnter.find(currentState);
             if (currentEnter != StateEnter.end()) {
@@ -16,7 +11,7 @@ namespace Util {
     }
     void Fighter::SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets) {
         if (animations.find(action) != animations.end()) {
-            ActionNow->SetDrawable(std::make_shared<Animation>(animations[action], true, 60, true));
+            ActionNow->SetDrawable(std::make_shared<Animation>(animations[action], true, 60, false));
             ActionNow->SetFrameIntervals(intervals);
             ActionNow->Setoffset(offsets);
         }
@@ -39,6 +34,7 @@ namespace Util {
         StateEnter[FighterState::JumpBackward] = [this] { JumpStateEnter(); };
         StateEnter[FighterState::LP] = [this] { LPStateEnter(); };
         StateEnter[FighterState::MP] = [this] { MPStateEnter(); };
+        StateEnter[FighterState::HP] = [this] { HPStateEnter(); };
         StateEnter[FighterState::LK] = [this] { LKStateEnter(); };
         StateEnter[FighterState::MK] = [this] { MKStateEnter(); };
         StateEnter[FighterState::HK] = [this] { HKStateEnter(); };
@@ -51,16 +47,11 @@ namespace Util {
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::LP] = [this] { LPStateUpload(); };
         StateUpload[FighterState::MP] = [this] { MPStateUpload(); };
+        StateUpload[FighterState::HP] = [this] { HPStateUpload(); };
         StateUpload[FighterState::LK] = [this] { LKStateUpload(); };
         StateUpload[FighterState::MK] = [this] { MKStateUpload(); };
-        StateUpload[FighterState::HK] = [this] { ActionNow->TestPostion();HKStateUpload();};
-
-        StateExit[FighterState::Idle] = [this] { IdleStateExit(); };
-        StateExit[FighterState::Forward] = [this] { WalkStateExit(); };
-        StateExit[FighterState::Backward] = [this] { WalkStateExit(); };
-        StateExit[FighterState::JumpUP] = [this] { JumpStateExit(); };
-        StateExit[FighterState::JumpForward] = [this] { JumpStateExit(); };
-        StateExit[FighterState::JumpBackward] = [this] { JumpStateExit(); };
+        StateUpload[FighterState::HK] = [this] { HKStateUpload();};
+        //ActionNow->AnimationPause();ActionNow->TestPictureoffset();
     }
 
     std::vector<std::string> Fighter::ActionInit(int picture_number,std::string Action) {
@@ -82,8 +73,6 @@ namespace Util {
                                2.0f);
         direction = side;
         currentState = FighterState::Idle;
-        SetOriginalPostion(position);
-
     }
 
     void Fighter::ReSize() {
@@ -120,7 +109,30 @@ namespace Util {
         }
     }
 
+    void Fighter::PrintPostion() {
+        std::cout<<"{";
+        for(auto i: Allofmouse) {
+            std::cout <<"{"<< i.x<<","<< i.y<<"},";
+        }
+        std::cout <<"}"<< std::endl;
+    }
+    void Fighter::PostionTester() {
+        if (Input::IsKeyDown(Keycode::MOUSE_MB)) {
+            mouse = Input::GetCursorPosition();
+            std::cout << "Frame: " << "Mouse Clicked at: (" << mouse.x << ", " << mouse.y << ")" << std::endl;
+            Allofmouse.clear();
+        }
+        if (Input::IsKeyDown(Keycode::MOUSE_RB)) {
+            glm::vec2 Mouse=Input::GetCursorPosition();
+            std::cout << "Frame: " << "Mouse Clicked at: (" << Mouse.x << ", " << Mouse.y << ")" << std::endl;
+            glm::vec2 Pos=mouse-Mouse;
+            Allofmouse.push_back(Pos);
+        }
+    }
+
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {
+        PostionTester();
+
         auto currentEnter = StateUpload.find(currentState);
         currentEnter->second();
 

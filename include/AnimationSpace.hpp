@@ -3,7 +3,7 @@
 #include "Util/GameObject.hpp"
 #include "Util/Animation.hpp"
 #include "Util/TransformUtils.hpp"
-#include <unordered_map>
+#include "Util/Input.hpp"
 #include <vector>
 #include <iostream>
 
@@ -24,7 +24,7 @@ namespace Util {
             int currentInterval = GetIntervalForFrame(animation->GetCurrentFrameIndex());
             animation->SetInterval(currentInterval);
 
-            glm::vec2 currentOffset = Getoffset(animation->GetCurrentFrameIndex());
+            glm::vec2 currentOffset = (m_Transform.scale)*(Getoffset(animation->GetCurrentFrameIndex()));
             Transform transform={m_Transform.translation+currentOffset,0,m_Transform.scale};
 
             auto data = ConvertToUniformBufferData(
@@ -64,18 +64,19 @@ namespace Util {
             return m_Drawable->GetSize();
         }
 
-        glm::vec2 GetPivot() {
-            return m_Pivot;
+        bool IsAnimationEnds() {
+            auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
+            return (animation->GetCurrentFrameIndex() == animation->GetFrameCount() - 1)&&(animation->GetState()==Animation::State::ENDED);
         }
 
-        bool IsAnimationEnds() const {
+        void AnimationPlay() {
             auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
-            return animation->GetCurrentFrameIndex() == animation->GetFrameCount() - 1;
+            animation->Play();
         }
 
-        void SetCooldown(float cooldown) const {
+        void AnimationPause() {
             auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
-            animation->SetCooldown(cooldown);
+            animation->Pause();
         }
 
         void SetFrameIntervals(const std::vector<int>& intervals) {
@@ -109,12 +110,17 @@ namespace Util {
             std::cout<<"NoOffset: "<<m_Transform.translation.x<<" "<<m_Transform.translation.y<<std::endl;
             std::cout<<"Offset: "<<transform.translation.x<<" "<<transform.translation.y<<std::endl;
         }
+        void TestPictureoffset() {
+            auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
+            if(Input::IsKeyDown(Keycode::MOUSE_LB)) {
+                AnimationPlay();
+            }
+        }
 
     private:
         glm::vec2 custom_size;
         std::vector<int> frameIntervals;
         std::vector<glm::vec2> frameOffset;
-        glm::vec2 originalPostion;
     };
 } // namespace Util
 #endif //ANIMATIONSPACE_HPP

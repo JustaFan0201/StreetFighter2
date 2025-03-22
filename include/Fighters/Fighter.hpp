@@ -34,42 +34,35 @@ namespace Util {
 
         virtual void IdleStateEnter(){}
         virtual void IdleStateUpload(){}
-        virtual void IdleStateExit(){}
 
         virtual void WalkStateEnter(){}
         virtual void WalkStateUpload(){}
-        virtual void WalkStateExit(){}
 
         virtual void JumpStateEnter(){}
         virtual void JumpStateUpload(){}
-        virtual void JumpStateExit(){}
 
         virtual void LPStateEnter(){}
         virtual void LPStateUpload(){}
-        virtual void LPStateExit(){}
 
         virtual void MPStateEnter(){}
         virtual void MPStateUpload(){}
-        virtual void MPStateExit(){}
+
+        virtual void HPStateEnter(){}
+        virtual void HPStateUpload(){}
 
         virtual void LKStateEnter(){}
         virtual void LKStateUpload(){}
-        virtual void LKStateExit(){}
 
         virtual void MKStateEnter(){}
         virtual void MKStateUpload(){}
-        virtual void MKStateExit(){}
 
         virtual void HKStateEnter(){}
         virtual void HKStateUpload(){}
-        virtual void HKStateExit(){}
 
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
 
         void SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
-        void SetOriginalPostion(const glm::vec2 Original) {originalPostion=Original;}
-        void SetNowEqualOriginalPostion() {ActionNow->SetTransformXY(originalPostion);}
 
         std::string GetFace() const { return face; }
         std::string GetNameTag() const { return nametag; }
@@ -91,6 +84,9 @@ namespace Util {
         void ReSize();
         void Upload(std::shared_ptr<Core::Context> context);
         void DrawCharacter();
+
+        void PrintPostion();
+        void PostionTester();
     protected:
         std::string m_name;
         std::string face;
@@ -102,7 +98,6 @@ namespace Util {
         FighterState currentState;
         std::unordered_map<FighterState, std::function<void()>> StateEnter;
         std::unordered_map<FighterState, std::function<void()>> StateUpload;
-        std::unordered_map<FighterState, std::function<void()>> StateExit;
         std::unordered_map<FighterState, std::vector<std::string>> animations;
         std::unordered_map<FighterState, std::vector<int>> frames;
         std::unordered_map<FighterState, std::vector<glm::vec2>> offset;
@@ -110,12 +105,14 @@ namespace Util {
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<BGM> m_BGM;
 
-        float Gravity=-5200;
+        float Gravity=-5000;
         velocity velocity;
         Initialvelocity Initialvelocity;
-        glm::vec2 originalPostion;
         float FloorOfCharacter;
         int direction;
+
+        glm::vec2 mouse;
+        std::vector<glm::vec2> Allofmouse;
     };
 }
 #endif //FIGHTER_HPP
