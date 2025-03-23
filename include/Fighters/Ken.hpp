@@ -12,6 +12,8 @@ namespace Util {
     public:
         Ken();
         void LoadAnimations() override;
+        void LoadOffsetVelocity() override;
+        void LoadAllBox()override;
     };
 }
 #endif //KEN_HPP

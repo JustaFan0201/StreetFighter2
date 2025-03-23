@@ -14,13 +14,22 @@ namespace Util {
         StateInit();
         Ryu::LoadAnimations();
         Ryu::LoadOffsetVelocity();
+        Ryu::LoadAllBox();
         ActionNow = std::make_shared<AnimationSpace>(
             animations[FighterState::Idle],
             true,
             120,
             true,
-            5
+            4
         );
+
+        BlackPicture=std::make_shared<AnimationSpace>(
+                std::vector<std::string> {RESOURCE_DIR"/EditMaterial/black.png"},
+                true,
+                120,
+                true,
+                6
+                );
     }
     void Ryu::LoadAnimations() {
         animations[FighterState::Idle] = ActionInit(5,"Idle");
@@ -29,6 +38,7 @@ namespace Util {
         animations[FighterState::JumpUP] = ActionInit(7, "JumpUP");
         animations[FighterState::JumpForward] = ActionInit(6, "JumpForward");
         animations[FighterState::JumpBackward] = ActionInit(6, "JumpBackward");
+        animations[FighterState::Crouchdown] = ActionInit(3, "Crouchdown");
         animations[FighterState::LP] = ActionInit(3, "LP");
         animations[FighterState::MP] = ActionInit(5, "MP");
         animations[FighterState::HP] = ActionInit(6, "HP");
@@ -42,6 +52,7 @@ namespace Util {
         frames[FighterState::JumpUP]={120,120,120,120,120,120,120};
         frames[FighterState::JumpForward]={60,90,120,120,90,60};
         frames[FighterState::JumpBackward]={60,90,120,120,90,60};
+        frames[FighterState::Crouchdown]={60,60,60};
         frames[FighterState::LP]={30,60,90};
         frames[FighterState::MP]={30,60,120,60,30};
         frames[FighterState::HP]={60,90,180,90,60,60};
@@ -64,12 +75,30 @@ namespace Util {
         offset[FighterState::JumpUP]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
         offset[FighterState::JumpForward]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
         offset[FighterState::JumpBackward]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::Crouchdown]={{10,-9},{31,-30},{35,-43}};
         offset[FighterState::LP]={{5,3},{44,2},{3,3}};
         offset[FighterState::MP]={{14,5},{-9,5},{56,5},{-10,6},{15,6}};
         offset[FighterState::HP]={{15,5},{23,5},{67,5},{40,34},{23,6},{15,5}};
         offset[FighterState::LK]={{15,6},{64,4},{140,4},{64,5}};
         offset[FighterState::MK]={{20,12},{-25,10},{-25,10},{-27,9},{23,11}};
         offset[FighterState::HK]={{32,5},{45,12},{68,11},{44,-11},{3,-9}};
+        offset[FighterState::HK]={{32,5},{45,12},{68,11},{44,-11},{3,-9}};
+    }
+    void Ryu::LoadAllBox() {
+        pushbox.size[FighterState::Idle]={100,200};
+        pushbox.size[FighterState::Forward]={100,200};
+        pushbox.size[FighterState::Backward]={100,200};
+        pushbox.size[FighterState::JumpUP]={100,200};
+        pushbox.size[FighterState::JumpForward]={100,200};
+        pushbox.size[FighterState::JumpBackward]={100,200};
+        pushbox.size[FighterState::Crouchdown]={100,120};
+        pushbox.size[FighterState::LP]={100,200};
+        pushbox.size[FighterState::MP]={100,200};
+        pushbox.size[FighterState::HP]={100,200};
+        pushbox.size[FighterState::LK]={100,200};
+        pushbox.size[FighterState::MK]={100,200};
+        pushbox.size[FighterState::HK]={100,200};
+        pushbox.size[FighterState::HK]={100,200};
     }
     void Ryu::IdleStateEnter(){
         velocity={0,0};
@@ -86,6 +115,9 @@ namespace Util {
         else if (Input::IsKeyPressed(Keycode::A)) {
             if (direction < 0) {ChangeState(FighterState::Forward);}
             else {ChangeState(FighterState::Backward);}
+        }
+        else if (Input::IsKeyPressed(Keycode::S)) {
+            ChangeState(FighterState::Crouchdown);
         }
         else if (Input::IsKeyDown(Keycode::W)) {
             ChangeState(FighterState::JumpUP);
@@ -151,6 +183,15 @@ namespace Util {
     void Ryu::JumpStateUpload(){
         velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
         if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {
+            ChangeState(FighterState::Idle);
+        }
+    }
+
+    void Ryu::CrouchdownEnter(){
+        SetAnimation(currentState,frames[currentState],offset[currentState]);
+    }
+    void Ryu::CrouchdownUpload() {
+        if (Input::IsKeyUp(Keycode::S)){
             ChangeState(FighterState::Idle);
         }
     }

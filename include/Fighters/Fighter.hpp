@@ -41,6 +41,9 @@ namespace Util {
         virtual void JumpStateEnter(){}
         virtual void JumpStateUpload(){}
 
+        virtual void CrouchdownEnter(){}
+        virtual void CrouchdownUpload(){}
+
         virtual void LPStateEnter(){}
         virtual void LPStateUpload(){}
 
@@ -61,8 +64,10 @@ namespace Util {
 
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
+        virtual void LoadAllBox(){}
 
         void SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
+        void SetEnemy(std::shared_ptr<Fighter> enemy){this->enemy=enemy;}
 
         std::string GetFace() const { return face; }
         std::string GetNameTag() const { return nametag; }
@@ -73,6 +78,7 @@ namespace Util {
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
         bool GetCharacterIsOnFloor() const {return ActionNow->m_Transform.translation.y==FloorOfCharacter;}
+        glm::vec2 GetCurrentOffsetPostion() {return ActionNow->m_Transform.translation+offset[currentState][ActionNow->GetCurrentFrameIndex()];}
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
@@ -82,11 +88,15 @@ namespace Util {
         void ChangeState(FighterState newState);
         void BorderDection(int MaxWidth);
         void ReSize();
+
         void Upload(std::shared_ptr<Core::Context> context);
         void DrawCharacter();
 
+        //debugTest
         void PrintPostion();
         void PostionTester();
+        void PushBoxTester();
+
     protected:
         std::string m_name;
         std::string face;
@@ -104,13 +114,16 @@ namespace Util {
 
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<BGM> m_BGM;
+        std::shared_ptr<Fighter> enemy;
 
         float Gravity=-5000;
         velocity velocity;
         Initialvelocity Initialvelocity;
         float FloorOfCharacter;
         int direction;
-
+        PushBox pushbox;
+        //debugTest
+        std::shared_ptr<AnimationSpace> BlackPicture=nullptr;
         glm::vec2 mouse;
         std::vector<glm::vec2> Allofmouse;
     };

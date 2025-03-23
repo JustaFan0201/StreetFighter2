@@ -1,4 +1,5 @@
 #include "Fighters/Fighter.hpp"
+
 namespace Util {
     void Fighter::ChangeState(FighterState newState) {
         if (currentState != newState) {
@@ -9,6 +10,7 @@ namespace Util {
             }
         }
     }
+
     void Fighter::SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets) {
         if (animations.find(action) != animations.end()) {
             ActionNow->SetDrawable(std::make_shared<Animation>(animations[action], true, 60, false));
@@ -32,6 +34,7 @@ namespace Util {
         StateEnter[FighterState::JumpUP] = [this] { JumpStateEnter(); };
         StateEnter[FighterState::JumpForward] = [this] { JumpStateEnter(); };
         StateEnter[FighterState::JumpBackward] = [this] { JumpStateEnter(); };
+        StateEnter[FighterState::Crouchdown] = [this] { CrouchdownEnter(); };
         StateEnter[FighterState::LP] = [this] { LPStateEnter(); };
         StateEnter[FighterState::MP] = [this] { MPStateEnter(); };
         StateEnter[FighterState::HP] = [this] { HPStateEnter(); };
@@ -45,6 +48,7 @@ namespace Util {
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
+        StateUpload[FighterState::Crouchdown] = [this] { CrouchdownUpload(); };
         StateUpload[FighterState::LP] = [this] { LPStateUpload(); };
         StateUpload[FighterState::MP] = [this] { MPStateUpload(); };
         StateUpload[FighterState::HP] = [this] { HPStateUpload(); };
@@ -73,6 +77,12 @@ namespace Util {
                                2.0f);
         direction = side;
         currentState = FighterState::Idle;
+
+        if(BlackPicture!=nullptr) {
+            BlackPicture->SetDrawData({position, 0, {1, 1}},
+                                   pushbox.size[currentState],
+                                   4.0f);
+        }
     }
 
     void Fighter::ReSize() {
@@ -116,6 +126,7 @@ namespace Util {
         }
         std::cout <<"}"<< std::endl;
     }
+
     void Fighter::PostionTester() {
         if (Input::IsKeyDown(Keycode::MOUSE_MB)) {
             mouse = Input::GetCursorPosition();
@@ -130,20 +141,42 @@ namespace Util {
         }
     }
 
+    void Fighter::PushBoxTester() {
+        if(BlackPicture!=nullptr) {
+            if(Input::IsKeyDown(Keycode::O)) {
+                BlackPicture->SetVisible(true);
+            }
+            if(Input::IsKeyDown(Keycode::P)) {
+                BlackPicture->SetVisible(false);
+            }
+        }
+    }
+
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {
         PostionTester();
+        PushBoxTester();
 
         auto currentEnter = StateUpload.find(currentState);
         currentEnter->second();
 
         glm::vec2 position={ActionNow->GetTransform().translation.x+velocity.x*Time::GetDeltaTimeMs()/1000,
             ActionNow->GetTransform().translation.y+velocity.y*Time::GetDeltaTimeMs()/1000};
+
         ActionNow->SetTransform({position,0,{direction,1}});
         ReSize();
         BorderDection(context->GetWindowWidth()/2);
+
+        if(BlackPicture!=nullptr) {
+            BlackPicture->SetDrawData({GetCurrentOffsetPostion(), 0, {1, 1}},
+                           pushbox.size[currentState],
+                           4.0f);
+        }
     }
 
     void Fighter::DrawCharacter() {
         ActionNow->custom_Draw();
+        if(BlackPicture!=nullptr) {
+            BlackPicture->custom_Draw();
+        }
     }
 }

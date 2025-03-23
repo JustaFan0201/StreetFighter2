@@ -102,6 +102,13 @@ namespace Util {
             }
             return {0,0};
         }
+
+        int GetCurrentFrameIndex() {
+            auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
+            int index=static_cast<int>(animation->GetCurrentFrameIndex());
+            return index;
+        }
+
         void TestPostion() {
             auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
             glm::vec2 currentOffset = Getoffset(animation->GetCurrentFrameIndex());

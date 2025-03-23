@@ -22,30 +22,35 @@ namespace Util {
         JumpUP,
         JumpForward,
         JumpBackward,
-        Squatdown,
-        SquatdownBackward,
+        Crouchdown,
         LP,
         MP,
         HP,
         LK,
         MK,
         HK,
-        SquatdownLP,
-        SquatdownMP,
-        SquatdownHP,
-        SquatdownLK,
-        SquatdownMK,
-        SquatdownHK,
+        CrouchdownLP,
+        CrouchdownMP,
+        CrouchdownHP,
+        CrouchdownLK,
+        CrouchdownMK,
+        CrouchdownHK,
         JumpLP,
         JumpMP,
         JumpHP,
         JumpLK,
         JumpMK,
-        JumpHK
+        JumpHK,
+        Special_1,
+        Special_2,
+        Special_3
     };
     struct Initialvelocity {
         std::unordered_map<FighterState,float> x;
         std::unordered_map<FighterState,float> y;
+    };
+    struct PushBox {
+        std::unordered_map<FighterState, glm::vec2> size;
     };
 }
 

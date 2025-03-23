@@ -13,6 +13,7 @@ namespace Util {
         Ryu();
         void LoadAnimations() override;
         void LoadOffsetVelocity() override;
+        void LoadAllBox()override;
 
         void IdleStateEnter()override;
         void IdleStateUpload()override;
@@ -22,6 +23,9 @@ namespace Util {
 
         void JumpStateEnter()override;
         void JumpStateUpload()override;
+
+        void CrouchdownEnter()override;
+        void CrouchdownUpload()override;
 
         void LPStateEnter()override;
         void LPStateUpload()override;

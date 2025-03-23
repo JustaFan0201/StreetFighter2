@@ -13,13 +13,22 @@ namespace Util {
         BackgroundInit(14);
         StateInit();
         Ken::LoadAnimations();
+        Ken::LoadOffsetVelocity();
+        Ken::LoadAllBox();
         ActionNow = std::make_shared<AnimationSpace>(
             animations[FighterState::Idle],
-            true,
+            false,
             60,
             true,
             5
         );
+        BlackPicture=std::make_shared<AnimationSpace>(
+                std::vector<std::string> {RESOURCE_DIR"/EditMaterial/black.png"},
+                true,
+                120,
+                true,
+                6
+                );
     }
     void Ken::LoadAnimations() {
         animations[FighterState::Idle] = ActionInit(6,"Idle");
@@ -42,5 +51,19 @@ namespace Util {
         frames[FighterState::LK]={100,100,100,100,100};
         frames[FighterState::MK]={100,100,120,100,100};
         frames[FighterState::HK]={120,120,120,120,120};
+    }
+    void Ken::LoadOffsetVelocity() {
+        Initialvelocity.x[FighterState::Forward]=400;
+        Initialvelocity.x[FighterState::Backward]=-400;
+        Initialvelocity.x[FighterState::JumpForward]=500;
+        Initialvelocity.x[FighterState::JumpBackward]=-500;
+        Initialvelocity.y[FighterState::JumpForward]=2100;
+        Initialvelocity.y[FighterState::JumpBackward]=2100;
+        Initialvelocity.y[FighterState::JumpUP]=2000;
+
+        offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0},{0,0}};
+    }
+    void Ken::LoadAllBox() {
+        pushbox.size[FighterState::Idle]={100,200};
     }
 }
