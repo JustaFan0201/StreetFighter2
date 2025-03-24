@@ -65,5 +65,8 @@ namespace Util {
     }
     void Ken::LoadAllBox() {
         pushbox.size[FighterState::Idle]={100,200};
+        pushbox.size[FighterState::Crouchdown]={100,120};
+        pushbox.offset[FighterState::Idle]={15,0};
+        pushbox.offset[FighterState::Crouchdown]={15,-43};
     }
 }

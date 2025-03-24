@@ -86,19 +86,9 @@ namespace Util {
     }
     void Ryu::LoadAllBox() {
         pushbox.size[FighterState::Idle]={100,200};
-        pushbox.size[FighterState::Forward]={100,200};
-        pushbox.size[FighterState::Backward]={100,200};
-        pushbox.size[FighterState::JumpUP]={100,200};
-        pushbox.size[FighterState::JumpForward]={100,200};
-        pushbox.size[FighterState::JumpBackward]={100,200};
         pushbox.size[FighterState::Crouchdown]={100,120};
-        pushbox.size[FighterState::LP]={100,200};
-        pushbox.size[FighterState::MP]={100,200};
-        pushbox.size[FighterState::HP]={100,200};
-        pushbox.size[FighterState::LK]={100,200};
-        pushbox.size[FighterState::MK]={100,200};
-        pushbox.size[FighterState::HK]={100,200};
-        pushbox.size[FighterState::HK]={100,200};
+        pushbox.offset[FighterState::Idle]={15,0};
+        pushbox.offset[FighterState::Crouchdown]={15,-43};
     }
     void Ryu::IdleStateEnter(){
         velocity={0,0};

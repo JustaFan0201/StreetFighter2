@@ -76,9 +76,21 @@ namespace Util {
         std::vector<std::string> GetStageBackground() { return stage_background; }
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
+
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
         bool GetCharacterIsOnFloor() const {return ActionNow->m_Transform.translation.y==FloorOfCharacter;}
-        glm::vec2 GetCurrentOffsetPostion() {return ActionNow->m_Transform.translation+offset[currentState][ActionNow->GetCurrentFrameIndex()];}
+        glm::vec2 GetCurrentPosition() const {return ActionNow->m_Transform.translation;}
+        glm::vec2 GetCurrentOffsetPosition() {return ActionNow->m_Transform.translation+offset[currentState][ActionNow->GetCurrentFrameIndex()]*ActionNow->GetTransform().scale;}
+        glm::vec2 GetCurrentPushbox() {return pushbox.size.count(currentState) ? pushbox.size[currentState] : pushbox.size[FighterState::Idle];}
+        glm::vec2 GetCurrentPushboxOffset(){return (pushbox.offset.count(currentState) ? pushbox.offset[currentState] : pushbox.offset[FighterState::Idle])*ActionNow->GetTransform().scale;}
+
+        bool IsCollidedEnemy() {
+            return RectangleOverlap(
+                GetCurrentPosition()+GetCurrentPushboxOffset(),
+                GetCurrentPushbox(),
+                enemy->GetCurrentPosition()+enemy->GetCurrentPushboxOffset(),
+                enemy->GetCurrentPushbox());
+        }
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
@@ -86,8 +98,10 @@ namespace Util {
         void StateInit();
 
         void ChangeState(FighterState newState);
-        void BorderDection(int MaxWidth);
+        void BorderDetection(int MaxWidth);
+        void DirectionDetection();
         void ReSize();
+        void UploadStateAndNewXY();
 
         void Upload(std::shared_ptr<Core::Context> context);
         void DrawCharacter();

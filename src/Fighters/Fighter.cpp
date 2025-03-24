@@ -96,17 +96,13 @@ namespace Util {
         );
     }
 
-    void Fighter::BorderDection(int MaxWidth) {
+    void Fighter::BorderDetection(int MaxWidth) {
         switch (currentState) {
-            case FighterState::Idle:
-            case FighterState::Forward:
-            case FighterState::Backward:
-            case FighterState::JumpUP:
-            case FighterState::JumpForward:
-            case FighterState::JumpBackward:
-                if (ActionNow->m_Transform.translation.x > MaxWidth - abs(ActionNow->GetCustomSize().x) / 2||
-                    ActionNow->m_Transform.translation.x < -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2) {
-                    ActionNow->m_Transform.translation.x = std::clamp(ActionNow->m_Transform.translation.x,
+            case FighterState::Idle:case FighterState::Forward:case FighterState::Backward:
+            case FighterState::JumpUP:case FighterState::JumpForward:case FighterState::JumpBackward:
+                if (GetCurrentPosition().x > MaxWidth - abs(ActionNow->GetCustomSize().x) / 2||
+                    GetCurrentPosition().x < -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2) {
+                    ActionNow->m_Transform.translation.x = std::clamp(GetCurrentPosition().x,
                         -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2,
                         MaxWidth - abs(ActionNow->GetCustomSize().x)  / 2);
                     }
@@ -117,6 +113,49 @@ namespace Util {
             default:
                 break;
         }
+        if (IsCollidedEnemy()) {
+            glm::vec2 myPos = GetCurrentPosition() + GetCurrentPushboxOffset();
+            glm::vec2 enemyPos = enemy->GetCurrentPosition() + enemy->GetCurrentPushboxOffset();
+            glm::vec2 myPushboxSize = GetCurrentPushbox();
+            glm::vec2 enemyPushboxSize = enemy->GetCurrentPushbox();
+
+            float enemyLeft = enemyPos.x - enemyPushboxSize.x / 2;
+            float enemyRight = enemyPos.x + enemyPushboxSize.x / 2;
+
+            if (myPos.x <= enemyPos.x) {
+                ActionNow->m_Transform.translation.x = std::max(enemyLeft - myPushboxSize.x / 2, -MaxWidth + myPushboxSize.x / 2)-GetCurrentPushboxOffset().x;
+                if(enemy->currentState==FighterState::Idle||enemy->currentState==FighterState::Crouchdown||enemy->currentState==FighterState::JumpUP||
+                    enemy->currentState==FighterState::JumpForward||enemy->currentState==FighterState::Backward) {
+                    enemy->ActionNow->m_Transform.translation.x+=400*Time::GetDeltaTimeMs()/1000;
+                }
+            } else {
+                ActionNow->m_Transform.translation.x = std::min(enemyRight + myPushboxSize.x / 2, MaxWidth - myPushboxSize.x / 2)-GetCurrentPushboxOffset().x;
+                if(enemy->currentState==FighterState::Idle||enemy->currentState==FighterState::Crouchdown||enemy->currentState==FighterState::JumpUP||
+                    enemy->currentState==FighterState::JumpForward||enemy->currentState==FighterState::Backward) {
+                    enemy->ActionNow->m_Transform.translation.x+=-400*Time::GetDeltaTimeMs()/1000;
+                    }
+            }
+        }
+    }
+
+    void Fighter::DirectionDetection() {
+        if(GetCurrentPosition().x+GetCurrentPushbox().x+GetCurrentPushboxOffset().x
+            <=enemy->GetCurrentPosition().x+enemy->GetCurrentPushboxOffset().x) {
+            direction=static_cast<int>(FighterDirection::Left);
+        }
+        else if(GetCurrentPosition().x+GetCurrentPushboxOffset().x
+            >=enemy->GetCurrentPosition().x+enemy->GetCurrentPushbox().x+enemy->GetCurrentPushboxOffset().x) {
+            direction=static_cast<int>(FighterDirection::Right);
+        }
+    }
+
+    void Fighter::UploadStateAndNewXY() {
+        auto currentEnter = StateUpload.find(currentState);
+        currentEnter->second();
+
+        glm::vec2 position={ActionNow->GetTransform().translation.x+velocity.x*Time::GetDeltaTimeMs()/1000,
+            ActionNow->GetTransform().translation.y+velocity.y*Time::GetDeltaTimeMs()/1000};
+        ActionNow->SetTransform({position,0,{direction,1}});
     }
 
     void Fighter::PrintPostion() {
@@ -156,19 +195,14 @@ namespace Util {
         PostionTester();
         PushBoxTester();
 
-        auto currentEnter = StateUpload.find(currentState);
-        currentEnter->second();
-
-        glm::vec2 position={ActionNow->GetTransform().translation.x+velocity.x*Time::GetDeltaTimeMs()/1000,
-            ActionNow->GetTransform().translation.y+velocity.y*Time::GetDeltaTimeMs()/1000};
-
-        ActionNow->SetTransform({position,0,{direction,1}});
+        UploadStateAndNewXY();
         ReSize();
-        BorderDection(context->GetWindowWidth()/2);
-
+        DirectionDetection();
+        BorderDetection(context->GetWindowWidth()/2);
+        //debug
         if(BlackPicture!=nullptr) {
-            BlackPicture->SetDrawData({GetCurrentOffsetPostion(), 0, {1, 1}},
-                           pushbox.size[currentState],
+            BlackPicture->SetDrawData({GetCurrentPosition()+GetCurrentPushboxOffset(), 0, {direction, 1}},
+                           GetCurrentPushbox(),
                            4.0f);
         }
     }
