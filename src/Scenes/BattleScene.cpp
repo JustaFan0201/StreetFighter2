@@ -25,8 +25,8 @@ namespace Util {
         m_BGM->Play(-1);
         //BGM設定
         start_time = Time::GetElapsedTimeMs();
-        player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left));
-        enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right));
+        player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left),1);
+        enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right),2);
 
         player->SetEnemy(enemy);
         enemy->SetEnemy(player);

@@ -22,7 +22,6 @@ namespace Util {
             true,
             4
         );
-
         BlackPicture=std::make_shared<AnimationSpace>(
                 std::vector<std::string> {RESOURCE_DIR"/EditMaterial/black.png"},
                 true,
@@ -61,6 +60,7 @@ namespace Util {
         frames[FighterState::HK]={60,90,180,90,90};
     }
     void Ryu::LoadOffsetVelocity() {
+        Gravity=-4800;
         Initialvelocity.x[FighterState::Forward]=400;
         Initialvelocity.x[FighterState::Backward]=-400;
         Initialvelocity.x[FighterState::JumpForward]=500;
@@ -70,11 +70,6 @@ namespace Util {
         Initialvelocity.y[FighterState::JumpUP]=2000;
 
         offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0},{0,0}};
-        offset[FighterState::Forward]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
-        offset[FighterState::Backward]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
-        offset[FighterState::JumpUP]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
-        offset[FighterState::JumpForward]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
-        offset[FighterState::JumpBackward]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
         offset[FighterState::Crouchdown]={{10,-9},{31,-30},{35,-43}};
         offset[FighterState::LP]={{5,3},{44,2},{3,3}};
         offset[FighterState::MP]={{14,5},{-9,5},{56,5},{-10,6},{15,6}};
@@ -90,152 +85,4 @@ namespace Util {
         pushbox.offset[FighterState::Idle]={15,0};
         pushbox.offset[FighterState::Crouchdown]={15,-43};
     }
-    void Ryu::IdleStateEnter(){
-        velocity={0,0};
-        SetAnimation(currentState,frames[currentState],offset[currentState]);
-    }
-    void Ryu::IdleStateUpload() {
-        if (GetAnimationIsEnd()) {
-            ActionNow->AnimationPlay();
-        }
-        if (Input::IsKeyPressed(Keycode::D)) {
-            if (direction > 0) {ChangeState(FighterState::Forward);}
-            else {ChangeState(FighterState::Backward);}
-        }
-        else if (Input::IsKeyPressed(Keycode::A)) {
-            if (direction < 0) {ChangeState(FighterState::Forward);}
-            else {ChangeState(FighterState::Backward);}
-        }
-        else if (Input::IsKeyPressed(Keycode::S)) {
-            ChangeState(FighterState::Crouchdown);
-        }
-        else if (Input::IsKeyDown(Keycode::W)) {
-            ChangeState(FighterState::JumpUP);
-        }
-        else if (Input::IsKeyDown(Keycode::T)) {
-            ChangeState(FighterState::LP);
-        }
-        else if (Input::IsKeyDown(Keycode::Y)) {
-            ChangeState(FighterState::MP);
-        }
-        else if (Input::IsKeyDown(Keycode::U)) {
-            ChangeState(FighterState::HP);
-        }
-        else if (Input::IsKeyDown(Keycode::G)) {
-            ChangeState(FighterState::LK);
-        }
-        else if (Input::IsKeyDown(Keycode::H)) {
-            ChangeState(FighterState::MK);
-        }
-        else if (Input::IsKeyDown(Keycode::J)) {
-            ChangeState(FighterState::HK);
-        }
-    }
-
-    void Ryu::WalkStateEnter() {
-        velocity.x=direction*Initialvelocity.x[currentState];
-        SetAnimation(currentState,frames[currentState],offset[currentState]);
-    }
-    void Ryu::WalkStateUpload() {
-        if (GetAnimationIsEnd()) {
-            ActionNow->AnimationPlay();
-        }
-        switch (currentState) {
-            case FighterState::Forward:
-                if (Input::IsKeyDown(Keycode::W)) {
-                    ChangeState(FighterState::JumpForward);
-                }
-                if ((Input::IsKeyUp(Keycode::D) && direction > 0) ||
-                    (Input::IsKeyUp(Keycode::A) && direction < 0)) {
-                    ChangeState(FighterState::Idle);
-                    }
-            break;
-            case FighterState::Backward:
-                if (Input::IsKeyDown(Keycode::W)) {
-                    ChangeState(FighterState::JumpBackward);
-                }
-                if ((Input::IsKeyUp(Keycode::A) && direction > 0) ||
-                    (Input::IsKeyUp(Keycode::D) && direction < 0)) {
-                    ChangeState(FighterState::Idle);
-                    }
-            break;
-            default:
-                break;
-        }
-    }
-
-
-    void Ryu::JumpStateEnter(){
-        velocity.x=direction*Initialvelocity.x[currentState];
-        velocity.y=Initialvelocity.y[currentState];
-        SetAnimation(currentState,frames[currentState],offset[currentState]);
-    }
-    void Ryu::JumpStateUpload(){
-        velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
-        if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {
-            ChangeState(FighterState::Idle);
-        }
-    }
-
-    void Ryu::CrouchdownEnter(){
-        SetAnimation(currentState,frames[currentState],offset[currentState]);
-    }
-    void Ryu::CrouchdownUpload() {
-        if (Input::IsKeyUp(Keycode::S)){
-            ChangeState(FighterState::Idle);
-        }
-    }
-
-    void Ryu::LPStateEnter() {
-        SetAnimation(currentState,frames[currentState],offset[currentState]);
-    }
-    void Ryu::LPStateUpload() {
-        if (GetAnimationIsEnd()) {
-            ChangeState(FighterState::Idle);
-        }
-    }
-
-    void Ryu::MPStateEnter(){
-        SetAnimation(currentState,frames[currentState],offset[currentState]);
-    }
-    void Ryu::MPStateUpload() {
-        if (GetAnimationIsEnd()) {
-            ChangeState(FighterState::Idle);
-        }
-    }
-
-    void Ryu::HPStateEnter(){
-        SetAnimation(currentState,frames[currentState],offset[currentState]);
-    }
-    void Ryu::HPStateUpload() {
-        if (GetAnimationIsEnd()) {
-            ChangeState(FighterState::Idle);
-        }
-    }
-
-    void Ryu::LKStateEnter() {
-        SetAnimation(currentState,frames[currentState],offset[currentState]);
-    }
-    void Ryu::LKStateUpload() {
-        if (GetAnimationIsEnd()) {
-            ChangeState(FighterState::Idle);
-        }
-    }
-    void Ryu::MKStateEnter() {
-        SetAnimation(currentState,frames[currentState],offset[currentState]);
-    }
-    void Ryu::MKStateUpload() {
-        if (GetAnimationIsEnd()) {
-            ChangeState(FighterState::Idle);
-        }
-    }
-    void Ryu::HKStateEnter() {
-        SetAnimation(currentState,frames[currentState],offset[currentState]);
-    }
-    void Ryu::HKStateUpload() {
-        if (GetAnimationIsEnd()) {
-            ChangeState(FighterState::Idle);
-        }
-    }
-
 }

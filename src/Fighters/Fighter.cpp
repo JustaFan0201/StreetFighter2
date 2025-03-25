@@ -29,8 +29,8 @@ namespace Util {
 
     void Fighter::StateInit() {
         StateEnter[FighterState::Idle] = [this] { IdleStateEnter(); };
-        StateEnter[FighterState::Forward] = [this] { WalkStateEnter(); };
-        StateEnter[FighterState::Backward] = [this] { WalkStateEnter(); };
+        StateEnter[FighterState::Forward] = [this] { ForwardStateEnter(); };
+        StateEnter[FighterState::Backward] = [this] { BackwardStateEnter(); };
         StateEnter[FighterState::JumpUP] = [this] { JumpStateEnter(); };
         StateEnter[FighterState::JumpForward] = [this] { JumpStateEnter(); };
         StateEnter[FighterState::JumpBackward] = [this] { JumpStateEnter(); };
@@ -43,8 +43,8 @@ namespace Util {
         StateEnter[FighterState::HK] = [this] { HKStateEnter(); };
 
         StateUpload[FighterState::Idle] = [this] { IdleStateUpload(); };
-        StateUpload[FighterState::Forward] = [this] { WalkStateUpload(); };
-        StateUpload[FighterState::Backward] = [this] { WalkStateUpload(); };
+        StateUpload[FighterState::Forward] = [this] { ForwardStateUpload(); };
+        StateUpload[FighterState::Backward] = [this] { BackwardStateUpload(); };
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
@@ -68,7 +68,7 @@ namespace Util {
         return Allframe;
     }
 
-    void Fighter::InitPosition(glm::vec2 position, int side) {
+    void Fighter::InitPosition(glm::vec2 position, int side,int Whichplayer) {
         float size_x=ActionNow->GetOriginalSize().x * 3;
         float size_y=ActionNow->GetOriginalSize().y * 3;
         FloorOfCharacter=ActionNow->GetOriginalSize().y * 3/2 + position.y;
@@ -77,6 +77,7 @@ namespace Util {
                                2.0f);
         direction = side;
         currentState = FighterState::Idle;
+        controller->SetPlayerController(Whichplayer);
 
         if(BlackPicture!=nullptr) {
             BlackPicture->SetDrawData({position, 0, {1, 1}},
@@ -138,15 +139,16 @@ namespace Util {
         }
     }
 
-    void Fighter::DirectionDetection() {
+    int Fighter::GetDirection() {
         if(GetCurrentPosition().x+GetCurrentPushbox().x+GetCurrentPushboxOffset().x
             <=enemy->GetCurrentPosition().x+enemy->GetCurrentPushboxOffset().x) {
-            direction=static_cast<int>(FighterDirection::Left);
+            return static_cast<int>(FighterDirection::Left);
         }
         else if(GetCurrentPosition().x+GetCurrentPushboxOffset().x
             >=enemy->GetCurrentPosition().x+enemy->GetCurrentPushbox().x+enemy->GetCurrentPushboxOffset().x) {
-            direction=static_cast<int>(FighterDirection::Right);
+            return static_cast<int>(FighterDirection::Right);
         }
+        return direction;
     }
 
     void Fighter::UploadStateAndNewXY() {
@@ -197,7 +199,6 @@ namespace Util {
 
         UploadStateAndNewXY();
         ReSize();
-        DirectionDetection();
         BorderDetection(context->GetWindowWidth()/2);
         //debug
         if(BlackPicture!=nullptr) {
@@ -213,4 +214,120 @@ namespace Util {
             BlackPicture->custom_Draw();
         }
     }
+    //Actions
+    void Fighter::IdleStateEnter(){
+        velocity={0,0};
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::IdleStateUpload() {
+        if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
+        else if (controller->isForward(direction)) {ChangeState(FighterState::Forward);}
+        else if (controller->isBackward(direction)) {ChangeState(FighterState::Backward);}
+        else if (Input::IsKeyPressed(controller->GetKey(Keys::DOWN))) {ChangeState(FighterState::Crouchdown);}
+        else if (Input::IsKeyDown(controller->GetKey(Keys::UP))) {ChangeState(FighterState::JumpUP);}
+        else if (Input::IsKeyDown(controller->GetKey(Keys::LP))) {ChangeState(FighterState::LP);}
+        else if (Input::IsKeyDown(controller->GetKey(Keys::MP))) {ChangeState(FighterState::MP);}
+        else if (Input::IsKeyDown(controller->GetKey(Keys::HP))) {ChangeState(FighterState::HP);}
+        else if (Input::IsKeyDown(controller->GetKey(Keys::LK))) {ChangeState(FighterState::LK);}
+        else if (Input::IsKeyDown(controller->GetKey(Keys::MK))) {ChangeState(FighterState::MK);}
+        else if (Input::IsKeyDown(controller->GetKey(Keys::HK))) {ChangeState(FighterState::HK);}
+        direction=GetDirection();
+    }
+
+    void Fighter::ForwardStateEnter() {
+        velocity.x=direction*Initialvelocity.x[currentState];
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::ForwardStateUpload() {
+        if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
+        if (Input::IsKeyDown(controller->GetKey(Keys::UP))) {ChangeState(FighterState::JumpForward);}
+        if (!controller->isForward(direction)) {ChangeState(FighterState::Idle);}
+        direction=GetDirection();
+    }
+
+    void Fighter::BackwardStateEnter() {
+        velocity.x=direction*Initialvelocity.x[currentState];
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::BackwardStateUpload() {
+        if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
+        if (Input::IsKeyDown(controller->GetKey(Keys::UP))) {ChangeState(FighterState::JumpBackward);}
+        if (!controller->isBackward(direction)) {ChangeState(FighterState::Idle);}
+        direction=GetDirection();
+    }
+
+    void Fighter::JumpStateEnter(){
+        velocity.x=direction*Initialvelocity.x[currentState];
+        velocity.y=Initialvelocity.y[currentState];
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::JumpStateUpload(){
+        velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
+        if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {
+            ChangeState(FighterState::Idle);
+        }
+        direction=GetDirection();
+    }
+
+    void Fighter::CrouchdownEnter(){
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::CrouchdownUpload() {
+        if (Input::IsKeyUp(controller->GetKey(Keys::DOWN))){
+            ChangeState(FighterState::Idle);
+        }
+    }
+
+    void Fighter::LPStateEnter() {
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::LPStateUpload() {
+        if (GetAnimationIsEnd()) {
+            ChangeState(FighterState::Idle);
+        }
+    }
+
+    void Fighter::MPStateEnter(){
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::MPStateUpload() {
+        if (GetAnimationIsEnd()) {
+            ChangeState(FighterState::Idle);
+        }
+    }
+
+    void Fighter::HPStateEnter(){
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::HPStateUpload() {
+        if (GetAnimationIsEnd()) {
+            ChangeState(FighterState::Idle);
+        }
+    }
+
+    void Fighter::LKStateEnter() {
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::LKStateUpload() {
+        if (GetAnimationIsEnd()) {
+            ChangeState(FighterState::Idle);
+        }
+    }
+    void Fighter::MKStateEnter() {
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::MKStateUpload() {
+        if (GetAnimationIsEnd()) {
+            ChangeState(FighterState::Idle);
+        }
+    }
+    void Fighter::HKStateEnter() {
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::HKStateUpload() {
+        if (GetAnimationIsEnd()) {
+            ChangeState(FighterState::Idle);
+        }
+    }
+
 }

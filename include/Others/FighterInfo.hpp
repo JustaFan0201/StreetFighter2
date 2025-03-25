@@ -53,7 +53,6 @@ namespace Util {
         std::unordered_map<FighterState, glm::vec2> size;
         std::unordered_map<FighterState, glm::vec2> offset;
     };
-
     inline bool RectangleOverlap(glm::vec2 Rec1_position, glm::vec2 Rec1_HW,
                                  glm::vec2 Rec2_position, glm::vec2 Rec2_HW) {
 

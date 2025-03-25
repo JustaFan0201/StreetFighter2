@@ -17,10 +17,10 @@ namespace Util {
         Ken::LoadAllBox();
         ActionNow = std::make_shared<AnimationSpace>(
             animations[FighterState::Idle],
-            false,
-            60,
             true,
-            5
+            120,
+            true,
+            4
         );
         BlackPicture=std::make_shared<AnimationSpace>(
                 std::vector<std::string> {RESOURCE_DIR"/EditMaterial/black.png"},
@@ -34,25 +34,33 @@ namespace Util {
         animations[FighterState::Idle] = ActionInit(6,"Idle");
         animations[FighterState::Backward] = ActionInit(6,"Backward");
         animations[FighterState::Forward] = ActionInit(6,"Forward");
+        animations[FighterState::JumpUP] = ActionInit(7, "JumpUP");
+        animations[FighterState::JumpForward] = ActionInit(7, "JumpForward");
+        animations[FighterState::JumpBackward] = ActionInit(7, "JumpBackward");
+        animations[FighterState::Crouchdown] = ActionInit(3, "Crouchdown");
         animations[FighterState::LP] = ActionInit(3, "LP");
-        animations[FighterState::MP] = ActionInit(4, "MP");
-        animations[FighterState::JumpUP] = ActionInit(8, "JumpUP");
-        animations[FighterState::LK] = ActionInit(5, "LK");
+        animations[FighterState::MP] = ActionInit(5, "MP");
+        animations[FighterState::HP] = ActionInit(6, "HP");
+        animations[FighterState::LK] = ActionInit(4, "LK");
         animations[FighterState::MK] = ActionInit(5, "MK");
         animations[FighterState::HK] = ActionInit(5, "HK");
 
-
-        frames[FighterState::Idle]={100, 150, 200, 150, 100,120};
+        frames[FighterState::Idle]={100, 150, 200, 150, 100, 100};
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120, 120, 120};
-        frames[FighterState::LP]={180,240,180};
-        frames[FighterState::MP]={120,120,300};
-        frames[FighterState::JumpUP]={120,120,120,120,120,120,120,120};
-        frames[FighterState::LK]={100,100,100,100,100};
-        frames[FighterState::MK]={100,100,120,100,100};
-        frames[FighterState::HK]={120,120,120,120,120};
+        frames[FighterState::JumpUP]={120,120,120,120,120,120,120};
+        frames[FighterState::JumpForward]={60,90,90,120,90,90,60};
+        frames[FighterState::JumpBackward]={60,90,90,120,90,90,60};
+        frames[FighterState::Crouchdown]={60,60,60};
+        frames[FighterState::LP]={30,60,90};
+        frames[FighterState::MP]={30,60,120,60,30};
+        frames[FighterState::HP]={60,90,180,90,60,60};
+        frames[FighterState::LK]={30,60,90,60};
+        frames[FighterState::MK]={30,60,120,60,30};
+        frames[FighterState::HK]={60,90,180,90,90};
     }
     void Ken::LoadOffsetVelocity() {
+        Gravity=-4800;
         Initialvelocity.x[FighterState::Forward]=400;
         Initialvelocity.x[FighterState::Backward]=-400;
         Initialvelocity.x[FighterState::JumpForward]=500;
@@ -62,6 +70,14 @@ namespace Util {
         Initialvelocity.y[FighterState::JumpUP]=2000;
 
         offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::Crouchdown]={{10,-9},{31,-30},{35,-43}};
+        offset[FighterState::LP]={{5,3},{44,2},{3,3}};
+        offset[FighterState::MP]={{14,5},{-9,5},{56,5},{-10,6},{15,6}};
+        offset[FighterState::HP]={{15,5},{23,5},{67,5},{40,34},{23,6},{15,5}};
+        offset[FighterState::LK]={{15,6},{64,4},{140,4},{64,5}};
+        offset[FighterState::MK]={{20,12},{-25,10},{-25,10},{-27,9},{23,11}};
+        offset[FighterState::HK]={{32,5},{45,12},{68,11},{44,-11},{3,-9}};
+        offset[FighterState::HK]={{32,5},{45,12},{68,11},{44,-11},{3,-9}};
     }
     void Ken::LoadAllBox() {
         pushbox.size[FighterState::Idle]={100,200};

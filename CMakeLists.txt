@@ -44,6 +44,7 @@ add_executable(${PROJECT_NAME}
             include/Others/FighterInfo.hpp
             include/Others/Camera.hpp
             include/Others/Bloodstick.hpp
+            include/Others/Controller.hpp
 
             src/Fighters/Fighter.cpp
             src/Fighters/Ken.cpp

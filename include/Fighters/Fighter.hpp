@@ -9,7 +9,6 @@
 #include <string>
 #include <algorithm>
 #include <cmath>
-#include <any>
 #include <functional>
 
 #include "Core/Context.hpp"
@@ -21,6 +20,7 @@
 #include "Util/SFX.hpp"
 
 #include "Others/FighterInfo.hpp"
+#include "Others/Controller.hpp"
 #include "AnimationSpace.hpp"
 #include "ImageSpace.hpp"
 #include "Word.hpp"
@@ -29,38 +29,41 @@ namespace Util {
     class Fighter : public std::enable_shared_from_this<Fighter>{
     public:
 
-        Fighter(std::string name,velocity velocity): m_name(name),velocity(velocity) {}
+        Fighter(std::string name,velocity velocity): m_name(name),velocity(velocity){}
         virtual ~Fighter() = default;
 
-        virtual void IdleStateEnter(){}
-        virtual void IdleStateUpload(){}
+        virtual void IdleStateEnter();
+        virtual void IdleStateUpload();
 
-        virtual void WalkStateEnter(){}
-        virtual void WalkStateUpload(){}
+        virtual void ForwardStateEnter();
+        virtual void ForwardStateUpload();
 
-        virtual void JumpStateEnter(){}
-        virtual void JumpStateUpload(){}
+        virtual void BackwardStateEnter();
+        virtual void BackwardStateUpload();
 
-        virtual void CrouchdownEnter(){}
-        virtual void CrouchdownUpload(){}
+        virtual void JumpStateEnter();
+        virtual void JumpStateUpload();
 
-        virtual void LPStateEnter(){}
-        virtual void LPStateUpload(){}
+        virtual void CrouchdownEnter();
+        virtual void CrouchdownUpload();
 
-        virtual void MPStateEnter(){}
-        virtual void MPStateUpload(){}
+        virtual void LPStateEnter();
+        virtual void LPStateUpload();
 
-        virtual void HPStateEnter(){}
-        virtual void HPStateUpload(){}
+        virtual void MPStateEnter();
+        virtual void MPStateUpload();
 
-        virtual void LKStateEnter(){}
-        virtual void LKStateUpload(){}
+        virtual void HPStateEnter();
+        virtual void HPStateUpload();
 
-        virtual void MKStateEnter(){}
-        virtual void MKStateUpload(){}
+        virtual void LKStateEnter();
+        virtual void LKStateUpload();
 
-        virtual void HKStateEnter(){}
-        virtual void HKStateUpload(){}
+        virtual void MKStateEnter();
+        virtual void MKStateUpload();
+
+        virtual void HKStateEnter();
+        virtual void HKStateUpload();
 
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
@@ -77,10 +80,12 @@ namespace Util {
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
 
+        int GetDirection();
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
         bool GetCharacterIsOnFloor() const {return ActionNow->m_Transform.translation.y==FloorOfCharacter;}
         glm::vec2 GetCurrentPosition() const {return ActionNow->m_Transform.translation;}
         glm::vec2 GetCurrentOffsetPosition() {return ActionNow->m_Transform.translation+offset[currentState][ActionNow->GetCurrentFrameIndex()]*ActionNow->GetTransform().scale;}
+        std::vector<glm::vec2> GetCurrentOffsets(){return offset.count(currentState) ? offset[currentState]:offset[FighterState::Idle];}
         glm::vec2 GetCurrentPushbox() {return pushbox.size.count(currentState) ? pushbox.size[currentState] : pushbox.size[FighterState::Idle];}
         glm::vec2 GetCurrentPushboxOffset(){return (pushbox.offset.count(currentState) ? pushbox.offset[currentState] : pushbox.offset[FighterState::Idle])*ActionNow->GetTransform().scale;}
 
@@ -94,12 +99,11 @@ namespace Util {
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
-        void InitPosition(glm::vec2 position,int side);
+        void InitPosition(glm::vec2 position,int side,int Whichplayer);
         void StateInit();
 
         void ChangeState(FighterState newState);
         void BorderDetection(int MaxWidth);
-        void DirectionDetection();
         void ReSize();
         void UploadStateAndNewXY();
 
@@ -129,12 +133,14 @@ namespace Util {
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<BGM> m_BGM;
         std::shared_ptr<Fighter> enemy;
+        std::shared_ptr<Controller> controller=std::make_shared<Controller>(1);
 
+        float FloorOfCharacter;
+        int direction;
         float Gravity=-5000;
         velocity velocity;
         Initialvelocity Initialvelocity;
-        float FloorOfCharacter;
-        int direction;
+
         PushBox pushbox;
         //debugTest
         std::shared_ptr<AnimationSpace> BlackPicture=nullptr;
