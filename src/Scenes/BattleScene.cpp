@@ -30,13 +30,14 @@ namespace Util {
 
         player->SetEnemy(enemy);
         enemy->SetEnemy(player);
+        bloodstick->Init(player->GetName(), enemy->GetName());
     }
 
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {
         camera->Upload();
         player->Upload(context);
         enemy->Upload(context);
-        bloodstick->Update(player->GetName(), enemy->GetName());
+        bloodstick->Update();
         m_Animation->SetTransform({{camera->GetCameraPos().x, 0}, 0, {1,1}});
 
         if (Input::IsKeyDown(Keycode::RETURN)) {
