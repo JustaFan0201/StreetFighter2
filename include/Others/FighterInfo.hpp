@@ -6,11 +6,11 @@
 #define FIGHTERINFO_HPP
 
 namespace Util {
+    constexpr float StageFloor = -320.0f;
     enum class FighterDirection {
         Left  = 1,
         Right = -1
     };
-    constexpr float StageFloor = -320.0f;
     struct velocity {
         int x=0;
         int y=0;
@@ -49,9 +49,23 @@ namespace Util {
         std::unordered_map<FighterState,float> x;
         std::unordered_map<FighterState,float> y;
     };
+    struct HurtBoxPart {
+        std::unordered_map<FighterState, glm::vec2> size;
+        std::unordered_map<FighterState, glm::vec2> offset;
+    };
+    struct HurtBox {
+        HurtBoxPart head;
+        HurtBoxPart body;
+        HurtBoxPart leg;
+    };
     struct PushBox {
         std::unordered_map<FighterState, glm::vec2> size;
         std::unordered_map<FighterState, glm::vec2> offset;
+    };
+
+    struct Boxes {
+        PushBox pushbox;
+        HurtBox hurtbox;
     };
     inline bool RectangleOverlap(glm::vec2 Rec1_position, glm::vec2 Rec1_HW,
                                  glm::vec2 Rec2_position, glm::vec2 Rec2_HW) {

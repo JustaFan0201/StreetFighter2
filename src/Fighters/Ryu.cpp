@@ -15,20 +15,8 @@ namespace Util {
         Ryu::LoadAnimations();
         Ryu::LoadOffsetVelocity();
         Ryu::LoadAllBox();
-        ActionNow = std::make_shared<AnimationSpace>(
-            animations[FighterState::Idle],
-            true,
-            120,
-            true,
-            4
-        );
-        BlackPicture=std::make_shared<AnimationSpace>(
-                std::vector<std::string> {RESOURCE_DIR"/EditMaterial/black.png"},
-                true,
-                120,
-                true,
-                6
-                );
+        ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
+        debugInit();
     }
     void Ryu::LoadAnimations() {
         animations[FighterState::Idle] = ActionInit(5,"Idle");
@@ -80,9 +68,17 @@ namespace Util {
         offset[FighterState::HK]={{32,5},{45,12},{68,11},{44,-11},{3,-9}};
     }
     void Ryu::LoadAllBox() {
-        pushbox.size[FighterState::Idle]={100,200};
-        pushbox.size[FighterState::Crouchdown]={100,120};
-        pushbox.offset[FighterState::Idle]={15,0};
-        pushbox.offset[FighterState::Crouchdown]={15,-43};
+        boxes.pushbox.size[FighterState::Idle]={100,200};
+        boxes.pushbox.size[FighterState::Crouchdown]={100,120};
+        boxes.pushbox.offset[FighterState::Idle]={15,0};
+        boxes.pushbox.offset[FighterState::Crouchdown]={15,-43};
+
+        boxes.hurtbox.head.size[FighterState::Idle]={25,25};
+        boxes.hurtbox.body.size[FighterState::Idle]={50,50};
+        boxes.hurtbox.leg.size[FighterState::Idle]={25,25};
+
+        boxes.hurtbox.head.offset[FighterState::Idle]={0,50};
+        boxes.hurtbox.body.offset[FighterState::Idle]={0,0};
+        boxes.hurtbox.leg.offset[FighterState::Idle]={0,-50};
     }
 }

@@ -62,7 +62,7 @@ namespace Util {
         Keycode GetKey(Keys keyNow) {
             return keyMap[keyNow];
         }
-        bool isForward(int direction) {
+        bool IsForward(int direction) {
             if(direction==static_cast<int>(FighterDirection::Left)) {
                 return Input::IsKeyPressed(keyMap[Keys::RIGHT]);
             }
@@ -71,7 +71,7 @@ namespace Util {
             }
             return false;
         }
-        bool isBackward(int direction) {
+        bool IsBackward(int direction) {
             if(direction==static_cast<int>(FighterDirection::Right)) {
                 return Input::IsKeyPressed(keyMap[Keys::RIGHT]);
             }
@@ -79,6 +79,15 @@ namespace Util {
                 return Input::IsKeyPressed(keyMap[Keys::LEFT]);
             }
             return false;
+        }
+        bool IsKeyPressed(Keys keyNow) {
+            return Input::IsKeyPressed(keyMap[keyNow]);
+        }
+        bool IsKeyDown(Keys keyNow) {
+            return Input::IsKeyDown(keyMap[keyNow]);
+        }
+        bool IsKeyUp(Keys keyNow) {
+            return Input::IsKeyUp(keyMap[keyNow]);
         }
     };
 

@@ -86,8 +86,42 @@ namespace Util {
         glm::vec2 GetCurrentPosition() const {return ActionNow->m_Transform.translation;}
         glm::vec2 GetCurrentOffsetPosition() {return ActionNow->m_Transform.translation+offset[currentState][ActionNow->GetCurrentFrameIndex()]*ActionNow->GetTransform().scale;}
         std::vector<glm::vec2> GetCurrentOffsets(){return offset.count(currentState) ? offset[currentState]:offset[FighterState::Idle];}
-        glm::vec2 GetCurrentPushbox() {return pushbox.size.count(currentState) ? pushbox.size[currentState] : pushbox.size[FighterState::Idle];}
-        glm::vec2 GetCurrentPushboxOffset(){return (pushbox.offset.count(currentState) ? pushbox.offset[currentState] : pushbox.offset[FighterState::Idle])*ActionNow->GetTransform().scale;}
+        glm::vec2 GetCurrentPushbox() {return boxes.pushbox.size.count(currentState) ? boxes.pushbox.size[currentState] : boxes.pushbox.size[FighterState::Idle];}
+        glm::vec2 GetCurrentPushboxOffset(){return (boxes.pushbox.offset.count(currentState) ? boxes.pushbox.offset[currentState] : boxes.pushbox.offset[FighterState::Idle])*ActionNow->GetTransform().scale;}
+
+        std::array<glm::vec2, 3> GetCurrentHurtbox() {
+            return {
+                boxes.hurtbox.head.size.count(currentState) ?
+                boxes.hurtbox.head.size[currentState] :
+                boxes.hurtbox.head.size[FighterState::Idle],
+
+                boxes.hurtbox.body.size.count(currentState) ?
+                boxes.hurtbox.body.size[currentState] :
+                boxes.hurtbox.body.size[FighterState::Idle],
+
+                boxes.hurtbox.leg.size.count(currentState) ?
+                boxes.hurtbox.leg.size[currentState] :
+                boxes.hurtbox.leg.size[FighterState::Idle]
+            };
+        }//0 head 1 body 2 leg
+        std::array<glm::vec2, 3> GetCurrentHurtboxOffset() {
+            return {
+                (boxes.hurtbox.head.offset.count(currentState) ?
+                 boxes.hurtbox.head.offset[currentState] :
+                 boxes.hurtbox.head.offset[FighterState::Idle])
+                * ActionNow->GetTransform().scale,
+
+                (boxes.hurtbox.body.offset.count(currentState) ?
+                 boxes.hurtbox.body.offset[currentState] :
+                 boxes.hurtbox.body.offset[FighterState::Idle])
+                * ActionNow->GetTransform().scale,
+
+                (boxes.hurtbox.leg.offset.count(currentState) ?
+                 boxes.hurtbox.leg.offset[currentState] :
+                 boxes.hurtbox.leg.offset[FighterState::Idle])
+                * ActionNow->GetTransform().scale
+            };
+        }
 
         bool IsCollidedEnemy() {
             return RectangleOverlap(
@@ -101,7 +135,9 @@ namespace Util {
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
         void InitPosition(glm::vec2 position,int side,int Whichplayer);
         void StateInit();
+        void debugInit();
 
+        void ResetVelocity(){velocity={0,0};}
         void ChangeState(FighterState newState);
         void BorderDetection(int MaxWidth);
         void ReSize();
@@ -141,9 +177,12 @@ namespace Util {
         velocity velocity;
         Initialvelocity Initialvelocity;
 
-        PushBox pushbox;
+        Boxes boxes;
         //debugTest
-        std::shared_ptr<AnimationSpace> BlackPicture=nullptr;
+        std::shared_ptr<AnimationSpace> pushboxPicture=nullptr;
+        std::shared_ptr<AnimationSpace> headPicture=nullptr;
+        std::shared_ptr<AnimationSpace> bodyPicture=nullptr;
+        std::shared_ptr<AnimationSpace> legPicture=nullptr;
         glm::vec2 mouse;
         std::vector<glm::vec2> Allofmouse;
     };
