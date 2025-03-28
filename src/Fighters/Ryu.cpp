@@ -65,7 +65,6 @@ namespace Util {
         offset[FighterState::LK]={{15,6},{64,4},{140,4},{64,5}};
         offset[FighterState::MK]={{20,12},{-25,10},{-25,10},{-27,9},{23,11}};
         offset[FighterState::HK]={{32,5},{45,12},{68,11},{44,-11},{3,-9}};
-        offset[FighterState::HK]={{32,5},{45,12},{68,11},{44,-11},{3,-9}};
     }
     void Ryu::LoadAllBox() {
         boxes.pushbox.size[FighterState::Idle]={100,200};
@@ -73,12 +72,20 @@ namespace Util {
         boxes.pushbox.offset[FighterState::Idle]={15,0};
         boxes.pushbox.offset[FighterState::Crouchdown]={15,-43};
 
-        boxes.hurtbox.head.size[FighterState::Idle]={25,25};
-        boxes.hurtbox.body.size[FighterState::Idle]={50,50};
-        boxes.hurtbox.leg.size[FighterState::Idle]={25,25};
+        boxes.hurtbox.head.size[FighterState::Idle]={50,50};
+        boxes.hurtbox.body.size[FighterState::Idle]={100,100};
+        boxes.hurtbox.leg.size[FighterState::Idle]={100,125};
 
-        boxes.hurtbox.head.offset[FighterState::Idle]={0,0};
-        boxes.hurtbox.body.offset[FighterState::Idle]={0,0};
-        boxes.hurtbox.leg.offset[FighterState::Idle]={0,0};
+        boxes.hurtbox.head.size[FighterState::Crouchdown]={50,50};
+        boxes.hurtbox.body.size[FighterState::Crouchdown]={100,50};
+        boxes.hurtbox.leg.size[FighterState::Crouchdown]={100,50};
+
+        boxes.hurtbox.head.offset[FighterState::Idle]={{23,113},{28,110},{27,109},{26,117},{25,116}};
+        boxes.hurtbox.body.offset[FighterState::Idle]={{-15,57},{-15,57},{-10,55},{-10,54},{-12,53}};
+        boxes.hurtbox.leg.offset[FighterState::Idle]={{-12,-53},{-12,-52},{-12,-52},{-12,-52},{-11,-48}};
+
+        boxes.hurtbox.head.offset[FighterState::Crouchdown]={{38,91},{53,46},{61,22}};
+        boxes.hurtbox.body.offset[FighterState::Crouchdown]={{-5,-34},{-25,3},{-33,29}};
+        boxes.hurtbox.leg.offset[FighterState::Crouchdown]={{10,-69},{38,-86},{44,-96}};
     }
 }

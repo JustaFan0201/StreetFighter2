@@ -81,12 +81,12 @@ namespace Util {
 
         pushboxPicture->SetDrawData({GetCurrentPosition(), 0, {1, 1}},GetCurrentPushbox(),4.0f);
         pushboxPicture->SetVisible(false);
-        /*headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[0], 0, {1, 1}},GetCurrentHurtbox()[0],7.0f);
+        headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[0], 0, {1, 1}},GetCurrentHurtboxSize()[0],7.0f);
         pushboxPicture->SetVisible(false);
-        headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[1], 0, {1, 1}},GetCurrentHurtbox()[1],8.0f);
+        headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[1], 0, {1, 1}},GetCurrentHurtboxSize()[1],8.0f);
         pushboxPicture->SetVisible(false);
-        headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[2], 0, {1, 1}},GetCurrentHurtbox()[2],9.0f);
-        pushboxPicture->SetVisible(false);*/
+        headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[2], 0, {1, 1}},GetCurrentHurtboxSize()[2],9.0f);
+        pushboxPicture->SetVisible(false);
     }
 
     void Fighter::ReSize() {
@@ -167,19 +167,27 @@ namespace Util {
     void Fighter::debugInit() {
         pushboxPicture=std::make_shared<AnimationSpace>(std::vector<std::string> {RESOURCE_DIR"/EditMaterial/pushbox.png"},
         true,120,true,6);
-        /*headPicture=std::make_shared<AnimationSpace>(std::vector<std::string> {RESOURCE_DIR"/EditMaterial/head.png"},
+        headPicture=std::make_shared<AnimationSpace>(std::vector<std::string> {RESOURCE_DIR"/EditMaterial/head.png"},
         true,120,true,7);
         bodyPicture=std::make_shared<AnimationSpace>(std::vector<std::string> {RESOURCE_DIR"/EditMaterial/body.png"},
         true,120,true,8);
         legPicture=std::make_shared<AnimationSpace>(std::vector<std::string> {RESOURCE_DIR"/EditMaterial/leg.png"},
-        true,120,true,9);*/
+        true,120,true,9);
     }
+
     void Fighter::PrintPostion() {
-        std::cout<<"{";
-        for(auto i: Allofmouse) {
-            std::cout <<"{"<< i.x<<","<< i.y<<"},";
+        if(Allofmouse.size()==animations[currentState].size()&&!Allofmouse.empty()) {
+            std::cout<<"{";
+            for(auto i: Allofmouse) {
+                if(i==Allofmouse[Allofmouse.size()-1]) {
+                    std::cout <<"{"<< static_cast<int> (i.x)<<","<< static_cast<int> (i.y)<<"}";
+                }
+                else {
+                    std::cout <<"{"<< static_cast<int> (i.x)<<","<< static_cast<int> (i.y)<<"},";
+                }
+            }
+            std::cout <<"};"<< std::endl;
         }
-        std::cout <<"}"<< std::endl;
     }
 
     void Fighter::PostionTester() {
@@ -188,10 +196,21 @@ namespace Util {
             std::cout << "Frame: " << "Mouse Clicked at: (" << mouse.x << ", " << mouse.y << ")" << std::endl;
             Allofmouse.clear();
         }
+        if (Input::IsKeyDown(Keycode::B)) {
+            mouse = GetCurrentOffsetPosition();
+            std::cout << "Frame: " << "Mouse Clicked at: (" << mouse.x << ", " << mouse.y << ")" << std::endl;
+            Allofmouse.clear();
+        }
         if (Input::IsKeyDown(Keycode::MOUSE_RB)) {
             glm::vec2 Mouse=Input::GetCursorPosition();
             std::cout << "Frame: " << "Mouse Clicked at: (" << Mouse.x << ", " << Mouse.y << ")" << std::endl;
             glm::vec2 Pos=mouse-Mouse;
+            Allofmouse.push_back(Pos);
+        }
+        if (Input::IsKeyDown(Keycode::N)) {
+            glm::vec2 Mouse=Input::GetCursorPosition();
+            std::cout << "Frame: " << "Mouse Clicked at: (" << Mouse.x << ", " << Mouse.y << ")" << std::endl;
+            glm::vec2 Pos=Mouse-mouse;
             Allofmouse.push_back(Pos);
         }
     }
@@ -203,7 +222,7 @@ namespace Util {
         if(Input::IsKeyDown(Keycode::P)) {
             pushboxPicture->SetVisible(false);
         }
-        /*if(Input::IsKeyDown(Keycode::K)) {
+        if(Input::IsKeyDown(Keycode::K)) {
             headPicture->SetVisible(true);
             bodyPicture->SetVisible(true);
             legPicture->SetVisible(true);
@@ -212,12 +231,13 @@ namespace Util {
             headPicture->SetVisible(false);
             bodyPicture->SetVisible(false);
             legPicture->SetVisible(false);
-        }*/
+        }
     }
 
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {
         PostionTester();
         PushBoxTester();
+        PrintPostion();
 
         UploadStateAndNewXY();
         ReSize();
@@ -226,23 +246,23 @@ namespace Util {
         pushboxPicture->SetDrawData({GetCurrentPosition()+GetCurrentPushboxOffset(), 0, {direction, 1}},
                        GetCurrentPushbox(),
                        4.0f);
-        /*headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[0], 0, {direction, 1}},
-                       GetCurrentHurtboxOffset()[0],
+        headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[0], 0, {direction, 1}},
+                       GetCurrentHurtboxSize()[0],
                        5.0f);
         bodyPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[1], 0, {direction, 1}},
-                       GetCurrentHurtboxOffset()[1],
+                       GetCurrentHurtboxSize()[1],
                        6.0f);
         legPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[2], 0, {direction, 1}},
-                       GetCurrentHurtboxOffset()[2],
-                       7.0f);*/
+                       GetCurrentHurtboxSize()[2],
+                       7.0f);
     }
 
     void Fighter::DrawCharacter() {
         ActionNow->custom_Draw();
         pushboxPicture->custom_Draw();
-        /*headPicture->custom_Draw();
+        headPicture->custom_Draw();
         bodyPicture->custom_Draw();
-        legPicture->custom_Draw();*/
+        legPicture->custom_Draw();
     }
     //Actions
     void Fighter::IdleStateEnter(){
@@ -301,7 +321,8 @@ namespace Util {
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::CrouchdownUpload() {
-        if (controller->IsKeyUp(Keys::DOWN)){ChangeState(FighterState::Idle);}
+        if (!controller->IsKeyPressed(Keys::DOWN)){ChangeState(FighterState::Idle);}
+        direction=GetDirection();
     }
 
     void Fighter::LPStateEnter() {

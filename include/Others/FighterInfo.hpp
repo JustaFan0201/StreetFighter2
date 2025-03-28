@@ -51,7 +51,7 @@ namespace Util {
     };
     struct HurtBoxPart {
         std::unordered_map<FighterState, glm::vec2> size;
-        std::unordered_map<FighterState, glm::vec2> offset;
+        std::unordered_map<FighterState, std::vector<glm::vec2>> offset;
     };
     struct HurtBox {
         HurtBoxPart head;

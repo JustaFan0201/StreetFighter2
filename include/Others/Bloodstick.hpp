@@ -31,6 +31,11 @@ namespace Util {
         std::shared_ptr<ImageSpace> bloodfrontP2_image;
         std::shared_ptr<ImageSpace> timerTens_image;
         std::shared_ptr<ImageSpace> timerUnits_image;
+        std::shared_ptr<ImageSpace> fight_image;
+        std::shared_ptr<ImageSpace> round_image;
+        std::shared_ptr<ImageSpace> roundnum_image;
+
+
 
         float start_time = Time::GetElapsedTimeMs();
         float now_time = Time::GetElapsedTimeMs();
@@ -53,6 +58,7 @@ namespace Util {
         void Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2);
         void Update();
         void DrawBloodstick();
+        float GetTime();
     };
 }
 

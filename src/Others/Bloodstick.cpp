@@ -14,6 +14,9 @@ namespace Util {
         P2name_image =  std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/Ken.png");
         timerTens_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/9.png");
         timerUnits_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/9.png");
+        fight_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/Fight.png");
+        round_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/Round.png");
+        roundnum_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/1.png");
     }
 
     void Bloodstick::Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2) {
@@ -33,12 +36,18 @@ namespace Util {
 
     void Bloodstick::Update() {
         now_time = Time::GetElapsedTimeMs();
-        if ((now_time - start_time) / 1000 <= 100){
-            timer[0] = (99 - int((now_time - start_time) / 1000)) / 10;
-            timer[1] = (99 - int((now_time - start_time) / 1000))  % 10;
+        if ((now_time - start_time) / 1000 < 1.5) {
+            round_image->SetDrawData({{-30, 100}, 0, {1, 1}}, {round_image->GetScaledSize().x * 3.8, round_image->GetScaledSize().y * 3.8}, 7.0f);
+            roundnum_image->SetDrawData({{118, 100}, 0, {1, 1}}, {roundnum_image->GetScaledSize().x * 5, roundnum_image->GetScaledSize().y * 5.7}, 7.0f);
+        }
+        else if ((now_time - start_time) / 1000 < 3) {
+            fight_image->SetDrawData({{0, 100}, 0, {1, 1}}, {fight_image->GetScaledSize().x * 4, fight_image->GetScaledSize().y * 4.2}, 7.0f);
+        }
+        else if ((now_time - start_time) / 1000  + 3 <= 100){
+            timer[0] = (99 - int((now_time - start_time) / 1000) + 3) / 10 ;
+            timer[1] = (99 - int((now_time - start_time) / 1000) + 3)  % 10 ;
             timerTens_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/" + std::to_string(timer[0]) + ".png");
             timerUnits_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/" + std::to_string(timer[1]) + ".png");
-
         }
         if (Input::IsKeyPressed(Keycode::DOWN) && P1blood > 0) {
            P1blood -= 1;
@@ -52,7 +61,6 @@ namespace Util {
         else if (Input::IsKeyPressed(Keycode::RIGHT) && P2blood < 100) {
             P2blood += 1;
         }
-
     }
 
     void Bloodstick::DrawBloodstick() {
@@ -67,4 +75,9 @@ namespace Util {
             i->custom_Draw();
         }
     }
+
+    float Bloodstick::GetTime() {
+        return now_time - start_time;
+    }
+
 }

@@ -31,31 +31,32 @@ namespace Util {
             if (m_WaitingForEnter) {
                 if (Input::IsKeyDown(Keycode::RETURN)) {
                     m_WaitingForEnter = false;
-                    Word_1->SetDrawData({{-180, -180},0,{1,1}},Word_1->GetDrawable()->GetSize(),1.0f);
-                    Word_2->SetDrawData({{180, -180},0,{1,1}},Word_1->GetDrawable()->GetSize(),1.0f);
-
                     soundEffect->Play(0);
-
                     m_Animation->SetDrawable(std::make_shared<Animation>(
                         std::vector<std::string>{RESOURCE_DIR"/ScenePicture/start/start_4.png"},
                         true,
                         2000,
                         false,
                         100));
+                    storymode = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/start/Storymodesel.png");
+                    battlemode = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/start/Battlemode.png");
                 }
             }//選模式(Story and Battle)
             else {
-                if (Word_1) Word_1->custom_Draw();
-                if (Word_2) Word_2->custom_Draw();
+                storymode->SetDrawData({{-180, -190}, 0, {1, 1}}, {storymode->GetScaledSize().x * 4.5, storymode->GetScaledSize().y * 4.5}, 1.0f);
+                battlemode->SetDrawData({{180, -190}, 0, {1, 1}}, {battlemode->GetScaledSize().x * 4.5, battlemode->GetScaledSize().y * 4.5}, 1.0f);
+
+                if (storymode) storymode->custom_Draw();
+                if (battlemode) battlemode->custom_Draw();
                 if (Input::IsKeyPressed(Keycode::A) && mode == 1) {
-                    Word_1->SetColor(Color(255, 127, 80));
-                    Word_2->SetColor(Color(255, 255, 255));
+                    storymode = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/start/Storymodesel.png");
+                    battlemode = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/start/Battlemode.png");
                     soundEffect->Play(0);
                     mode = 0;
                 }
                 if (Input::IsKeyPressed(Keycode::D) && mode == 0) {
-                    Word_2->SetColor(Color(255, 127, 80));
-                    Word_1->SetColor(Color(255, 255, 255));
+                    storymode = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/start/Storymode.png");
+                    battlemode = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/start/Battlemodesel.png");
                     soundEffect->Play(0);
                     mode = 1;
                 }//選中改色
@@ -67,7 +68,6 @@ namespace Util {
             }
         }
     }
-
     void StartScene::Render() {
         if (m_Animation) {
             m_Animation->custom_Draw();

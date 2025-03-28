@@ -84,12 +84,12 @@ namespace Util {
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
         bool GetCharacterIsOnFloor() const {return ActionNow->m_Transform.translation.y==FloorOfCharacter;}
         glm::vec2 GetCurrentPosition() const {return ActionNow->m_Transform.translation;}
-        glm::vec2 GetCurrentOffsetPosition() {return ActionNow->m_Transform.translation+offset[currentState][ActionNow->GetCurrentFrameIndex()]*ActionNow->GetTransform().scale;}
+        glm::vec2 GetCurrentOffsetPosition() {return ActionNow->m_Transform.translation+GetCurrentOffsets()[0]*ActionNow->GetTransform().scale;}
         std::vector<glm::vec2> GetCurrentOffsets(){return offset.count(currentState) ? offset[currentState]:offset[FighterState::Idle];}
         glm::vec2 GetCurrentPushbox() {return boxes.pushbox.size.count(currentState) ? boxes.pushbox.size[currentState] : boxes.pushbox.size[FighterState::Idle];}
         glm::vec2 GetCurrentPushboxOffset(){return (boxes.pushbox.offset.count(currentState) ? boxes.pushbox.offset[currentState] : boxes.pushbox.offset[FighterState::Idle])*ActionNow->GetTransform().scale;}
 
-        std::array<glm::vec2, 3> GetCurrentHurtbox() {
+        std::array<glm::vec2, 3> GetCurrentHurtboxSize() {
             return {
                 boxes.hurtbox.head.size.count(currentState) ?
                 boxes.hurtbox.head.size[currentState] :
@@ -107,19 +107,17 @@ namespace Util {
         std::array<glm::vec2, 3> GetCurrentHurtboxOffset() {
             return {
                 (boxes.hurtbox.head.offset.count(currentState) ?
-                 boxes.hurtbox.head.offset[currentState] :
-                 boxes.hurtbox.head.offset[FighterState::Idle])
+                 boxes.hurtbox.head.offset[currentState][ActionNow->GetCurrentFrameIndex()] :
+                 boxes.hurtbox.head.offset[FighterState::Idle][0])
                 * ActionNow->GetTransform().scale,
 
                 (boxes.hurtbox.body.offset.count(currentState) ?
-                 boxes.hurtbox.body.offset[currentState] :
-                 boxes.hurtbox.body.offset[FighterState::Idle])
-                * ActionNow->GetTransform().scale,
+                 boxes.hurtbox.body.offset[currentState][ActionNow->GetCurrentFrameIndex()] :
+                 boxes.hurtbox.body.offset[FighterState::Idle][0]) * ActionNow->GetTransform().scale,
 
                 (boxes.hurtbox.leg.offset.count(currentState) ?
-                 boxes.hurtbox.leg.offset[currentState] :
-                 boxes.hurtbox.leg.offset[FighterState::Idle])
-                * ActionNow->GetTransform().scale
+                 boxes.hurtbox.leg.offset[currentState][ActionNow->GetCurrentFrameIndex()] :
+                 boxes.hurtbox.leg.offset[FighterState::Idle][0])* ActionNow->GetTransform().scale
             };
         }
 

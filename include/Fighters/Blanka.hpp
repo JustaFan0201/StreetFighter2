@@ -14,6 +14,8 @@ namespace Util {
     public:
         Blanka();
         void LoadAnimations() override;
+        void LoadOffsetVelocity() override;
+        void LoadAllBox()override;
     };
 }
 #endif //BLANKA_HPP
