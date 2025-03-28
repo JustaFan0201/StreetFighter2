@@ -11,9 +11,16 @@
 #include "Util/Transform.hpp"
 #include"AnimationSpace.hpp"
 #include "Util/Time.hpp"
-#include "Scenes/Scene.hpp"
-//#include "Fighters/Fighter.hpp"
-#include <stdio.h>
+
+#include "Fighters/Fighter.hpp"
+#include "Fighters/Ryu.hpp"
+#include "Fighters/Guile.hpp"
+#include "Fighters/Zangief.hpp"
+#include "Fighters/Chunli.hpp"
+#include "Fighters/Dhalsim.hpp"
+#include "Fighters/Blanka.hpp"
+#include "Fighters/Ken.hpp"
+#include "Fighters/Honda.hpp"
 
 namespace Util {
     class Bloodstick {
@@ -27,8 +34,10 @@ namespace Util {
 
         float start_time = Time::GetElapsedTimeMs();
         float now_time = Time::GetElapsedTimeMs();
-        std::string P1;
-        std::string P2;
+
+        std::shared_ptr<Fighter> P1;
+        std::shared_ptr<Fighter> P2;
+
         std::vector<std::string> namebox = {"Ryu", "Honda", "Blanka", "Guile", "Ken", "Chunli", "Zangief", "Dhalsim"};
         std::vector<int> offsetnum = {0, 0};
         std::vector<int> offset = {430, 375, 360, 405, 430, 370, 360, 360};
@@ -41,10 +50,9 @@ namespace Util {
 
     public:
         Bloodstick();
-        void Init(std::string p1, std::string p2);
+        void Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2);
         void Update();
         void DrawBloodstick();
-
     };
 }
 

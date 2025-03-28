@@ -30,7 +30,7 @@ namespace Util {
 
         player->SetEnemy(enemy);
         enemy->SetEnemy(player);
-        bloodstick->Init(player->GetName(), enemy->GetName());
+        bloodstick->Init(player, enemy);
     }
 
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {

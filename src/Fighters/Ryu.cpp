@@ -77,8 +77,8 @@ namespace Util {
         boxes.hurtbox.body.size[FighterState::Idle]={50,50};
         boxes.hurtbox.leg.size[FighterState::Idle]={25,25};
 
-        boxes.hurtbox.head.offset[FighterState::Idle]={0,50};
+        boxes.hurtbox.head.offset[FighterState::Idle]={0,0};
         boxes.hurtbox.body.offset[FighterState::Idle]={0,0};
-        boxes.hurtbox.leg.offset[FighterState::Idle]={0,-50};
+        boxes.hurtbox.leg.offset[FighterState::Idle]={0,0};
     }
 }

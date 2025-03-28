@@ -14,23 +14,21 @@ namespace Util {
         P2name_image =  std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/Ken.png");
         timerTens_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/9.png");
         timerUnits_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/9.png");
-
     }
 
-    void Bloodstick::Init(std::string p1, std::string p2) {
+    void Bloodstick::Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2) {
         this -> P1= p1;
         this -> P2 = p2;
-        P1name_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/" + P1+ ".png");
-        P2name_image =  std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/"+ P2 +".png");
+        P1name_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/" + P1->GetName()+ ".png");
+        P2name_image =  std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/"+ P2->GetName() +".png");
         for (int i=0; i<8; i++) {
-            if (P1== namebox[i]) offsetnum[0] = i;
-            if (P2 == namebox[i]) offsetnum[1] = i;
+            if (P1->GetName()== namebox[i]) offsetnum[0] = i;
+            if (P2->GetName() == namebox[i]) offsetnum[1] = i;
         }
         ko_image->SetDrawData({{0, 276}, 0, {1, 1}}, {ko_image->GetScaledSize().x * 3.2, ko_image->GetScaledSize().y * 3.5}, 2.0f);
         bloodback_image->SetDrawData({{0, 280}, 0, {1, 1}}, {bloodback_image->GetScaledSize().x * 3.151, bloodback_image->GetScaledSize().y * 3.15}, 2.0f);
         P1name_image->SetDrawData({{- offset[offsetnum[0]], 235}, 0, {1, 1}}, {P1name_image->GetScaledSize().x * 4, P1name_image->GetScaledSize().y * 4}, 2.0f);
         P2name_image->SetDrawData({{offset[offsetnum[1]], 235}, 0, {1, 1}}, {P2name_image->GetScaledSize().x * 4, P2name_image->GetScaledSize().y * 4}, 2.0f);
-
     }
 
     void Bloodstick::Update() {

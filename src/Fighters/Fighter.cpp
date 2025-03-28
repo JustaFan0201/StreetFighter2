@@ -79,16 +79,14 @@ namespace Util {
         ChangeState(FighterState::Idle);
         controller->SetPlayerController(Whichplayer);
 
-        if(pushboxPicture!=nullptr) {
-            pushboxPicture->SetDrawData({GetCurrentPosition(), 0, {1, 1}},GetCurrentPushbox(),4.0f);
-            pushboxPicture->SetVisible(false);
-            headPicture->SetDrawData({GetCurrentPosition()+GetCurrentHurtboxOffset()[0], 0, {1, 1}},GetCurrentHurtbox()[0],7.0f);
-            pushboxPicture->SetVisible(false);
-            headPicture->SetDrawData({GetCurrentPosition()+GetCurrentHurtboxOffset()[1], 0, {1, 1}},GetCurrentHurtbox()[1],8.0f);
-            pushboxPicture->SetVisible(false);
-            headPicture->SetDrawData({GetCurrentPosition()+GetCurrentHurtboxOffset()[2], 0, {1, 1}},GetCurrentHurtbox()[2],9.0f);
-            pushboxPicture->SetVisible(false);
-        }
+        pushboxPicture->SetDrawData({GetCurrentPosition(), 0, {1, 1}},GetCurrentPushbox(),4.0f);
+        pushboxPicture->SetVisible(false);
+        /*headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[0], 0, {1, 1}},GetCurrentHurtbox()[0],7.0f);
+        pushboxPicture->SetVisible(false);
+        headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[1], 0, {1, 1}},GetCurrentHurtbox()[1],8.0f);
+        pushboxPicture->SetVisible(false);
+        headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[2], 0, {1, 1}},GetCurrentHurtbox()[2],9.0f);
+        pushboxPicture->SetVisible(false);*/
     }
 
     void Fighter::ReSize() {
@@ -169,12 +167,12 @@ namespace Util {
     void Fighter::debugInit() {
         pushboxPicture=std::make_shared<AnimationSpace>(std::vector<std::string> {RESOURCE_DIR"/EditMaterial/pushbox.png"},
         true,120,true,6);
-        headPicture=std::make_shared<AnimationSpace>(std::vector<std::string> {RESOURCE_DIR"/EditMaterial/head.png"},
+        /*headPicture=std::make_shared<AnimationSpace>(std::vector<std::string> {RESOURCE_DIR"/EditMaterial/head.png"},
         true,120,true,7);
         bodyPicture=std::make_shared<AnimationSpace>(std::vector<std::string> {RESOURCE_DIR"/EditMaterial/body.png"},
         true,120,true,8);
         legPicture=std::make_shared<AnimationSpace>(std::vector<std::string> {RESOURCE_DIR"/EditMaterial/leg.png"},
-        true,120,true,9);
+        true,120,true,9);*/
     }
     void Fighter::PrintPostion() {
         std::cout<<"{";
@@ -205,7 +203,7 @@ namespace Util {
         if(Input::IsKeyDown(Keycode::P)) {
             pushboxPicture->SetVisible(false);
         }
-        if(Input::IsKeyDown(Keycode::K)) {
+        /*if(Input::IsKeyDown(Keycode::K)) {
             headPicture->SetVisible(true);
             bodyPicture->SetVisible(true);
             legPicture->SetVisible(true);
@@ -214,7 +212,7 @@ namespace Util {
             headPicture->SetVisible(false);
             bodyPicture->SetVisible(false);
             legPicture->SetVisible(false);
-        }
+        }*/
     }
 
     void Fighter::Upload(std::shared_ptr<Core::Context> context) {
@@ -228,23 +226,23 @@ namespace Util {
         pushboxPicture->SetDrawData({GetCurrentPosition()+GetCurrentPushboxOffset(), 0, {direction, 1}},
                        GetCurrentPushbox(),
                        4.0f);
-        headPicture->SetDrawData({GetCurrentPosition()+GetCurrentHurtboxOffset()[0], 0, {direction, 1}},
+        /*headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[0], 0, {direction, 1}},
                        GetCurrentHurtboxOffset()[0],
                        5.0f);
-        bodyPicture->SetDrawData({GetCurrentPosition()+GetCurrentHurtboxOffset()[1], 0, {direction, 1}},
+        bodyPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[1], 0, {direction, 1}},
                        GetCurrentHurtboxOffset()[1],
                        6.0f);
-        legPicture->SetDrawData({GetCurrentPosition()+GetCurrentHurtboxOffset()[2], 0, {direction, 1}},
+        legPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[2], 0, {direction, 1}},
                        GetCurrentHurtboxOffset()[2],
-                       7.0f);
+                       7.0f);*/
     }
 
     void Fighter::DrawCharacter() {
         ActionNow->custom_Draw();
         pushboxPicture->custom_Draw();
-        headPicture->custom_Draw();
+        /*headPicture->custom_Draw();
         bodyPicture->custom_Draw();
-        legPicture->custom_Draw();
+        legPicture->custom_Draw();*/
     }
     //Actions
     void Fighter::IdleStateEnter(){
