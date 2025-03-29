@@ -41,9 +41,24 @@ namespace Util {
         JumpLK,
         JumpMK,
         JumpHK,
+        JumpForwardLP,
+        JumpForwardMP,
+        JumpForwardHP,
+        JumpForwardLK,
+        JumpForwardMK,
+        JumpForwardHK,
         Special_1,
         Special_2,
-        Special_3
+        Special_3,
+        HurtHeadL,
+        HurtHeadM,
+        HurtHeadH,
+        HurtBodyL,
+        HurtBodyM,
+        HurtBodyH,
+        HurtLegL,
+        HurtLegM,
+        HurtLegH
     };
     struct Initialvelocity {
         std::unordered_map<FighterState,float> x;
@@ -62,10 +77,14 @@ namespace Util {
         std::unordered_map<FighterState, glm::vec2> size;
         std::unordered_map<FighterState, glm::vec2> offset;
     };
-
+    struct HitBox {
+        std::unordered_map<FighterState, glm::vec2> size;
+        std::unordered_map<FighterState, std::vector<glm::vec2>> offset;
+    };
     struct Boxes {
         PushBox pushbox;
         HurtBox hurtbox;
+        HitBox hitbox;
     };
     inline bool RectangleOverlap(glm::vec2 Rec1_position, glm::vec2 Rec1_HW,
                                  glm::vec2 Rec2_position, glm::vec2 Rec2_HW) {

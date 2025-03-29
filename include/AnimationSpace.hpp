@@ -64,6 +64,11 @@ namespace Util {
             return m_Drawable->GetSize();
         }
 
+        void SetLooping(bool choose) {
+            auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
+            return animation->SetLooping(choose);
+        }
+
         bool IsAnimationEnds() {
             auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
             return (animation->GetCurrentFrameIndex() == animation->GetFrameCount() - 1)&&(animation->GetState()==Animation::State::ENDED);

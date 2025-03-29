@@ -85,7 +85,12 @@ namespace Util {
         boxes.hurtbox.leg.offset[FighterState::Idle]={{-12,-53},{-12,-52},{-12,-52},{-12,-52},{-11,-48}};
 
         boxes.hurtbox.head.offset[FighterState::Crouchdown]={{38,91},{53,46},{61,22}};
-        boxes.hurtbox.body.offset[FighterState::Crouchdown]={{-5,-34},{-25,3},{-33,29}};
-        boxes.hurtbox.leg.offset[FighterState::Crouchdown]={{10,-69},{38,-86},{44,-96}};
+        boxes.hurtbox.body.offset[FighterState::Crouchdown]={{9,41},{28,-4},{37,-23}};
+        boxes.hurtbox.leg.offset[FighterState::Crouchdown]={{10,-9},{38,-54},{44,-73}};
+
+        boxes.hitbox.size[FighterState::LP]={100,50};
+        boxes.hitbox.offset[FighterState::LP]={{-1,-1},{110,78},{-1,-1}};
+
+        attacks[FighterState::LP]=8;
     }
 }

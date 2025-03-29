@@ -35,10 +35,8 @@ namespace Util {
         virtual void IdleStateEnter();
         virtual void IdleStateUpload();
 
-        virtual void ForwardStateEnter();
+        virtual void WalkStateEnter();
         virtual void ForwardStateUpload();
-
-        virtual void BackwardStateEnter();
         virtual void BackwardStateUpload();
 
         virtual void JumpStateEnter();
@@ -47,22 +45,12 @@ namespace Util {
         virtual void CrouchdownEnter();
         virtual void CrouchdownUpload();
 
-        virtual void LPStateEnter();
+        virtual void AttackStateEnter();
         virtual void LPStateUpload();
-
-        virtual void MPStateEnter();
         virtual void MPStateUpload();
-
-        virtual void HPStateEnter();
         virtual void HPStateUpload();
-
-        virtual void LKStateEnter();
         virtual void LKStateUpload();
-
-        virtual void MKStateEnter();
         virtual void MKStateUpload();
-
-        virtual void HKStateEnter();
         virtual void HKStateUpload();
 
         virtual void LoadAnimations(){}
@@ -79,6 +67,8 @@ namespace Util {
         std::vector<std::string> GetStageBackground() { return stage_background; }
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
+        float GetHP() const{return hp;}
+        float GetAttack(){return attacks.count(currentState)?attacks[currentState]:0;}
 
         int GetDirection();
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
@@ -108,8 +98,7 @@ namespace Util {
             return {
                 (boxes.hurtbox.head.offset.count(currentState) ?
                  boxes.hurtbox.head.offset[currentState][ActionNow->GetCurrentFrameIndex()] :
-                 boxes.hurtbox.head.offset[FighterState::Idle][0])
-                * ActionNow->GetTransform().scale,
+                 boxes.hurtbox.head.offset[FighterState::Idle][0])* ActionNow->GetTransform().scale,
 
                 (boxes.hurtbox.body.offset.count(currentState) ?
                  boxes.hurtbox.body.offset[currentState][ActionNow->GetCurrentFrameIndex()] :
@@ -121,13 +110,28 @@ namespace Util {
             };
         }
 
-        bool IsCollidedEnemy() {
+        glm::vec2 GetCurrentHitbox() {
+            return boxes.hitbox.size.count(currentState) ?
+                   boxes.hitbox.size[currentState] : glm::vec2{0,0};
+        }
+        glm::vec2 GetCurrentHitboxOffset() {
+            if (!boxes.hitbox.offset.count(currentState)) {
+                return {-1, -1};
+            }
+            if(boxes.hitbox.offset[currentState][ActionNow->GetCurrentFrameIndex()]==glm::vec2{-1,-1}) {
+                return {-1,-1};
+            }
+            return boxes.hitbox.offset[currentState][ActionNow->GetCurrentFrameIndex()]*ActionNow->GetTransform().scale;
+        }
+
+        bool PushboxIsCollidedEnemy() {
             return RectangleOverlap(
                 GetCurrentPosition()+GetCurrentPushboxOffset(),
                 GetCurrentPushbox(),
                 enemy->GetCurrentPosition()+enemy->GetCurrentPushboxOffset(),
                 enemy->GetCurrentPushbox());
         }
+        void HitboxIsCollidedEnemy();
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
@@ -156,6 +160,7 @@ namespace Util {
         std::string country;
         Transform country_position;
         std::vector<std::string> stage_background;
+        std::shared_ptr<BGM> m_BGM;
 
         FighterState currentState;
         std::unordered_map<FighterState, std::function<void()>> StateEnter;
@@ -163,24 +168,26 @@ namespace Util {
         std::unordered_map<FighterState, std::vector<std::string>> animations;
         std::unordered_map<FighterState, std::vector<int>> frames;
         std::unordered_map<FighterState, std::vector<glm::vec2>> offset;
+        std::unordered_map<FighterState, float> attacks;
 
         std::shared_ptr<AnimationSpace> ActionNow;
-        std::shared_ptr<BGM> m_BGM;
         std::shared_ptr<Fighter> enemy;
         std::shared_ptr<Controller> controller=std::make_shared<Controller>(1);
 
-        float FloorOfCharacter;
+        bool AttackStruck=false;
+        float hp=100;
         int direction;
+        float FloorOfCharacter;
         float Gravity=-5000;
         velocity velocity;
         Initialvelocity Initialvelocity;
-
         Boxes boxes;
         //debugTest
         std::shared_ptr<AnimationSpace> pushboxPicture=nullptr;
         std::shared_ptr<AnimationSpace> headPicture=nullptr;
         std::shared_ptr<AnimationSpace> bodyPicture=nullptr;
         std::shared_ptr<AnimationSpace> legPicture=nullptr;
+        std::shared_ptr<AnimationSpace> hitPicture=nullptr;
         glm::vec2 mouse;
         std::vector<glm::vec2> Allofmouse;
     };
