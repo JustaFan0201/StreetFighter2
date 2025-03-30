@@ -41,12 +41,6 @@ namespace Util {
         JumpLK,
         JumpMK,
         JumpHK,
-        JumpForwardLP,
-        JumpForwardMP,
-        JumpForwardHP,
-        JumpForwardLK,
-        JumpForwardMK,
-        JumpForwardHK,
         Special_1,
         Special_2,
         Special_3,
@@ -55,10 +49,19 @@ namespace Util {
         HurtHeadH,
         HurtBodyL,
         HurtBodyM,
-        HurtBodyH,
-        HurtLegL,
-        HurtLegM,
-        HurtLegH
+        HurtBodyH
+    };
+    enum class HitLocation {
+        Null=-1,
+        Head = 0,
+        Body = 1,
+        Leg = 2
+    };
+    enum class HitStrength {
+        Null=-1,
+        L = 0,
+        M = 1,
+        H = 2
     };
     struct Initialvelocity {
         std::unordered_map<FighterState,float> x;
@@ -86,6 +89,7 @@ namespace Util {
         HurtBox hurtbox;
         HitBox hitbox;
     };
+
     inline bool RectangleOverlap(glm::vec2 Rec1_position, glm::vec2 Rec1_HW,
                                  glm::vec2 Rec2_position, glm::vec2 Rec2_HW) {
 

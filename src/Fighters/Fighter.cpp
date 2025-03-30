@@ -42,6 +42,13 @@ namespace Util {
         StateEnter[FighterState::MK] = [this] { AttackStateEnter(); };
         StateEnter[FighterState::HK] = [this] { AttackStateEnter(); };
 
+        StateEnter[FighterState::HurtHeadL] = [this] { HurtStateEnter(); };
+        StateEnter[FighterState::HurtHeadM] = [this] { HurtStateEnter(); };
+        StateEnter[FighterState::HurtHeadH] = [this] { HurtStateEnter(); };
+        StateEnter[FighterState::HurtBodyL] = [this] { HurtStateEnter(); };
+        StateEnter[FighterState::HurtBodyM] = [this] { HurtStateEnter(); };
+        StateEnter[FighterState::HurtBodyH] = [this] { HurtStateEnter(); };
+
         StateUpload[FighterState::Idle] = [this] { IdleStateUpload(); };
         StateUpload[FighterState::Forward] = [this] { ForwardStateUpload(); };
         StateUpload[FighterState::Backward] = [this] { BackwardStateUpload(); };
@@ -54,7 +61,14 @@ namespace Util {
         StateUpload[FighterState::HP] = [this] { HPStateUpload(); };
         StateUpload[FighterState::LK] = [this] { LKStateUpload(); };
         StateUpload[FighterState::MK] = [this] { MKStateUpload(); };
-        StateUpload[FighterState::HK] = [this] { HKStateUpload();};
+        StateUpload[FighterState::HK] = [this] { HKStateUpload(); };
+
+        StateUpload[FighterState::HurtHeadL] = [this] { HurtStateUpload(); };
+        StateUpload[FighterState::HurtHeadM] = [this] { HurtStateUpload(); };
+        StateUpload[FighterState::HurtHeadH] = [this] { HurtStateUpload(); };
+        StateUpload[FighterState::HurtBodyL] = [this] { HurtStateUpload(); };
+        StateUpload[FighterState::HurtBodyM] = [this] { HurtStateUpload(); };
+        StateUpload[FighterState::HurtBodyH] = [this] { HurtStateUpload(); };
         //ActionNow->AnimationPause();ActionNow->TestPictureoffset();
     }
 
@@ -181,10 +195,35 @@ namespace Util {
                 BodySize))
                 {
                 std::cout<<GetName()<<"HIT"<<i<<std::endl;
-                enemy->hp-=GetAttack();
+                enemy->GetAttack();
+                AttackHit(GetHitStrength(),static_cast<HitLocation>(i));
                 AttackStruck=true;
                 return;
             }
+        }
+    }
+
+    void Fighter::AttackHit(HitStrength Strength,HitLocation Location) {
+        FighterState newState=GetHitState(Strength,Location);
+        enemy->ChangeState(newState);
+    }
+
+    FighterState Fighter::GetHitState(HitStrength Strength,HitLocation Location) {
+        switch (Strength) {
+            case HitStrength::L:
+                if(Location==HitLocation::Head)return FighterState::HurtHeadL;
+                return FighterState::HurtBodyL;
+                break;
+            case HitStrength::M:
+                if(Location==HitLocation::Head)return FighterState::HurtHeadM;
+                return FighterState::HurtBodyM;
+                break;
+            case HitStrength::H:
+                if(Location==HitLocation::Head)return FighterState::HurtHeadH;
+                return FighterState::HurtBodyH;
+                break;
+            default:
+                return FighterState::Idle;
         }
     }
     //debug
@@ -203,7 +242,7 @@ namespace Util {
 
     void Fighter::PrintPostion() {
         if(Allofmouse.size()==animations[currentState].size()&&!Allofmouse.empty()) {
-            std::cout<<"{";
+            std::cout<<GetName()<<"{";
             for(auto i: Allofmouse) {
                 if(i==Allofmouse[Allofmouse.size()-1]) {
                     std::cout <<"{"<< static_cast<int> (i.x)<<","<< static_cast<int> (i.y)<<"}";
@@ -217,6 +256,12 @@ namespace Util {
     }
 
     void Fighter::PostionTester() {
+        if (Input::IsKeyDown(Keycode::NUM_1)) {
+            ChangeState(FighterState::HurtHeadL);
+        }
+        if (Input::IsKeyDown(Keycode::NUM_2)) {
+            ChangeState(FighterState::HurtBodyL);
+        }
         if (Input::IsKeyDown(Keycode::MOUSE_MB)) {
             mouse = Input::GetCursorPosition();
             std::cout << "Frame: " << "Mouse Clicked at: (" << mouse.x << ", " << mouse.y << ")" << std::endl;
@@ -227,22 +272,20 @@ namespace Util {
             std::cout << "Frame: " << "Mouse Clicked at: (" << mouse.x << ", " << mouse.y << ")" << std::endl;
             Allofmouse.clear();
         }
+
+        if (Input::IsKeyDown(Keycode::N)) {
+            glm::vec2 Mouse=Input::GetCursorPosition();
+            mouse=GetCurrentOffsetPosition();
+            std::cout << "Frame: " << "Mouse Clicked at: (" << Mouse.x << ", " << Mouse.y << ")" << std::endl;
+            glm::vec2 Pos;
+            Pos=Mouse-mouse;
+            Allofmouse.push_back(Pos);
+        }
         if (Input::IsKeyDown(Keycode::MOUSE_RB)) {
             glm::vec2 Mouse=Input::GetCursorPosition();
             std::cout << "Frame: " << "Mouse Clicked at: (" << Mouse.x << ", " << Mouse.y << ")" << std::endl;
-            glm::vec2 Pos=mouse-Mouse;
-            Allofmouse.push_back(Pos);
-        }
-        if (Input::IsKeyDown(Keycode::N)) {
-            glm::vec2 Mouse=Input::GetCursorPosition();
-            std::cout << "Frame: " << "Mouse Clicked at: (" << Mouse.x << ", " << Mouse.y << ")" << std::endl;
             glm::vec2 Pos;
-            if(Mouse.y>mouse.y) {
-                Pos=Mouse-mouse;
-            }
-            else {
-                Pos=mouse-Mouse;
-            }
+            Pos=mouse-Mouse;
             Allofmouse.push_back(Pos);
         }
     }
@@ -290,7 +333,7 @@ namespace Util {
                        7.0f);
         hitPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHitboxOffset(), 0, {direction, 1}},
                GetCurrentHitbox(),
-               7.0f);
+               8.0f);
     }
 
     void Fighter::DrawCharacter() {
@@ -404,4 +447,11 @@ namespace Util {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 
+    void Fighter::HurtStateEnter() {
+        ResetVelocity();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::HurtStateUpload() {
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
+    }
 }

@@ -53,6 +53,9 @@ namespace Util {
         virtual void MKStateUpload();
         virtual void HKStateUpload();
 
+        virtual void HurtStateEnter();
+        virtual void HurtStateUpload();
+
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
         virtual void LoadAllBox(){}
@@ -68,7 +71,9 @@ namespace Util {
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
         float GetHP() const{return hp;}
-        float GetAttack(){return attacks.count(currentState)?attacks[currentState]:0;}
+        void GetAttack(){hp-=attacks.count(enemy->currentState)?attacks[enemy->currentState]:0;}
+        HitStrength GetHitStrength(){return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
+        FighterState GetHitState(HitStrength Strength,HitLocation Location);
 
         int GetDirection();
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
@@ -133,6 +138,8 @@ namespace Util {
         }
         void HitboxIsCollidedEnemy();
 
+        void AttackHit(HitStrength Strength,HitLocation Location);
+
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
         void InitPosition(glm::vec2 position,int side,int Whichplayer);
@@ -168,6 +175,7 @@ namespace Util {
         std::unordered_map<FighterState, std::vector<std::string>> animations;
         std::unordered_map<FighterState, std::vector<int>> frames;
         std::unordered_map<FighterState, std::vector<glm::vec2>> offset;
+        std::unordered_map<FighterState, HitStrength> hitstrength;
         std::unordered_map<FighterState, float> attacks;
 
         std::shared_ptr<AnimationSpace> ActionNow;
