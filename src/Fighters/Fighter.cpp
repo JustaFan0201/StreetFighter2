@@ -1,6 +1,16 @@
 #include "Fighters/Fighter.hpp"
 
 namespace Util {
+    void Fighter::LoadAttackAndType() {
+        attacks[FighterState::LP]=attacks[FighterState::LK]=5;
+        attacks[FighterState::MP]=attacks[FighterState::MK]=10;
+        attacks[FighterState::HP]=attacks[FighterState::HK]=15;
+
+        hitstrength[FighterState::LP]=hitstrength[FighterState::LK]=HitStrength::L;
+        hitstrength[FighterState::MP]=hitstrength[FighterState::MK]=HitStrength::M;
+        hitstrength[FighterState::HP]=hitstrength[FighterState::HK]=HitStrength::H;
+    }
+
     void Fighter::ChangeState(FighterState newState) {
         if (currentState != newState) {
             currentState = newState;
@@ -48,6 +58,8 @@ namespace Util {
         StateEnter[FighterState::HurtBodyL] = [this] { HurtStateEnter(); };
         StateEnter[FighterState::HurtBodyM] = [this] { HurtStateEnter(); };
         StateEnter[FighterState::HurtBodyH] = [this] { HurtStateEnter(); };
+        StateEnter[FighterState::BackwardBlock] = [this] { BlockStateEnter(); };
+        StateEnter[FighterState::CrouchBlock] = [this] { BlockStateEnter(); };
 
         StateUpload[FighterState::Idle] = [this] { IdleStateUpload(); };
         StateUpload[FighterState::Forward] = [this] { ForwardStateUpload(); };
@@ -69,6 +81,9 @@ namespace Util {
         StateUpload[FighterState::HurtBodyL] = [this] { HurtStateUpload(); };
         StateUpload[FighterState::HurtBodyM] = [this] { HurtStateUpload(); };
         StateUpload[FighterState::HurtBodyH] = [this] { HurtStateUpload(); };
+
+        StateUpload[FighterState::BackwardBlock] = [this] { ActionNow->AnimationPause();ActionNow->TestPictureoffset();BlockStateUpload(); };
+        StateUpload[FighterState::CrouchBlock] = [this] { ActionNow->AnimationPause();ActionNow->TestPictureoffset();BlockStateUpload(); };
         //ActionNow->AnimationPause();ActionNow->TestPictureoffset();
     }
 
@@ -120,6 +135,8 @@ namespace Util {
             case FighterState::Idle:case FighterState::Forward:case FighterState::Backward:
             case FighterState::JumpUP:case FighterState::JumpForward:case FighterState::JumpBackward:
             case FighterState::Crouchdown:
+            case FighterState::HurtBodyL:case FighterState::HurtBodyM:case FighterState::HurtBodyH:
+            case FighterState::HurtHeadL:case FighterState::HurtHeadM:case FighterState::HurtHeadH:
                 if (GetCurrentPosition().x > MaxWidth - abs(ActionNow->GetCustomSize().x) / 2||
                     GetCurrentPosition().x < -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2) {
                     ActionNow->m_Transform.translation.x = std::clamp(GetCurrentPosition().x,
@@ -257,10 +274,10 @@ namespace Util {
 
     void Fighter::PostionTester() {
         if (Input::IsKeyDown(Keycode::NUM_1)) {
-            ChangeState(FighterState::HurtHeadL);
+            ChangeState(FighterState::BackwardBlock);
         }
         if (Input::IsKeyDown(Keycode::NUM_2)) {
-            ChangeState(FighterState::HurtBodyL);
+            ChangeState(FighterState::CrouchBlock);
         }
         if (Input::IsKeyDown(Keycode::MOUSE_MB)) {
             mouse = Input::GetCursorPosition();
@@ -422,6 +439,7 @@ namespace Util {
     void Fighter::AttackStateEnter() {
         ResetVelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+        soundeffect[currentState]->Play();
     }
     void Fighter::LPStateUpload() {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
@@ -449,9 +467,19 @@ namespace Util {
 
     void Fighter::HurtStateEnter() {
         ResetVelocity();
+        velocity.x=direction*Initialvelocity.x[currentState];
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+        soundeffect[currentState]->Play();
     }
     void Fighter::HurtStateUpload() {
+        velocity.x+=direction*Friction*Time::GetDeltaTimeMs()/1000;
+        if (GetAnimationIsEnd()&&((velocity.x>=0&&direction==1)||(velocity.x<=0&&direction==-1))) {ChangeState(FighterState::Idle);}
+    }
+    void Fighter::BlockStateEnter() {
+        ResetVelocity();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::BlockStateUpload() {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 }

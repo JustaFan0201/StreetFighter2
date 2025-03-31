@@ -15,6 +15,8 @@ namespace Util {
         Ken::LoadAnimations();
         Ken::LoadOffsetVelocity();
         Ken::LoadAllBox();
+        Ken::LoadAttackSound();
+        Fighter::LoadAttackAndType();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -38,6 +40,9 @@ namespace Util {
         animations[FighterState::HurtHeadL] = animations[FighterState::HurtHeadM] = animations[FighterState::HurtHeadH] =ActionInit(2, "HurtHead");
         animations[FighterState::HurtBodyL] = animations[FighterState::HurtBodyM] = animations[FighterState::HurtBodyH] = ActionInit(2, "HurtBody");
 
+        animations[FighterState::BackwardBlock]=ActionInit(2, "BackwardBlock");
+        animations[FighterState::CrouchBlock]=ActionInit(2, "CrouchBlock");
+
         frames[FighterState::Idle]={100, 150, 200, 150, 100, 100};
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120, 120, 120};
@@ -58,9 +63,13 @@ namespace Util {
         frames[FighterState::HurtBodyL] = {100,100};
         frames[FighterState::HurtBodyM] = {150,150};
         frames[FighterState::HurtBodyH] = {200,200};
+
+        frames[FighterState::HurtBodyM] = {150,150};
+        frames[FighterState::HurtBodyH] = {150,150};
     }
     void Ken::LoadOffsetVelocity() {
         Gravity=-4800;
+        Friction=800;
         Initialvelocity.x[FighterState::Forward]=400;
         Initialvelocity.x[FighterState::Backward]=-400;
         Initialvelocity.x[FighterState::JumpForward]=500;
@@ -68,6 +77,10 @@ namespace Util {
         Initialvelocity.y[FighterState::JumpForward]=2100;
         Initialvelocity.y[FighterState::JumpBackward]=2100;
         Initialvelocity.y[FighterState::JumpUP]=2000;
+
+        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-300;
+        Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-400;
+        Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-500;
 
         offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0},{0,0}};
         offset[FighterState::Crouchdown]={{10,-9},{31,-30},{35,-43}};
@@ -80,6 +93,9 @@ namespace Util {
 
         offset[FighterState::HurtHeadL]=offset[FighterState::HurtHeadM]=offset[FighterState::HurtHeadH]={{-24,-8},{-39,-0}};
         offset[FighterState::HurtBodyL]=offset[FighterState::HurtBodyM]=offset[FighterState::HurtBodyH]={{-1,-7},{9,-15}};
+
+        offset[FighterState::BackwardBlock]={{-3,3},{1,5}};
+        offset[FighterState::CrouchBlock]={{35,-44},{16,-38}};
     }
     void Ken::LoadAllBox() {
         boxes.pushbox.size[FighterState::Idle]={100,200};
@@ -91,9 +107,9 @@ namespace Util {
         boxes.hurtbox.body.size[FighterState::Idle]={100,100};
         boxes.hurtbox.leg.size[FighterState::Idle]={100,125};
 
-        boxes.hurtbox.head.size[FighterState::Crouchdown]={50,50};
-        boxes.hurtbox.body.size[FighterState::Crouchdown]={100,50};
-        boxes.hurtbox.leg.size[FighterState::Crouchdown]={100,50};
+        boxes.hurtbox.head.size[FighterState::Crouchdown]=boxes.hurtbox.head.size[FighterState::CrouchBlock]={50,50};
+        boxes.hurtbox.body.size[FighterState::Crouchdown]=boxes.hurtbox.body.size[FighterState::CrouchBlock]={100,50};
+        boxes.hurtbox.leg.size[FighterState::Crouchdown]=boxes.hurtbox.leg.size[FighterState::CrouchBlock]={100,50};
 
         boxes.hurtbox.head.offset[FighterState::Idle]={{23,113},{28,110},{27,109},{26,117},{25,116},{25,116}};
         boxes.hurtbox.body.offset[FighterState::Idle]={{-15,57},{-15,57},{-10,55},{-10,54},{-12,53},{-12,53}};
@@ -115,6 +131,10 @@ namespace Util {
         boxes.hurtbox.body.offset[FighterState::HK]={{25,37},{-18,31},{-41,30},{-54,39},{-56,35}};
         boxes.hurtbox.leg.offset[FighterState::HK]={{59,-56},{44,-55},{24,-52},{17,-53},{-4,-62}};
 
+        boxes.hurtbox.head.offset[FighterState::Idle]={{23,113},{28,110},{27,109},{26,117},{25,116}};
+        boxes.hurtbox.body.offset[FighterState::Idle]={{-15,57},{-15,57},{-10,55},{-10,54},{-12,53}};
+        boxes.hurtbox.leg.offset[FighterState::Idle]={{-12,-53},{-12,-52},{-12,-52},{-12,-52},{-11,-48}};
+
         boxes.hurtbox.head.offset[FighterState::Crouchdown]={{38,91},{53,46},{61,22}};
         boxes.hurtbox.body.offset[FighterState::Crouchdown]={{9,41},{28,-4},{37,-23}};
         boxes.hurtbox.leg.offset[FighterState::Crouchdown]={{10,-9},{38,-54},{44,-73}};
@@ -125,20 +145,20 @@ namespace Util {
         boxes.hitbox.offset[FighterState::MP]={{-1,-1},{-1,-1},{125,79},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HP]={50,100};
         boxes.hitbox.offset[FighterState::HP]={{-1,-1},{-1,-1},{-1,-1},{130,142},{-1,-1},{-1,-1}};
-        boxes.hitbox.size[FighterState::LK]={80,80};
-        boxes.hitbox.offset[FighterState::LK]={{-1,-1},{-1,-1},{200,-20},{-1,-1}};
+        boxes.hitbox.size[FighterState::LK]={150,80};
+        boxes.hitbox.offset[FighterState::LK]={{-1,-1},{-1,-1},{150,-20},{-1,-1}};
         boxes.hitbox.size[FighterState::MK]={100,100};
         boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{56,99},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HK]={120,100};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{152,102},{-1,-1},{-1,-1}};
-
-
-        attacks[FighterState::LP]=attacks[FighterState::LK]=5;
-        attacks[FighterState::MP]=attacks[FighterState::MK]=10;
-        attacks[FighterState::HP]=attacks[FighterState::HK]=15;
-
-        hitstrength[FighterState::LP]=hitstrength[FighterState::LK]=HitStrength::L;
-        hitstrength[FighterState::MP]=hitstrength[FighterState::MK]=HitStrength::M;
-        hitstrength[FighterState::HP]=hitstrength[FighterState::HK]=HitStrength::H;
+    }
+    void Ken::LoadAttackSound() {
+        soundeffect[FighterState::LP]=soundeffect[FighterState::LK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_38 - Light Attack.wav")};
+        soundeffect[FighterState::MP]=soundeffect[FighterState::MK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_39 - Medium Attack.wav")};
+        soundeffect[FighterState::HP]=soundeffect[FighterState::HK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_40 - Hard Attack.wav")};
+        soundeffect[FighterState::HurtBodyL]=soundeffect[FighterState::HurtHeadL]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_42 - Jab Hit.wav")};
+        soundeffect[FighterState::HurtBodyM]=soundeffect[FighterState::HurtHeadM]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_43 - Strong Hit.wav")};
+        soundeffect[FighterState::HurtBodyH]=soundeffect[FighterState::HurtHeadH]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_44 - Fierce Hit.wav")};
+        soundeffect[FighterState::BackwardBlock]=soundeffect[FighterState::CrouchBlock]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_51 - Blocked.wav")};
     }
 }

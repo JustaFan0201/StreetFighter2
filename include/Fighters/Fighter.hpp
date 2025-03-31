@@ -56,9 +56,14 @@ namespace Util {
         virtual void HurtStateEnter();
         virtual void HurtStateUpload();
 
+        virtual void BlockStateEnter();
+        virtual void BlockStateUpload();
+
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
         virtual void LoadAllBox(){}
+        virtual void LoadAttackSound(){}
+        virtual void LoadAttackAndType();
 
         void SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
         void SetEnemy(std::shared_ptr<Fighter> enemy){this->enemy=enemy;}
@@ -168,6 +173,7 @@ namespace Util {
         Transform country_position;
         std::vector<std::string> stage_background;
         std::shared_ptr<BGM> m_BGM;
+        std::unordered_map<FighterState, std::shared_ptr<SFX>> soundeffect;
 
         FighterState currentState;
         std::unordered_map<FighterState, std::function<void()>> StateEnter;
@@ -186,7 +192,8 @@ namespace Util {
         float hp=100;
         int direction;
         float FloorOfCharacter;
-        float Gravity=-5000;
+        float Gravity=-4800;
+        float Friction=800;
         velocity velocity;
         Initialvelocity Initialvelocity;
         Boxes boxes;

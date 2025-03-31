@@ -49,7 +49,9 @@ namespace Util {
         HurtHeadH,
         HurtBodyL,
         HurtBodyM,
-        HurtBodyH
+        HurtBodyH,
+        BackwardBlock,
+        CrouchBlock
     };
     enum class HitLocation {
         Null=-1,
