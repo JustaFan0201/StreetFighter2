@@ -12,8 +12,8 @@ namespace Util {
         Right = -1
     };
     struct velocity {
-        int x=0;
-        int y=0;
+        float x=0;
+        float y=0;
     };
     enum class FighterState {
         Idle,

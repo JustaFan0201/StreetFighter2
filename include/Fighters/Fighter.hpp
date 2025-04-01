@@ -5,16 +5,16 @@
 #ifndef FIGHTER_HPP
 #define FIGHTER_HPP
 #include <memory>
-#include <iostream>
 #include <string>
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "Core/Context.hpp"
 #include "Util/BGM.hpp"
 #include "Util/Input.hpp"
-#include "Util/Logger.hpp"
 #include "Util/Transform.hpp"
 #include "Util/Time.hpp"
 #include "Util/SFX.hpp"
@@ -46,12 +46,7 @@ namespace Util {
         virtual void CrouchdownUpload();
 
         virtual void AttackStateEnter();
-        virtual void LPStateUpload();
-        virtual void MPStateUpload();
-        virtual void HPStateUpload();
-        virtual void LKStateUpload();
-        virtual void MKStateUpload();
-        virtual void HKStateUpload();
+        virtual void AttackStateUpload();
 
         virtual void HurtStateEnter();
         virtual void HurtStateUpload();
@@ -78,7 +73,8 @@ namespace Util {
         float GetHP() const{return hp;}
         void GetAttack(){hp-=attacks.count(enemy->currentState)?attacks[enemy->currentState]:0;}
         HitStrength GetHitStrength(){return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
-        FighterState GetHitState(HitStrength Strength,HitLocation Location);
+        FighterState GetBeHitState(HitStrength Strength,HitLocation Location);
+        FighterState GetBlockState();
 
         int GetDirection();
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
@@ -144,6 +140,8 @@ namespace Util {
         void HitboxIsCollidedEnemy();
 
         void AttackHit(HitStrength Strength,HitLocation Location);
+        void AttackBlock();
+        bool IsBlocking();
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
@@ -176,6 +174,7 @@ namespace Util {
         std::unordered_map<FighterState, std::shared_ptr<SFX>> soundeffect;
 
         FighterState currentState;
+        std::unordered_set<FighterState> borderCheckStates;
         std::unordered_map<FighterState, std::function<void()>> StateEnter;
         std::unordered_map<FighterState, std::function<void()>> StateUpload;
         std::unordered_map<FighterState, std::vector<std::string>> animations;
