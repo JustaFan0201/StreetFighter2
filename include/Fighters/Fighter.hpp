@@ -42,8 +42,8 @@ namespace Util {
         virtual void JumpStateEnter();
         virtual void JumpStateUpload();
 
-        virtual void CrouchdownEnter();
-        virtual void CrouchdownUpload();
+        virtual void CrouchEnter();
+        virtual void CrouchUpload();
 
         virtual void AttackStateEnter();
         virtual void AttackStateUpload();
@@ -88,16 +88,16 @@ namespace Util {
         std::array<glm::vec2, 3> GetCurrentHurtboxSize() {
             return {
                 boxes.hurtbox.head.size.count(currentState) ?
-                boxes.hurtbox.head.size[currentState] :
-                boxes.hurtbox.head.size[FighterState::Idle],
+                boxes.hurtbox.head.size[currentState][ActionNow->GetCurrentFrameIndex()] :
+                boxes.hurtbox.head.size[FighterState::Idle][0],
 
                 boxes.hurtbox.body.size.count(currentState) ?
-                boxes.hurtbox.body.size[currentState] :
-                boxes.hurtbox.body.size[FighterState::Idle],
+                boxes.hurtbox.body.size[currentState][ActionNow->GetCurrentFrameIndex()] :
+                boxes.hurtbox.body.size[FighterState::Idle][0],
 
                 boxes.hurtbox.leg.size.count(currentState) ?
-                boxes.hurtbox.leg.size[currentState] :
-                boxes.hurtbox.leg.size[FighterState::Idle]
+                boxes.hurtbox.leg.size[currentState][ActionNow->GetCurrentFrameIndex()] :
+                boxes.hurtbox.leg.size[FighterState::Idle][0]
             };
         }//0 head 1 body 2 leg
         std::array<glm::vec2, 3> GetCurrentHurtboxOffset() {
@@ -191,8 +191,8 @@ namespace Util {
         float hp=100;
         int direction;
         float FloorOfCharacter;
-        float Gravity=-4800;
-        float Friction=800;
+        float Gravity=-98;
+        float Friction=16;
         velocity velocity;
         Initialvelocity Initialvelocity;
         Boxes boxes;

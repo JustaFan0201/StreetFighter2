@@ -1,13 +1,13 @@
 #include "Fighters/Fighter.hpp"
 namespace Util {
     void Fighter::LoadAttackAndType() {
-        attacks[FighterState::LP]=attacks[FighterState::LK]=5;
-        attacks[FighterState::MP]=attacks[FighterState::MK]=10;
-        attacks[FighterState::HP]=attacks[FighterState::HK]=15;
+        attacks[FighterState::LP]=attacks[FighterState::LK]=attacks[FighterState::CrouchLP]=attacks[FighterState::CrouchLK]=5;
+        attacks[FighterState::MP]=attacks[FighterState::MK]=attacks[FighterState::CrouchMP]=attacks[FighterState::CrouchMK]=10;
+        attacks[FighterState::HP]=attacks[FighterState::HK]=attacks[FighterState::CrouchHP]=attacks[FighterState::CrouchHK]=15;
 
-        hitstrength[FighterState::LP]=hitstrength[FighterState::LK]=HitStrength::L;
-        hitstrength[FighterState::MP]=hitstrength[FighterState::MK]=HitStrength::M;
-        hitstrength[FighterState::HP]=hitstrength[FighterState::HK]=HitStrength::H;
+        hitstrength[FighterState::LP]=hitstrength[FighterState::LK]=hitstrength[FighterState::CrouchLP]=hitstrength[FighterState::CrouchLK]=HitStrength::L;
+        hitstrength[FighterState::MP]=hitstrength[FighterState::MK]=hitstrength[FighterState::CrouchMP]=hitstrength[FighterState::CrouchMK]=HitStrength::M;
+        hitstrength[FighterState::HP]=hitstrength[FighterState::HK]=hitstrength[FighterState::CrouchHP]=hitstrength[FighterState::CrouchHK]=HitStrength::H;
     }
 
     void Fighter::ChangeState(FighterState newState) {
@@ -43,7 +43,8 @@ namespace Util {
         StateEnter[FighterState::JumpUP] = [this] { JumpStateEnter(); };
         StateEnter[FighterState::JumpForward] = [this] { JumpStateEnter(); };
         StateEnter[FighterState::JumpBackward] = [this] { JumpStateEnter(); };
-        StateEnter[FighterState::Crouchdown] = [this] { CrouchdownEnter(); };
+        StateEnter[FighterState::Crouch] = [this] { CrouchEnter(); };
+
         StateEnter[FighterState::LP] = [this] { AttackStateEnter(); };
         StateEnter[FighterState::MP] = [this] { AttackStateEnter(); };
         StateEnter[FighterState::HP] = [this] { AttackStateEnter(); };
@@ -51,12 +52,20 @@ namespace Util {
         StateEnter[FighterState::MK] = [this] { AttackStateEnter(); };
         StateEnter[FighterState::HK] = [this] { AttackStateEnter(); };
 
+        StateEnter[FighterState::CrouchLP] = [this] { AttackStateEnter(); };
+        StateEnter[FighterState::CrouchMP] = [this] { AttackStateEnter(); };
+        StateEnter[FighterState::CrouchHP] = [this] { AttackStateEnter(); };
+        StateEnter[FighterState::CrouchLK] = [this] { AttackStateEnter(); };
+        StateEnter[FighterState::CrouchMK] = [this] { AttackStateEnter(); };
+        StateEnter[FighterState::CrouchHK] = [this] { AttackStateEnter(); };
+
         StateEnter[FighterState::HurtHeadL] = [this] { HurtStateEnter(); };
         StateEnter[FighterState::HurtHeadM] = [this] { HurtStateEnter(); };
         StateEnter[FighterState::HurtHeadH] = [this] { HurtStateEnter(); };
         StateEnter[FighterState::HurtBodyL] = [this] { HurtStateEnter(); };
         StateEnter[FighterState::HurtBodyM] = [this] { HurtStateEnter(); };
         StateEnter[FighterState::HurtBodyH] = [this] { HurtStateEnter(); };
+
         StateEnter[FighterState::BackwardBlock] = [this] { BlockStateEnter(); };
         StateEnter[FighterState::CrouchBlock] = [this] { BlockStateEnter(); };
 
@@ -66,13 +75,21 @@ namespace Util {
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::Crouchdown] = [this] { CrouchdownUpload(); };
+        StateUpload[FighterState::Crouch] = [this] { CrouchUpload(); };
+
         StateUpload[FighterState::LP] = [this] { AttackStateUpload(); };
         StateUpload[FighterState::MP] = [this] { AttackStateUpload(); };
         StateUpload[FighterState::HP] = [this] { AttackStateUpload(); };
         StateUpload[FighterState::LK] = [this] { AttackStateUpload(); };
         StateUpload[FighterState::MK] = [this] { AttackStateUpload(); };
         StateUpload[FighterState::HK] = [this] { AttackStateUpload(); };
+
+        StateUpload[FighterState::CrouchLP] = [this] { AttackStateUpload(); };
+        StateUpload[FighterState::CrouchMP] = [this] { AttackStateUpload(); };
+        StateUpload[FighterState::CrouchHP] = [this] { AttackStateUpload(); };
+        StateUpload[FighterState::CrouchLK] = [this] { AttackStateUpload(); };
+        StateUpload[FighterState::CrouchMK] = [this] { AttackStateUpload(); };
+        StateUpload[FighterState::CrouchHK] = [this] { AttackStateUpload(); };
 
         StateUpload[FighterState::HurtHeadL] = [this] { HurtStateUpload(); };
         StateUpload[FighterState::HurtHeadM] = [this] { HurtStateUpload(); };
@@ -110,12 +127,14 @@ namespace Util {
 
         pushboxPicture->SetDrawData({GetCurrentPosition(), 0, {1, 1}},GetCurrentPushbox(),4.0f);
         pushboxPicture->SetVisible(false);
-        headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[0], 0, {1, 1}},GetCurrentHurtboxSize()[0],7.0f);
+        headPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[0], 0, {1, 1}},GetCurrentHurtboxSize()[0],5.0f);
         headPicture->SetVisible(false);
-        bodyPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[1], 0, {1, 1}},GetCurrentHurtboxSize()[1],8.0f);
+        bodyPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[1], 0, {1, 1}},GetCurrentHurtboxSize()[1],6.0f);
         bodyPicture->SetVisible(false);
-        legPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[2], 0, {1, 1}},GetCurrentHurtboxSize()[2],9.0f);
+        legPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHurtboxOffset()[2], 0, {1, 1}},GetCurrentHurtboxSize()[2],7.0f);
         legPicture->SetVisible(false);
+        hitPicture->SetDrawData({GetCurrentOffsetPosition()+GetCurrentHitboxOffset(), 0, {1, 1}},GetCurrentHitbox(),8.0f);
+        hitPicture->SetVisible(false);
     }
 
     void Fighter::ReSize() {
@@ -152,13 +171,13 @@ namespace Util {
 
             if (myPos.x <= enemyPos.x) {
                 ActionNow->m_Transform.translation.x = std::max(enemyLeft - myPushboxSize.x / 2, -MaxWidth + myPushboxSize.x / 2)-GetCurrentPushboxOffset().x;
-                if(enemy->currentState==FighterState::Idle||enemy->currentState==FighterState::Crouchdown||enemy->currentState==FighterState::JumpUP||
+                if(enemy->currentState==FighterState::Idle||enemy->currentState==FighterState::Crouch||enemy->currentState==FighterState::JumpUP||
                     enemy->currentState==FighterState::JumpForward||enemy->currentState==FighterState::Backward) {
                     enemy->ActionNow->m_Transform.translation.x+=400*Time::GetDeltaTimeMs()/1000;
                 }
             } else {
                 ActionNow->m_Transform.translation.x = std::min(enemyRight + myPushboxSize.x / 2, MaxWidth - myPushboxSize.x / 2)-GetCurrentPushboxOffset().x;
-                if(enemy->currentState==FighterState::Idle||enemy->currentState==FighterState::Crouchdown||enemy->currentState==FighterState::JumpUP||
+                if(enemy->currentState==FighterState::Idle||enemy->currentState==FighterState::Crouch||enemy->currentState==FighterState::JumpUP||
                     enemy->currentState==FighterState::JumpForward||enemy->currentState==FighterState::Backward) {
                     enemy->ActionNow->m_Transform.translation.x+=-400*Time::GetDeltaTimeMs()/1000;
                     }
@@ -182,8 +201,8 @@ namespace Util {
         auto currentEnter = StateUpload.find(currentState);
         currentEnter->second();
 
-        glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x*Time::GetDeltaTimeMs()/1000,
-            ActionNow->GetTransform().translation.y+velocity.y*Time::GetDeltaTimeMs()/1000};
+        glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
+            ActionNow->GetTransform().translation.y+velocity.y};
         ActionNow->SetTransform({position,0,{direction,1}});
     }
 
@@ -215,17 +234,19 @@ namespace Util {
             }
         }
     }
+
     void Fighter::AttackBlock() {
         FighterState newState=GetBlockState();
         ChangeState(newState);
     }
+
     void Fighter::AttackHit(HitStrength Strength,HitLocation Location) {
         FighterState newState=GetBeHitState(Strength,Location);
         enemy->ChangeState(newState);
     }
 
     bool Fighter::IsBlocking() {
-        if(currentState==FighterState::Backward||currentState==FighterState::Crouchdown
+        if(currentState==FighterState::Backward||currentState==FighterState::Crouch
             ||currentState==FighterState::Idle||currentState==FighterState::BackwardBlock
             ||currentState==FighterState::CrouchBlock) {
             return controller->IsBackward(direction);
@@ -257,7 +278,7 @@ namespace Util {
             case FighterState::Backward:
                 return FighterState::BackwardBlock;
             break;
-            case FighterState::Crouchdown:
+            case FighterState::Crouch:
                 return FighterState::CrouchBlock;
             break;
             default:
@@ -295,10 +316,22 @@ namespace Util {
 
     void Fighter::PostionTester() {
         if (Input::IsKeyDown(Keycode::NUM_1)) {
-            ChangeState(FighterState::BackwardBlock);
+            ChangeState(FighterState::CrouchLP);
         }
         if (Input::IsKeyDown(Keycode::NUM_2)) {
-            ChangeState(FighterState::CrouchBlock);
+            ChangeState(FighterState::CrouchMP);
+        }
+        if (Input::IsKeyDown(Keycode::NUM_3)) {
+            ChangeState(FighterState::CrouchHP);
+        }
+        if (Input::IsKeyDown(Keycode::NUM_4)) {
+            ChangeState(FighterState::CrouchLK);
+        }
+        if (Input::IsKeyDown(Keycode::NUM_5)) {
+            ChangeState(FighterState::CrouchMK);
+        }
+        if (Input::IsKeyDown(Keycode::NUM_6)) {
+            ChangeState(FighterState::CrouchHK);
         }
         if (Input::IsKeyDown(Keycode::MOUSE_MB)) {
             mouse = Input::GetCursorPosition();
@@ -329,21 +362,16 @@ namespace Util {
     }
 
     void Fighter::PushBoxTester() {
+        if(Input::IsKeyDown(Keycode::I)) {
+            pushboxPicture->SetVisible(!pushboxPicture->GetVisible());
+        }
         if(Input::IsKeyDown(Keycode::O)) {
-            pushboxPicture->SetVisible(true);
+            headPicture->SetVisible(!headPicture->GetVisible());
+            bodyPicture->SetVisible(!bodyPicture->GetVisible());
+            legPicture->SetVisible(!legPicture->GetVisible());
         }
         if(Input::IsKeyDown(Keycode::P)) {
-            pushboxPicture->SetVisible(false);
-        }
-        if(Input::IsKeyDown(Keycode::K)) {
-            headPicture->SetVisible(true);
-            bodyPicture->SetVisible(true);
-            legPicture->SetVisible(true);
-        }
-        if(Input::IsKeyDown(Keycode::L)) {
-            headPicture->SetVisible(false);
-            bodyPicture->SetVisible(false);
-            legPicture->SetVisible(false);
+            hitPicture->SetVisible(!hitPicture->GetVisible());
         }
     }
 
@@ -395,7 +423,7 @@ namespace Util {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
         else if (controller->IsForward(direction)) {ChangeState(FighterState::Forward);}
         else if (controller->IsBackward(direction)) {ChangeState(FighterState::Backward);}
-        else if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::Crouchdown);}
+        else if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::Crouch);}
         else if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpUP);}
         else if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::MP);}
@@ -414,7 +442,7 @@ namespace Util {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
         if (!controller->IsForward(direction)) {ChangeState(FighterState::Idle);}
         if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpForward);}
-        if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::Crouchdown);}
+        if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::Crouch);}
         if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::MP);}
         else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::HP);}
@@ -427,7 +455,7 @@ namespace Util {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
         if (!controller->IsBackward(direction)) {ChangeState(FighterState::Idle);}
         if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpBackward);}
-        if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::Crouchdown);}
+        if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::Crouch);}
         if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::MP);}
         else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::HP);}
@@ -447,12 +475,18 @@ namespace Util {
         if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
 
-    void Fighter::CrouchdownEnter(){
+    void Fighter::CrouchEnter(){
         ResetVelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Fighter::CrouchdownUpload() {
+    void Fighter::CrouchUpload() {
         if (!controller->IsKeyPressed(Keys::DOWN)){ChangeState(FighterState::Idle);}
+        if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::CrouchLP);}
+        else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::CrouchMP);}
+        else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::CrouchHP);}
+        else if (controller->IsKeyDown(Keys::LK)) {ChangeState(FighterState::CrouchLK);}
+        else if (controller->IsKeyDown(Keys::MK)) {ChangeState(FighterState::CrouchMK);}
+        else if (controller->IsKeyDown(Keys::HK)) {ChangeState(FighterState::CrouchHK);}
         direction=GetDirection();
     }
 
@@ -473,6 +507,7 @@ namespace Util {
     }
     void Fighter::HurtStateUpload() {
         velocity.x+=Friction*Time::GetDeltaTimeMs()/1000;
+        velocity.y+=Gravity*Time::GetDeltaTimeMs()/1000;
         if (GetAnimationIsEnd()&&velocity.x>=0) {ChangeState(FighterState::Idle);}
     }
     void Fighter::BlockStateEnter() {
@@ -483,7 +518,7 @@ namespace Util {
     }
     void Fighter::BlockStateUpload() {
         velocity.x+=Friction/2*Time::GetDeltaTimeMs()/1000;
-        if (GetAnimationIsEnd()&&velocity.x>=0&&currentState==FighterState::CrouchBlock) {ChangeState(FighterState::Crouchdown);}
+        if (GetAnimationIsEnd()&&velocity.x>=0&&currentState==FighterState::CrouchBlock) {ChangeState(FighterState::Crouch);}
         else if (GetAnimationIsEnd()&&velocity.x>=0&&currentState==FighterState::BackwardBlock) {ChangeState(FighterState::Idle);}
     }
 }

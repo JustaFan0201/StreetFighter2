@@ -22,19 +22,19 @@ namespace Util {
         JumpUP,
         JumpForward,
         JumpBackward,
-        Crouchdown,
+        Crouch,
         LP,
         MP,
         HP,
         LK,
         MK,
         HK,
-        CrouchdownLP,
-        CrouchdownMP,
-        CrouchdownHP,
-        CrouchdownLK,
-        CrouchdownMK,
-        CrouchdownHK,
+        CrouchLP,
+        CrouchMP,
+        CrouchHP,
+        CrouchLK,
+        CrouchMK,
+        CrouchHK,
         JumpLP,
         JumpMP,
         JumpHP,
@@ -70,7 +70,7 @@ namespace Util {
         std::unordered_map<FighterState,float> y;
     };
     struct HurtBoxPart {
-        std::unordered_map<FighterState, glm::vec2> size;
+        std::unordered_map<FighterState, std::vector<glm::vec2>> size;
         std::unordered_map<FighterState, std::vector<glm::vec2>> offset;
     };
     struct HurtBox {

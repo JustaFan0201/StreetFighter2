@@ -25,7 +25,7 @@ namespace Util {
         animations[FighterState::JumpUP] = ActionInit(8, "JumpUP");
         animations[FighterState::JumpForward] = ActionInit(6, "JumpForward");
         animations[FighterState::JumpBackward] = ActionInit(6, "JumpForward");
-        animations[FighterState::Crouchdown] = ActionInit(3, "Crouchdown");
+        animations[FighterState::Crouch] = ActionInit(3, "Crouch");
         animations[FighterState::LP] = ActionInit(6, "LP");
         animations[FighterState::MP] = ActionInit(4, "MP");
         animations[FighterState::HP] = ActionInit(6, "HP");
@@ -39,7 +39,7 @@ namespace Util {
         frames[FighterState::JumpUP]={120, 120, 120, 120, 120, 120, 120, 120};
         frames[FighterState::JumpForward]={60,90,120,120,90,60};
         frames[FighterState::JumpBackward]={60,90,120,120,90,60};
-        frames[FighterState::Crouchdown]={60,60,60};
+        frames[FighterState::Crouch]={60,60,60};
         frames[FighterState::LP]={60,60,60,60,60,60};
         frames[FighterState::MP]={30,60,60,30};
         frames[FighterState::HP]={60,60,60,60,60,60};
@@ -48,17 +48,16 @@ namespace Util {
         frames[FighterState::HK]={60,60,60,60,60,60,60};
     }
     void Blanka::LoadOffsetVelocity() {
-        Gravity=-4800;
-        Initialvelocity.x[FighterState::Forward]=400;
-        Initialvelocity.x[FighterState::Backward]=-400;
-        Initialvelocity.x[FighterState::JumpForward]=500;
-        Initialvelocity.x[FighterState::JumpBackward]=-500;
-        Initialvelocity.y[FighterState::JumpForward]=2100;
-        Initialvelocity.y[FighterState::JumpBackward]=2100;
-        Initialvelocity.y[FighterState::JumpUP]=2000;
+        Initialvelocity.x[FighterState::Forward]=4;
+        Initialvelocity.x[FighterState::Backward]=-4;
+        Initialvelocity.x[FighterState::JumpForward]=5;
+        Initialvelocity.x[FighterState::JumpBackward]=-5;
+        Initialvelocity.y[FighterState::JumpForward]=21;
+        Initialvelocity.y[FighterState::JumpBackward]=21;
+        Initialvelocity.y[FighterState::JumpUP]=20;
 
         offset[FighterState::Idle]={{0,0},{0,6},{-5,8}};
-        offset[FighterState::Crouchdown]={{-21,0},{-48,-5},{-62,-6}};
+        offset[FighterState::Crouch]={{-21,0},{-48,-5},{-62,-6}};
         offset[FighterState::LP]={{-82,-2},{-61,3},{-53,-3},{-56,1},{-13,-1},{-77,0}};
         offset[FighterState::MP]={{-42,51},{-34,19},{-15,2},{-55,-3}};
         offset[FighterState::HP]={{-83,-6},{-58,-1},{-141,31},{-114,1},{-54,-12},{-77,-6}};
@@ -69,13 +68,13 @@ namespace Util {
     }
     void Blanka::LoadAllBox() {
             boxes.pushbox.size[FighterState::Idle]={100,200};
-            boxes.pushbox.size[FighterState::Crouchdown]={100,120};
+            boxes.pushbox.size[FighterState::Crouch]={100,120};
             boxes.pushbox.offset[FighterState::Idle]={15,0};
-            boxes.pushbox.offset[FighterState::Crouchdown]={15,-43};
+            boxes.pushbox.offset[FighterState::Crouch]={15,-43};
 
-            boxes.hurtbox.head.size[FighterState::Idle]={50,50};
-            boxes.hurtbox.body.size[FighterState::Idle]={100,100};
-            boxes.hurtbox.leg.size[FighterState::Idle]={100,125};
+            boxes.hurtbox.head.size[FighterState::Idle]={{50,50},{50,50},{50,50}};
+            boxes.hurtbox.body.size[FighterState::Idle]={{100,100},{100,100},{100,100}};
+            boxes.hurtbox.leg.size[FighterState::Idle]={{100,125},{100,125},{100,125}};
 
             boxes.hurtbox.head.offset[FighterState::Idle]={{23,113},{28,110},{27,109},{26,117},{25,116}};
             boxes.hurtbox.body.offset[FighterState::Idle]={{-15,57},{-15,57},{-10,55},{-10,54},{-12,53}};

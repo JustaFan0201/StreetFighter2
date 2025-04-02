@@ -84,6 +84,10 @@ namespace Util {
             animation->Pause();
         }
 
+        bool GetVisible() {
+            return m_Visible;
+        }
+
         void SetFrameIntervals(const std::vector<int>& intervals) {
             frameIntervals = intervals;
         }
