@@ -13,19 +13,239 @@ namespace Util {
         BackgroundInit(7);
         StateInit();
         Honda::LoadAnimations();
-        ActionNow = std::make_shared<AnimationSpace>(
-            animations[FighterState::Idle],
-            true,
-            60,
-            true,
-            5
-        );
+        Honda::LoadOffsetVelocity();
+        Honda::LoadAllBox();
+        Honda::LoadAttackSound();
+        Fighter::LoadAttackAndType();
+        ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
+        debugInit();
     }
     void Honda::LoadAnimations() {
-        animations[FighterState::Idle]=ActionInit(4,"Idle");
-        animations[FighterState::Backward]=ActionInit(4,"Backward");
-        animations[FighterState::Forward]=ActionInit(4,"Forward");
-        animations[FighterState::LP]=ActionInit(5,"LP");
-        animations[FighterState::MP]=ActionInit(7, "MP");
+        animations[FighterState::Idle] = ActionInit(4,"Idle");
+        animations[FighterState::Backward] = ActionInit(4,"Backward");
+        animations[FighterState::Forward] = ActionInit(4,"Forward");
+        animations[FighterState::JumpUP] = ActionInit(11, "JumpUP");
+        animations[FighterState::JumpForward] = ActionInit(10, "JumpForward");
+        std::vector<std::string> reversedAnimations = animations[FighterState::JumpForward];
+        std::reverse(reversedAnimations.begin(), reversedAnimations.end());
+        animations[FighterState::JumpBackward] = reversedAnimations;
+        animations[FighterState::Crouch] = ActionInit(3, "Crouch");
+        animations[FighterState::LP] = ActionInit(5, "LP");
+        animations[FighterState::MP] = ActionInit(7, "MP");
+        animations[FighterState::HP] = ActionInit(9, "HP");
+        animations[FighterState::LK] = ActionInit(7, "LK");
+        animations[FighterState::MK] = ActionInit(5, "MK");
+        animations[FighterState::HK] = ActionInit(9, "HK");
+
+        animations[FighterState::HurtHeadL] = animations[FighterState::HurtHeadM] = animations[FighterState::HurtHeadH] =ActionInit(2, "HurtHead");
+        animations[FighterState::HurtBodyL] = animations[FighterState::HurtBodyM] = animations[FighterState::HurtBodyH] = ActionInit(2, "HurtBody");
+
+        animations[FighterState::BackwardBlock]=ActionInit(2, "BackwardBlock");
+        animations[FighterState::CrouchBlock]=ActionInit(2, "CrouchBlock");
+
+        animations[FighterState::CrouchLP] = ActionInit(3, "CrouchLP");
+        animations[FighterState::CrouchMP] = ActionInit(5, "CrouchMP");
+        animations[FighterState::CrouchHP] = ActionInit(7, "CrouchHP");
+        animations[FighterState::CrouchLK] = ActionInit(5, "CrouchLK");
+        animations[FighterState::CrouchMK] = animations[FighterState::CrouchLK];
+        animations[FighterState::CrouchHK] = ActionInit(5, "CrouchHK");
+
+        frames[FighterState::Idle]={100, 150, 150, 100};
+        frames[FighterState::Forward]={120, 120, 120, 120};
+        frames[FighterState::Backward]={120, 120, 120, 120};
+        frames[FighterState::JumpUP]={60,60,60,60,60,60,60,60,60,60,60};
+        frames[FighterState::JumpForward]={60,60,60,60,60,60,60,60,60,60,};
+        frames[FighterState::JumpBackward]={60,60,60,60,60,60,60,60,60,60};
+        frames[FighterState::Crouch]={60,60,60};
+        frames[FighterState::LP]={60,60,60,60,60};
+        frames[FighterState::MP]={60,60,60,60,60,60,60};
+        frames[FighterState::HP]={60,60,60,60,60,60,60,60,60};
+        frames[FighterState::LK]={60,60,60,60,60,60,60};
+        frames[FighterState::MK]={60,60,60,60,60};
+        frames[FighterState::HK]={60,60,60,60,60,60,60,60,60};
+
+        frames[FighterState::CrouchLP]={60,90,60};
+        frames[FighterState::CrouchMP]={60,60,60,60,60};
+        frames[FighterState::CrouchHP]={60,60,60,60,60,60,60};
+        frames[FighterState::CrouchLK]={60,60,60,60,60};
+        frames[FighterState::CrouchMK]={60,60,60,60,60};
+        frames[FighterState::CrouchHK]={60,60,60,60,60};
+
+        frames[FighterState::HurtHeadL] = {100,100};
+        frames[FighterState::HurtHeadM] = {150,150};
+        frames[FighterState::HurtHeadH] = {200,200};
+        frames[FighterState::HurtBodyL] = {100,100};
+        frames[FighterState::HurtBodyM] = {150,150};
+        frames[FighterState::HurtBodyH] = {200,200};
+
+        frames[FighterState::BackwardBlock] = {150,150};
+        frames[FighterState::CrouchBlock] = {150,150};
+    }
+    void Honda::LoadOffsetVelocity() {
+        Initialvelocity.x[FighterState::Forward]=8;
+        Initialvelocity.x[FighterState::Backward]=-8;
+        Initialvelocity.x[FighterState::JumpForward]=10;
+        Initialvelocity.x[FighterState::JumpBackward]=-10;
+        Initialvelocity.y[FighterState::JumpForward]=38;
+        Initialvelocity.y[FighterState::JumpBackward]=38;
+        Initialvelocity.y[FighterState::JumpUP]=38;
+
+        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-6;
+        Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-8;
+        Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-10;
+
+        Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-4;
+
+        offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0}};
+        offset[FighterState::Crouch]={{-5,-12},{3,-23},{1,-32}};
+        //Stand attack offset
+        offset[FighterState::LP]={{-11,2},{18,0},{50,-10},{9,1},{-21,2}};
+        offset[FighterState::MP]={{-3,3},{-19,-2},{4,-12},{36,-9},{0,-11},{-22,-1},{-3,4}};
+        offset[FighterState::HP]={{1,4},{-14,35},{9,43},{93,-2},{29,-5},{94,-1},{7,41},{-9,32},{5,4}};
+        offset[FighterState::LK]={{-5,2},{12,26},{56,28},{202,13},{51,25},{3,24},{-5,4}};
+        offset[FighterState::MK]={{-2,-1},{33,0},{118,-20},{29,0},{-2,-3}};
+        offset[FighterState::HK]={{-4,-1},{17,26},{38,44},{66,44},{84,51},{70,48},{30,43},{15,23},{-4,1}};
+        //Crouch attack offset
+        offset[FighterState::CrouchLP]={{49,-24},{85,-30},{50,-25}};
+        offset[FighterState::CrouchMP]={{-2,-25},{20,-30},{50,-25},{23,-34},{-9,-24}};
+        offset[FighterState::CrouchHP]={{2,-50},{26,-30},{-10,-33},{-12,-25},{-6,-37},{24,-30},{4,-47}};
+        offset[FighterState::CrouchLK]={{10,-19},{23,-25},{76,-25},{20,-24},{14,-23}};
+        offset[FighterState::CrouchMK]=offset[FighterState::CrouchLK];
+        offset[FighterState::CrouchHK]={{19,-28},{60,-26},{6,-49},{-204,-37},{-126,-32}};
+
+        offset[FighterState::HurtHeadL]=offset[FighterState::HurtHeadM]=offset[FighterState::HurtHeadH]={{-14,-1},{-22,-4}};
+        offset[FighterState::HurtBodyL]=offset[FighterState::HurtBodyM]=offset[FighterState::HurtBodyH]={{2,-7},{10,-17}};
+
+        offset[FighterState::BackwardBlock]={{-3,3},{1,5}};
+        offset[FighterState::CrouchBlock]={{35,-44},{16,-38}};
+    }
+    void Honda::LoadAllBox() {
+        borderCheckStates = {
+            FighterState::Idle, FighterState::Forward, FighterState::Backward,
+            FighterState::JumpUP, FighterState::JumpForward, FighterState::JumpBackward,
+            FighterState::Crouch,
+            FighterState::HurtBodyL, FighterState::HurtBodyM, FighterState::HurtBodyH,
+            FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH,
+            FighterState::BackwardBlock,FighterState::CrouchBlock
+        };
+
+        boxes.pushbox.size[FighterState::Idle]={100,200};
+        boxes.pushbox.offset[FighterState::Idle]={15,0};
+        boxes.pushbox.size[FighterState::Crouch]={100,120};
+        boxes.pushbox.offset[FighterState::Crouch]={15,-43};
+
+        boxes.hurtbox.head.size[FighterState::Idle]={{50,50},{50,50},{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::Idle]={{100,100},{100,100},{100,100},{100,100},{100,100}};
+        boxes.hurtbox.leg.size[FighterState::Idle]={{100,125},{100,125},{100,125},{100,125},{100,125},};
+        boxes.hurtbox.head.offset[FighterState::Idle]={{23,113},{28,110},{27,109},{26,117},{25,116},{25,116}};
+        boxes.hurtbox.body.offset[FighterState::Idle]={{-15,57},{-15,57},{-10,55},{-10,54},{-12,53},{-12,53}};
+        boxes.hurtbox.leg.offset[FighterState::Idle]={{-12,-53},{-12,-52},{-12,-52},{-12,-52},{-11,-48},{-11,-48}};
+
+        boxes.hurtbox.head.size[FighterState::Crouch]={{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::Crouch]={{100,50},{100,50},{100,50}};
+        boxes.hurtbox.leg.size[FighterState::Crouch]={{100,50},{100,50},{100,50}};
+        boxes.hurtbox.head.offset[FighterState::Crouch]={{38,91},{53,46},{61,22}};
+        boxes.hurtbox.body.offset[FighterState::Crouch]={{9,41},{28,-4},{37,-23}};
+        boxes.hurtbox.leg.offset[FighterState::Crouch]={{10,-9},{38,-54},{44,-73}};
+        //block
+        boxes.hurtbox.head.size[FighterState::CrouchBlock]={{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchBlock]={{100,50},{100,50}};
+        boxes.hurtbox.leg.size[FighterState::CrouchBlock]={{100,50},{100,50}};
+        boxes.hurtbox.head.offset[FighterState::CrouchBlock]={{11,67},{-32,74}};
+        boxes.hurtbox.body.offset[FighterState::CrouchBlock]={{4,10},{-25,27}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchBlock]={{11,-45},{-8,-44}};
+
+        boxes.hurtbox.head.offset[FighterState::BackwardBlock]={{-5,113},{-21,111}};
+        //hurtbox Crouch Attack
+        boxes.hurtbox.head.size[FighterState::CrouchLP]={{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchLP]={{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::CrouchLP]={{100,70},{100,70},{100,70}};
+        boxes.hurtbox.head.offset[FighterState::CrouchLP]={{29,66},{42,63},{34,64}};
+        boxes.hurtbox.body.offset[FighterState::CrouchLP]={{-9,14},{5,13},{-3,11}};
+
+        boxes.hurtbox.head.size[FighterState::CrouchLK]={{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchLK]={{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::CrouchLK]={{120,70},{100,70},{120,70}};
+        boxes.hurtbox.head.offset[FighterState::CrouchLK]={{14,71},{5,71},{12,71}};
+        boxes.hurtbox.body.offset[FighterState::CrouchLK]={{-16,17},{-7,18},{-15,18}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchLK]={{20,-52},{20,-57},{22,-50}};
+
+        boxes.hurtbox.head.size[FighterState::CrouchMP]={{50,50},{50,50},{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchMP]={{100,70},{100,70},{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::CrouchMP]={{100,70},{100,70},{100,70},{100,70},{100,70}};
+        boxes.hurtbox.head.offset[FighterState::CrouchMP]={{38,63},{44,66},{42,69},{43,66},{39,66}};
+        boxes.hurtbox.body.offset[FighterState::CrouchMP]={{1,13},{9,13},{5,19},{4,16},{4,16}};
+
+        boxes.hurtbox.head.size[FighterState::CrouchMK]={{50,50},{50,50},{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchMK]={{100,70},{100,70},{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::CrouchMK]={{120,70},{150,70},{120,70},{150,70},{120,70}};
+        boxes.hurtbox.head.offset[FighterState::CrouchMK]={{15,71},{-120,59},{-148,43},{-118,58},{11,68}};
+        boxes.hurtbox.body.offset[FighterState::CrouchMK]={{-19,20},{-116,13},{-143,0},{-114,14},{-21,18}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchMK]={{16,-55},{-81,-57},{-80,-58},{-60,-58},{12,-57}};
+
+        boxes.hurtbox.head.size[FighterState::CrouchHP]={{50,50},{50,50},{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchHP]={{100,70},{100,100},{100,100},{100,100},{100,50}};
+        boxes.hurtbox.leg.size[FighterState::CrouchHP]={{100,70},{100,125},{100,125},{100,125},{100,70}};
+        boxes.hurtbox.head.offset[FighterState::CrouchHP]={{13,86},{30,143},{46,167},{32,143},{16,86}};
+        boxes.hurtbox.body.offset[FighterState::CrouchHP]={{-22,32},{10,78},{58,92},{11,74},{-17,25}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchHP]={{3,-44},{17,-30},{38,-24},{14,-33},{14,-48}};
+
+        boxes.hurtbox.head.size[FighterState::CrouchHK]={{50,50},{50,50},{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchHK]={{100,70},{100,70},{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::CrouchHK]={{100,50},{100,50},{120,50},{120,50},{120,50}};
+        boxes.hurtbox.head.offset[FighterState::CrouchHK]={{8,66},{5,66},{-26,66},{-66,66},{-39,69}};
+        boxes.hurtbox.body.offset[FighterState::CrouchHK]={{-23,9},{-23,15},{-11,15},{-36,17},{-55,22}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchHK]={{-9,-46},{0,-48},{16,-48},{-64,-53},{-53,-41}};
+        //hurtbox Stand Attack
+        boxes.hurtbox.head.offset[FighterState::HP]={{49,111},{74,111},{65,114},{49,127},{50,113}};
+        boxes.hurtbox.body.offset[FighterState::HP]={{23,51},{47,48},{57,53},{52,56},{11,49},{19,46}};
+        boxes.hurtbox.leg.offset[FighterState::HP]={{8,-63},{23,-66},{34,-68},{21,-65},{-3,-70},{5,-62}};
+
+        boxes.hurtbox.head.offset[FighterState::LK]={{8,115},{58,114},{80,113},{57,113}};
+        boxes.hurtbox.body.offset[FighterState::LK]={{-9,44},{26,43},{66,45},{29,46}};
+        boxes.hurtbox.leg.offset[FighterState::LK]={{-17,-66},{54,-49},{74,-58},{56,-57}};
+
+        boxes.hurtbox.head.offset[FighterState::MK]={{11,111},{-53,110},{-152,106},{-55,111},{15,112}};
+        boxes.hurtbox.body.offset[FighterState::MK]={{-11,41},{-50,48},{-120,50},{-52,51},{-6,45}};
+        boxes.hurtbox.leg.offset[FighterState::MK]={{-16,-68},{-46,-58},{-62,-59},{-60,-58},{-16,-61}};
+
+        boxes.hurtbox.head.offset[FighterState::HK]={{-65,51},{-95,52},{-113,63},{-112,75},{-101,88}};
+        boxes.hurtbox.body.offset[FighterState::HK]={{25,37},{-18,31},{-41,30},{-54,39},{-56,35}};
+        boxes.hurtbox.leg.offset[FighterState::HK]={{59,-56},{44,-55},{24,-52},{17,-53},{-4,-62}};
+        //hitbox Crouch Attack
+        boxes.hitbox.size[FighterState::CrouchLP]={100,50};
+        boxes.hitbox.offset[FighterState::CrouchLP]={{-1,-1},{133,36},{-1,-1}};
+        boxes.hitbox.size[FighterState::CrouchMP]={140,50};
+        boxes.hitbox.offset[FighterState::CrouchMP]={{-1,-1},{-1,-1},{121,44},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::CrouchHP]={50,100};
+        boxes.hitbox.offset[FighterState::CrouchHP]={{-1,-1},{-1,-1},{81,205},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::CrouchLK]={150,60};
+        boxes.hitbox.offset[FighterState::CrouchLK]={{-1,-1},{141,-63},{-1,-1}};
+        boxes.hitbox.size[FighterState::CrouchMK]={150,80};
+        boxes.hitbox.offset[FighterState::CrouchMK]={{-1,-1},{-1,-1},{60,-61},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::CrouchHK]={150,80};
+        boxes.hitbox.offset[FighterState::CrouchHK]={{-1,-1},{130,-49},{-1,-1},{-1,-1},{-1,-1}};
+        //hitbox Stand Attack
+        boxes.hitbox.size[FighterState::LP]={100,50};
+        boxes.hitbox.offset[FighterState::LP]={{-1,-1},{110,78},{-1,-1}};
+        boxes.hitbox.size[FighterState::MP]={140,50};
+        boxes.hitbox.offset[FighterState::MP]={{-1,-1},{-1,-1},{125,79},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::HP]={50,100};
+        boxes.hitbox.offset[FighterState::HP]={{-1,-1},{-1,-1},{-1,-1},{130,142},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::LK]={150,80};
+        boxes.hitbox.offset[FighterState::LK]={{-1,-1},{-1,-1},{150,-20},{-1,-1}};
+        boxes.hitbox.size[FighterState::MK]={100,100};
+        boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{56,99},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::HK]={120,100};
+        boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{152,102},{-1,-1},{-1,-1}};
+    }
+    void Honda::LoadAttackSound() {
+        soundeffect[FighterState::LP]=soundeffect[FighterState::LK]=soundeffect[FighterState::CrouchLP]=soundeffect[FighterState::CrouchLK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_38 - Light Attack.wav")};
+        soundeffect[FighterState::MP]=soundeffect[FighterState::MK]=soundeffect[FighterState::CrouchMP]=soundeffect[FighterState::CrouchMK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_39 - Medium Attack.wav")};
+        soundeffect[FighterState::HP]=soundeffect[FighterState::HK]=soundeffect[FighterState::CrouchHP]=soundeffect[FighterState::CrouchHK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_40 - Hard Attack.wav")};
+        soundeffect[FighterState::HurtBodyL]=soundeffect[FighterState::HurtHeadL]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_42 - Jab Hit.wav")};
+        soundeffect[FighterState::HurtBodyM]=soundeffect[FighterState::HurtHeadM]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_43 - Strong Hit.wav")};
+        soundeffect[FighterState::HurtBodyH]=soundeffect[FighterState::HurtHeadH]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_44 - Fierce Hit.wav")};
+        soundeffect[FighterState::BackwardBlock]=soundeffect[FighterState::CrouchBlock]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_51 - Blocked.wav")};
     }
 }
