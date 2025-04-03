@@ -75,21 +75,21 @@ namespace Util {
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::Crouch] = [this] { CrouchUpload(); };
+        StateUpload[FighterState::Crouch] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();CrouchUpload(); };
 
-        StateUpload[FighterState::LP] = [this] { AttackStateUpload(); };
-        StateUpload[FighterState::MP] = [this] { AttackStateUpload(); };
-        StateUpload[FighterState::HP] = [this] { AttackStateUpload(); };
-        StateUpload[FighterState::LK] = [this] { AttackStateUpload(); };
-        StateUpload[FighterState::MK] = [this] { AttackStateUpload(); };
-        StateUpload[FighterState::HK] = [this] { AttackStateUpload(); };
+        StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::MP] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::HP] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::LK] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::MK] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::HK] = [this] {AttackStateUpload(); };
 
-        StateUpload[FighterState::CrouchLP] = [this] { AttackStateUpload(); };
-        StateUpload[FighterState::CrouchMP] = [this] { AttackStateUpload(); };
-        StateUpload[FighterState::CrouchHP] = [this] { AttackStateUpload(); };
-        StateUpload[FighterState::CrouchLK] = [this] { AttackStateUpload(); };
-        StateUpload[FighterState::CrouchMK] = [this] { AttackStateUpload(); };
-        StateUpload[FighterState::CrouchHK] = [this] { AttackStateUpload(); };
+        StateUpload[FighterState::CrouchLP] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::CrouchMP] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::CrouchHP] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::CrouchLK] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::CrouchMK] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::CrouchHK] = [this] {AttackStateUpload(); };
 
         StateUpload[FighterState::HurtHeadL] = [this] { HurtStateUpload(); };
         StateUpload[FighterState::HurtHeadM] = [this] { HurtStateUpload(); };
