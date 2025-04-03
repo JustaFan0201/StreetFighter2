@@ -44,6 +44,8 @@ namespace Util {
 
         virtual void CrouchEnter();
         virtual void CrouchUpload();
+        virtual void CrouchDownUpload();
+        virtual void CrouchUpUpload();
 
         virtual void AttackStateEnter();
         virtual void AttackStateUpload();
@@ -175,6 +177,7 @@ namespace Util {
 
         FighterState currentState;
         std::unordered_set<FighterState> borderCheckStates;
+        std::unordered_set<FighterState> CrouchAttackStates;
         std::unordered_map<FighterState, std::function<void()>> StateEnter;
         std::unordered_map<FighterState, std::function<void()>> StateUpload;
         std::unordered_map<FighterState, std::vector<std::string>> animations;

@@ -23,6 +23,8 @@ namespace Util {
         JumpForward,
         JumpBackward,
         Crouch,
+        CrouchDown,
+        CrouchUp,
         LP,
         MP,
         HP,

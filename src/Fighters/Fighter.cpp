@@ -37,6 +37,18 @@ namespace Util {
     }
 
     void Fighter::StateInit() {
+        borderCheckStates = {
+            FighterState::Idle, FighterState::Forward, FighterState::Backward,
+            FighterState::JumpUP, FighterState::JumpForward, FighterState::JumpBackward,
+            FighterState::Crouch,FighterState::CrouchDown,FighterState::CrouchUp,
+            FighterState::HurtBodyL, FighterState::HurtBodyM, FighterState::HurtBodyH,
+            FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH,
+            FighterState::BackwardBlock,FighterState::CrouchBlock
+        };
+        CrouchAttackStates={
+            FighterState::CrouchLP, FighterState::CrouchMP,FighterState::CrouchHP,
+            FighterState::CrouchLK,FighterState::CrouchMK, FighterState::CrouchHK
+        };
         StateEnter[FighterState::Idle] = [this] { IdleStateEnter(); };
         StateEnter[FighterState::Forward] = [this] { WalkStateEnter(); };
         StateEnter[FighterState::Backward] = [this] { WalkStateEnter(); };
@@ -44,6 +56,8 @@ namespace Util {
         StateEnter[FighterState::JumpForward] = [this] { JumpStateEnter(); };
         StateEnter[FighterState::JumpBackward] = [this] { JumpStateEnter(); };
         StateEnter[FighterState::Crouch] = [this] { CrouchEnter(); };
+        StateEnter[FighterState::CrouchDown] = [this] { CrouchEnter(); };
+        StateEnter[FighterState::CrouchUp] = [this] { CrouchEnter(); };
 
         StateEnter[FighterState::LP] = [this] { AttackStateEnter(); };
         StateEnter[FighterState::MP] = [this] { AttackStateEnter(); };
@@ -75,7 +89,9 @@ namespace Util {
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::Crouch] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();CrouchUpload(); };
+        StateUpload[FighterState::Crouch] = [this] { CrouchUpload(); };
+        StateUpload[FighterState::CrouchDown] = [this] { CrouchDownUpload(); };
+        StateUpload[FighterState::CrouchUp] = [this] { CrouchUpUpload(); };
 
         StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
         StateUpload[FighterState::MP] = [this] {AttackStateUpload(); };
@@ -455,7 +471,7 @@ namespace Util {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
         if (!controller->IsBackward(direction)) {ChangeState(FighterState::Idle);}
         if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpBackward);}
-        if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::Crouch);}
+        if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::CrouchDown);}
         if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::MP);}
         else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::HP);}
@@ -480,7 +496,7 @@ namespace Util {
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::CrouchUpload() {
-        if (!controller->IsKeyPressed(Keys::DOWN)){ChangeState(FighterState::Idle);}
+        if (!controller->IsKeyPressed(Keys::DOWN)){ChangeState(FighterState::CrouchUp);}
         if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::CrouchLP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::CrouchMP);}
         else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::CrouchHP);}
@@ -489,6 +505,12 @@ namespace Util {
         else if (controller->IsKeyDown(Keys::HK)) {ChangeState(FighterState::CrouchHK);}
         direction=GetDirection();
     }
+    void Fighter::CrouchDownUpload() {
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Crouch);}
+    }
+    void Fighter::CrouchUpUpload() {
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
+    }
 
     void Fighter::AttackStateEnter() {
         ResetVelocity();
@@ -496,7 +518,8 @@ namespace Util {
         soundeffect[currentState]->Play();
     }
     void Fighter::AttackStateUpload() {
-        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
+        if (GetAnimationIsEnd()&&CrouchAttackStates.count(currentState)) {ChangeState(FighterState::Crouch);}
+        else if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 
     void Fighter::HurtStateEnter() {
