@@ -5,6 +5,7 @@
 
 namespace Util {
     enum class Keys {
+        Null,
         UP,
         DOWN,
         LEFT,
@@ -88,6 +89,12 @@ namespace Util {
         }
         bool IsKeyUp(Keys keyNow) {
             return Input::IsKeyUp(keyMap[keyNow]);
+        }
+        Keys GetPunch() {
+            if (Input::IsKeyDown(keyMap[Keys::HP])) {return Keys::HP;}
+            if (Input::IsKeyDown(keyMap[Keys::MP])) {return Keys::MP;}
+            if (Input::IsKeyDown(keyMap[Keys::LP])) {return Keys::LP;}
+            return Keys::Null;
         }
     };
 

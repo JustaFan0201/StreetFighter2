@@ -15,8 +15,9 @@ namespace Util {
         Ryu::LoadAnimations();
         Ryu::LoadOffsetVelocity();
         Ryu::LoadAllBox();
-        Ryu::LoadAttackSound();
+        Fighter::LoadAttackSound();
         Fighter::LoadAttackAndType();
+        LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -34,6 +35,7 @@ namespace Util {
         reversedAnimations = animations[FighterState::CrouchDown];
         std::reverse(reversedAnimations.begin(), reversedAnimations.end());
         animations[FighterState::CrouchUp] = reversedAnimations;
+
         animations[FighterState::LP] = ActionInit(3, "LP");
         animations[FighterState::MP] = ActionInit(5, "MP");
         animations[FighterState::HP] = ActionInit(6, "HP");
@@ -41,18 +43,20 @@ namespace Util {
         animations[FighterState::MK] = ActionInit(5, "MK");
         animations[FighterState::HK] = ActionInit(5, "HK");
 
-        animations[FighterState::HurtHeadL] = animations[FighterState::HurtHeadM] = animations[FighterState::HurtHeadH] =ActionInit(2, "HurtHead");
-        animations[FighterState::HurtBodyL] = animations[FighterState::HurtBodyM] = animations[FighterState::HurtBodyH] = ActionInit(2, "HurtBody");
-
-        animations[FighterState::BackwardBlock]=ActionInit(2, "BackwardBlock");
-        animations[FighterState::CrouchBlock]=ActionInit(2, "CrouchBlock");
-
         animations[FighterState::CrouchLP] = ActionInit(3, "CrouchLP");
         animations[FighterState::CrouchMP] = ActionInit(5, "CrouchMP");
         animations[FighterState::CrouchHP] = ActionInit(5, "CrouchHP");
         animations[FighterState::CrouchLK] = ActionInit(3, "CrouchLK");
         animations[FighterState::CrouchMK] = ActionInit(5, "CrouchMK");
         animations[FighterState::CrouchHK] = ActionInit(5, "CrouchHK");
+
+        animations[FighterState::HurtHeadL] = animations[FighterState::HurtHeadM] = animations[FighterState::HurtHeadH] =ActionInit(2, "HurtHead");
+        animations[FighterState::HurtBodyL] = animations[FighterState::HurtBodyM] = animations[FighterState::HurtBodyH] = ActionInit(2, "HurtBody");
+
+        animations[FighterState::BackwardBlock]=ActionInit(2, "BackwardBlock");
+        animations[FighterState::CrouchBlock]=ActionInit(2, "CrouchBlock");
+
+        animations[FighterState::Special_1]=ActionInit(4, "Special_1");
 
         frames[FighterState::Idle]={100, 150, 200, 150, 100};
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120};
@@ -87,6 +91,8 @@ namespace Util {
 
         frames[FighterState::BackwardBlock] = {150,150};
         frames[FighterState::CrouchBlock] = {150,150};
+
+        frames[FighterState::Special_1]={120,120,120,120};
     }
     void Ryu::LoadOffsetVelocity() {
         Initialvelocity.x[FighterState::Forward]=8;
@@ -127,6 +133,8 @@ namespace Util {
 
         offset[FighterState::BackwardBlock]={{-3,3},{1,5}};
         offset[FighterState::CrouchBlock]={{35,-44},{16,-38}};
+
+        offset[FighterState::Special_1]={{-23,1},{-23,-11},{-31,-9},{-12,-19}};
     }
     void Ryu::LoadAllBox() {
 
@@ -227,6 +235,11 @@ namespace Util {
         boxes.hurtbox.head.offset[FighterState::HK]={{-65,51},{-95,52},{-113,63},{-112,75},{-101,88}};
         boxes.hurtbox.body.offset[FighterState::HK]={{25,37},{-18,31},{-41,30},{-54,39},{-56,35}};
         boxes.hurtbox.leg.offset[FighterState::HK]={{59,-56},{44,-55},{24,-52},{17,-53},{-4,-62}};
+        //SpecialAttack
+        boxes.hurtbox.leg.size[FighterState::Special_1]={{150,100},{200,100},{200,100},{200,100}};
+        boxes.hurtbox.head.offset[FighterState::Special_1]={{-12,111},{-31,89},{-1,80},{72,72}};
+        boxes.hurtbox.body.offset[FighterState::Special_1]={{-25,53},{-49,34},{-23,27},{39,21}};
+        boxes.hurtbox.leg.offset[FighterState::Special_1]={{-13,-62},{-26,-73},{-16,-76},{12,-78}};
         //hitbox Crouch Attack
         boxes.hitbox.size[FighterState::CrouchLP]={100,50};
         boxes.hitbox.offset[FighterState::CrouchLP]={{-1,-1},{133,36},{-1,-1}};
@@ -254,13 +267,19 @@ namespace Util {
         boxes.hitbox.size[FighterState::HK]={120,100};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{152,102},{-1,-1},{-1,-1}};
     }
-    void Ryu::LoadAttackSound() {
-        soundeffect[FighterState::LP]=soundeffect[FighterState::LK]=soundeffect[FighterState::CrouchLP]=soundeffect[FighterState::CrouchLK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_38 - Light Attack.wav")};
-        soundeffect[FighterState::MP]=soundeffect[FighterState::MK]=soundeffect[FighterState::CrouchMP]=soundeffect[FighterState::CrouchMK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_39 - Medium Attack.wav")};
-        soundeffect[FighterState::HP]=soundeffect[FighterState::HK]=soundeffect[FighterState::CrouchHP]=soundeffect[FighterState::CrouchHK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_40 - Hard Attack.wav")};
-        soundeffect[FighterState::HurtBodyL]=soundeffect[FighterState::HurtHeadL]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_42 - Jab Hit.wav")};
-        soundeffect[FighterState::HurtBodyM]=soundeffect[FighterState::HurtHeadM]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_43 - Strong Hit.wav")};
-        soundeffect[FighterState::HurtBodyH]=soundeffect[FighterState::HurtHeadH]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_44 - Fierce Hit.wav")};
-        soundeffect[FighterState::BackwardBlock]=soundeffect[FighterState::CrouchBlock]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_51 - Blocked.wav")};
+    void Ryu::LoadSpecialMove() {
+        StateEnter[FighterState::Special_1]=[this] { HandoukenStateEnter(); };
+        StateUpload[FighterState::Special_1]=[this] { HandoukenStateUpload(); };
+        soundeffect[FighterState::Special_1]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_69 - RyuKen Hadouken.wav")};
+    }
+    void Ryu::HandoukenStateEnter() {
+        ResetVelocity();
+        soundeffect[currentState]->Play();
+        flyingObjectStrength=controller->GetPunch();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Ryu::HandoukenStateUpload() {
+        if (ActionNow->GetCurrentFrameIndex()==3){AddFlyingObject(FlyingObjectType::FireBall);}
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 }

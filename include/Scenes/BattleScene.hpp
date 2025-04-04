@@ -9,6 +9,8 @@
 #include "Others/FighterInfo.hpp"
 #include "Others/Camera.hpp"
 #include "Others/Bloodstick.hpp"
+#include "FlyingObject/FlyingObject.hpp"
+#include "FlyingObject/FireBall.hpp"
 
 namespace Util {
     class BattleScene : public Scene{
@@ -17,6 +19,7 @@ namespace Util {
         std::shared_ptr<Fighter> enemy;
         std::shared_ptr<Camera> camera;
         std::shared_ptr<Bloodstick> bloodstick;
+        std::vector<std::shared_ptr<FlyingObect>> FlyingObects;
     public:
         BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy)
             : player(player), enemy(enemy), camera(std::make_shared<Camera>()), bloodstick(std::make_shared<Bloodstick>()) {}

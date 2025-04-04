@@ -9,7 +9,15 @@ namespace Util {
         hitstrength[FighterState::MP]=hitstrength[FighterState::MK]=hitstrength[FighterState::CrouchMP]=hitstrength[FighterState::CrouchMK]=HitStrength::M;
         hitstrength[FighterState::HP]=hitstrength[FighterState::HK]=hitstrength[FighterState::CrouchHP]=hitstrength[FighterState::CrouchHK]=HitStrength::H;
     }
-
+    void Fighter::LoadAttackSound() {
+        soundeffect[FighterState::LP]=soundeffect[FighterState::LK]=soundeffect[FighterState::CrouchLP]=soundeffect[FighterState::CrouchLK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_38 - Light Attack.wav")};
+        soundeffect[FighterState::MP]=soundeffect[FighterState::MK]=soundeffect[FighterState::CrouchMP]=soundeffect[FighterState::CrouchMK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_39 - Medium Attack.wav")};
+        soundeffect[FighterState::HP]=soundeffect[FighterState::HK]=soundeffect[FighterState::CrouchHP]=soundeffect[FighterState::CrouchHK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_40 - Hard Attack.wav")};
+        soundeffect[FighterState::HurtBodyL]=soundeffect[FighterState::HurtHeadL]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_42 - Jab Hit.wav")};
+        soundeffect[FighterState::HurtBodyM]=soundeffect[FighterState::HurtHeadM]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_43 - Strong Hit.wav")};
+        soundeffect[FighterState::HurtBodyH]=soundeffect[FighterState::HurtHeadH]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_44 - Fierce Hit.wav")};
+        soundeffect[FighterState::BackwardBlock]=soundeffect[FighterState::CrouchBlock]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_51 - Blocked.wav")};
+    }
     void Fighter::ChangeState(FighterState newState) {
         if (currentState != newState) {
             currentState = newState;
@@ -48,6 +56,10 @@ namespace Util {
         CrouchAttackStates={
             FighterState::CrouchLP, FighterState::CrouchMP,FighterState::CrouchHP,
             FighterState::CrouchLK,FighterState::CrouchMK, FighterState::CrouchHK
+        };
+        HurtStates={
+            FighterState::HurtBodyL, FighterState::HurtBodyM, FighterState::HurtBodyH,
+            FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH
         };
         StateEnter[FighterState::Idle] = [this] { IdleStateEnter(); };
         StateEnter[FighterState::Forward] = [this] { WalkStateEnter(); };
@@ -89,8 +101,8 @@ namespace Util {
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::Crouch] = [this] { ActionNow->AnimationPause();ActionNow->TestPictureoffset();CrouchUpload(); };
-        StateUpload[FighterState::CrouchDown] = [this] { ActionNow->AnimationPause();ActionNow->TestPictureoffset();CrouchDownUpload(); };
+        StateUpload[FighterState::Crouch] = [this] { CrouchUpload(); };
+        StateUpload[FighterState::CrouchDown] = [this] { CrouchDownUpload(); };
         StateUpload[FighterState::CrouchUp] = [this] { CrouchUpUpload(); };
 
         StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
@@ -130,11 +142,9 @@ namespace Util {
     }
 
     void Fighter::InitPosition(glm::vec2 position, int side,int Whichplayer) {
-        float size_x=ActionNow->GetOriginalSize().x * 3;
-        float size_y=ActionNow->GetOriginalSize().y * 3;
         FloorOfCharacter=ActionNow->GetOriginalSize().y * 3/2 + position.y;
         ActionNow->SetDrawData({{position.x,FloorOfCharacter}, 0, {side, 1}},
-                               {size_x, size_y},
+                               ActionNow->GetOriginalSize()*glm::vec2 {3,3},
                                2.0f);
         direction = side;
         ChangeState(FighterState::Idle);
@@ -155,11 +165,9 @@ namespace Util {
 
     void Fighter::ReSize() {
         if (!ActionNow) return;
-        float size_x = ActionNow->GetOriginalSize().x * 3;
-        float size_y = ActionNow->GetOriginalSize().y * 3;
         ActionNow->SetDrawData(
             {ActionNow->m_Transform.translation, 0, {direction, 1}},
-            {size_x, size_y},
+            ActionNow->GetOriginalSize()*glm::vec2 {3,3},
             2.0f
         );
     }
@@ -176,7 +184,7 @@ namespace Util {
                 ActionNow->m_Transform.translation.y=FloorOfCharacter;
             }
         }
-        if (PushboxIsCollidedEnemy()) {
+        if (PushboxIsCollidedEnemy()&&!HurtStates.count(currentState)) {
             glm::vec2 myPos = GetCurrentPosition() + GetCurrentPushboxOffset();
             glm::vec2 enemyPos = enemy->GetCurrentPosition() + enemy->GetCurrentPushboxOffset();
             glm::vec2 myPushboxSize = GetCurrentPushbox();
@@ -332,7 +340,7 @@ namespace Util {
 
     void Fighter::PostionTester() {
         if (Input::IsKeyDown(Keycode::NUM_1)) {
-            ChangeState(FighterState::CrouchLP);
+            ChangeState(FighterState::Special_1);
         }
         if (Input::IsKeyDown(Keycode::NUM_2)) {
             ChangeState(FighterState::CrouchMP);
@@ -400,6 +408,7 @@ namespace Util {
         ReSize();
         BorderDetection(context->GetWindowWidth()/2);
         HitboxIsCollidedEnemy();
+
         //debug
         pushboxPicture->SetDrawData({GetCurrentPosition()+GetCurrentPushboxOffset(), 0, {direction, 1}},
                        GetCurrentPushbox(),

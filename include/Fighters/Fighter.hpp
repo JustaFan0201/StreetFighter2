@@ -23,7 +23,7 @@
 #include "Others/Controller.hpp"
 #include "AnimationSpace.hpp"
 #include "ImageSpace.hpp"
-#include "Word.hpp"
+#include "Others/FlyingObjectInfo.hpp"
 
 namespace Util {
     class Fighter : public std::enable_shared_from_this<Fighter>{
@@ -59,7 +59,7 @@ namespace Util {
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
         virtual void LoadAllBox(){}
-        virtual void LoadAttackSound(){}
+        virtual void LoadAttackSound();
         virtual void LoadAttackAndType();
 
         void SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
@@ -145,6 +145,11 @@ namespace Util {
         void AttackBlock();
         bool IsBlocking();
 
+        void AddFlyingObject(FlyingObjectType Type) {if (flyingObjectStrength!=Keys::Null) {flyingObjectType=Type;}}
+        void ClearNowFlyingObject(){flyingObjectType=FlyingObjectType::Null;flyingObjectStrength=Keys::Null;}
+        FlyingObjectType GetFlyingObject() const {return flyingObjectType;}
+        Keys GetFlyingStrength() const {return flyingObjectStrength;}
+
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
         void InitPosition(glm::vec2 position,int side,int Whichplayer);
@@ -178,6 +183,7 @@ namespace Util {
         FighterState currentState;
         std::unordered_set<FighterState> borderCheckStates;
         std::unordered_set<FighterState> CrouchAttackStates;
+        std::unordered_set<FighterState> HurtStates;
         std::unordered_map<FighterState, std::function<void()>> StateEnter;
         std::unordered_map<FighterState, std::function<void()>> StateUpload;
         std::unordered_map<FighterState, std::vector<std::string>> animations;
@@ -189,6 +195,9 @@ namespace Util {
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<Fighter> enemy;
         std::shared_ptr<Controller> controller=std::make_shared<Controller>(1);
+
+        FlyingObjectType flyingObjectType=FlyingObjectType::Null;
+        Keys flyingObjectStrength=Keys::Null;
 
         bool AttackStruck=false;
         float hp=100;

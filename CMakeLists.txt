@@ -34,53 +34,59 @@ list(TRANSFORM INCLUDE_FILES PREPEND ${INCLUDE_DIR}/)
 add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
         ${SRC_FILES}
-            src/Scenes/Scene.cpp
-            src/Scenes/StartScene.cpp
-            src/Scenes/SceneManager.cpp
-            src/Scenes/SlectScene.cpp
-            src/Scenes/PassScene.cpp
-            src/Scenes/BattleScene.cpp
+        src/Scenes/Scene.cpp
+        src/Scenes/StartScene.cpp
+        src/Scenes/SceneManager.cpp
+        src/Scenes/SlectScene.cpp
+        src/Scenes/PassScene.cpp
+        src/Scenes/BattleScene.cpp
 
-            include/Others/FighterInfo.hpp
-            include/Others/Camera.hpp
-            include/Others/Bloodstick.hpp
-            include/Others/Controller.hpp
+        include/Others/FighterInfo.hpp
+        include/Others/Camera.hpp
+        include/Others/Bloodstick.hpp
+        include/Others/Controller.hpp
 
-            src/Fighters/Fighter.cpp
-            src/Fighters/Ken.cpp
-            src/Fighters/Ryu.cpp
-            src/Fighters/Chunli.cpp
-            src/Fighters/Blanka.cpp
-            src/Fighters/Honda.cpp
-            src/Fighters/Guile.cpp
-            src/Fighters/Dhalsim.cpp
-            src/Fighters/Zangief.cpp
+        src/Fighters/Fighter.cpp
+        src/Fighters/Ken.cpp
+        src/Fighters/Ryu.cpp
+        src/Fighters/Chunli.cpp
+        src/Fighters/Blanka.cpp
+        src/Fighters/Honda.cpp
+        src/Fighters/Guile.cpp
+        src/Fighters/Dhalsim.cpp
+        src/Fighters/Zangief.cpp
+
+        src/FlyingObject/FlyingObject.cpp
+        src/FlyingObject/FireBall.cpp
 
         ${HEADER_FILES}
-            include/ImageSpace.hpp
-            include/AnimationSpace.hpp
-            include/Word.hpp
+        include/ImageSpace.hpp
+        include/AnimationSpace.hpp
+        include/Word.hpp
 
-            include/Scenes/Scene.hpp
-            include/Scenes/StartScene.hpp
-            include/Scenes/SceneManager.hpp
-            include/Scenes/SlectScene.hpp
-            include/Scenes/PassScene.hpp
-            include/Scenes/BattleScene.hpp
+        include/Scenes/Scene.hpp
+        include/Scenes/StartScene.hpp
+        include/Scenes/SceneManager.hpp
+        include/Scenes/SlectScene.hpp
+        include/Scenes/PassScene.hpp
+        include/Scenes/BattleScene.hpp
 
-            src/Others/Camera.cpp
-            src/Others/Bloodstick.cpp
+        src/Others/Camera.cpp
+        src/Others/Bloodstick.cpp
 
-            include/Fighters/Fighter.hpp
-            include/Fighters/Ken.hpp
-            include/Fighters/Ryu.hpp
-            include/Fighters/Chunli.hpp
-            include/Fighters/Blanka.hpp
-            include/Fighters/Honda.hpp
-            include/Fighters/Guile.hpp
-            include/Fighters/Dhalsim.hpp
-            include/Fighters/Zangief.hpp
+        include/Fighters/Fighter.hpp
+        include/Fighters/Ken.hpp
+        include/Fighters/Ryu.hpp
+        include/Fighters/Chunli.hpp
+        include/Fighters/Blanka.hpp
+        include/Fighters/Honda.hpp
+        include/Fighters/Guile.hpp
+        include/Fighters/Dhalsim.hpp
+        include/Fighters/Zangief.hpp
 
+        include/Others/FlyingObjectInfo.hpp
+        include/FlyingObject/FlyingObject.hpp
+        include/FlyingObject/FireBall.hpp
 )
 
 if(MSVC)

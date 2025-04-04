@@ -14,7 +14,9 @@ namespace Util {
         void LoadAnimations() override;
         void LoadOffsetVelocity() override;
         void LoadAllBox()override;
-        void LoadAttackSound()override;
+        void LoadSpecialMove();
+        void HandoukenStateEnter();
+        void HandoukenStateUpload();
     };
 }
 #endif //KEN_HPP

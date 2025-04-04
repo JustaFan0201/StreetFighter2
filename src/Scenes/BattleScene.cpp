@@ -34,11 +34,36 @@ namespace Util {
     }
 
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {
+        for (auto character : std::vector{player, enemy}) {
+            if (character->GetFlyingObject() != FlyingObjectType::Null) {
+                switch (character->GetFlyingObject()) {
+                    case FlyingObjectType::FireBall:
+                        FlyingObects.push_back(std::make_shared<FireBall>());
+                    break;
+
+                    default:
+                        break;
+                }
+                FlyingObects.back()->Init(character, character->GetFlyingStrength());
+                character->ClearNowFlyingObject();
+            }
+        }
         camera->Upload();
         player->Upload(context);
         enemy->Upload(context);
         bloodstick->Update();
         m_Animation->SetTransform({{camera->GetCameraPos().x, 0}, 0, {1,1}});
+
+        if (!FlyingObects.empty()) {
+            std::vector<std::shared_ptr<FlyingObect>> newFlyingObects;
+            for (const auto& FlyingObj : FlyingObects) {
+                FlyingObj->Update();
+                if (!FlyingObj->IsEnd()) {
+                    newFlyingObects.push_back(FlyingObj);
+                }
+            }
+            FlyingObects=newFlyingObects;
+        }
 
         if (Input::IsKeyDown(Keycode::RETURN)) {
             SenseEnd = true;
@@ -49,5 +74,11 @@ namespace Util {
         player->DrawCharacter();
         enemy->DrawCharacter();
         bloodstick->DrawBloodstick();
+
+        if (!FlyingObects.empty()) {
+            for (const auto& FlyingObject : FlyingObects) {
+                FlyingObject->Draw();
+            }
+        }
     }
 }
