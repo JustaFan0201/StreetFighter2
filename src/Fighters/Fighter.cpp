@@ -101,8 +101,8 @@ namespace Util {
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::Crouch] = [this] { CrouchUpload(); };
-        StateUpload[FighterState::CrouchDown] = [this] { CrouchDownUpload(); };
+        StateUpload[FighterState::Crouch] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset(); CrouchUpload(); };
+        StateUpload[FighterState::CrouchDown] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset(); CrouchDownUpload(); };
         StateUpload[FighterState::CrouchUp] = [this] { CrouchUpUpload(); };
 
         StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
