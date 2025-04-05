@@ -112,6 +112,23 @@ namespace Util {
                 (Rec1_Top > Rec2_Bottom) &&
                 (Rec1_Bottom < Rec2_Top);
     }
+    enum class PlayerType {
+        Null,
+        Player1,
+        Player2,
+        Ai
+    };
+    enum class SpecialMoveDirection {
+        Backward,
+        Backward_up,
+        Up,
+        Forward,
+        Forward_up,
+        Forward_down,
+        Backward_down,
+        down,
+        Null
+    };
 }
 
 #endif //FIGHTERINFO_HPP

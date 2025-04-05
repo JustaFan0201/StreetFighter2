@@ -15,7 +15,7 @@ namespace Util {
         Honda::LoadAnimations();
         Honda::LoadOffsetVelocity();
         Honda::LoadAllBox();
-        Honda::LoadAttackSound();
+        Fighter::LoadAttackSound();
         Fighter::LoadAttackAndType();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
@@ -252,14 +252,5 @@ namespace Util {
         boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{56,99},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HK]={120,100};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{152,102},{-1,-1},{-1,-1}};
-    }
-    void Honda::LoadAttackSound() {
-        soundeffect[FighterState::LP]=soundeffect[FighterState::LK]=soundeffect[FighterState::CrouchLP]=soundeffect[FighterState::CrouchLK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_38 - Light Attack.wav")};
-        soundeffect[FighterState::MP]=soundeffect[FighterState::MK]=soundeffect[FighterState::CrouchMP]=soundeffect[FighterState::CrouchMK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_39 - Medium Attack.wav")};
-        soundeffect[FighterState::HP]=soundeffect[FighterState::HK]=soundeffect[FighterState::CrouchHP]=soundeffect[FighterState::CrouchHK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_40 - Hard Attack.wav")};
-        soundeffect[FighterState::HurtBodyL]=soundeffect[FighterState::HurtHeadL]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_42 - Jab Hit.wav")};
-        soundeffect[FighterState::HurtBodyM]=soundeffect[FighterState::HurtHeadM]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_43 - Strong Hit.wav")};
-        soundeffect[FighterState::HurtBodyH]=soundeffect[FighterState::HurtHeadH]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_44 - Fierce Hit.wav")};
-        soundeffect[FighterState::BackwardBlock]=soundeffect[FighterState::CrouchBlock]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_51 - Blocked.wav")};
     }
 }

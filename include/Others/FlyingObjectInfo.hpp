@@ -19,6 +19,5 @@ enum class FlyingObjectCollidedState {
 };
 struct FlyingObjectBox {
     std::unordered_map<FlyingObjectState, glm::vec2> size;
-    std::unordered_map<FlyingObjectState, std::vector<glm::vec2>> offset;
 };
 #endif //FLYINGOBJECTINFO_HPP

@@ -13,20 +13,19 @@ namespace Util {
         }
         return Allframe;
     }
-    void FlyingObect::SetAnimation(FlyingObjectState action,std::vector<int> intervals,std::vector<glm::vec2> offsets) {
+    void FlyingObect::SetAnimation(FlyingObjectState action, int duration) {
         if (animations.find(action) != animations.end()) {
-            animationNow->SetDrawable(std::make_shared<Animation>(animations[action], true, 60, false));
-            animationNow->SetFrameIntervals(intervals);
-            animationNow->Setoffset(offsets);
+            animationNow->SetDrawable(std::make_shared<Animation>(animations[action], true, duration, false));
         }
     }
     void FlyingObect::ChangeState(FlyingObjectState newState) {
         if (currentState != newState) {
             currentState = newState;
-            SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+            SetAnimation(currentState,60);
         }
     }
-    void  FlyingObect::Movement() {
+
+    void FlyingObect::Movement() {
         glm::vec2 position={animationNow->GetTransform().translation.x+direction*velocity.x*Time::GetDeltaTimeMs()/1000,
             animationNow->GetTransform().translation.y};
         if (position.x<-640 || position.x>640) {
@@ -37,6 +36,67 @@ namespace Util {
             animationNow->GetOriginalSize()*glm::vec2 {3,3},
             3.0f
         );
+        if (IsCollidedEnemy()==FlyingObjectCollidedState::Enemy) {
+            if(enemy->IsBlocking()) {
+                enemy->AttackBlock();
+            }
+            else {
+                fighter->AttackHit(HitStrength::H,HitLocation::Head,FireBallDmg[Strength]);
+            }
+            ChangeState(FlyingObjectState::Collide);
+        }
+        if (IsCollidedEntity()==FlyingObjectCollidedState::FlyingObject) {
+            ChangeState(FlyingObjectState::Collide);
+        }
+    }
+    FlyingObjectCollidedState FlyingObect::IsCollidedEnemy() {
+        auto enemyPos = enemy->GetCurrentOffsetPosition();
+        auto bodyOffsets = enemy->GetCurrentHurtboxOffset();
+        auto bodySizes = enemy->GetCurrentHurtboxSize();
+
+        for (size_t i = 0; i < bodyOffsets.size(); i++) {
+            auto& BodyOffset = bodyOffsets[i];
+            auto& BodySize = bodySizes[i];
+            if(RectangleOverlap(
+                GetCurrentPosition(),
+                GetCurrentHitbox(),
+                enemyPos+BodyOffset,
+                BodySize)){
+                return FlyingObjectCollidedState::Enemy;}
+        }
+        return FlyingObjectCollidedState::Null;
+    }
+    FlyingObjectCollidedState FlyingObect::IsCollidedEntity() {
+        for (auto EnemyEntity : EnemyFlyingObjects) {
+            auto EnemyEntityPos = EnemyEntity->GetCurrentPosition();
+            auto EnemyEntitySize = EnemyEntity->GetCurrentHitbox();
+
+            if(RectangleOverlap(
+                GetCurrentPosition(),
+                GetCurrentHitbox(),
+                EnemyEntityPos,
+                EnemyEntitySize)){
+                return FlyingObjectCollidedState::FlyingObject;
+            }
+        }
+        return FlyingObjectCollidedState::Null;
+    }
+    void FlyingObect::Update(std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects) {
+        this->EnemyFlyingObjects=EnemyFlyingObjects;
+        if(currentState==FlyingObjectState::Start) {
+            Movement();
+            if (IsAnimationEnd()) {
+                SetAnimation(currentState,120);
+            }
+        }
+        else if(currentState==FlyingObjectState::Collide) {
+            if (IsAnimationEnd()) {
+                ObjectIsEnd=true;
+            }
+        }
+    }
+    void FlyingObect::Draw() {
+        animationNow->custom_Draw();
     }
 }
 

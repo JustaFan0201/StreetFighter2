@@ -33,6 +33,8 @@ namespace Util {
             ActionNow->SetDrawable(std::make_shared<Animation>(animations[action], true, 60, false));
             ActionNow->SetFrameIntervals(intervals);
             ActionNow->Setoffset(offsets);
+
+            AttackStruck=false;
         }
     }
 
@@ -101,8 +103,8 @@ namespace Util {
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::Crouch] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset(); CrouchUpload(); };
-        StateUpload[FighterState::CrouchDown] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset(); CrouchDownUpload(); };
+        StateUpload[FighterState::Crouch] = [this] { CrouchUpload(); };
+        StateUpload[FighterState::CrouchDown] = [this] { CrouchDownUpload(); };
         StateUpload[FighterState::CrouchUp] = [this] { CrouchUpUpload(); };
 
         StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
@@ -141,11 +143,12 @@ namespace Util {
         return Allframe;
     }
 
-    void Fighter::InitPosition(glm::vec2 position, int side,int Whichplayer) {
+    void Fighter::InitPosition(glm::vec2 position, int side,PlayerType Whichplayer) {
         FloorOfCharacter=ActionNow->GetOriginalSize().y * 3/2 + position.y;
         ActionNow->SetDrawData({{position.x,FloorOfCharacter}, 0, {side, 1}},
                                ActionNow->GetOriginalSize()*glm::vec2 {3,3},
                                2.0f);
+        hp=100;
         direction = side;
         ChangeState(FighterState::Idle);
         ActionNow->SetLooping(true);
@@ -232,6 +235,8 @@ namespace Util {
 
     void Fighter::HitboxIsCollidedEnemy() {
         if(GetCurrentHitboxOffset()==glm::vec2{-1,-1}||AttackStruck==true){return;}
+        if (currentAnimationIndex!=ActionNow->GetCurrentFrameIndex()){AttackStruck=false;}
+        currentAnimationIndex=ActionNow->GetCurrentFrameIndex();
         auto enemyPos = enemy->GetCurrentOffsetPosition();
         auto bodyOffsets = enemy->GetCurrentHurtboxOffset();
         auto bodySizes = enemy->GetCurrentHurtboxSize();
@@ -245,13 +250,11 @@ namespace Util {
                 enemyPos+BodyOffset,
                 BodySize))
                 {
-                std::cout<<GetName()<<"HIT"<<i<<"||"<<enemy->IsBlocking()<<std::endl;
                 if(enemy->IsBlocking()) {
                     enemy->AttackBlock();
                 }
                 else {
-                    enemy->GetAttack();
-                    AttackHit(GetHitStrength(),static_cast<HitLocation>(i));
+                    AttackHit(GetHitStrength(),static_cast<HitLocation>(i),GetAttackNum());
                 }
                 AttackStruck=true;
                 return;
@@ -264,7 +267,8 @@ namespace Util {
         ChangeState(newState);
     }
 
-    void Fighter::AttackHit(HitStrength Strength,HitLocation Location) {
+    void Fighter::AttackHit(HitStrength Strength,HitLocation Location,float dmg) {
+        enemy->GetAttack(dmg);
         FighterState newState=GetBeHitState(Strength,Location);
         enemy->ChangeState(newState);
     }
@@ -408,7 +412,7 @@ namespace Util {
         ReSize();
         BorderDetection(context->GetWindowWidth()/2);
         HitboxIsCollidedEnemy();
-
+        controller->Update();
         //debug
         pushboxPicture->SetDrawData({GetCurrentPosition()+GetCurrentPushboxOffset(), 0, {direction, 1}},
                        GetCurrentPushbox(),
@@ -441,7 +445,6 @@ namespace Util {
     //Actions
     void Fighter::IdleStateEnter(){
         ResetVelocity();
-        AttackStruck=false;
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::IdleStateUpload() {

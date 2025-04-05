@@ -23,6 +23,7 @@
 #include "Others/Controller.hpp"
 #include "AnimationSpace.hpp"
 #include "ImageSpace.hpp"
+
 #include "Others/FlyingObjectInfo.hpp"
 
 namespace Util {
@@ -64,6 +65,7 @@ namespace Util {
 
         void SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
         void SetEnemy(std::shared_ptr<Fighter> enemy){this->enemy=enemy;}
+        void SetEntityAdder(std::function<void(FlyingObjectType type, std::shared_ptr<Fighter>, Keys)> func) {addEntityFunc = func;}
 
         std::string GetFace() const { return face; }
         std::string GetNameTag() const { return nametag; }
@@ -73,7 +75,9 @@ namespace Util {
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
         float GetHP() const{return hp;}
-        void GetAttack(){hp-=attacks.count(enemy->currentState)?attacks[enemy->currentState]:0;}
+        std::shared_ptr<Fighter> GetEnemy(){return enemy;}
+        float GetAttackNum(){return attacks.count(currentState)?attacks[currentState]:0;}
+        void GetAttack(float dmg){hp-=dmg;}
         HitStrength GetHitStrength(){return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
         FighterState GetBeHitState(HitStrength Strength,HitLocation Location);
         FighterState GetBlockState();
@@ -141,18 +145,17 @@ namespace Util {
         }
         void HitboxIsCollidedEnemy();
 
-        void AttackHit(HitStrength Strength,HitLocation Location);
+        void AttackHit(HitStrength Strength,HitLocation Location,float dmg);
         void AttackBlock();
         bool IsBlocking();
 
-        void AddFlyingObject(FlyingObjectType Type) {if (flyingObjectStrength!=Keys::Null) {flyingObjectType=Type;}}
-        void ClearNowFlyingObject(){flyingObjectType=FlyingObjectType::Null;flyingObjectStrength=Keys::Null;}
-        FlyingObjectType GetFlyingObject() const {return flyingObjectType;}
-        Keys GetFlyingStrength() const {return flyingObjectStrength;}
+        void ClearFlyingStrength(){flyingObjectStrength=Keys::Null;}
+        void AddFlyingObject(FlyingObjectType object, Keys strength) {
+            if (flyingObjectStrength!=Keys::Null) {addEntityFunc(object, shared_from_this(), strength);ClearFlyingStrength();}}
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
-        void InitPosition(glm::vec2 position,int side,int Whichplayer);
+        void InitPosition(glm::vec2 position,int side,PlayerType Whichplayer);
         void StateInit();
         void debugInit();
 
@@ -180,6 +183,7 @@ namespace Util {
         std::shared_ptr<BGM> m_BGM;
         std::unordered_map<FighterState, std::shared_ptr<SFX>> soundeffect;
 
+        float currentAnimationIndex=0;
         FighterState currentState;
         std::unordered_set<FighterState> borderCheckStates;
         std::unordered_set<FighterState> CrouchAttackStates;
@@ -194,10 +198,10 @@ namespace Util {
 
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<Fighter> enemy;
-        std::shared_ptr<Controller> controller=std::make_shared<Controller>(1);
+        std::shared_ptr<Controller> controller=std::make_shared<Controller>(PlayerType::Null);
 
-        FlyingObjectType flyingObjectType=FlyingObjectType::Null;
         Keys flyingObjectStrength=Keys::Null;
+        std::function<void(FlyingObjectType type, std::shared_ptr<Fighter>, Keys)> addEntityFunc;
 
         bool AttackStruck=false;
         float hp=100;

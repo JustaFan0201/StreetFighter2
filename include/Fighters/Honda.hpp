@@ -14,7 +14,6 @@ namespace Util {
         void LoadAnimations() override;
         void LoadOffsetVelocity() override;
         void LoadAllBox()override;
-        void LoadAttackSound()override;
     };
 }
 #endif //HONDA_HPP

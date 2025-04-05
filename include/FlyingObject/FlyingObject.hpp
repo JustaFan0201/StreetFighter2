@@ -20,47 +20,44 @@ namespace Util {
     public:
         FlyingObect(std::string name): Name(name){}
         virtual ~FlyingObect() = default;
-        virtual void Init(std::shared_ptr<Fighter> fighter,Keys Strength){}
-        virtual void Update(){}
-        virtual void Draw(){}
+        virtual void Init(std::shared_ptr<Fighter> fighter,Keys Strength,std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects)=0;
+        virtual void Update(std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects);
+        virtual void Draw();
 
         void Movement();
-        std::string GetName(){return Name;};
+        FlyingObjectCollidedState IsCollidedEnemy();
+        FlyingObjectCollidedState IsCollidedEntity();
+
         bool IsEnd() const{return ObjectIsEnd;}
-        std::vector<glm::vec2> GetCurrentOffsets(){return offset.count(currentState) ? offset[currentState]:offset[FlyingObjectState::Start];}
+        std::string GetName(){return Name;};
+
+        glm::vec2 GetCurrentPosition() const {return animationNow->m_Transform.translation;}
         glm::vec2 GetCurrentHitbox() {
             return hitbox.size.count(currentState) ?
                    hitbox.size[currentState] : glm::vec2{0,0};
-        }
-        glm::vec2 GetCurrentHitboxOffset() {
-            if (!hitbox.offset.count(currentState)) {
-                return {-1, -1};
-            }
-            if(hitbox.offset[currentState][animationNow->GetCurrentFrameIndex()]==glm::vec2{-1,-1}) {
-                return {-1,-1};
-            }
-            return hitbox.offset[currentState][animationNow->GetCurrentFrameIndex()]*animationNow->GetTransform().scale;
         }
 
         void ChangeState(FlyingObjectState newState);
         bool IsAnimationEnd() const {return animationNow->IsAnimationEnds();}
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
-        void SetAnimation(FlyingObjectState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
+        void SetAnimation(FlyingObjectState action, int duration);
     protected:
         std::string Name;
         FlyingObjectType Type;
         int direction;
         velocity velocity;
+        Keys Strength=Keys::Null;
 
         FlyingObjectState currentState;
         std::unordered_map<Keys, float> FireBallVelocity;
+        std::unordered_map<Keys, float> FireBallDmg;
         std::unordered_map<FlyingObjectState, std::vector<std::string>> animations;
-        std::unordered_map<FlyingObjectState, std::vector<int>> frames;
-        std::unordered_map<FlyingObjectState, std::vector<glm::vec2>> offset;
         FlyingObjectBox hitbox;
         bool ObjectIsEnd=false;
 
+        std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects;
         std::shared_ptr<Fighter> fighter;
+        std::shared_ptr<Fighter> enemy;
         std::shared_ptr<AnimationSpace> animationNow;
     };
 }

@@ -25,45 +25,60 @@ namespace Util {
         m_BGM->Play(-1);
         //BGM設定
         start_time = Time::GetElapsedTimeMs();
-        player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left),1);
-        enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right),2);
+        player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left),PlayerType::Player1);
+        enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right),PlayerType::Player2);
+
+        player->SetEntityAdder([this](FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
+            this->addEntities(type, sender, strength);
+        });
+        enemy->SetEntityAdder([this](FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
+            this->addEntities(type, sender, strength);
+        });
 
         player->SetEnemy(enemy);
         enemy->SetEnemy(player);
         bloodstick->Init(player, enemy);
     }
-
-    void BattleScene::Update(std::shared_ptr<Core::Context> context) {
-        for (auto character : std::vector{player, enemy}) {
-            if (character->GetFlyingObject() != FlyingObjectType::Null) {
-                switch (character->GetFlyingObject()) {
-                    case FlyingObjectType::FireBall:
-                        FlyingObects.push_back(std::make_shared<FireBall>());
-                    break;
-
-                    default:
-                        break;
-                }
-                FlyingObects.back()->Init(character, character->GetFlyingStrength());
-                character->ClearNowFlyingObject();
+    void BattleScene::addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
+        std::shared_ptr<FlyingObect> object=nullptr;
+        switch (type) {
+            case FlyingObjectType::FireBall:
+                object=std::make_shared<FireBall>();
+                break;
+            case FlyingObjectType::Null:
+                break;
+        }
+        if (object!=nullptr) {
+            if (sender==player) {
+                object->Init(sender, strength,EnemyFlyingObjects);
+                PlayerFlyingObjects.push_back(object);
+            }
+            else {
+                object->Init(sender, strength,PlayerFlyingObjects);
+                EnemyFlyingObjects.push_back(object);
             }
         }
+    }
+    void BattleScene::UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObect>>& flyingObjects) {
+        if (!flyingObjects.empty()) {
+            std::vector<std::shared_ptr<FlyingObect>> newFlyingObjects;
+            for (auto& FlyingObj : flyingObjects) {
+                if (flyingObjects==PlayerFlyingObjects) {FlyingObj->Update(EnemyFlyingObjects);}
+                else {FlyingObj->Update(PlayerFlyingObjects);}
+                if (!FlyingObj->IsEnd()) {newFlyingObjects.push_back(FlyingObj);}
+            }
+            flyingObjects = newFlyingObjects;
+        }
+    }
+    void BattleScene::Update(std::shared_ptr<Core::Context> context) {
         camera->Upload();
         player->Upload(context);
         enemy->Upload(context);
         bloodstick->Update();
         m_Animation->SetTransform({{camera->GetCameraPos().x, 0}, 0, {1,1}});
 
-        if (!FlyingObects.empty()) {
-            std::vector<std::shared_ptr<FlyingObect>> newFlyingObects;
-            for (const auto& FlyingObj : FlyingObects) {
-                FlyingObj->Update();
-                if (!FlyingObj->IsEnd()) {
-                    newFlyingObects.push_back(FlyingObj);
-                }
-            }
-            FlyingObects=newFlyingObects;
-        }
+        UpdateFlyingObjects(PlayerFlyingObjects);
+        UpdateFlyingObjects(EnemyFlyingObjects);
 
         if (Input::IsKeyDown(Keycode::RETURN)) {
             SenseEnd = true;
@@ -74,10 +89,11 @@ namespace Util {
         player->DrawCharacter();
         enemy->DrawCharacter();
         bloodstick->DrawBloodstick();
-
-        if (!FlyingObects.empty()) {
-            for (const auto& FlyingObject : FlyingObects) {
-                FlyingObject->Draw();
+        for (auto& object : std::vector{PlayerFlyingObjects,EnemyFlyingObjects}) {
+            if (!object.empty()) {
+                for (const auto& FlyingObject : object) {
+                    FlyingObject->Draw();
+                }
             }
         }
     }

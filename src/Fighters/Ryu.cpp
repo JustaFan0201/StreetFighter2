@@ -279,7 +279,7 @@ namespace Util {
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Ryu::HandoukenStateUpload() {
-        if (ActionNow->GetCurrentFrameIndex()==3){AddFlyingObject(FlyingObjectType::FireBall);}
+        if (ActionNow->GetCurrentFrameIndex()==3){AddFlyingObject(FlyingObjectType::FireBall,flyingObjectStrength);}
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 }

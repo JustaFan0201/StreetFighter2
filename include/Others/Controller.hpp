@@ -1,7 +1,12 @@
 #ifndef CONTROLLER_HPP
 #define CONTROLLER_HPP
+#include <iostream>
+#include <ostream>
+
 #include "Util/Input.hpp"
+#include "Others/FighterInfo.hpp"
 #include <unordered_map>
+#include <random>
 
 namespace Util {
     enum class Keys {
@@ -17,15 +22,15 @@ namespace Util {
         MK,
         HK
     };
-
     class Controller {
     private:
-        int PlayerNum;
+        PlayerType Player;
         std::unordered_map<Keys, Keycode> keyMap;
+        float time=0;
+        int AiMove=0;
 
-        // 初始化按键映射
         void InitializeKeyMap() {
-            if (PlayerNum == 1) {
+            if (Player == PlayerType::Player1) {
                 keyMap[Keys::UP] = Keycode::W;
                 keyMap[Keys::DOWN] = Keycode::S;
                 keyMap[Keys::LEFT] = Keycode::A;
@@ -37,7 +42,7 @@ namespace Util {
                 keyMap[Keys::MK] = Keycode::H;
                 keyMap[Keys::HK] = Keycode::J;
             }
-            else if (PlayerNum == 2) {
+            else if (Player == PlayerType::Player2) {
                 keyMap[Keys::UP] = Keycode::UP;
                 keyMap[Keys::DOWN] = Keycode::DOWN;
                 keyMap[Keys::LEFT] = Keycode::LEFT;
@@ -52,18 +57,31 @@ namespace Util {
         }
 
     public:
-        explicit Controller(int playerNum) : PlayerNum(playerNum) {
+        explicit Controller(PlayerType playerNum) : Player(playerNum) {
             InitializeKeyMap();
         }
-
-        void SetPlayerController(int playerNum) {
-            PlayerNum = playerNum;
+        void Update() {
+            if (Player == PlayerType::Ai) {
+                time+=Time::GetDeltaTimeMs();
+                if (time>1000) {randomBool();}
+            }
+        }
+        void randomBool() {
+            time=0;
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<> dis(0, 4);
+            AiMove= dis(gen);
+        }
+        void SetPlayerController(PlayerType playerNum) {
+            Player = playerNum;
             InitializeKeyMap();
         }
         Keycode GetKey(Keys keyNow) {
             return keyMap[keyNow];
         }
         bool IsForward(int direction) {
+            if (Player == PlayerType::Ai&&AiMove==0){return true;}
             if(direction==static_cast<int>(FighterDirection::Left)) {
                 return Input::IsKeyPressed(keyMap[Keys::RIGHT]);
             }
@@ -73,6 +91,7 @@ namespace Util {
             return false;
         }
         bool IsBackward(int direction) {
+            if (Player == PlayerType::Ai&&AiMove==1){return true;}
             if(direction==static_cast<int>(FighterDirection::Right)) {
                 return Input::IsKeyPressed(keyMap[Keys::RIGHT]);
             }
@@ -82,12 +101,15 @@ namespace Util {
             return false;
         }
         bool IsKeyPressed(Keys keyNow) {
+            if (Player == PlayerType::Ai&&AiMove==2){return true;}
             return Input::IsKeyPressed(keyMap[keyNow]);
         }
         bool IsKeyDown(Keys keyNow) {
+            if (Player == PlayerType::Ai&&AiMove==3){return true;}
             return Input::IsKeyDown(keyMap[keyNow]);
         }
         bool IsKeyUp(Keys keyNow) {
+            if (Player == PlayerType::Ai&&AiMove==4){return true;}
             return Input::IsKeyUp(keyMap[keyNow]);
         }
         Keys GetPunch() {

@@ -11,9 +11,7 @@ namespace Util {
     class FireBall:public FlyingObect {
     public:
         FireBall();
-        void Init(std::shared_ptr<Fighter> fighter,Keys Strength)override;
-        void Update()override;
-        void Draw()override;
+        void Init(std::shared_ptr<Fighter> fighter,Keys Strength,std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects)override;
     };
 }
 #endif //FIREBALL_HPP

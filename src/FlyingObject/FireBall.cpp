@@ -11,46 +11,31 @@ namespace Util {
         FireBallVelocity[Keys::MP]=660;
         FireBallVelocity[Keys::HP]=900;
 
-        animations[FlyingObjectState::Start]=ActionInit(2,"Start");
-        animations[FlyingObjectState::Collide]=ActionInit(2,"Collide");
-        frames[FlyingObjectState::Start]={60,60};
-        frames[FlyingObjectState::Collide]={120, 180, 120};
-        offset[FlyingObjectState::Start]={{0,0},{0,0}};
-        offset[FlyingObjectState::Collide]={{0,0},{0,0},{0,0}};
+        FireBallDmg[Keys::LP]=10;
+        FireBallDmg[Keys::MP]=20;
+        FireBallDmg[Keys::HP]=30;
 
-        hitbox.offset[FlyingObjectState::Start]={{0,0},{0,0}};
+        animations[FlyingObjectState::Start]=ActionInit(2,"Start");
+        animations[FlyingObjectState::Collide]=ActionInit(3,"Collide");
         hitbox.size[FlyingObjectState::Start]={100,100};
 
         animationNow=std::make_shared<AnimationSpace>(
             animations[FlyingObjectState::Start],
-            true,200,true,3
+            true,120,true,3
         );
     }
 
-    void FireBall::Init(std::shared_ptr<Fighter> fighter,Keys Strength) {
+    void FireBall::Init(std::shared_ptr<Fighter> fighter,Keys Strength,std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects) {
+        this->EnemyFlyingObjects=EnemyFlyingObjects;
         this->fighter=fighter;
+        enemy=fighter->GetEnemy();
         direction=fighter->GetDirection();
         velocity.x=FireBallVelocity[Strength];
+        this->Strength=Strength;
 
         animationNow->SetDrawData({(fighter->GetCurrentOffsetPosition()+glm::vec2 {150*direction,40}),
             0,{direction,1}},
             animationNow->GetOriginalSize()*glm::vec2{3,3},3);
         ChangeState(FlyingObjectState::Start);
-    }
-    void FireBall::Update() {
-        Movement();
-        if(currentState==FlyingObjectState::Start) {
-            if (IsAnimationEnd()) {
-                SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
-            }
-        }
-        else if(currentState==FlyingObjectState::Collide) {
-            if (IsAnimationEnd()) {
-                ObjectIsEnd=true;
-            }
-        }
-    }
-    void FireBall::Draw() {
-        animationNow->custom_Draw();
     }
 }
