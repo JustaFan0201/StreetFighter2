@@ -103,9 +103,9 @@ namespace Util {
         Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-4;
 
         offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0}};
-        offset[FighterState::Crouch]={{11,-30}};
-        offset[FighterState::CrouchDown]={{-1,-15},{-1,-18},{11,-25}};
-        offset[FighterState::CrouchUp]={{11,-25},{-1,-18},{-1,-15}};
+        offset[FighterState::Crouch]={{-3,-29}};
+        offset[FighterState::CrouchDown]={{-15,-11},{-4,-22},{-3,-295}};
+        offset[FighterState::CrouchUp]={{-3,-29},{-4,-22},{-15,-11}};
         //Stand attack offset
         offset[FighterState::LP]={{-15,0},{6,4},{-22,12},{3,0},{-12,0}};
         offset[FighterState::MP]={{59,-8},{86,-8},{87,-8},{125,-15},{87,-9}};

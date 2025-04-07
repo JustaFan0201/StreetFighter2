@@ -45,7 +45,7 @@ namespace Util {
 
         std::vector<std::string> namebox = {"Ryu", "Honda", "Blanka", "Guile", "Ken", "Chunli", "Zangief", "Dhalsim"};
         std::vector<int> offsetnum = {0, 0};
-        std::vector<int> offset = {430, 375, 360, 405, 430, 370, 360, 360};
+        std::vector<int> offset = {430, 375, 360, 405, 430, 370, 370, 370};
         float P1blood = 100.0f;
         float P2blood = 100.0f;
         std::shared_ptr<ImageSpace> P1name_image;

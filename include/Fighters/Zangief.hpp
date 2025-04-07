@@ -12,6 +12,8 @@ namespace Util {
     public:
         Zangief();
         void LoadAnimations() override;
+        void LoadOffsetVelocity() override;
+        void LoadAllBox()override;
     };
 }
 #endif //ZANGIEF_HPP

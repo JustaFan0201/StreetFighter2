@@ -104,8 +104,8 @@ namespace Util {
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::Crouch] = [this] { CrouchUpload(); };
-        StateUpload[FighterState::CrouchDown] = [this] { CrouchDownUpload(); };
-        StateUpload[FighterState::CrouchUp] = [this] { CrouchUpUpload(); };
+        StateUpload[FighterState::CrouchDown] = [this] {CrouchDownUpload(); };
+        StateUpload[FighterState::CrouchUp] = [this] {CrouchUpUpload(); };
 
         StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
         StateUpload[FighterState::MP] = [this] {AttackStateUpload(); };
@@ -115,7 +115,7 @@ namespace Util {
         StateUpload[FighterState::HK] = [this] {AttackStateUpload(); };
 
         StateUpload[FighterState::CrouchLP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::CrouchMP] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::CrouchMP] = [this] {AttackStateUpload();};
         StateUpload[FighterState::CrouchHP] = [this] {AttackStateUpload(); };
         StateUpload[FighterState::CrouchLK] = [this] {AttackStateUpload(); };
         StateUpload[FighterState::CrouchMK] = [this] {AttackStateUpload(); };
