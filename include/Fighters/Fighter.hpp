@@ -188,6 +188,9 @@ namespace Util {
         std::unordered_set<FighterState> borderCheckStates;
         std::unordered_set<FighterState> CrouchAttackStates;
         std::unordered_set<FighterState> HurtStates;
+        std::unordered_set<FighterState> SpecialStates;
+        std::unordered_set<FighterState> IdleStates;
+
         std::unordered_map<FighterState, std::function<void()>> StateEnter;
         std::unordered_map<FighterState, std::function<void()>> StateUpload;
         std::unordered_map<FighterState, std::vector<std::string>> animations;
@@ -195,6 +198,7 @@ namespace Util {
         std::unordered_map<FighterState, std::vector<glm::vec2>> offset;
         std::unordered_map<FighterState, HitStrength> hitstrength;
         std::unordered_map<FighterState, float> attacks;
+        std::unordered_map<FighterState, SpecialMoveInput> SkillCommand;
 
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<Fighter> enemy;
@@ -220,6 +224,8 @@ namespace Util {
         std::shared_ptr<AnimationSpace> hitPicture=nullptr;
         glm::vec2 mouse;
         std::vector<glm::vec2> Allofmouse;
+
+        bool controllerTest=true;
     };
 }
 #endif //FIGHTER_HPP

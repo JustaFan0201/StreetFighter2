@@ -25,6 +25,7 @@ namespace Util {
             if (currentEnter != StateEnter.end()) {
                 currentEnter->second();
             }
+            AttackStruck=false;
         }
     }
 
@@ -33,8 +34,6 @@ namespace Util {
             ActionNow->SetDrawable(std::make_shared<Animation>(animations[action], true, 60, false));
             ActionNow->SetFrameIntervals(intervals);
             ActionNow->Setoffset(offsets);
-
-            AttackStruck=false;
         }
     }
 
@@ -62,6 +61,13 @@ namespace Util {
         HurtStates={
             FighterState::HurtBodyL, FighterState::HurtBodyM, FighterState::HurtBodyH,
             FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH
+        };
+        SpecialStates={
+            FighterState::Special_1, FighterState::Special_2, FighterState::Special_3
+        };
+        IdleStates={
+            FighterState::Idle, FighterState::Forward, FighterState::Backward,
+            FighterState::Crouch,FighterState::CrouchDown,FighterState::CrouchUp
         };
         StateEnter[FighterState::Idle] = [this] { IdleStateEnter(); };
         StateEnter[FighterState::Forward] = [this] { WalkStateEnter(); };
@@ -412,7 +418,13 @@ namespace Util {
         ReSize();
         BorderDetection(context->GetWindowWidth()/2);
         HitboxIsCollidedEnemy();
-        controller->Update();
+        controller->Update(direction,Time::GetElapsedTimeMs());
+
+        for(auto skill:SpecialStates) {
+            if(SkillCommand.count(skill)) {
+                if (controller->IsSpecialMove(SkillCommand[skill])&&IdleStates.count(currentState)) {ChangeState(FighterState::Special_1);}
+            }
+        }
         //debug
         pushboxPicture->SetDrawData({GetCurrentPosition()+GetCurrentPushboxOffset(), 0, {direction, 1}},
                        GetCurrentPushbox(),
@@ -509,7 +521,7 @@ namespace Util {
     }
     void Fighter::CrouchUpload() {
         if (!controller->IsKeyPressed(Keys::DOWN)){ChangeState(FighterState::CrouchUp);}
-        if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::CrouchLP);}
+        else if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::CrouchLP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::CrouchMP);}
         else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::CrouchHP);}
         else if (controller->IsKeyDown(Keys::LK)) {ChangeState(FighterState::CrouchLK);}

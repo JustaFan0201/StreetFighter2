@@ -119,15 +119,25 @@ namespace Util {
         Ai
     };
     enum class SpecialMoveDirection {
-        Backward,
-        Backward_up,
-        Up,
-        Forward,
-        Forward_up,
-        Forward_down,
-        Backward_down,
-        down,
-        Null
+        Backward_down=1,
+        down=2,
+        Forward_down=3,
+        Backward=4,
+        Null=5,
+        Forward=6,
+        Backward_up=7,
+        Up=8,
+        Forward_up=9
+    };
+    enum class AttackButton {
+        LP, MP, HP,
+        LK, MK, HK,
+        ANY_PUNCH,
+        ANY_KICK
+    };
+    struct SpecialMoveInput {
+        std::vector<SpecialMoveDirection> command;
+        AttackButton requiredAttack;
     };
 }
 

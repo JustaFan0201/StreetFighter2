@@ -7,8 +7,14 @@
 #include "Others/FighterInfo.hpp"
 #include <unordered_map>
 #include <random>
+#include <deque>
 
 namespace Util {
+    struct InputRecord {
+        SpecialMoveDirection move;
+        float timestamp;
+        std::vector<bool> attacks={false,false,false,false,false,false};
+    };
     enum class Keys {
         Null,
         UP,
@@ -26,9 +32,11 @@ namespace Util {
     private:
         PlayerType Player;
         std::unordered_map<Keys, Keycode> keyMap;
-        float time=0;
+        float timeForAi=0;
         int AiMove=0;
 
+        float MoveDelay=500;
+        std::deque<InputRecord> inputBuffer;
         void InitializeKeyMap() {
             if (Player == PlayerType::Player1) {
                 keyMap[Keys::UP] = Keycode::W;
@@ -54,20 +62,86 @@ namespace Util {
                 keyMap[Keys::MK] = Keycode::KP_5;
                 keyMap[Keys::HK] = Keycode::KP_6;
             }
+            else if (Player == PlayerType::Ai) {
+                keyMap[Keys::UP] = Keycode::UNKNOWN;
+                keyMap[Keys::DOWN] = Keycode::UNKNOWN;
+                keyMap[Keys::LEFT] = Keycode::UNKNOWN;
+                keyMap[Keys::RIGHT] = Keycode::UNKNOWN;
+                keyMap[Keys::LP] = Keycode::UNKNOWN;
+                keyMap[Keys::MP] = Keycode::UNKNOWN;
+                keyMap[Keys::HP] = Keycode::UNKNOWN;
+                keyMap[Keys::LK] = Keycode::UNKNOWN;
+                keyMap[Keys::MK] = Keycode::UNKNOWN;
+                keyMap[Keys::HK] = Keycode::UNKNOWN;
+            }
         }
-
     public:
         explicit Controller(PlayerType playerNum) : Player(playerNum) {
             InitializeKeyMap();
         }
-        void Update() {
+        void Update(int direction,float currentTime) {
             if (Player == PlayerType::Ai) {
-                time+=Time::GetDeltaTimeMs();
-                if (time>1000) {randomBool();}
+                timeForAi += Time::GetDeltaTimeMs();
+                if (timeForAi > 1000) { randomBool(); }
+            }
+
+            InputRecord currentRecord = { GetCurrentMove(direction), currentTime, GetCurrentAttacks() };
+            if (inputBuffer.empty() || IsInputRecordDifferent(currentRecord, inputBuffer.front())) {
+                PrintInputBuffer();
+                inputBuffer.push_front(currentRecord);
+                if (inputBuffer.size() > 5) inputBuffer.pop_back();
             }
         }
+        static bool IsInputRecordDifferent(const InputRecord& a, const InputRecord& b) {
+            if (a.move != b.move) return true;
+            for (size_t i = 0; i < a.attacks.size(); i++) {
+                if (a.attacks[i] != b.attacks[i]) return true;
+            }
+            return false;
+        }
+        SpecialMoveDirection GetCurrentMove(int direction) {
+            bool up = IsKeyPressed(Keys::UP);
+            bool down = IsKeyPressed(Keys::DOWN);
+            bool forward = IsForward(direction);
+            bool backward = IsBackward(direction);
+
+            if(forward) {
+                if (down) return SpecialMoveDirection::Forward_down;
+                if (up) return SpecialMoveDirection::Forward_up;
+                return SpecialMoveDirection::Forward;}
+            if (backward) {
+                if (down) return SpecialMoveDirection::Backward_down;
+                if (up) return SpecialMoveDirection::Backward_up;
+                return SpecialMoveDirection::Backward;
+            }
+            if (up) return SpecialMoveDirection::Up;
+            if (down) return SpecialMoveDirection::down;
+            return SpecialMoveDirection::Null;
+        }
+        std::vector<bool> GetCurrentAttacks() {
+            bool LP = IsKeyDown(Keys::LP);
+            bool MP = IsKeyDown(Keys::MP);
+            bool HP = IsKeyDown(Keys::HP);
+            bool LK = IsKeyDown(Keys::LK);
+            bool MK = IsKeyDown(Keys::MK);
+            bool HK = IsKeyDown(Keys::HK);
+            return std::vector<bool>{LP,MP,HP,LK,MK,HK};
+        }
+        //debug
+        void PrintInputBuffer() const {
+            std::cout <<static_cast<int>(Player)<< "Input History: \n";
+            for (const auto& input : inputBuffer) {
+                std::cout << "Dir: " << static_cast<int>(input.move) << ", Attacks: ";
+                for (bool b : input.attacks) {
+                    std::cout << (b ? "1" : "0");
+                }
+                std::cout << "\n";
+            }
+        }
+
+
         void randomBool() {
-            time=0;
+            timeForAi=0;
             std::random_device rd;
             std::mt19937 gen(rd());
             std::uniform_int_distribution<> dis(0, 4);
@@ -118,6 +192,49 @@ namespace Util {
             if (Input::IsKeyDown(keyMap[Keys::LP])) {return Keys::LP;}
             return Keys::Null;
         }
+
+        static bool IsAttackMatched(const std::vector<bool>& attacks, AttackButton button) {
+            switch (button) {
+                case AttackButton::ANY_PUNCH:
+                    return attacks[0] || attacks[1] || attacks[2];
+                case AttackButton::ANY_KICK:
+                    return attacks[3] || attacks[4] || attacks[5];
+                default:
+                    return false;
+            }
+        }
+        bool IsSpecialMove(SpecialMoveInput special) {
+            int commandIndex = static_cast<int>(special.command.size()) - 1;
+            int bufferIndex = static_cast<int>(inputBuffer.size()) - 1;
+            float directionFinishTime = -1.0f;
+
+            for (; bufferIndex >= 0; bufferIndex--) {
+                auto record = inputBuffer[bufferIndex];
+                if (record.move == special.command[commandIndex]) {
+                    commandIndex--;
+                    if (commandIndex < 0) {
+                        directionFinishTime = record.timestamp;
+                        break;
+                    }
+                }
+                else if (record.move != SpecialMoveDirection::Null) {
+                    commandIndex = static_cast<int>(special.command.size()) - 1;
+                }
+            }
+            if (commandIndex >= 0) return false;
+            for (; bufferIndex >= 0; bufferIndex--) {
+                auto record = inputBuffer[bufferIndex];
+                if (record.timestamp - directionFinishTime > MoveDelay) {
+                    break;
+                }
+                if (IsAttackMatched(record.attacks, special.requiredAttack)) {
+                    inputBuffer.clear();
+                    return true;
+                }
+            }
+            return false;
+        }
+
     };
 
 }

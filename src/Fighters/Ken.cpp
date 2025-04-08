@@ -271,6 +271,12 @@ namespace Util {
         StateEnter[FighterState::Special_1]=[this] { HandoukenStateEnter(); };
         StateUpload[FighterState::Special_1]=[this] { HandoukenStateUpload(); };
         soundeffect[FighterState::Special_1]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_69 - RyuKen Hadouken.wav")};
+        SkillCommand[FighterState::Special_1].command={
+            SpecialMoveDirection::Forward,
+            SpecialMoveDirection::Forward_down,
+            SpecialMoveDirection::down
+        };
+        SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ANY_PUNCH;
     }
     void Ken::HandoukenStateEnter() {
         ResetVelocity();
