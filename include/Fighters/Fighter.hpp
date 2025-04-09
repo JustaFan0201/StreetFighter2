@@ -62,6 +62,7 @@ namespace Util {
         virtual void LoadAllBox(){}
         virtual void LoadAttackSound();
         virtual void LoadAttackAndType();
+        void LoadCurrentSpecialMove(Keys ButtonType);
 
         void SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
         void SetEnemy(std::shared_ptr<Fighter> enemy){this->enemy=enemy;}
@@ -74,6 +75,7 @@ namespace Util {
         std::vector<std::string> GetStageBackground() { return stage_background; }
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
+
         float GetHP() const{return hp;}
         std::shared_ptr<Fighter> GetEnemy(){return enemy;}
         float GetAttackNum(){return attacks.count(currentState)?attacks[currentState]:0;}
@@ -149,9 +151,9 @@ namespace Util {
         void AttackBlock();
         bool IsBlocking();
 
-        void ClearFlyingStrength(){flyingObjectStrength=Keys::Null;}
+        void ClearButtonType(){ButtonType=Keys::Null;}
         void AddFlyingObject(FlyingObjectType object, Keys strength) {
-            if (flyingObjectStrength!=Keys::Null) {addEntityFunc(object, shared_from_this(), strength);ClearFlyingStrength();}}
+            if (ButtonType!=Keys::Null) {addEntityFunc(object, shared_from_this(), strength);}}
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
@@ -185,26 +187,21 @@ namespace Util {
 
         float currentAnimationIndex=0;
         FighterState currentState;
-        std::unordered_set<FighterState> borderCheckStates;
-        std::unordered_set<FighterState> CrouchAttackStates;
-        std::unordered_set<FighterState> HurtStates;
-        std::unordered_set<FighterState> SpecialStates;
-        std::unordered_set<FighterState> IdleStates;
 
         std::unordered_map<FighterState, std::function<void()>> StateEnter;
         std::unordered_map<FighterState, std::function<void()>> StateUpload;
         std::unordered_map<FighterState, std::vector<std::string>> animations;
         std::unordered_map<FighterState, std::vector<int>> frames;
         std::unordered_map<FighterState, std::vector<glm::vec2>> offset;
+
         std::unordered_map<FighterState, HitStrength> hitstrength;
         std::unordered_map<FighterState, float> attacks;
-        std::unordered_map<FighterState, SpecialMoveInput> SkillCommand;
 
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<Fighter> enemy;
         std::shared_ptr<Controller> controller=std::make_shared<Controller>(PlayerType::Null);
 
-        Keys flyingObjectStrength=Keys::Null;
+        Keys ButtonType=Keys::Null;
         std::function<void(FlyingObjectType type, std::shared_ptr<Fighter>, Keys)> addEntityFunc;
 
         bool AttackStruck=false;
@@ -213,9 +210,13 @@ namespace Util {
         float FloorOfCharacter;
         float Gravity=-98;
         float Friction=16;
+
         velocity velocity;
         Initialvelocity Initialvelocity;
+
         Boxes boxes;
+        SpecialSkillData SpecialMoveData;
+        SpecificStates SpecificStates;
         //debugTest
         std::shared_ptr<AnimationSpace> pushboxPicture=nullptr;
         std::shared_ptr<AnimationSpace> headPicture=nullptr;

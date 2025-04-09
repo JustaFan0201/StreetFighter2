@@ -4,7 +4,6 @@
 
 #ifndef FIGHTERINFO_HPP
 #define FIGHTERINFO_HPP
-
 namespace Util {
     constexpr float StageFloor = -320.0f;
     enum class FighterDirection {
@@ -53,7 +52,9 @@ namespace Util {
         HurtBodyM,
         HurtBodyH,
         BackwardBlock,
-        CrouchBlock
+        CrouchBlock,
+        Win,
+        Loss
     };
     enum class HitLocation {
         Null=-1,
@@ -118,6 +119,19 @@ namespace Util {
         Player2,
         Ai
     };
+    enum class Keys {
+        Null,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        LP,
+        MP,
+        HP,
+        LK,
+        MK,
+        HK
+    };
     enum class SpecialMoveDirection {
         Backward_down=1,
         down=2,
@@ -138,6 +152,27 @@ namespace Util {
     struct SpecialMoveInput {
         std::vector<SpecialMoveDirection> command;
         AttackButton requiredAttack;
+    };
+    struct SpecialSkillAnimation {
+        std::unordered_map<Keys, std::vector<int>> frames;
+        std::unordered_map<Keys, velocity> velocitys;
+        std::unordered_map<Keys, velocity> initialvelocitys;
+    };
+    struct AttackData {
+        std::unordered_map<Keys, HitStrength> HitStrength;
+        std::unordered_map<Keys, float> attack;
+    };
+    struct SpecialSkillData {
+        std::unordered_map<FighterState, SpecialSkillAnimation> animationData;
+        std::unordered_map<FighterState, SpecialMoveInput> SkillCommand;
+        std::unordered_map<FighterState, AttackData> attackdata;
+    };
+    struct SpecificStates {
+        std::unordered_set<FighterState> borderCheckStates;
+        std::unordered_set<FighterState> CrouchAttackStates;
+        std::unordered_set<FighterState> HurtStates;
+        std::unordered_set<FighterState> SpecialStates;
+        std::unordered_set<FighterState> IdleStates;
     };
 }
 

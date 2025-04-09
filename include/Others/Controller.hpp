@@ -15,19 +15,6 @@ namespace Util {
         float timestamp;
         std::vector<bool> attacks={false,false,false,false,false,false};
     };
-    enum class Keys {
-        Null,
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        LP,
-        MP,
-        HP,
-        LK,
-        MK,
-        HK
-    };
     class Controller {
     private:
         PlayerType Player;
@@ -35,7 +22,9 @@ namespace Util {
         float timeForAi=0;
         int AiMove=0;
 
+        Keys CurrentAttack=Keys::Null;
         float MoveDelay=500;
+        int MaxInput=6;
         std::deque<InputRecord> inputBuffer;
         void InitializeKeyMap() {
             if (Player == PlayerType::Player1) {
@@ -89,7 +78,7 @@ namespace Util {
             if (inputBuffer.empty() || IsInputRecordDifferent(currentRecord, inputBuffer.front())) {
                 PrintInputBuffer();
                 inputBuffer.push_front(currentRecord);
-                if (inputBuffer.size() > 5) inputBuffer.pop_back();
+                if (static_cast<int>(inputBuffer.size()) > MaxInput) inputBuffer.pop_back();
             }
         }
         static bool IsInputRecordDifferent(const InputRecord& a, const InputRecord& b) {
@@ -127,6 +116,48 @@ namespace Util {
             bool HK = IsKeyDown(Keys::HK);
             return std::vector<bool>{LP,MP,HP,LK,MK,HK};
         }
+        static bool IsAttackMatched(const std::vector<bool>& attacks, AttackButton button) {
+            switch (button) {
+                case AttackButton::ANY_PUNCH:
+                    return attacks[0] || attacks[1] || attacks[2];
+                case AttackButton::ANY_KICK:
+                    return attacks[3] || attacks[4] || attacks[5];
+                default:
+                    return false;
+            }
+        }
+        bool IsSpecialMove(SpecialMoveInput special) {
+            int commandIndex = static_cast<int>(special.command.size()) - 1;
+            int bufferIndex = static_cast<int>(inputBuffer.size()) - 1;
+            float directionFinishTime = -1.0f;
+
+            for (; bufferIndex >= 0; bufferIndex--) {
+                auto record = inputBuffer[bufferIndex];
+                if (record.move == special.command[commandIndex]) {
+                    commandIndex--;
+                    if (commandIndex < 0) {
+                        directionFinishTime = record.timestamp;
+                        break;
+                    }
+                }
+                else if (record.move != SpecialMoveDirection::Null) {
+                    commandIndex = static_cast<int>(special.command.size()) - 1;
+                }
+            }
+            if (commandIndex >= 0) return false;
+            for (; bufferIndex >= 0; bufferIndex--) {
+                auto record = inputBuffer[bufferIndex];
+                if (record.timestamp - directionFinishTime > MoveDelay) {
+                    break;
+                }
+                if (IsAttackMatched(record.attacks, special.requiredAttack)) {
+                    CurrentAttack=GetPunch(record);
+                    inputBuffer.clear();
+                    return true;
+                }
+            }
+            return false;
+        }
         //debug
         void PrintInputBuffer() const {
             std::cout <<static_cast<int>(Player)<< "Input History: \n";
@@ -138,8 +169,6 @@ namespace Util {
                 std::cout << "\n";
             }
         }
-
-
         void randomBool() {
             timeForAi=0;
             std::random_device rd;
@@ -186,55 +215,16 @@ namespace Util {
             if (Player == PlayerType::Ai&&AiMove==4){return true;}
             return Input::IsKeyUp(keyMap[keyNow]);
         }
-        Keys GetPunch() {
-            if (Input::IsKeyDown(keyMap[Keys::HP])) {return Keys::HP;}
-            if (Input::IsKeyDown(keyMap[Keys::MP])) {return Keys::MP;}
-            if (Input::IsKeyDown(keyMap[Keys::LP])) {return Keys::LP;}
+        static Keys GetPunch(InputRecord record) {
+            if(record.attacks[0]){return Keys::LP;}
+            if(record.attacks[1]){return Keys::MP;}
+            if(record.attacks[2]){return Keys::HP;}
+            if(record.attacks[3]){return Keys::LK;}
+            if(record.attacks[4]){return Keys::MK;}
+            if(record.attacks[5]){return Keys::HK;}
             return Keys::Null;
         }
-
-        static bool IsAttackMatched(const std::vector<bool>& attacks, AttackButton button) {
-            switch (button) {
-                case AttackButton::ANY_PUNCH:
-                    return attacks[0] || attacks[1] || attacks[2];
-                case AttackButton::ANY_KICK:
-                    return attacks[3] || attacks[4] || attacks[5];
-                default:
-                    return false;
-            }
-        }
-        bool IsSpecialMove(SpecialMoveInput special) {
-            int commandIndex = static_cast<int>(special.command.size()) - 1;
-            int bufferIndex = static_cast<int>(inputBuffer.size()) - 1;
-            float directionFinishTime = -1.0f;
-
-            for (; bufferIndex >= 0; bufferIndex--) {
-                auto record = inputBuffer[bufferIndex];
-                if (record.move == special.command[commandIndex]) {
-                    commandIndex--;
-                    if (commandIndex < 0) {
-                        directionFinishTime = record.timestamp;
-                        break;
-                    }
-                }
-                else if (record.move != SpecialMoveDirection::Null) {
-                    commandIndex = static_cast<int>(special.command.size()) - 1;
-                }
-            }
-            if (commandIndex >= 0) return false;
-            for (; bufferIndex >= 0; bufferIndex--) {
-                auto record = inputBuffer[bufferIndex];
-                if (record.timestamp - directionFinishTime > MoveDelay) {
-                    break;
-                }
-                if (IsAttackMatched(record.attacks, special.requiredAttack)) {
-                    inputBuffer.clear();
-                    return true;
-                }
-            }
-            return false;
-        }
-
+        Keys GetCurrentAttackKey(){Keys now=CurrentAttack;CurrentAttack=Keys::Null; return now;}
     };
 
 }

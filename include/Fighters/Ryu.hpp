@@ -17,6 +17,8 @@ namespace Util {
         void LoadSpecialMove();
         void HandoukenStateEnter();
         void HandoukenStateUpload();
+        void ShoryukenStateEnter();
+        void ShoryukenStateUpload();
     };
 }
 #endif //RYU_HPP

@@ -18,6 +18,42 @@ namespace Util {
         soundeffect[FighterState::HurtBodyH]=soundeffect[FighterState::HurtHeadH]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_44 - Fierce Hit.wav")};
         soundeffect[FighterState::BackwardBlock]=soundeffect[FighterState::CrouchBlock]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_51 - Blocked.wav")};
     }
+    void Fighter::LoadCurrentSpecialMove(Keys ButtonType) {
+        if(SpecialMoveData.SkillCommand[currentState].requiredAttack==AttackButton::ANY_PUNCH) {
+            if(SpecialMoveData.animationData[currentState].frames.count(ButtonType)) {
+                frames[currentState]=SpecialMoveData.animationData[currentState].frames[ButtonType];}
+            else {frames[currentState]=SpecialMoveData.animationData[currentState].frames[Keys::LP];}
+            if(SpecialMoveData.animationData[currentState].velocitys.count(ButtonType)) {
+                velocity.x=SpecialMoveData.animationData[currentState].velocitys[ButtonType].x;
+                velocity.y=SpecialMoveData.animationData[currentState].velocitys[ButtonType].y;}
+            if(SpecialMoveData.animationData[currentState].initialvelocitys.count(ButtonType)) {
+                Initialvelocity.x[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].x;
+                Initialvelocity.y[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].y;}
+            if(SpecialMoveData.attackdata[currentState].attack.count(ButtonType)) {
+                attacks[FighterState::Special_2]=SpecialMoveData.attackdata[currentState].attack[ButtonType];
+            }
+            if(SpecialMoveData.attackdata[currentState].HitStrength.count(ButtonType)) {
+                hitstrength[FighterState::Special_2]=SpecialMoveData.attackdata[currentState].HitStrength[ButtonType];
+            }
+        }
+        if(SpecialMoveData.SkillCommand[currentState].requiredAttack==AttackButton::ANY_KICK) {
+            if(SpecialMoveData.animationData[currentState].frames.count(ButtonType)) {
+                frames[currentState]=SpecialMoveData.animationData[currentState].frames[ButtonType];}
+            else {frames[currentState]=SpecialMoveData.animationData[currentState].frames[Keys::LK];}
+            if(SpecialMoveData.animationData[currentState].velocitys.count(ButtonType)) {
+                velocity.x=SpecialMoveData.animationData[currentState].velocitys[ButtonType].x;
+                velocity.y=SpecialMoveData.animationData[currentState].velocitys[ButtonType].y;}
+            if(SpecialMoveData.animationData[currentState].initialvelocitys.count(ButtonType)) {
+                Initialvelocity.x[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].x;
+                Initialvelocity.y[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].y;}
+            if(SpecialMoveData.attackdata[currentState].attack.count(ButtonType)) {
+                attacks[FighterState::Special_2]=SpecialMoveData.attackdata[currentState].attack[ButtonType];
+            }
+            if(SpecialMoveData.attackdata[currentState].HitStrength.count(ButtonType)) {
+                hitstrength[FighterState::Special_2]=SpecialMoveData.attackdata[currentState].HitStrength[ButtonType];
+            }
+        }
+    }
     void Fighter::ChangeState(FighterState newState) {
         if (currentState != newState) {
             currentState = newState;
@@ -46,7 +82,7 @@ namespace Util {
     }
 
     void Fighter::StateInit() {
-        borderCheckStates = {
+        SpecificStates.borderCheckStates = {
             FighterState::Idle, FighterState::Forward, FighterState::Backward,
             FighterState::JumpUP, FighterState::JumpForward, FighterState::JumpBackward,
             FighterState::Crouch,FighterState::CrouchDown,FighterState::CrouchUp,
@@ -54,18 +90,18 @@ namespace Util {
             FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH,
             FighterState::BackwardBlock,FighterState::CrouchBlock
         };
-        CrouchAttackStates={
+        SpecificStates.CrouchAttackStates={
             FighterState::CrouchLP, FighterState::CrouchMP,FighterState::CrouchHP,
             FighterState::CrouchLK,FighterState::CrouchMK, FighterState::CrouchHK
         };
-        HurtStates={
+        SpecificStates.HurtStates={
             FighterState::HurtBodyL, FighterState::HurtBodyM, FighterState::HurtBodyH,
             FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH
         };
-        SpecialStates={
+        SpecificStates.SpecialStates={
             FighterState::Special_1, FighterState::Special_2, FighterState::Special_3
         };
-        IdleStates={
+        SpecificStates.IdleStates={
             FighterState::Idle, FighterState::Forward, FighterState::Backward,
             FighterState::Crouch,FighterState::CrouchDown,FighterState::CrouchUp
         };
@@ -182,7 +218,7 @@ namespace Util {
     }
 
     void Fighter::BorderDetection(int MaxWidth) {
-        if (borderCheckStates.count(currentState)) {
+        if (SpecificStates.borderCheckStates.count(currentState)) {
             if (GetCurrentPosition().x > MaxWidth - abs(ActionNow->GetCustomSize().x) / 2||
                 GetCurrentPosition().x < -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2) {
                 ActionNow->m_Transform.translation.x = std::clamp(GetCurrentPosition().x,
@@ -193,7 +229,7 @@ namespace Util {
                 ActionNow->m_Transform.translation.y=FloorOfCharacter;
             }
         }
-        if (PushboxIsCollidedEnemy()&&!HurtStates.count(currentState)) {
+        if (PushboxIsCollidedEnemy()&&!SpecificStates.HurtStates.count(currentState)) {
             glm::vec2 myPos = GetCurrentPosition() + GetCurrentPushboxOffset();
             glm::vec2 enemyPos = enemy->GetCurrentPosition() + enemy->GetCurrentPushboxOffset();
             glm::vec2 myPushboxSize = GetCurrentPushbox();
@@ -350,7 +386,7 @@ namespace Util {
 
     void Fighter::PostionTester() {
         if (Input::IsKeyDown(Keycode::NUM_1)) {
-            ChangeState(FighterState::Special_1);
+            ChangeState(FighterState::Special_2);
         }
         if (Input::IsKeyDown(Keycode::NUM_2)) {
             ChangeState(FighterState::CrouchMP);
@@ -420,9 +456,9 @@ namespace Util {
         HitboxIsCollidedEnemy();
         controller->Update(direction,Time::GetElapsedTimeMs());
 
-        for(auto skill:SpecialStates) {
-            if(SkillCommand.count(skill)) {
-                if (controller->IsSpecialMove(SkillCommand[skill])&&IdleStates.count(currentState)) {ChangeState(FighterState::Special_1);}
+        for(auto skill:SpecificStates.SpecialStates) {
+            if(SpecialMoveData.SkillCommand.count(skill)) {
+                if (controller->IsSpecialMove(SpecialMoveData.SkillCommand[skill])&&SpecificStates.IdleStates.count(currentState)) {ChangeState(skill);}
             }
         }
         //debug
@@ -542,7 +578,7 @@ namespace Util {
         soundeffect[currentState]->Play();
     }
     void Fighter::AttackStateUpload() {
-        if (GetAnimationIsEnd()&&CrouchAttackStates.count(currentState)) {ChangeState(FighterState::Crouch);}
+        if (GetAnimationIsEnd()&&SpecificStates.CrouchAttackStates.count(currentState)) {ChangeState(FighterState::Crouch);}
         else if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 
@@ -555,7 +591,7 @@ namespace Util {
     void Fighter::HurtStateUpload() {
         velocity.x+=Friction*Time::GetDeltaTimeMs()/1000;
         velocity.y+=Gravity*Time::GetDeltaTimeMs()/1000;
-        if (GetAnimationIsEnd()&&velocity.x>=0) {ChangeState(FighterState::Idle);}
+        if (GetAnimationIsEnd()&&velocity.x>=0&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
     void Fighter::BlockStateEnter() {
         ResetVelocity();

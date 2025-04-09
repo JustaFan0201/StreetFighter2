@@ -82,12 +82,12 @@ namespace Util {
         frames[FighterState::CrouchMK]={30,60,120,60,30};
         frames[FighterState::CrouchHK]={60,180,120,90,60};
 
-        frames[FighterState::HurtHeadL] = {100,100};
-        frames[FighterState::HurtHeadM] = {150,150};
-        frames[FighterState::HurtHeadH] = {200,200};
-        frames[FighterState::HurtBodyL] = {100,100};
-        frames[FighterState::HurtBodyM] = {150,150};
-        frames[FighterState::HurtBodyH] = {200,200};
+        frames[FighterState::HurtHeadL] = {150,150};
+        frames[FighterState::HurtHeadM] = {180,180};
+        frames[FighterState::HurtHeadH] = {240,240};
+        frames[FighterState::HurtBodyL] = {150,150};
+        frames[FighterState::HurtBodyM] = {180,180};
+        frames[FighterState::HurtBodyH] = {240,240};
 
         frames[FighterState::BackwardBlock] = {150,150};
         frames[FighterState::CrouchBlock] = {150,150};
@@ -268,25 +268,97 @@ namespace Util {
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{152,102},{-1,-1},{-1,-1}};
     }
     void Ryu::LoadSpecialMove() {
+        animations[FighterState::Special_1]=ActionInit(4, "Special_1");
+        offset[FighterState::Special_1]={{-23,1},{-23,-11},{-31,-9},{-12,-19}};
+
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={120,120,120,120};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={120,240,240,120};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={180,360,360,180};
+
+        boxes.hurtbox.leg.size[FighterState::Special_1]={{150,100},{200,100},{200,100},{200,100}};
+        boxes.hurtbox.head.offset[FighterState::Special_1]={{-12,111},{-31,89},{-1,80},{72,72}};
+        boxes.hurtbox.body.offset[FighterState::Special_1]={{-25,53},{-49,34},{-23,27},{39,21}};
+        boxes.hurtbox.leg.offset[FighterState::Special_1]={{-13,-62},{-26,-73},{-16,-76},{12,-78}};
+
         StateEnter[FighterState::Special_1]=[this] { HandoukenStateEnter(); };
         StateUpload[FighterState::Special_1]=[this] { HandoukenStateUpload(); };
+
         soundeffect[FighterState::Special_1]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_69 - RyuKen Hadouken.wav")};
-        SkillCommand[FighterState::Special_1].command={
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].command={
             SpecialMoveDirection::Forward,
             SpecialMoveDirection::Forward_down,
             SpecialMoveDirection::down
         };
-        SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ANY_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ANY_PUNCH;
 
+        animations[FighterState::Special_2]=ActionInit(6, "Special_2");
+        offset[FighterState::Special_2]={{35,-3},{53,-4},{104,72},{47,57},{17,42},{0,24}};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::LP]={2,6};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::MP]={3,7};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::HP]={4,8};
+
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LP]={60,120,240,120,90,60};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::MP]={60,120,320,180,120,90};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::HP]={60,120,400,240,160,90};
+
+        boxes.hurtbox.leg.size[FighterState::Special_2]={{150,100},{120,100},{100,150},{100,150},{100,100},{120,100}};
+        boxes.hurtbox.head.offset[FighterState::Special_2]={{40,79},{41,110},{72,155},{17,156},{-16,132},{-33,116}};
+        boxes.hurtbox.body.offset[FighterState::Special_2]={{11,22},{11,42},{82,91},{42,84},{-23,66},{-38,61}};
+        boxes.hurtbox.leg.offset[FighterState::Special_2]={{13,-64},{16,-58},{81,-2},{47,-17},{-15,-48},{-28,-53}};
+
+        boxes.hitbox.size[FighterState::Special_2]={80,150};
+        boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{106,203},{-1,-1},{-1,-1},{-1,-1}};
+
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LP]=10;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=20;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HP]=30;
+
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::L;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::M;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HP]=HitStrength::H;
+
+        StateEnter[FighterState::Special_2]=[this] { ShoryukenStateEnter(); };
+        StateUpload[FighterState::Special_2]=[this] { ShoryukenStateUpload(); };
+
+        soundeffect[FighterState::Special_2]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_70 - RyuKen Shoryuken.wav")};
+
+        SpecialMoveData.SkillCommand[FighterState::Special_2].command={
+            SpecialMoveDirection::down,
+            SpecialMoveDirection::Forward_down,
+            SpecialMoveDirection::Forward
+        };
+        SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ANY_PUNCH;
+        SpecificStates.borderCheckStates.insert(FighterState::Special_2);
     }
     void Ryu::HandoukenStateEnter() {
         ResetVelocity();
         soundeffect[currentState]->Play();
-        flyingObjectStrength=controller->GetPunch();
+        ButtonType=controller->GetCurrentAttackKey();
+        LoadCurrentSpecialMove(ButtonType);
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Ryu::HandoukenStateUpload() {
-        if (ActionNow->GetCurrentFrameIndex()==3){AddFlyingObject(FlyingObjectType::FireBall,flyingObjectStrength);}
+        if (ActionNow->GetCurrentFrameIndex()==3){AddFlyingObject(FlyingObjectType::FireBall,ButtonType);ClearButtonType();}
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
+    }
+
+    void Ryu::ShoryukenStateEnter() {
+        ResetVelocity();
+        soundeffect[currentState]->Play();
+        ButtonType=controller->GetCurrentAttackKey();
+        LoadCurrentSpecialMove(ButtonType);
+        velocity.x=Initialvelocity.x[currentState];
+        velocity.y=Initialvelocity.y[currentState];
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Ryu::ShoryukenStateUpload() {
+        if (ActionNow->GetCurrentFrameIndex() <= 2) {
+            velocity.x += velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
+            velocity.y += velocity.y * 0.05f * Time::GetDeltaTimeMs() / 1000.0f;
+        } else {
+            velocity.y += Gravity * Time::GetDeltaTimeMs() / 1000.0f;
+        }
+        if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
 }
