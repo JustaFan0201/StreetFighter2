@@ -12,6 +12,8 @@ namespace Util {
     public:
         Dhalsim();
         void LoadAnimations() override;
+        void LoadOffsetVelocity() override;
+        void LoadAllBox()override;
     };
 }
 #endif //DHALSIM_HPP

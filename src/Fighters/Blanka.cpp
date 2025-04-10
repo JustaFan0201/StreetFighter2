@@ -107,16 +107,16 @@ namespace Util {
         offset[FighterState::CrouchDown]={{-9,-16},{-14,-40}};
         offset[FighterState::CrouchUp]={{-14,-40},{-9,-16}};
         //Stand attack offset
-        offset[FighterState::LP]={{-85,-2},{-21,-1},{-62,1},{-72,-25},{-18,3},{-81,-2}};
-        offset[FighterState::MP]={{-53,51},{-37,22},{-30,3},{-70,-3}};
-        offset[FighterState::HP]={{-68,-5},{-15,-8},{-77,32},{-81,35},{-30,2},{-66,2}};
+        offset[FighterState::LP]={{1,-5},{63,0},{29,0},{27,0},{64,1},{3,-3}};
+        offset[FighterState::MP]={{-4,52},{39,19},{57,1},{21,-4}};
+        offset[FighterState::HP]={{16,-5},{55,-1},{8,32},{7,32},{54,1},{18,-6}};
         offset[FighterState::LK]={{-27,-1},{-8,-3},{47,-10},{47,-10},{-11,-8},{-37,-4}};
         offset[FighterState::MK]={{-17,5},{-11,3},{65,5},{65,5},{-5,1},{-11,2}};
         offset[FighterState::HK]={{33,-9},{24,-12},{27,1},{-52,59},{-93,25},{-1,3},{-7,-13}};
         //Crouch attack offset
-        offset[FighterState::CrouchLP]={{-29,-50},{-11,-53},{-56,-56},{-50,-57},{-8,-59},{-35,-47}};
-        offset[FighterState::CrouchMP]={{-32,-26},{-29,-28},{-20,-19},{-30,-18},{-27,-18},{-17,-21},{-27,-26},{-32,-29}};
-        offset[FighterState::CrouchHP]={{-1,-48},{-2,-50},{74,-11},{74,-12},{-5,-53},{-9,-52}};
+        offset[FighterState::CrouchLP]={{32,-58},{106,-66},{88,-65},{91,-66},{105,-67},{29,-56}};
+        offset[FighterState::CrouchMP]={{-67,-58},{82,-69},{98,-54},{95,-51},{95,-51},{98,-55},{86,-68},{-68,-59}};
+        offset[FighterState::CrouchHP]={{0,-56},{23,-62},{128,-18},{125,-20},{23,-60},{0,-57}};
         offset[FighterState::CrouchLK]={{35,-37},{76,-49},{163,-21}};
         offset[FighterState::CrouchMK]={{35,-37},{76,-49},{163,-21}};
         offset[FighterState::CrouchHK]={{3,-2},{65,-8},{142,-17},{143,-19},{56,-6},{14,-1}};

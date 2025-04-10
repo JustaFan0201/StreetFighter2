@@ -108,7 +108,7 @@ namespace Util {
         offset[FighterState::CrouchUp]={{-3,-29},{-4,-22},{-15,-11}};
         //Stand attack offset
         offset[FighterState::LP]={{-15,0},{6,4},{-22,12},{3,0},{-12,0}};
-        offset[FighterState::MP]={{59,-8},{86,-8},{87,-8},{125,-15},{87,-9}};
+        offset[FighterState::MP]={{60,-4},{89,-7},{124,-11},{89,-7},{62,-4}};
         offset[FighterState::HP]={{44,-5},{75,-14},{94,-17},{77,-15},{42,-7}};
         offset[FighterState::LK]={{-41,0},{-49,10},{45,13},{-53,8},{-43,5}};
         offset[FighterState::MK]={{-29,7},{-43,11},{-12,15},{-12,15},{-36,11}};
