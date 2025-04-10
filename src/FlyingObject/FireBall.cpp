@@ -29,7 +29,7 @@ namespace Util {
         this->EnemyFlyingObjects=EnemyFlyingObjects;
         this->fighter=fighter;
         enemy=fighter->GetEnemy();
-        direction=fighter->GetDirection();
+        direction=fighter->GetNewDirection();
         velocity.x=FireBallVelocity[Strength];
         this->Strength=Strength;
 

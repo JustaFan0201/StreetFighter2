@@ -25,10 +25,10 @@ namespace Util {
         }
     }
 
-    void FlyingObect::Movement() {
+    void FlyingObect::Movement(glm::vec2 cameraOffset) {
         glm::vec2 position={animationNow->GetTransform().translation.x+direction*velocity.x*Time::GetDeltaTimeMs()/1000,
             animationNow->GetTransform().translation.y};
-        if (position.x<-640 || position.x>640) {
+        if (position.x-cameraOffset.x<-640 || position.x-cameraOffset.x>640) {
             ObjectIsEnd=true;
         }
         animationNow->SetDrawData(
@@ -81,10 +81,10 @@ namespace Util {
         }
         return FlyingObjectCollidedState::Null;
     }
-    void FlyingObect::Update(std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects) {
+    void FlyingObect::Update(std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects,glm::vec2 cameraOffset) {
         this->EnemyFlyingObjects=EnemyFlyingObjects;
         if(currentState==FlyingObjectState::Start) {
-            Movement();
+            Movement(cameraOffset);
             if (IsAnimationEnd()) {
                 SetAnimation(currentState,120);
             }
@@ -95,8 +95,8 @@ namespace Util {
             }
         }
     }
-    void FlyingObect::Draw() {
-        animationNow->custom_Draw();
+    void FlyingObect::Draw(glm::vec2 cameraOffset) {
+        animationNow->custom_Draw(cameraOffset);
     }
 }
 

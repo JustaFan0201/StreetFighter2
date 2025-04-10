@@ -80,11 +80,13 @@ namespace Util {
         std::shared_ptr<Fighter> GetEnemy(){return enemy;}
         float GetAttackNum(){return attacks.count(currentState)?attacks[currentState]:0;}
         void GetAttack(float dmg){hp-=dmg;}
+        int GetDirection() const{return direction;}
+        velocity GetVelocity() const{return velocity;}
         HitStrength GetHitStrength(){return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
         FighterState GetBeHitState(HitStrength Strength,HitLocation Location);
         FighterState GetBlockState();
 
-        int GetDirection();
+        int GetNewDirection();
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
         bool GetCharacterIsOnFloor() const {return ActionNow->m_Transform.translation.y==FloorOfCharacter;}
         glm::vec2 GetCurrentPosition() const {return ActionNow->m_Transform.translation;}
@@ -157,18 +159,18 @@ namespace Util {
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
-        void InitPosition(glm::vec2 position,int side,PlayerType Whichplayer);
+        void InitPosition(glm::vec2 position,int side,std::shared_ptr<Controller> controller);
         void StateInit();
         void debugInit();
 
         void ResetVelocity(){velocity={0,0};}
         void ChangeState(FighterState newState);
-        void BorderDetection(int MaxWidth);
+        void BorderDetection(int MaxWidth,glm::vec2 cameraOffset);
         void ReSize();
         void UploadStateAndNewXY();
 
-        void Upload(std::shared_ptr<Core::Context> context);
-        void DrawCharacter();
+        void Upload(std::shared_ptr<Core::Context> context,std::shared_ptr<Controller> controller,glm::vec2 cameraOffset);
+        void DrawCharacter(glm::vec2 cameraOffset);
 
         //debugTest
         void PrintPostion();

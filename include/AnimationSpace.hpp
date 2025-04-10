@@ -19,19 +19,39 @@ namespace Util {
             if (!m_Visible || m_Drawable == nullptr) {
                 return;
             }
-
-            auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
+            //Not used
+            /*auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
             int currentInterval = GetIntervalForFrame(animation->GetCurrentFrameIndex());
             animation->SetInterval(currentInterval);
 
-            glm::vec2 currentOffset = (m_Transform.scale)*(Getoffset(animation->GetCurrentFrameIndex()));
-            Transform transform={m_Transform.translation+currentOffset,0,m_Transform.scale};
-
+            glm::vec2 currentOffset = (m_Transform.scale)*(Getoffset(animation->GetCurrentFrameIndex()));*
+            Transform transform={m_Transform.translation+currentOffset,0,m_Transform.scale};*/
+            Transform transform={m_Transform.translation,0,m_Transform.scale};
             auto data = ConvertToUniformBufferData(
                 transform, custom_size, m_ZIndex);
             data.m_Model = translate(
                 data.m_Model, glm::vec3{m_Pivot / custom_size, 0} * -1.0F);
 
+            m_Drawable->Draw(data);
+        }
+        void custom_Draw(glm::vec2 cameraOffset) {
+            if (!m_Visible || m_Drawable == nullptr) return;
+
+            auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
+            int currentInterval = GetIntervalForFrame(animation->GetCurrentFrameIndex());
+            animation->SetInterval(currentInterval);
+
+            glm::vec2 currentOffset = (m_Transform.scale) * (Getoffset(animation->GetCurrentFrameIndex()));
+
+            // cameraOffset 攝影機偏移加進來
+            Transform transform = {
+                m_Transform.translation + currentOffset - cameraOffset,
+                0,
+                m_Transform.scale
+            };
+
+            auto data = ConvertToUniformBufferData(transform, custom_size, m_ZIndex);
+            data.m_Model = translate(data.m_Model, glm::vec3{m_Pivot / custom_size, 0} * -1.0F);
             m_Drawable->Draw(data);
         }
         void SetDrawData(Transform transform, glm::vec2 size, float index) {

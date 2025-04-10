@@ -30,10 +30,10 @@ namespace Util {
                 Initialvelocity.x[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].x;
                 Initialvelocity.y[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].y;}
             if(SpecialMoveData.attackdata[currentState].attack.count(ButtonType)) {
-                attacks[FighterState::Special_2]=SpecialMoveData.attackdata[currentState].attack[ButtonType];
+                attacks[currentState]=SpecialMoveData.attackdata[currentState].attack[ButtonType];
             }
             if(SpecialMoveData.attackdata[currentState].HitStrength.count(ButtonType)) {
-                hitstrength[FighterState::Special_2]=SpecialMoveData.attackdata[currentState].HitStrength[ButtonType];
+                hitstrength[currentState]=SpecialMoveData.attackdata[currentState].HitStrength[ButtonType];
             }
         }
         if(SpecialMoveData.SkillCommand[currentState].requiredAttack==AttackButton::ANY_KICK) {
@@ -47,10 +47,10 @@ namespace Util {
                 Initialvelocity.x[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].x;
                 Initialvelocity.y[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].y;}
             if(SpecialMoveData.attackdata[currentState].attack.count(ButtonType)) {
-                attacks[FighterState::Special_2]=SpecialMoveData.attackdata[currentState].attack[ButtonType];
+                attacks[currentState]=SpecialMoveData.attackdata[currentState].attack[ButtonType];
             }
             if(SpecialMoveData.attackdata[currentState].HitStrength.count(ButtonType)) {
-                hitstrength[FighterState::Special_2]=SpecialMoveData.attackdata[currentState].HitStrength[ButtonType];
+                hitstrength[currentState]=SpecialMoveData.attackdata[currentState].HitStrength[ButtonType];
             }
         }
     }
@@ -185,7 +185,7 @@ namespace Util {
         return Allframe;
     }
 
-    void Fighter::InitPosition(glm::vec2 position, int side,PlayerType Whichplayer) {
+    void Fighter::InitPosition(glm::vec2 position, int side,std::shared_ptr<Controller> controller) {
         FloorOfCharacter=ActionNow->GetOriginalSize().y * 3/2 + position.y;
         ActionNow->SetDrawData({{position.x,FloorOfCharacter}, 0, {side, 1}},
                                ActionNow->GetOriginalSize()*glm::vec2 {3,3},
@@ -193,8 +193,7 @@ namespace Util {
         hp=100;
         direction = side;
         ChangeState(FighterState::Idle);
-        ActionNow->SetLooping(true);
-        controller->SetPlayerController(Whichplayer);
+        this->controller=controller;
 
         pushboxPicture->SetDrawData({GetCurrentPosition(), 0, {1, 1}},GetCurrentPushbox(),4.0f);
         pushboxPicture->SetVisible(false);
@@ -217,44 +216,61 @@ namespace Util {
         );
     }
 
-    void Fighter::BorderDetection(int MaxWidth) {
+    void Fighter::BorderDetection(int MaxWidth,glm::vec2 cameraOffset) {
         if (SpecificStates.borderCheckStates.count(currentState)) {
-            if (GetCurrentPosition().x > MaxWidth - abs(ActionNow->GetCustomSize().x) / 2||
-                GetCurrentPosition().x < -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2) {
-                ActionNow->m_Transform.translation.x = std::clamp(GetCurrentPosition().x,
-                    -MaxWidth + abs(ActionNow->GetCustomSize().x) / 2,
-                    MaxWidth - abs(ActionNow->GetCustomSize().x)  / 2);
-                }
+            float halfFighterWidth = std::abs(ActionNow->GetCustomSize().x) / 2.0f;
+            float worldX = GetCurrentPosition().x;
+            float screenX = worldX - cameraOffset.x;
+
+            // 超出畫面左右邊界就限制
+            if (screenX > MaxWidth - halfFighterWidth || screenX < -MaxWidth + halfFighterWidth) {
+                // 限制角色不超出邊界
+                float clampedScreenX = std::clamp(screenX,
+                                                  -MaxWidth + halfFighterWidth,
+                                                   MaxWidth - halfFighterWidth);
+
+                // 根據限制後的位置，還原為世界座標（要加回 cameraOffset）
+                float clampedWorldX = clampedScreenX + cameraOffset.x;
+                ActionNow->m_Transform.translation.x = clampedWorldX;
+            }
             if (ActionNow->m_Transform.translation.y < FloorOfCharacter) {
                 ActionNow->m_Transform.translation.y=FloorOfCharacter;
             }
         }
-        if (PushboxIsCollidedEnemy()&&!SpecificStates.HurtStates.count(currentState)) {
+        if (PushboxIsCollidedEnemy() && !SpecificStates.HurtStates.count(currentState)) {
             glm::vec2 myPos = GetCurrentPosition() + GetCurrentPushboxOffset();
             glm::vec2 enemyPos = enemy->GetCurrentPosition() + enemy->GetCurrentPushboxOffset();
             glm::vec2 myPushboxSize = GetCurrentPushbox();
             glm::vec2 enemyPushboxSize = enemy->GetCurrentPushbox();
 
+            float halfWindow = MaxWidth;
+
             float enemyLeft = enemyPos.x - enemyPushboxSize.x / 2;
             float enemyRight = enemyPos.x + enemyPushboxSize.x / 2;
 
+            float worldLimitLeft = cameraOffset.x - halfWindow + myPushboxSize.x / 2;
+            float worldLimitRight = cameraOffset.x + halfWindow - myPushboxSize.x / 2;
+
             if (myPos.x <= enemyPos.x) {
-                ActionNow->m_Transform.translation.x = std::max(enemyLeft - myPushboxSize.x / 2, -MaxWidth + myPushboxSize.x / 2)-GetCurrentPushboxOffset().x;
-                if(enemy->currentState==FighterState::Idle||enemy->currentState==FighterState::Crouch||enemy->currentState==FighterState::JumpUP||
-                    enemy->currentState==FighterState::JumpForward||enemy->currentState==FighterState::Backward) {
-                    enemy->ActionNow->m_Transform.translation.x+=400*Time::GetDeltaTimeMs()/1000;
+                float targetX = std::max(enemyLeft - myPushboxSize.x / 2, worldLimitLeft);
+                ActionNow->m_Transform.translation.x = targetX - GetCurrentPushboxOffset().x;
+
+                if (enemy->SpecificStates.IdleStates.count(enemy->currentState)) {
+                    enemy->ActionNow->m_Transform.translation.x += 400 * Time::GetDeltaTimeMs() / 1000;
                 }
-            } else {
-                ActionNow->m_Transform.translation.x = std::min(enemyRight + myPushboxSize.x / 2, MaxWidth - myPushboxSize.x / 2)-GetCurrentPushboxOffset().x;
-                if(enemy->currentState==FighterState::Idle||enemy->currentState==FighterState::Crouch||enemy->currentState==FighterState::JumpUP||
-                    enemy->currentState==FighterState::JumpForward||enemy->currentState==FighterState::Backward) {
-                    enemy->ActionNow->m_Transform.translation.x+=-400*Time::GetDeltaTimeMs()/1000;
-                    }
+            }
+            else {
+                float targetX = std::min(enemyRight + myPushboxSize.x / 2, worldLimitRight);
+                ActionNow->m_Transform.translation.x = targetX - GetCurrentPushboxOffset().x;
+
+                if (enemy->SpecificStates.IdleStates.count(enemy->currentState)) {
+                    enemy->ActionNow->m_Transform.translation.x -= 400 * Time::GetDeltaTimeMs() / 1000;
+                }
             }
         }
     }
 
-    int Fighter::GetDirection() {
+    int Fighter::GetNewDirection() {
         if(GetCurrentPosition().x+GetCurrentPushbox().x+GetCurrentPushboxOffset().x
             <=enemy->GetCurrentPosition().x+enemy->GetCurrentPushboxOffset().x) {
             return static_cast<int>(FighterDirection::Left);
@@ -445,16 +461,16 @@ namespace Util {
         }
     }
 
-    void Fighter::Upload(std::shared_ptr<Core::Context> context) {
+    void Fighter::Upload(std::shared_ptr<Core::Context> context,std::shared_ptr<Controller> controller,glm::vec2 cameraOffset) {
         PostionTester();
         PushBoxTester();
         PrintPostion();
 
+        this->controller=controller;
         UploadStateAndNewXY();
         ReSize();
-        BorderDetection(context->GetWindowWidth()/2);
+        BorderDetection(context->GetWindowWidth()/2,cameraOffset);
         HitboxIsCollidedEnemy();
-        controller->Update(direction,Time::GetElapsedTimeMs());
 
         for(auto skill:SpecificStates.SpecialStates) {
             if(SpecialMoveData.SkillCommand.count(skill)) {
@@ -479,15 +495,14 @@ namespace Util {
                8.0f);
     }
 
-    void Fighter::DrawCharacter() {
-        ActionNow->custom_Draw();
-
-        pushboxPicture->custom_Draw();
-        headPicture->custom_Draw();
-        bodyPicture->custom_Draw();
-        legPicture->custom_Draw();
+    void Fighter::DrawCharacter(glm::vec2 cameraOffset) {
+        ActionNow->custom_Draw(cameraOffset);
+        pushboxPicture->custom_Draw(cameraOffset);
+        headPicture->custom_Draw(cameraOffset);
+        bodyPicture->custom_Draw(cameraOffset);
+        legPicture->custom_Draw(cameraOffset);
         if(GetCurrentHitboxOffset()!=glm::vec2{-1,-1}) {
-            hitPicture->custom_Draw();
+            hitPicture->custom_Draw(cameraOffset);
         }
     }
     //Actions
@@ -499,7 +514,7 @@ namespace Util {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
         else if (controller->IsForward(direction)) {ChangeState(FighterState::Forward);}
         else if (controller->IsBackward(direction)) {ChangeState(FighterState::Backward);}
-        else if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::Crouch);}
+        else if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::CrouchDown);}
         else if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpUP);}
         else if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::MP);}
@@ -507,7 +522,7 @@ namespace Util {
         else if (controller->IsKeyDown(Keys::LK)) {ChangeState(FighterState::LK);}
         else if (controller->IsKeyDown(Keys::MK)) {ChangeState(FighterState::MK);}
         else if (controller->IsKeyDown(Keys::HK)) {ChangeState(FighterState::HK);}
-        direction=GetDirection();
+        direction=GetNewDirection();
     }
 
     void Fighter::WalkStateEnter(){
@@ -525,7 +540,7 @@ namespace Util {
         else if (controller->IsKeyDown(Keys::LK)) {ChangeState(FighterState::LK);}
         else if (controller->IsKeyDown(Keys::MK)) {ChangeState(FighterState::MK);}
         else if (controller->IsKeyDown(Keys::HK)) {ChangeState(FighterState::HK);}
-        direction=GetDirection();
+        direction=GetNewDirection();
     }
     void Fighter::BackwardStateUpload() {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
@@ -538,7 +553,7 @@ namespace Util {
         else if (controller->IsKeyDown(Keys::LK)) {ChangeState(FighterState::LK);}
         else if (controller->IsKeyDown(Keys::MK)) {ChangeState(FighterState::MK);}
         else if (controller->IsKeyDown(Keys::HK)) {ChangeState(FighterState::HK);}
-        direction=GetDirection();
+        direction=GetNewDirection();
     }
 
     void Fighter::JumpStateEnter(){
@@ -563,7 +578,7 @@ namespace Util {
         else if (controller->IsKeyDown(Keys::LK)) {ChangeState(FighterState::CrouchLK);}
         else if (controller->IsKeyDown(Keys::MK)) {ChangeState(FighterState::CrouchMK);}
         else if (controller->IsKeyDown(Keys::HK)) {ChangeState(FighterState::CrouchHK);}
-        direction=GetDirection();
+        direction=GetNewDirection();
     }
     void Fighter::CrouchDownUpload() {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Crouch);}

@@ -21,10 +21,10 @@ namespace Util {
         FlyingObect(std::string name): Name(name){}
         virtual ~FlyingObect() = default;
         virtual void Init(std::shared_ptr<Fighter> fighter,Keys Strength,std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects)=0;
-        virtual void Update(std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects);
-        virtual void Draw();
+        virtual void Update(std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects,glm::vec2 cameraOffset);
+        virtual void Draw(glm::vec2 cameraOffset);
 
-        void Movement();
+        void Movement(glm::vec2 cameraOffset);
         FlyingObjectCollidedState IsCollidedEnemy();
         FlyingObjectCollidedState IsCollidedEntity();
 

@@ -5,22 +5,48 @@
 #include "Others/Camera.hpp"
 
 namespace Util {
-    void Camera::Init() {
+    void Camera::Init(std::shared_ptr<Fighter> player,std::shared_ptr<Fighter> enemy) {
+        this->player=player;
+        this->enemy=enemy;
         maxOffsetX = 0;
         cameraPos = {0,0};
     }
     void Camera::Upload() {
-        int moveSpeed = 10;
-        if (Input::IsKeyPressed(Keycode::A)) {
-            cameraPos.x += moveSpeed;
+        float playerX = player->GetCurrentPosition().x;
+        float enemyX = enemy->GetCurrentPosition().x;
+
+        float lowerX = std::min(playerX, enemyX);
+        float higherX = std::max(playerX, enemyX);
+        float distance = higherX - lowerX;
+        float center = (playerX + enemyX) / 2.0f;
+
+        // 若距離太遠，保持角色邊緣在畫面內
+        if (distance > (2 * maxOffsetX - boundary * 2)) {
+            cameraPos.x= lowerX + distance / 2.0f;
+        } else {
+            cameraPos.x = center;
         }
-        else if (Input::IsKeyPressed(Keycode::D)) {
-            cameraPos.x -= moveSpeed;
-        }
-        if (cameraPos.x < -maxOffsetX ) cameraPos.x = -maxOffsetX ;
-        if (cameraPos.x >  maxOffsetX ) cameraPos.x = maxOffsetX ;
+        /*
+        for (auto& fighter : std::vector{player, enemy}) {
+            float fighterX = fighter->GetCurrentPosition().x;
+            float fighterVelocityX = fighter->GetVelocity().x;
+            int fighterDirection = fighter->GetDirection();
+            std::cout << cameraPos.x <<"||"<<fighterVelocityX<<"||"<< std::endl;
+            // 角色在畫面左側推左
+            if (fighterX < cameraPos.x - maxOffsetX + boundary && fighterVelocityX * fighterDirection < 0) {
+                cameraPos.x += fighterVelocityX * fighterDirection*Time::GetDeltaTimeMs()/1000;
+            }
+
+            // 角色在畫面右側推右
+            if (fighterX > cameraPos.x + maxOffsetX - boundary && fighterVelocityX * fighterDirection > 0) {
+                cameraPos.x += fighterVelocityX * fighterDirection*Time::GetDeltaTimeMs()/1000;
+            }
+        }*/
+
+        if (cameraPos.x < -maxOffsetX) cameraPos.x = -maxOffsetX;
+        if (cameraPos.x >  maxOffsetX) cameraPos.x =  maxOffsetX;
     }
-    void Camera::SetMaxOffsetX( int border) {
+    void Camera::SetMaxOffsetX(float border) {
         maxOffsetX = border;
     }
     int Camera::GetMaxOffsetX() {
@@ -29,6 +55,4 @@ namespace Util {
     glm::vec2 Camera::GetCameraPos() {
         return  cameraPos;
     }
-
-
 }

@@ -4,18 +4,21 @@
 
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
-
+#include "Fighters/Fighter.hpp"
 #include "Util/Transform.hpp"
 #include "Util/Input.hpp"
 namespace Util {
     class Camera {
     private:
-        int maxOffsetX;
+        std::shared_ptr<Fighter> player;
+        std::shared_ptr<Fighter> enemy;
+        float maxOffsetX;
         glm::vec2 cameraPos;
+        float boundary=200;
     public:
+        void Init(std::shared_ptr<Fighter> player,std::shared_ptr<Fighter> enemy);
         void Upload();
-        void Init();
-        void SetMaxOffsetX(int border);
+        void SetMaxOffsetX(float border);
         int GetMaxOffsetX();
         glm::vec2 GetCameraPos();
     };
