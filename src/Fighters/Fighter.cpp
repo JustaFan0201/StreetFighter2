@@ -139,7 +139,7 @@ namespace Util {
         StateEnter[FighterState::BackwardBlock] = [this] { BlockStateEnter(); };
         StateEnter[FighterState::CrouchBlock] = [this] { BlockStateEnter(); };
 
-        StateUpload[FighterState::Idle] = [this] { IdleStateUpload(); };
+        StateUpload[FighterState::Idle] = [this] {IdleStateUpload(); };
         StateUpload[FighterState::Forward] = [this] { ForwardStateUpload(); };
         StateUpload[FighterState::Backward] = [this] { BackwardStateUpload(); };
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
