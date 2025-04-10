@@ -139,7 +139,7 @@ namespace Util {
         StateEnter[FighterState::BackwardBlock] = [this] { BlockStateEnter(); };
         StateEnter[FighterState::CrouchBlock] = [this] { BlockStateEnter(); };
 
-        StateUpload[FighterState::Idle] = [this] { IdleStateUpload(); };
+        StateUpload[FighterState::Idle] = [this] {IdleStateUpload(); };
         StateUpload[FighterState::Forward] = [this] { ForwardStateUpload(); };
         StateUpload[FighterState::Backward] = [this] { BackwardStateUpload(); };
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
@@ -499,7 +499,7 @@ namespace Util {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
         else if (controller->IsForward(direction)) {ChangeState(FighterState::Forward);}
         else if (controller->IsBackward(direction)) {ChangeState(FighterState::Backward);}
-        else if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::Crouch);}
+        else if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::CrouchDown);}
         else if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpUP);}
         else if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::MP);}
