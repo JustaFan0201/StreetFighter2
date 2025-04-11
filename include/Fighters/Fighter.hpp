@@ -57,6 +57,10 @@ namespace Util {
         virtual void BlockStateEnter();
         virtual void BlockStateUpload();
 
+        virtual void WinStateEnter();
+        virtual void WinStartStateUpload();
+        virtual void WinStateUpload();
+
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
         virtual void LoadAllBox(){}
@@ -209,7 +213,7 @@ namespace Util {
         bool AttackStruck=false;
         float hp=100;
         int direction;
-        float FloorOfCharacter;
+        float FloorOfCharacter=0;
         float Gravity=-98;
         float Friction=16;
 

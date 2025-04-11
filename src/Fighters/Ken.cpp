@@ -56,6 +56,9 @@ namespace Util {
         animations[FighterState::BackwardBlock]=ActionInit(2, "BackwardBlock");
         animations[FighterState::CrouchBlock]=ActionInit(2, "CrouchBlock");
 
+        animations[FighterState::WinStart]=ActionInit(3, "WinStart");
+        animations[FighterState::Win]=ActionInit(1, "Win");
+
         frames[FighterState::Idle]={100, 150, 200, 150, 100, 100};
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120, 120, 120};
@@ -89,6 +92,9 @@ namespace Util {
 
         frames[FighterState::BackwardBlock] = {150,150};
         frames[FighterState::CrouchBlock] = {150,150};
+
+        frames[FighterState::WinStart]={120,120,120};
+        frames[FighterState::Win]={120};
     }
     void Ken::LoadOffsetVelocity() {
         Initialvelocity.x[FighterState::Forward]=8;
@@ -129,6 +135,9 @@ namespace Util {
 
         offset[FighterState::BackwardBlock]={{-3,3},{1,5}};
         offset[FighterState::CrouchBlock]={{35,-44},{16,-38}};
+
+        offset[FighterState::Win]={{12,43}};
+        offset[FighterState::WinStart]={{6,-11},{23,-3},{25,8}};
     }
     void Ken::LoadAllBox() {
 
@@ -296,12 +305,12 @@ namespace Util {
         boxes.hurtbox.body.offset[FighterState::Special_2]={{11,22},{11,42},{82,91},{42,84},{-23,66},{-38,61}};
         boxes.hurtbox.leg.offset[FighterState::Special_2]={{13,-64},{16,-58},{81,-2},{47,-17},{-15,-48},{-28,-53}};
 
-        boxes.hitbox.size[FighterState::Special_2]={80,150};
-        boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{106,203},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::Special_2]={80,250};
+        boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{106,123},{-1,-1},{-1,-1},{-1,-1}};
 
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LP]=10;
-        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=20;
-        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HP]=30;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=15;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HP]=22;
 
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::H;
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::H;

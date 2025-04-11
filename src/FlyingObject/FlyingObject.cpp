@@ -38,6 +38,7 @@ namespace Util {
         );
         if (IsCollidedEnemy()==FlyingObjectCollidedState::Enemy) {
             if(enemy->IsBlocking()) {
+                enemy->GetAttack(FireBallDmg[Strength]/5);
                 enemy->AttackBlock();
             }
             else {

@@ -76,7 +76,8 @@ namespace Util {
 
             InputRecord currentRecord = { GetCurrentMove(direction), currentTime, GetCurrentAttacks() };
             if (inputBuffer.empty() || IsInputRecordDifferent(currentRecord, inputBuffer.front())) {
-                PrintInputBuffer();
+                //debug
+                //PrintInputBuffer();
                 inputBuffer.push_front(currentRecord);
                 if (static_cast<int>(inputBuffer.size()) > MaxInput) inputBuffer.pop_back();
             }

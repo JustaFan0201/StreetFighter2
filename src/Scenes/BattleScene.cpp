@@ -80,9 +80,9 @@ namespace Util {
 
         player->Upload(context,playerController,camera->GetCameraPos());
         enemy->Upload(context,enemyController,camera->GetCameraPos());
-        camera->Upload();
-        bloodstick->Update();
 
+        bloodstick->Update();
+        camera->Upload();
         UpdateFlyingObjects(PlayerFlyingObjects,camera->GetCameraPos());
         UpdateFlyingObjects(EnemyFlyingObjects,camera->GetCameraPos());
 

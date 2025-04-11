@@ -58,6 +58,9 @@ namespace Util {
 
         animations[FighterState::Special_1]=ActionInit(4, "Special_1");
 
+        animations[FighterState::WinStart]=ActionInit(3, "WinStart");
+        animations[FighterState::Win]=ActionInit(2, "Win");
+
         frames[FighterState::Idle]={100, 150, 200, 150, 100};
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120, 120, 120};
@@ -93,6 +96,9 @@ namespace Util {
         frames[FighterState::CrouchBlock] = {150,150};
 
         frames[FighterState::Special_1]={120,120,120,120};
+
+        frames[FighterState::WinStart]={120,120,120};
+        frames[FighterState::Win]={120,120};
     }
     void Ryu::LoadOffsetVelocity() {
         Initialvelocity.x[FighterState::Forward]=8;
@@ -135,6 +141,9 @@ namespace Util {
         offset[FighterState::CrouchBlock]={{35,-44},{16,-38}};
 
         offset[FighterState::Special_1]={{-23,1},{-23,-11},{-31,-9},{-12,-19}};
+
+        offset[FighterState::Win]={{5,6},{7,7}};
+        offset[FighterState::WinStart]={{8,12},{7,6},{5,7}};
     }
     void Ryu::LoadAllBox() {
 
@@ -307,12 +316,12 @@ namespace Util {
         boxes.hurtbox.body.offset[FighterState::Special_2]={{11,22},{11,42},{82,91},{42,84},{-23,66},{-38,61}};
         boxes.hurtbox.leg.offset[FighterState::Special_2]={{13,-64},{16,-58},{81,-2},{47,-17},{-15,-48},{-28,-53}};
 
-        boxes.hitbox.size[FighterState::Special_2]={80,150};
-        boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{106,203},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::Special_2]={80,250};
+        boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{106,123},{-1,-1},{-1,-1},{-1,-1}};
 
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LP]=10;
-        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=20;
-        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HP]=30;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=15;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HP]=22;
 
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::L;
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::M;

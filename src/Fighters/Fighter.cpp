@@ -139,6 +139,9 @@ namespace Util {
         StateEnter[FighterState::BackwardBlock] = [this] { BlockStateEnter(); };
         StateEnter[FighterState::CrouchBlock] = [this] { BlockStateEnter(); };
 
+        StateEnter[FighterState::WinStart] = [this] { WinStateEnter(); };
+        StateEnter[FighterState::Win] = [this] { WinStateEnter(); };
+
         StateUpload[FighterState::Idle] = [this] {IdleStateUpload(); };
         StateUpload[FighterState::Forward] = [this] { ForwardStateUpload(); };
         StateUpload[FighterState::Backward] = [this] { BackwardStateUpload(); };
@@ -172,6 +175,9 @@ namespace Util {
 
         StateUpload[FighterState::BackwardBlock] = [this] { BlockStateUpload(); };
         StateUpload[FighterState::CrouchBlock] = [this] { BlockStateUpload(); };
+
+        StateUpload[FighterState::WinStart] = [this] { WinStartStateUpload(); };
+        StateUpload[FighterState::Win] = [this] { WinStateUpload(); };
         //ActionNow->AnimationPause();ActionNow->TestPictureoffset();
     }
 
@@ -186,7 +192,9 @@ namespace Util {
     }
 
     void Fighter::InitPosition(glm::vec2 position, int side,std::shared_ptr<Controller> controller) {
-        FloorOfCharacter=ActionNow->GetOriginalSize().y * 3/2 + position.y;
+        if(FloorOfCharacter==0) {
+            FloorOfCharacter=ActionNow->GetOriginalSize().y * 3/2 + position.y;
+        }
         ActionNow->SetDrawData({{position.x,FloorOfCharacter}, 0, {side, 1}},
                                ActionNow->GetOriginalSize()*glm::vec2 {3,3},
                                2.0f);
@@ -222,14 +230,11 @@ namespace Util {
             float worldX = GetCurrentPosition().x;
             float screenX = worldX - cameraOffset.x;
 
-            // 超出畫面左右邊界就限制
             if (screenX > MaxWidth - halfFighterWidth || screenX < -MaxWidth + halfFighterWidth) {
-                // 限制角色不超出邊界
                 float clampedScreenX = std::clamp(screenX,
                                                   -MaxWidth + halfFighterWidth,
                                                    MaxWidth - halfFighterWidth);
 
-                // 根據限制後的位置，還原為世界座標（要加回 cameraOffset）
                 float clampedWorldX = clampedScreenX + cameraOffset.x;
                 ActionNow->m_Transform.translation.x = clampedWorldX;
             }
@@ -256,7 +261,8 @@ namespace Util {
                 ActionNow->m_Transform.translation.x = targetX - GetCurrentPushboxOffset().x;
 
                 if (enemy->SpecificStates.IdleStates.count(enemy->currentState)) {
-                    enemy->ActionNow->m_Transform.translation.x += 400 * Time::GetDeltaTimeMs() / 1000;
+                    float pushSpeed = 400 * Time::GetDeltaTimeMs() / 1000.0f;
+                    enemy->ActionNow->m_Transform.translation.x += pushSpeed;
                 }
             }
             else {
@@ -264,7 +270,8 @@ namespace Util {
                 ActionNow->m_Transform.translation.x = targetX - GetCurrentPushboxOffset().x;
 
                 if (enemy->SpecificStates.IdleStates.count(enemy->currentState)) {
-                    enemy->ActionNow->m_Transform.translation.x -= 400 * Time::GetDeltaTimeMs() / 1000;
+                    float pushSpeed = 400 * Time::GetDeltaTimeMs() / 1000.0f;
+                    enemy->ActionNow->m_Transform.translation.x -= pushSpeed;
                 }
             }
         }
@@ -309,6 +316,7 @@ namespace Util {
                 BodySize))
                 {
                 if(enemy->IsBlocking()) {
+                    if(SpecificStates.SpecialStates.count(currentState)) {enemy->GetAttack(GetAttackNum()/5);}
                     enemy->AttackBlock();
                 }
                 else {
@@ -402,10 +410,10 @@ namespace Util {
 
     void Fighter::PostionTester() {
         if (Input::IsKeyDown(Keycode::NUM_1)) {
-            ChangeState(FighterState::Special_2);
+            ChangeState(FighterState::WinStart);
         }
         if (Input::IsKeyDown(Keycode::NUM_2)) {
-            ChangeState(FighterState::CrouchMP);
+            ChangeState(FighterState::Win);
         }
         if (Input::IsKeyDown(Keycode::NUM_3)) {
             ChangeState(FighterState::CrouchHP);
@@ -533,7 +541,7 @@ namespace Util {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
         if (!controller->IsForward(direction)) {ChangeState(FighterState::Idle);}
         if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpForward);}
-        if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::Crouch);}
+        if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::CrouchDown);}
         if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::MP);}
         else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::HP);}
@@ -618,5 +626,15 @@ namespace Util {
         velocity.x+=Friction/2*Time::GetDeltaTimeMs()/1000;
         if (GetAnimationIsEnd()&&velocity.x>=0&&currentState==FighterState::CrouchBlock) {ChangeState(FighterState::Crouch);}
         else if (GetAnimationIsEnd()&&velocity.x>=0&&currentState==FighterState::BackwardBlock) {ChangeState(FighterState::Idle);}
+    }
+    void Fighter::WinStateEnter() {
+        ResetVelocity();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::WinStartStateUpload() {
+        if (GetAnimationIsEnd()){ChangeState(FighterState::Win);}
+    }
+    void Fighter::WinStateUpload() {
+        if (GetAnimationIsEnd()){ActionNow->AnimationPlay();}
     }
 }

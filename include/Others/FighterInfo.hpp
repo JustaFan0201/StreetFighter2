@@ -53,6 +53,7 @@ namespace Util {
         HurtBodyH,
         BackwardBlock,
         CrouchBlock,
+        WinStart,
         Win,
         Loss
     };
