@@ -19,6 +19,8 @@ namespace Util {
         void HandoukenStateUpload();
         void ShoryukenStateEnter();
         void ShoryukenStateUpload();
+        void TatsumakiSenpuStateEnter();
+        void TatsumakiSenpuStateUpload();
     };
 }
 #endif //RYU_HPP

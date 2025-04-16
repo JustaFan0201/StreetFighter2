@@ -19,38 +19,39 @@ namespace Util {
         soundeffect[FighterState::BackwardBlock]=soundeffect[FighterState::CrouchBlock]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_51 - Blocked.wav")};
     }
     void Fighter::LoadCurrentSpecialMove(Keys ButtonType) {
-        if(SpecialMoveData.SkillCommand[currentState].requiredAttack==AttackButton::ANY_PUNCH) {
-            if(SpecialMoveData.animationData[currentState].frames.count(ButtonType)) {
-                frames[currentState]=SpecialMoveData.animationData[currentState].frames[ButtonType];}
-            else {frames[currentState]=SpecialMoveData.animationData[currentState].frames[Keys::LP];}
-            if(SpecialMoveData.animationData[currentState].velocitys.count(ButtonType)) {
-                velocity.x=SpecialMoveData.animationData[currentState].velocitys[ButtonType].x;
-                velocity.y=SpecialMoveData.animationData[currentState].velocitys[ButtonType].y;}
-            if(SpecialMoveData.animationData[currentState].initialvelocitys.count(ButtonType)) {
-                Initialvelocity.x[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].x;
-                Initialvelocity.y[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].y;}
-            if(SpecialMoveData.attackdata[currentState].attack.count(ButtonType)) {
-                attacks[currentState]=SpecialMoveData.attackdata[currentState].attack[ButtonType];
+        if (SpecialMoveData.SkillCommand[currentState].requiredAttack == AttackButton::ANY_PUNCH ||
+            SpecialMoveData.SkillCommand[currentState].requiredAttack == AttackButton::ANY_KICK) {
+
+            Keys fallbackKey = (SpecialMoveData.SkillCommand[currentState].requiredAttack == AttackButton::ANY_PUNCH)
+                                ? Keys::LP : Keys::LK;
+
+            auto& anim = SpecialMoveData.animationData[currentState];
+            auto& atk = SpecialMoveData.attackdata[currentState];
+
+            // Frames
+            if (anim.frames.count(ButtonType)) {
+                frames[currentState] = anim.frames[ButtonType];
+            } else {
+                frames[currentState] = anim.frames[fallbackKey];
             }
-            if(SpecialMoveData.attackdata[currentState].HitStrength.count(ButtonType)) {
-                hitstrength[currentState]=SpecialMoveData.attackdata[currentState].HitStrength[ButtonType];
+
+            // Velocity
+            if (anim.velocitys.count(ButtonType)) {
+                velocity = anim.velocitys[ButtonType];
             }
-        }
-        if(SpecialMoveData.SkillCommand[currentState].requiredAttack==AttackButton::ANY_KICK) {
-            if(SpecialMoveData.animationData[currentState].frames.count(ButtonType)) {
-                frames[currentState]=SpecialMoveData.animationData[currentState].frames[ButtonType];}
-            else {frames[currentState]=SpecialMoveData.animationData[currentState].frames[Keys::LK];}
-            if(SpecialMoveData.animationData[currentState].velocitys.count(ButtonType)) {
-                velocity.x=SpecialMoveData.animationData[currentState].velocitys[ButtonType].x;
-                velocity.y=SpecialMoveData.animationData[currentState].velocitys[ButtonType].y;}
-            if(SpecialMoveData.animationData[currentState].initialvelocitys.count(ButtonType)) {
-                Initialvelocity.x[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].x;
-                Initialvelocity.y[currentState]=SpecialMoveData.animationData[currentState].initialvelocitys[ButtonType].y;}
-            if(SpecialMoveData.attackdata[currentState].attack.count(ButtonType)) {
-                attacks[currentState]=SpecialMoveData.attackdata[currentState].attack[ButtonType];
+
+            // Initial Velocity
+            if (anim.initialvelocitys.count(ButtonType)) {
+                Initialvelocity.x[currentState] = anim.initialvelocitys[ButtonType].x;
+                Initialvelocity.y[currentState] = anim.initialvelocitys[ButtonType].y;
             }
-            if(SpecialMoveData.attackdata[currentState].HitStrength.count(ButtonType)) {
-                hitstrength[currentState]=SpecialMoveData.attackdata[currentState].HitStrength[ButtonType];
+
+            // Attack Info
+            if (atk.attack.count(ButtonType)) {
+                attacks[currentState] = atk.attack[ButtonType];
+            }
+            if (atk.HitStrength.count(ButtonType)) {
+                hitstrength[currentState] = atk.HitStrength[ButtonType];
             }
         }
     }
@@ -299,9 +300,9 @@ namespace Util {
     }
 
     void Fighter::HitboxIsCollidedEnemy() {
-        if(GetCurrentHitboxOffset()==glm::vec2{-1,-1}||AttackStruck==true){return;}
-        if (currentAnimationIndex!=ActionNow->GetCurrentFrameIndex()){AttackStruck=false;}
-        currentAnimationIndex=ActionNow->GetCurrentFrameIndex();
+        if(currentAnimationIndex!=ActionNow->GetCurrentFrameIndex()){AttackStruck=false;}
+        if(AttackStruck==true||GetCurrentHitboxOffset()==glm::vec2{-1,-1}){ return;}
+
         auto enemyPos = enemy->GetCurrentOffsetPosition();
         auto bodyOffsets = enemy->GetCurrentHurtboxOffset();
         auto bodySizes = enemy->GetCurrentHurtboxSize();
@@ -318,9 +319,11 @@ namespace Util {
                 if(enemy->IsBlocking()) {
                     if(SpecificStates.SpecialStates.count(currentState)) {enemy->GetAttack(GetAttackNum()/5);}
                     enemy->AttackBlock();
+                    currentAnimationIndex=ActionNow->GetCurrentFrameIndex();
                 }
                 else {
                     AttackHit(GetHitStrength(),static_cast<HitLocation>(i),GetAttackNum());
+                    currentAnimationIndex=ActionNow->GetCurrentFrameIndex();
                 }
                 AttackStruck=true;
                 return;

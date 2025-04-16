@@ -148,7 +148,9 @@ namespace Util {
         LP, MP, HP,
         LK, MK, HK,
         ANY_PUNCH,
-        ANY_KICK
+        ANY_KICK,
+        ALL_PUNCH,
+        ALL_KICK
     };
     struct SpecialMoveInput {
         std::vector<SpecialMoveDirection> command;
@@ -174,6 +176,7 @@ namespace Util {
         std::unordered_set<FighterState> HurtStates;
         std::unordered_set<FighterState> SpecialStates;
         std::unordered_set<FighterState> IdleStates;
+        std::unordered_set<FighterState> InvincibleForFlyObj;
     };
 }
 

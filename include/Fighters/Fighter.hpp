@@ -89,6 +89,8 @@ namespace Util {
         HitStrength GetHitStrength(){return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
         FighterState GetBeHitState(HitStrength Strength,HitLocation Location);
         FighterState GetBlockState();
+        FighterState GetCurrentState() const {return currentState;};
+        SpecificStates GetSpecificState(){return SpecificStates;};
 
         int GetNewDirection();
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}

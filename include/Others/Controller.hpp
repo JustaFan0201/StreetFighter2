@@ -123,6 +123,10 @@ namespace Util {
                     return attacks[0] || attacks[1] || attacks[2];
                 case AttackButton::ANY_KICK:
                     return attacks[3] || attacks[4] || attacks[5];
+                case AttackButton::ALL_PUNCH:
+                    return attacks[0] && attacks[1] && attacks[2];
+                case AttackButton::ALL_KICK:
+                    return attacks[3] && attacks[4] && attacks[5];
                 default:
                     return false;
             }
@@ -152,7 +156,7 @@ namespace Util {
                     break;
                 }
                 if (IsAttackMatched(record.attacks, special.requiredAttack)) {
-                    CurrentAttack=GetPunch(record);
+                    CurrentAttack=GetPunchOrKick(record);
                     inputBuffer.clear();
                     return true;
                 }
@@ -216,7 +220,7 @@ namespace Util {
             if (Player == PlayerType::Ai&&AiMove==4){return true;}
             return Input::IsKeyUp(keyMap[keyNow]);
         }
-        static Keys GetPunch(InputRecord record) {
+        static Keys GetPunchOrKick(InputRecord record) {
             if(record.attacks[0]){return Keys::LP;}
             if(record.attacks[1]){return Keys::MP;}
             if(record.attacks[2]){return Keys::HP;}
@@ -227,7 +231,6 @@ namespace Util {
         }
         Keys GetCurrentAttackKey(){Keys now=CurrentAttack;CurrentAttack=Keys::Null; return now;}
     };
-
 }
 
 #endif // CONTROLLER_HPP

@@ -280,9 +280,9 @@ namespace Util {
         animations[FighterState::Special_1]=ActionInit(4, "Special_1");
         offset[FighterState::Special_1]={{-23,1},{-23,-11},{-31,-9},{-12,-19}};
 
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={120,120,120,120};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={120,240,240,120};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={180,360,360,180};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={60,90,60,60};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={60,120,90,60};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,150,120,90};
 
         boxes.hurtbox.leg.size[FighterState::Special_1]={{150,100},{200,100},{200,100},{200,100}};
         boxes.hurtbox.head.offset[FighterState::Special_1]={{-12,111},{-31,89},{-1,80},{72,72}};
@@ -339,6 +339,44 @@ namespace Util {
         };
         SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ANY_PUNCH;
         SpecificStates.borderCheckStates.insert(FighterState::Special_2);
+
+        animations[FighterState::Special_3]=ActionInit(10, "Special_3");
+        offset[FighterState::Special_3]={{104,23},{83,9},{24,39},{161,44},{34,44},{-10,44},{111,39},{161,44},{99,30},{30,6}};
+        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::LK]={9,0};
+        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::MK]={12,0};
+        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::HK]={15,0};
+
+        SpecialMoveData.animationData[FighterState::Special_3].frames[Keys::LK]={60,60,90,180,90,180,90,180,60,60};
+
+        boxes.hurtbox.leg.size[FighterState::Special_3]={{100,150},{100,100},{100,50},{50,150},{100,150},{50,150},{50,150},{50,150},{100,150},{100,150}};
+        boxes.hurtbox.head.offset[FighterState::Special_3]={{-13,133},{-13,88},{-115,92},{7,139},{-79,132},{-75,133},{-4,134},{7,139},{9,119},{-79,92}};
+        boxes.hurtbox.body.offset[FighterState::Special_3]={{-15,64},{-11,24},{-64,37},{-17,74},{-77,75},{-38,70},{-8,73},{-17,74},{-16,58},{-72,38}};
+        boxes.hurtbox.leg.offset[FighterState::Special_3]={{2,-46},{1,-66},{-70,-31},{-16,-45},{-64,-15},{-52,-10},{-32,-25},{-16,-45},{3,-32},{-72,-62}};
+
+        boxes.hitbox.size[FighterState::Special_3]={250,80};
+        boxes.hitbox.offset[FighterState::Special_3]={{-1,-1},{-1,-1},{-1,-1},{76,29},{-1,-1},{-135,27},{-1,-1},{76,29},{-1,-1},{-1,-1}};
+
+        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::LK]=10;
+        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::MK]=15;
+        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::HK]=22;
+
+        SpecialMoveData.attackdata[FighterState::Special_3].HitStrength[Keys::LK]=HitStrength::L;
+        SpecialMoveData.attackdata[FighterState::Special_3].HitStrength[Keys::MK]=HitStrength::M;
+        SpecialMoveData.attackdata[FighterState::Special_3].HitStrength[Keys::HK]=HitStrength::H;
+
+        StateEnter[FighterState::Special_3]=[this] { TatsumakiSenpuStateEnter(); };
+        StateUpload[FighterState::Special_3]=[this] { TatsumakiSenpuStateUpload(); };
+
+        soundeffect[FighterState::Special_3]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_71 - RyuKen Tatsumaki Senpuukyaku.wav")};
+
+        SpecialMoveData.SkillCommand[FighterState::Special_3].command={
+            SpecialMoveDirection::Backward,
+            SpecialMoveDirection::Backward_down,
+            SpecialMoveDirection::down
+        };
+        SpecialMoveData.SkillCommand[FighterState::Special_3].requiredAttack=AttackButton::ANY_KICK;
+        SpecificStates.borderCheckStates.insert(FighterState::Special_3);
+        SpecificStates.InvincibleForFlyObj.insert(FighterState::Special_3);
     }
     void Ryu::HandoukenStateEnter() {
         ResetVelocity();
@@ -369,5 +407,22 @@ namespace Util {
             velocity.y += Gravity * Time::GetDeltaTimeMs() / 1000.0f;
         }
         if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
+    }
+    void Ryu::TatsumakiSenpuStateEnter() {
+        ResetVelocity();
+        soundeffect[currentState]->Play();
+        ButtonType=controller->GetCurrentAttackKey();
+        LoadCurrentSpecialMove(ButtonType);
+        velocity.x=Initialvelocity.x[currentState];
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Ryu::TatsumakiSenpuStateUpload() {
+        if (ActionNow->GetCurrentFrameIndex() <= 5) {
+            velocity.x += velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
+        }
+        else if (ActionNow->GetCurrentFrameIndex() <= 7) {
+            velocity.x -= velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
+        }
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 }
