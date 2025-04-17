@@ -27,6 +27,8 @@ namespace Util {
         //BGM設定
         start_time = Time::GetElapsedTimeMs();
 
+        playerController->SetState(ControllerState::Pause);
+        enemyController->SetState(ControllerState::Pause);
         playerController->SetPlayerController(PlayerType::Player1);
         enemyController->SetPlayerController(PlayerType::Player2);
         player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left),playerController);
@@ -75,6 +77,10 @@ namespace Util {
         }
     }
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {
+        if(Time::GetElapsedTimeMs()-start_time>4000) {
+            playerController->SetState(ControllerState::Active);
+            enemyController->SetState(ControllerState::Active);
+        }
         playerController->Update(player->GetDirection(),Time::GetElapsedTimeMs());
         enemyController->Update(enemy->GetDirection(),Time::GetElapsedTimeMs());
 

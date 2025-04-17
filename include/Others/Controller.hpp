@@ -21,10 +21,11 @@ namespace Util {
         std::unordered_map<Keys, Keycode> keyMap;
         float timeForAi=0;
         int AiMove=0;
+        ControllerState currentState=ControllerState::Pause;
 
         Keys CurrentAttack=Keys::Null;
         float MoveDelay=500;
-        int MaxInput=6;
+        int MaxInput=10;
         std::deque<InputRecord> inputBuffer;
         void InitializeKeyMap() {
             if (Player == PlayerType::Player1) {
@@ -68,10 +69,12 @@ namespace Util {
         explicit Controller(PlayerType playerNum) : Player(playerNum) {
             InitializeKeyMap();
         }
+        void SetState(ControllerState state){currentState=state;}
         void Update(int direction,float currentTime) {
+            if(currentState==ControllerState::Pause){return;}
             if (Player == PlayerType::Ai) {
                 timeForAi += Time::GetDeltaTimeMs();
-                if (timeForAi > 1000) { randomBool(); }
+                if (timeForAi > 1000) {AiMove= randomNum(8); }
             }
 
             InputRecord currentRecord = { GetCurrentMove(direction), currentTime, GetCurrentAttacks() };
@@ -153,10 +156,11 @@ namespace Util {
             for (; bufferIndex >= 0; bufferIndex--) {
                 auto record = inputBuffer[bufferIndex];
                 if (record.timestamp - directionFinishTime > MoveDelay) {
+                    inputBuffer.clear();
                     break;
                 }
                 if (IsAttackMatched(record.attacks, special.requiredAttack)) {
-                    CurrentAttack=GetPunchOrKick(record);
+                    CurrentAttack=GetPunchOrKick(record,special.requiredAttack);
                     inputBuffer.clear();
                     return true;
                 }
@@ -174,12 +178,12 @@ namespace Util {
                 std::cout << "\n";
             }
         }
-        void randomBool() {
+        int randomNum(int range) {
             timeForAi=0;
             std::random_device rd;
             std::mt19937 gen(rd());
-            std::uniform_int_distribution<> dis(0, 4);
-            AiMove= dis(gen);
+            std::uniform_int_distribution<> dis(0, range);
+            return dis(gen);
         }
         void SetPlayerController(PlayerType playerNum) {
             Player = playerNum;
@@ -189,6 +193,7 @@ namespace Util {
             return keyMap[keyNow];
         }
         bool IsForward(int direction) {
+            if(currentState==ControllerState::Pause){return false;}
             if (Player == PlayerType::Ai&&AiMove==0){return true;}
             if(direction==static_cast<int>(FighterDirection::Left)) {
                 return Input::IsKeyPressed(keyMap[Keys::RIGHT]);
@@ -199,6 +204,7 @@ namespace Util {
             return false;
         }
         bool IsBackward(int direction) {
+            if(currentState==ControllerState::Pause){return false;}
             if (Player == PlayerType::Ai&&AiMove==1){return true;}
             if(direction==static_cast<int>(FighterDirection::Right)) {
                 return Input::IsKeyPressed(keyMap[Keys::RIGHT]);
@@ -209,18 +215,37 @@ namespace Util {
             return false;
         }
         bool IsKeyPressed(Keys keyNow) {
+            if(currentState==ControllerState::Pause){return false;}
             if (Player == PlayerType::Ai&&AiMove==2){return true;}
             return Input::IsKeyPressed(keyMap[keyNow]);
         }
         bool IsKeyDown(Keys keyNow) {
+            if(currentState==ControllerState::Pause){return false;}
             if (Player == PlayerType::Ai&&AiMove==3){return true;}
             return Input::IsKeyDown(keyMap[keyNow]);
         }
         bool IsKeyUp(Keys keyNow) {
+            if(currentState==ControllerState::Pause){return false;}
             if (Player == PlayerType::Ai&&AiMove==4){return true;}
             return Input::IsKeyUp(keyMap[keyNow]);
         }
-        static Keys GetPunchOrKick(InputRecord record) {
+        Keys GetPunchOrKick(InputRecord record,AttackButton request) {
+            if (Player == PlayerType::Ai) {
+                if(request==AttackButton::ALL_PUNCH&&AiMove==5){
+                    return Keys::LP;
+                }
+                if(request==AttackButton::ANY_PUNCH&&AiMove==6) {
+                    std::vector punch={Keys::LP,Keys::MP,Keys::HP};
+                    return punch[randomNum(2)];
+                }
+                if(request==AttackButton::ALL_KICK&&AiMove==7) {
+                    return Keys::LK;
+                }
+                if(request==AttackButton::ANY_KICK&&AiMove==8) {
+                    std::vector kick={Keys::LK,Keys::MK,Keys::HK};
+                    return kick[randomNum(2)];
+                }
+            }
             if(record.attacks[0]){return Keys::LP;}
             if(record.attacks[1]){return Keys::MP;}
             if(record.attacks[2]){return Keys::HP;}

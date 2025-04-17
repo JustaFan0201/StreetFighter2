@@ -120,6 +120,10 @@ namespace Util {
         Player2,
         Ai
     };
+    enum class ControllerState {
+        Pause,
+        Active
+    };
     enum class Keys {
         Null,
         UP,
