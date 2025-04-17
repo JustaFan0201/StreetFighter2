@@ -31,8 +31,8 @@ namespace Util {
         enemyController->SetState(ControllerState::Pause);
         playerController->SetPlayerController(PlayerType::Player1);
         enemyController->SetPlayerController(PlayerType::Player2);
-        player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left),playerController);
-        enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right),enemyController);
+        player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left),playerController,camera->GetMaxOffsetX());
+        enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right),enemyController,camera->GetMaxOffsetX());
 
         player->SetEntityAdder([this](FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
             this->addEntities(type, sender, strength);
@@ -77,7 +77,7 @@ namespace Util {
         }
     }
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {
-        if(Time::GetElapsedTimeMs()-start_time>4000) {
+        if(Time::GetElapsedTimeMs()-start_time>0) {
             playerController->SetState(ControllerState::Active);
             enemyController->SetState(ControllerState::Active);
         }

@@ -269,9 +269,9 @@ namespace Util {
         animations[FighterState::Special_1]=ActionInit(4, "Special_1");
         offset[FighterState::Special_1]={{-23,1},{-23,-11},{-31,-9},{-12,-19}};
 
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={120,120,120,120};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={120,240,240,120};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={180,360,360,180};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={60,90,60,60};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={60,120,90,60};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,150,120,90};
 
         boxes.hurtbox.leg.size[FighterState::Special_1]={{150,100},{200,100},{200,100},{200,100}};
         boxes.hurtbox.head.offset[FighterState::Special_1]={{-12,111},{-31,89},{-1,80},{72,72}};
@@ -312,8 +312,8 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=15;
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HP]=22;
 
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::H;
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::H;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::L;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::M;
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HP]=HitStrength::H;
 
         StateEnter[FighterState::Special_2]=[this] { ShoryukenStateEnter(); };
@@ -343,7 +343,7 @@ namespace Util {
         boxes.hurtbox.leg.offset[FighterState::Special_3]={{2,-46},{1,-66},{-70,-31},{-16,-45},{-64,-15},{-52,-10},{-32,-25},{-16,-45},{3,-32},{-72,-62}};
 
         boxes.hitbox.size[FighterState::Special_3]={250,80};
-        boxes.hitbox.offset[FighterState::Special_3]={{-1,-1},{-1,-1},{-1,-1},{76,29},{-1,-1},{-135,27},{-1,-1},{76,29},{-1,-1},{-1,-1}};
+        boxes.hitbox.offset[FighterState::Special_3]={{-1,-1},{-1,-1},{-1,-1},{76,29},{-1,-1},{-155,27},{-1,-1},{76,29},{-1,-1},{-1,-1}};
 
         SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::LK]=10;
         SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::MK]=15;

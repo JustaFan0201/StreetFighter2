@@ -44,6 +44,7 @@ namespace Util {
                 }
                 else {
                     fighter->AttackHit(HitStrength::H,HitLocation::Head,FireBallDmg[Strength]);
+                    enemy->GetSFX()[enemy->GetCurrentState()]->Play();
                 }
                 ChangeState(FlyingObjectState::Collide);
             }

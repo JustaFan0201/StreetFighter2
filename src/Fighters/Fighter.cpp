@@ -56,7 +56,7 @@ namespace Util {
         }
     }
     void Fighter::ChangeState(FighterState newState) {
-        if (currentState != newState) {
+        if (currentState != newState||SpecificStates.HurtStates.count(newState)) {
             currentState = newState;
             auto currentEnter = StateEnter.find(currentState);
             if (currentEnter != StateEnter.end()) {
@@ -192,10 +192,9 @@ namespace Util {
         return Allframe;
     }
 
-    void Fighter::InitPosition(glm::vec2 position, int side,std::shared_ptr<Controller> controller) {
-        if(FloorOfCharacter==0) {
-            FloorOfCharacter=ActionNow->GetOriginalSize().y * 3/2 + position.y;
-        }
+    void Fighter::InitPosition(glm::vec2 position, int side,std::shared_ptr<Controller> controller,int MaxCameraOffsetX) {
+        if(FloorOfCharacter==0) {FloorOfCharacter=ActionNow->GetOriginalSize().y * 3/2 + position.y;}
+        this->MaxCameraOffsetX=MaxCameraOffsetX;
         ActionNow->SetDrawData({{position.x,FloorOfCharacter}, 0, {side, 1}},
                                ActionNow->GetOriginalSize()*glm::vec2 {3,3},
                                2.0f);
@@ -226,6 +225,7 @@ namespace Util {
     }
 
     void Fighter::BorderDetection(int MaxWidth,glm::vec2 cameraOffset) {
+        this->MaxWidth=MaxWidth;
         if (SpecificStates.borderCheckStates.count(currentState)) {
             float halfFighterWidth = std::abs(ActionNow->GetCustomSize().x) / 2.0f;
             float worldX = GetCurrentPosition().x;
@@ -319,12 +319,12 @@ namespace Util {
                 if(enemy->IsBlocking()) {
                     if(SpecificStates.SpecialStates.count(currentState)) {enemy->GetAttack(GetAttackNum()/5);}
                     enemy->AttackBlock();
-                    currentAnimationIndex=ActionNow->GetCurrentFrameIndex();
                 }
                 else {
                     AttackHit(GetHitStrength(),static_cast<HitLocation>(i),GetAttackNum());
-                    currentAnimationIndex=ActionNow->GetCurrentFrameIndex();
+                    enemy->GetSFX()[enemy->GetCurrentState()]->Play();
                 }
+                currentAnimationIndex=ActionNow->GetCurrentFrameIndex();
                 AttackStruck=true;
                 return;
             }
@@ -343,10 +343,12 @@ namespace Util {
     }
 
     bool Fighter::IsBlocking() {
-        if(currentState==FighterState::Backward||currentState==FighterState::Crouch
-            ||currentState==FighterState::Idle||currentState==FighterState::BackwardBlock
-            ||currentState==FighterState::CrouchBlock) {
-            return controller->IsBackward(direction);
+        if(!SpecificStates.HurtStates.count(currentState)) {
+            if(currentState==FighterState::Backward||currentState==FighterState::Crouch
+                ||currentState==FighterState::Idle||currentState==FighterState::BackwardBlock
+                ||currentState==FighterState::CrouchBlock) {
+                return controller->IsBackward(direction);
+                }
         }
         return false;
     }
@@ -604,6 +606,7 @@ namespace Util {
         soundeffect[currentState]->Play();
     }
     void Fighter::AttackStateUpload() {
+        if(enemy->GetCharacterIsInBorder()){velocity.x=enemy->GetVelocity().x;}
         if (GetAnimationIsEnd()&&SpecificStates.CrouchAttackStates.count(currentState)) {ChangeState(FighterState::Crouch);}
         else if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
@@ -612,7 +615,6 @@ namespace Util {
         ResetVelocity();
         velocity.x=Initialvelocity.x[currentState];
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
-        soundeffect[currentState]->Play();
     }
     void Fighter::HurtStateUpload() {
         velocity.x+=Friction*Time::GetDeltaTimeMs()/1000;

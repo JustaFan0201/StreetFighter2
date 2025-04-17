@@ -79,6 +79,7 @@ namespace Util {
         std::vector<std::string> GetStageBackground() { return stage_background; }
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
+        std::unordered_map<FighterState, std::shared_ptr<SFX>> GetSFX() { return soundeffect; }
 
         float GetHP() const{return hp;}
         std::shared_ptr<Fighter> GetEnemy(){return enemy;}
@@ -95,6 +96,15 @@ namespace Util {
         int GetNewDirection();
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
         bool GetCharacterIsOnFloor() const {return ActionNow->m_Transform.translation.y==FloorOfCharacter;}
+        bool GetCharacterIsInBorder()  {
+            float halfFighterWidth = std::abs(ActionNow->GetCustomSize().x) / 2.0f;
+            float worldX = GetCurrentPosition().x;
+            float screenX = worldX - MaxCameraOffsetX;
+            if (screenX > MaxWidth - halfFighterWidth-20 || screenX < -MaxWidth + halfFighterWidth+20) {
+                return true;
+            }
+            return false;
+        }
         glm::vec2 GetCurrentPosition() const {return ActionNow->m_Transform.translation;}
         glm::vec2 GetCurrentOffsetPosition() {return ActionNow->m_Transform.translation+GetCurrentOffsets()[0]*ActionNow->GetTransform().scale;}
         std::vector<glm::vec2> GetCurrentOffsets(){return offset.count(currentState) ? offset[currentState]:offset[FighterState::Idle];}
@@ -165,7 +175,7 @@ namespace Util {
 
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
-        void InitPosition(glm::vec2 position,int side,std::shared_ptr<Controller> controller);
+        void InitPosition(glm::vec2 position,int side,std::shared_ptr<Controller> controller,int MaxCameraOffsetX);
         void StateInit();
         void debugInit();
 
@@ -218,6 +228,8 @@ namespace Util {
         float FloorOfCharacter=0;
         float Gravity=-98;
         float Friction=16;
+        float MaxWidth;
+        int MaxCameraOffsetX;
 
         velocity velocity;
         Initialvelocity Initialvelocity;

@@ -354,7 +354,7 @@ namespace Util {
         boxes.hurtbox.leg.offset[FighterState::Special_3]={{2,-46},{1,-66},{-70,-31},{-16,-45},{-64,-15},{-52,-10},{-32,-25},{-16,-45},{3,-32},{-72,-62}};
 
         boxes.hitbox.size[FighterState::Special_3]={250,80};
-        boxes.hitbox.offset[FighterState::Special_3]={{-1,-1},{-1,-1},{-1,-1},{76,29},{-1,-1},{-135,27},{-1,-1},{76,29},{-1,-1},{-1,-1}};
+        boxes.hitbox.offset[FighterState::Special_3]={{-1,-1},{-1,-1},{-1,-1},{76,29},{-1,-1},{-155,27},{-1,-1},{76,29},{-1,-1},{-1,-1}};
 
         SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::LK]=10;
         SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::MK]=15;
