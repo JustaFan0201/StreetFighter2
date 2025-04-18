@@ -77,9 +77,15 @@ namespace Util {
         }
     }
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {
-        if(Time::GetElapsedTimeMs()-start_time>0) {
+        if(!bloodstick->GetRoundStartIsEnd()) {
+            playerController->SetState(ControllerState::Pause);
+            enemyController->SetState(ControllerState::Pause);
+            bloodstick->RoundStart(round);
+        }
+        else{
             playerController->SetState(ControllerState::Active);
             enemyController->SetState(ControllerState::Active);
+            bloodstick->Update();
         }
         playerController->Update(player->GetDirection(),Time::GetElapsedTimeMs());
         enemyController->Update(enemy->GetDirection(),Time::GetElapsedTimeMs());
@@ -87,7 +93,6 @@ namespace Util {
         player->Upload(context,playerController,camera->GetCameraPos());
         enemy->Upload(context,enemyController,camera->GetCameraPos());
 
-        bloodstick->Update();
         camera->Upload();
         UpdateFlyingObjects(PlayerFlyingObjects,camera->GetCameraPos());
         UpdateFlyingObjects(EnemyFlyingObjects,camera->GetCameraPos());

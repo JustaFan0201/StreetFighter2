@@ -5,7 +5,7 @@
 #ifndef FIGHTERINFO_HPP
 #define FIGHTERINFO_HPP
 namespace Util {
-    constexpr float StageFloor = -320.0f;
+    constexpr float StageFloor = -310.0f;
     enum class FighterDirection {
         Left  = 1,
         Right = -1
@@ -180,6 +180,7 @@ namespace Util {
         std::unordered_set<FighterState> HurtStates;
         std::unordered_set<FighterState> SpecialStates;
         std::unordered_set<FighterState> IdleStates;
+        std::unordered_set<FighterState> BlockStates;
         std::unordered_set<FighterState> InvincibleForFlyObj;
     };
 }

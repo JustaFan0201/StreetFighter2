@@ -23,6 +23,7 @@ namespace Util {
         std::shared_ptr<Bloodstick> bloodstick=std::make_shared<Bloodstick>();
         std::vector<std::shared_ptr<FlyingObect>> PlayerFlyingObjects;
         std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects;
+        int round=1;
     public:
         BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy):
         player(player), enemy(enemy){}
@@ -32,6 +33,7 @@ namespace Util {
         void Render() override;
         void addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength);
         void UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObect>>& flyingObjects,glm::vec2 cameraOffset);
+
     };
 }
 

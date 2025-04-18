@@ -8,8 +8,8 @@
 #include <memory>
 #include <string>
 #include "ImageSpace.hpp"
-#include "Util/Transform.hpp"
 #include"AnimationSpace.hpp"
+#include "Util/Transform.hpp"
 #include "Util/Time.hpp"
 
 #include "Fighters/Fighter.hpp"
@@ -35,10 +35,8 @@ namespace Util {
         std::shared_ptr<ImageSpace> round_image;
         std::shared_ptr<ImageSpace> roundnum_image;
 
-
-
         float start_time = Time::GetElapsedTimeMs();
-        float now_time = Time::GetElapsedTimeMs();
+        bool RoundStartIsEnd=false;
 
         std::shared_ptr<Fighter> P1;
         std::shared_ptr<Fighter> P2;
@@ -56,9 +54,11 @@ namespace Util {
     public:
         Bloodstick();
         void Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2);
+        void RoundStart(int round);
         void Update();
         void DrawBloodstick();
-        float GetTime();
+        float GetTime() const;
+        bool GetRoundStartIsEnd() const {return RoundStartIsEnd;};
     };
 }
 

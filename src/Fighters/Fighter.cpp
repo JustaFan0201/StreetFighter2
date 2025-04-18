@@ -63,6 +63,7 @@ namespace Util {
                 currentEnter->second();
             }
             AttackStruck=false;
+            HitEnemy=false;
         }
     }
 
@@ -98,6 +99,9 @@ namespace Util {
         SpecificStates.HurtStates={
             FighterState::HurtBodyL, FighterState::HurtBodyM, FighterState::HurtBodyH,
             FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH
+        };
+        SpecificStates.BlockStates={
+            FighterState::BackwardBlock, FighterState::CrouchBlock
         };
         SpecificStates.SpecialStates={
             FighterState::Special_1, FighterState::Special_2, FighterState::Special_3
@@ -224,25 +228,38 @@ namespace Util {
         );
     }
 
-    void Fighter::BorderDetection(int MaxWidth,glm::vec2 cameraOffset) {
-        this->MaxWidth=MaxWidth;
+    void Fighter::BorderDetection(int MaxWidth, glm::vec2 cameraOffset) {
+        this->MaxWidth = MaxWidth;
+
+        const bool smoothClamp = true;
+        const float clampEpsilon = 0.01f;
+        const float alpha = 0.5f;
+
         if (SpecificStates.borderCheckStates.count(currentState)) {
             float halfFighterWidth = std::abs(ActionNow->GetCustomSize().x) / 2.0f;
             float worldX = GetCurrentPosition().x;
             float screenX = worldX - cameraOffset.x;
 
-            if (screenX > MaxWidth - halfFighterWidth || screenX < -MaxWidth + halfFighterWidth) {
-                float clampedScreenX = std::clamp(screenX,
-                                                  -MaxWidth + halfFighterWidth,
-                                                   MaxWidth - halfFighterWidth);
+            float clampedScreenX = std::clamp(screenX, -MaxWidth + halfFighterWidth, MaxWidth - halfFighterWidth);
+            float clampedWorldX = clampedScreenX + cameraOffset.x;
 
-                float clampedWorldX = clampedScreenX + cameraOffset.x;
-                ActionNow->m_Transform.translation.x = clampedWorldX;
+            if (std::abs(clampedScreenX - screenX) > clampEpsilon) {
+                if (smoothClamp) {
+                    // 線性插值回到合法位置
+                    ActionNow->m_Transform.translation.x =
+                        alpha * clampedWorldX + (1.0f - alpha) * ActionNow->m_Transform.translation.x;
+                } else {
+                    // 立即修正位置
+                    ActionNow->m_Transform.translation.x = clampedWorldX;
+                }
             }
+
+            // 地板高度修正
             if (ActionNow->m_Transform.translation.y < FloorOfCharacter) {
-                ActionNow->m_Transform.translation.y=FloorOfCharacter;
+                ActionNow->m_Transform.translation.y = FloorOfCharacter;
             }
         }
+
         if (PushboxIsCollidedEnemy() && !SpecificStates.HurtStates.count(currentState)) {
             glm::vec2 myPos = GetCurrentPosition() + GetCurrentPushboxOffset();
             glm::vec2 enemyPos = enemy->GetCurrentPosition() + enemy->GetCurrentPushboxOffset();
@@ -265,8 +282,7 @@ namespace Util {
                     float pushSpeed = 400 * Time::GetDeltaTimeMs() / 1000.0f;
                     enemy->ActionNow->m_Transform.translation.x += pushSpeed;
                 }
-            }
-            else {
+            } else {
                 float targetX = std::min(enemyRight + myPushboxSize.x / 2, worldLimitRight);
                 ActionNow->m_Transform.translation.x = targetX - GetCurrentPushboxOffset().x;
 
@@ -319,10 +335,12 @@ namespace Util {
                 if(enemy->IsBlocking()) {
                     if(SpecificStates.SpecialStates.count(currentState)) {enemy->GetAttack(GetAttackNum()/5);}
                     enemy->AttackBlock();
+                    HitEnemy=true;
                 }
                 else {
                     AttackHit(GetHitStrength(),static_cast<HitLocation>(i),GetAttackNum());
                     enemy->GetSFX()[enemy->GetCurrentState()]->Play();
+                    HitEnemy=true;
                 }
                 currentAnimationIndex=ActionNow->GetCurrentFrameIndex();
                 AttackStruck=true;
@@ -606,7 +624,10 @@ namespace Util {
         soundeffect[currentState]->Play();
     }
     void Fighter::AttackStateUpload() {
-        if(enemy->GetCharacterIsInBorder()){velocity.x=enemy->GetVelocity().x;}
+        if(enemy->GetCharacterIsInBorder()&&HitEnemy
+            &&(enemy->SpecificStates.HurtStates.count(enemy->currentState)||
+                enemy->SpecificStates.BlockStates.count(enemy->currentState)))
+            {velocity.x=enemy->GetVelocity().x;}
         if (GetAnimationIsEnd()&&SpecificStates.CrouchAttackStates.count(currentState)) {ChangeState(FighterState::Crouch);}
         else if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
