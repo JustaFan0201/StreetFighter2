@@ -23,7 +23,15 @@
 #include "Fighters/Honda.hpp"
 
 namespace Util {
-    class Bloodstick {
+    enum class StartState{
+        Null,
+        Round,
+        Fight,
+        FightEnd,
+        WaitForEnd,
+        End
+    };
+    class UI {
     private:
         std::shared_ptr<ImageSpace> bloodback_image;
         std::shared_ptr<ImageSpace> ko_image;
@@ -35,8 +43,10 @@ namespace Util {
         std::shared_ptr<ImageSpace> round_image;
         std::shared_ptr<ImageSpace> roundnum_image;
 
-        float start_time = Time::GetElapsedTimeMs();
+        std::shared_ptr<SFX> soundeffect;
+        StartState currentState=StartState::Null;
         bool RoundStartIsEnd=false;
+        float start_time = Time::GetElapsedTimeMs();
 
         std::shared_ptr<Fighter> P1;
         std::shared_ptr<Fighter> P2;
@@ -50,9 +60,8 @@ namespace Util {
         std::shared_ptr<ImageSpace> P2name_image;
         std::vector<int> timer = {0, 0};
         std::vector<std::shared_ptr<ImageSpace>> AllPictures;
-
     public:
-        Bloodstick();
+        UI();
         void Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2);
         void RoundStart(int round);
         void Update();

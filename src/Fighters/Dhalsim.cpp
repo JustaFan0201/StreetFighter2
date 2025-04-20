@@ -12,6 +12,7 @@ namespace Util {
         country_position={{-228, 97},0,{1,1}};
         BackgroundInit(13);
         StateInit();
+        LoadCommonVelocities();
         Dhalsim::LoadAnimations();
         Dhalsim::LoadOffsetVelocity();
         Dhalsim::LoadAllBox();
@@ -88,20 +89,6 @@ namespace Util {
         frames[FighterState::CrouchBlock] = {150,150};
     }
     void Dhalsim::LoadOffsetVelocity() {
-        Initialvelocity.x[FighterState::Forward]=8;
-        Initialvelocity.x[FighterState::Backward]=-8;
-        Initialvelocity.x[FighterState::JumpForward]=10;
-        Initialvelocity.x[FighterState::JumpBackward]=-10;
-        Initialvelocity.y[FighterState::JumpForward]=38;
-        Initialvelocity.y[FighterState::JumpBackward]=38;
-        Initialvelocity.y[FighterState::JumpUP]=38;
-
-        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-6;
-        Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-8;
-        Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-10;
-
-        Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-4;
-
         offset[FighterState::Idle]={{-3,-1},{-11,2},{-10,-8},{-3,-16},{3,-17},{-1,-8}};
         offset[FighterState::Crouch]={{-7,-56}};
         offset[FighterState::CrouchDown]={{-8,-21},{-17,-39},{-7,-56}};

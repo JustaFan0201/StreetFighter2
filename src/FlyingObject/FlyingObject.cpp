@@ -37,7 +37,8 @@ namespace Util {
             3.0f
         );
         if (IsCollidedEnemy()==FlyingObjectCollidedState::Enemy) {
-            if(!enemy->GetSpecificState().InvincibleForFlyObj.count(enemy->GetCurrentState())) {
+            if(!enemy->GetSpecificState().InvincibleForFlyObj.count(enemy->GetCurrentState())&&
+                !enemy->GetSpecificState().Invincible.count(enemy->GetCurrentState())) {
                 if(enemy->IsBlocking()) {
                     enemy->GetAttack(FireBallDmg[Strength]/5);
                     enemy->AttackBlock();

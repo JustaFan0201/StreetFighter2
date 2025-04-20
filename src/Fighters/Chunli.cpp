@@ -12,6 +12,7 @@ namespace Util {
         country_position={{-113, 193},0,{1,1}};
         BackgroundInit(29);
         StateInit();
+        LoadCommonVelocities();
         Chunli::LoadAnimations();
         Chunli::LoadOffsetVelocity();
         Chunli::LoadAllBox();
@@ -88,20 +89,6 @@ namespace Util {
         frames[FighterState::CrouchBlock] = {150,150};
     }
     void Chunli::LoadOffsetVelocity() {
-        Initialvelocity.x[FighterState::Forward]=8;
-        Initialvelocity.x[FighterState::Backward]=-8;
-        Initialvelocity.x[FighterState::JumpForward]=10;
-        Initialvelocity.x[FighterState::JumpBackward]=-10;
-        Initialvelocity.y[FighterState::JumpForward]=38;
-        Initialvelocity.y[FighterState::JumpBackward]=38;
-        Initialvelocity.y[FighterState::JumpUP]=38;
-
-        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-6;
-        Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-8;
-        Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-10;
-
-        Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-4;
-
         offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0}};
         offset[FighterState::Crouch]={{-3,-29}};
         offset[FighterState::CrouchDown]={{-15,-11},{-4,-22},{-3,-295}};

@@ -61,8 +61,12 @@ namespace Util {
         virtual void WinStartStateUpload();
         virtual void WinStateUpload();
 
+        virtual void LossStateEnter();
+        virtual void LossStateUpload();
+
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
+        void LoadCommonVelocities();
         virtual void LoadAllBox(){}
         virtual void LoadAttackSound();
         virtual void LoadAttackAndType();
@@ -93,11 +97,12 @@ namespace Util {
         FighterState GetCurrentState() const {return currentState;};
         SpecificStates GetSpecificState(){return SpecificStates;};
 
+        float GetHalfFighterWidth(){return std::abs(ActionNow->GetCustomSize().x) / 2.0f;}
         int GetNewDirection();
         bool GetAnimationIsEnd() const {return ActionNow->IsAnimationEnds();}
         bool GetCharacterIsOnFloor() const {return ActionNow->m_Transform.translation.y==FloorOfCharacter;}
         bool GetCharacterIsInBorder()  {
-            float halfFighterWidth = std::abs(ActionNow->GetCustomSize().x) / 2.0f;
+            float halfFighterWidth = GetHalfFighterWidth();
             float worldX = GetCurrentPosition().x;
             if (worldX - MaxCameraOffsetX > MaxWidth - halfFighterWidth || worldX + MaxCameraOffsetX < -MaxWidth + halfFighterWidth) {
                 return true;
@@ -191,6 +196,7 @@ namespace Util {
         void ResetVelocity(){velocity={0,0};}
         void ChangeState(FighterState newState);
         void BorderDetection(int MaxWidth,glm::vec2 cameraOffset);
+        virtual void SkillDetection();
         void ReSize();
         void UploadStateAndNewXY();
 

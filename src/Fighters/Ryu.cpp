@@ -12,6 +12,7 @@ namespace Util {
         country_position={{14,90},0,{1,1}};
         BackgroundInit(15);
         StateInit();
+        LoadCommonVelocities();
         Ryu::LoadAnimations();
         Ryu::LoadOffsetVelocity();
         Ryu::LoadAllBox();
@@ -61,6 +62,9 @@ namespace Util {
         animations[FighterState::WinStart]=ActionInit(3, "WinStart");
         animations[FighterState::Win]=ActionInit(2, "Win");
 
+        animations[FighterState::TimeOverLoss]=ActionInit(1, "TimeOverLoss");
+        animations[FighterState::DefeatedLoss]=ActionInit(4, "DefeatedLoss");
+
         frames[FighterState::Idle]={100, 150, 200, 150, 100};
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120, 120, 120};
@@ -97,24 +101,13 @@ namespace Util {
 
         frames[FighterState::Special_1]={120,120,120,120};
 
-        frames[FighterState::WinStart]={120,120,120};
-        frames[FighterState::Win]={120,120};
+        frames[FighterState::WinStart]={180,180,180};
+        frames[FighterState::Win]={180};
+
+        frames[FighterState::TimeOverLoss]={180};
+        frames[FighterState::DefeatedLoss]={180,180,180,180};
     }
     void Ryu::LoadOffsetVelocity() {
-        Initialvelocity.x[FighterState::Forward]=8;
-        Initialvelocity.x[FighterState::Backward]=-8;
-        Initialvelocity.x[FighterState::JumpForward]=10;
-        Initialvelocity.x[FighterState::JumpBackward]=-10;
-        Initialvelocity.y[FighterState::JumpForward]=38;
-        Initialvelocity.y[FighterState::JumpBackward]=38;
-        Initialvelocity.y[FighterState::JumpUP]=38;
-
-        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-6;
-        Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-8;
-        Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-10;
-
-        Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-4;
-
         offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0},{0,0}};
         offset[FighterState::Crouch]={{35,-43}};
         offset[FighterState::CrouchDown]={{10,-9},{31,-30}};
@@ -144,6 +137,9 @@ namespace Util {
 
         offset[FighterState::Win]={{5,6},{7,7}};
         offset[FighterState::WinStart]={{8,12},{7,6},{5,7}};
+
+        offset[FighterState::TimeOverLoss]={{8,10}};
+        offset[FighterState::DefeatedLoss]={{10,-74},{16,-85},{17,-85},{20,-86}};
     }
     void Ryu::LoadAllBox() {
 

@@ -43,7 +43,7 @@ add_executable(${PROJECT_NAME}
 
         include/Others/FighterInfo.hpp
         include/Others/Camera.hpp
-        include/Others/Bloodstick.hpp
+        include/Others/UI.hpp
         include/Others/Controller.hpp
 
         src/Fighters/Fighter.cpp
@@ -72,7 +72,7 @@ add_executable(${PROJECT_NAME}
         include/Scenes/BattleScene.hpp
 
         src/Others/Camera.cpp
-        src/Others/Bloodstick.cpp
+        src/Others/UI.cpp
 
         include/Fighters/Fighter.hpp
         include/Fighters/Ken.hpp

@@ -3,7 +3,6 @@
 //
 
 #include "Scenes/BattleScene.hpp"
-
 namespace Util {
     void BattleScene::Init(std::shared_ptr<Core::Context> context) {
         m_Animation = std::make_shared<AnimationSpace>(
@@ -93,10 +92,9 @@ namespace Util {
         player->Upload(context,playerController,camera->GetCameraPos());
         enemy->Upload(context,enemyController,camera->GetCameraPos());
 
-        camera->Upload();
+        camera->Upload(context->GetWindowWidth()/2);
         UpdateFlyingObjects(PlayerFlyingObjects,camera->GetCameraPos());
         UpdateFlyingObjects(EnemyFlyingObjects,camera->GetCameraPos());
-
         if (Input::IsKeyDown(Keycode::RETURN)) {
             SenseEnd = true;
         }

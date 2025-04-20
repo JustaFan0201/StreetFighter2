@@ -12,6 +12,7 @@ namespace Util {
         country_position={{-244, 220},0,{1,1}};
         BackgroundInit(8);
         StateInit();
+        LoadCommonVelocities();
         Zangief::LoadAnimations();
         Zangief::LoadOffsetVelocity();
         Zangief::LoadAllBox();
@@ -88,20 +89,6 @@ namespace Util {
         frames[FighterState::CrouchBlock] = {150,150};
     }
     void Zangief::LoadOffsetVelocity() {
-        Initialvelocity.x[FighterState::Forward]=8;
-        Initialvelocity.x[FighterState::Backward]=-8;
-        Initialvelocity.x[FighterState::JumpForward]=10;
-        Initialvelocity.x[FighterState::JumpBackward]=-10;
-        Initialvelocity.y[FighterState::JumpForward]=38;
-        Initialvelocity.y[FighterState::JumpBackward]=38;
-        Initialvelocity.y[FighterState::JumpUP]=38;
-
-        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-6;
-        Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-8;
-        Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-10;
-
-        Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-4;
-
         offset[FighterState::Idle]={{{0,0},{-17,-1},{-25,-4},{-16,2}}};
         offset[FighterState::Crouch]={{-29,-47}};
         offset[FighterState::CrouchDown]={{-15,-10},{-25,-34},{-29,-47}};

@@ -12,6 +12,7 @@ namespace Util {
         country_position={{28, 168},0,{1,1}};
         BackgroundInit(7);
         StateInit();
+        LoadCommonVelocities();
         Honda::LoadAnimations();
         Honda::LoadOffsetVelocity();
         Honda::LoadAllBox();
@@ -88,20 +89,6 @@ namespace Util {
         frames[FighterState::CrouchBlock] = {150,150};
     }
     void Honda::LoadOffsetVelocity() {
-        Initialvelocity.x[FighterState::Forward]=8;
-        Initialvelocity.x[FighterState::Backward]=-8;
-        Initialvelocity.x[FighterState::JumpForward]=10;
-        Initialvelocity.x[FighterState::JumpBackward]=-10;
-        Initialvelocity.y[FighterState::JumpForward]=38;
-        Initialvelocity.y[FighterState::JumpBackward]=38;
-        Initialvelocity.y[FighterState::JumpUP]=38;
-
-        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-6;
-        Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-8;
-        Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-10;
-
-        Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-4;
-
         offset[FighterState::Idle]={{-3,0},{3,-3},{13,-10},{5,-2}};
         offset[FighterState::Crouch]={{1,-32}};
         offset[FighterState::CrouchDown]={{-5,-12},{3,-23}};
@@ -129,9 +116,9 @@ namespace Util {
     }
     void Honda::LoadAllBox() {
 
-        boxes.pushbox.size[FighterState::Idle]={200,200};
-        boxes.pushbox.offset[FighterState::Idle]={15,0};
-        boxes.pushbox.size[FighterState::Crouch]=boxes.pushbox.size[FighterState::CrouchDown]=boxes.pushbox.size[FighterState::CrouchUp]={200,120};
+        boxes.pushbox.size[FighterState::Idle]={150,200};
+        boxes.pushbox.offset[FighterState::Idle]={5,0};
+        boxes.pushbox.size[FighterState::Crouch]=boxes.pushbox.size[FighterState::CrouchDown]=boxes.pushbox.size[FighterState::CrouchUp]={150,120};
         boxes.pushbox.offset[FighterState::Crouch]=boxes.pushbox.offset[FighterState::CrouchDown]=boxes.pushbox.offset[FighterState::CrouchUp]={15,-43};
 
         boxes.hurtbox.head.size[FighterState::Idle]={{50,50},{50,50},{50,50},{50,50}};

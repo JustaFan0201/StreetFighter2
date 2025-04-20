@@ -55,7 +55,8 @@ namespace Util {
         CrouchBlock,
         WinStart,
         Win,
-        Loss
+        TimeOverLoss,
+        DefeatedLoss
     };
     enum class HitLocation {
         Null=-1,
@@ -182,6 +183,7 @@ namespace Util {
         std::unordered_set<FighterState> IdleStates;
         std::unordered_set<FighterState> BlockStates;
         std::unordered_set<FighterState> InvincibleForFlyObj;
+        std::unordered_set<FighterState> Invincible;
     };
 }
 

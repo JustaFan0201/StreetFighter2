@@ -2,9 +2,9 @@
 // Created by Gs0n on 25-3-10.
 //
 
-#include "Others/Bloodstick.hpp"
+#include "Others/UI.hpp"
 namespace Util {
-    Bloodstick::Bloodstick() {
+    UI::UI() {
         bloodback_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/BloodBack.png");
         ko_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/ko.png");
         bloodfrontP1_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/BloodFront.png");
@@ -18,9 +18,10 @@ namespace Util {
         roundnum_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/1.png");
     }
 
-    void Bloodstick::Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2) {
+    void UI::Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2) {
         RoundStartIsEnd=false;
         start_time=Time::GetElapsedTimeMs();
+        currentState=StartState::Round;
         P1 = p1;
         P2 = p2;
         P1blood = p1->GetHP();
@@ -46,28 +47,41 @@ namespace Util {
         fight_image->SetDrawData({{0, 100}, 0, {1, 1}}, {fight_image->GetScaledSize().x * 4, fight_image->GetScaledSize().y * 4.2}, 10.0f);
     }
 
-    void Bloodstick::RoundStart(int round) {
-        roundnum_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/"+std::to_string(round)+".png");
-        roundnum_image->SetDrawData({{118, 100}, 0, {1, 1}}, {roundnum_image->GetScaledSize().x * 5, roundnum_image->GetScaledSize().y * 5.7}, 10.0f);
-        round_image->SetDrawData({{-30, 100}, 0, {1, 1}}, {round_image->GetScaledSize().x * 3.8, round_image->GetScaledSize().y * 3.8}, 10.0f);
-        if(GetTime()>1000) {
-            roundnum_image->SetVisible(false);
-            round_image->SetVisible(false);
-            fight_image->SetVisible(true);
-            if(GetTime()>2000) {
-                RoundStartIsEnd=true;
-                fight_image->SetVisible(false);
-                start_time=Time::GetElapsedTimeMs();
-            }
-        }
-        else {
+    void UI::RoundStart(int round) {
+        if(currentState==StartState::Round) {
+            roundnum_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/"+std::to_string(round)+".png");
+            roundnum_image->SetDrawData({{118, 100}, 0, {1, 1}}, {roundnum_image->GetScaledSize().x * 5, roundnum_image->GetScaledSize().y * 5.7}, 10.0f);
+            round_image->SetDrawData({{-30, 100}, 0, {1, 1}}, {round_image->GetScaledSize().x * 3.8, round_image->GetScaledSize().y * 3.8}, 10.0f);
+
+            soundeffect=std::make_shared<SFX>(RESOURCE_DIR"/voice/02 Fight Announcer/Round"+std::to_string(round)+".wav");
+            soundeffect->Play(0);
+
             roundnum_image->SetVisible(true);
             round_image->SetVisible(true);
             fight_image->SetVisible(false);
+            currentState=StartState::Fight;
+        }
+        else if(GetTime()>1500&&currentState==StartState::Fight) {
+            soundeffect=std::make_shared<SFX>(RESOURCE_DIR"/voice/02 Fight Announcer/Fight.wav");
+            soundeffect->Play(0);
+
+            roundnum_image->SetVisible(false);
+            round_image->SetVisible(false);
+            fight_image->SetVisible(true);
+            currentState=StartState::FightEnd;
+        }
+        else if(GetTime()>2500&&currentState==StartState::FightEnd) {
+            roundnum_image->SetVisible(false);
+            round_image->SetVisible(false);
+            fight_image->SetVisible(false);
+
+            RoundStartIsEnd=true;
+            start_time=Time::GetElapsedTimeMs();
+            currentState=StartState::WaitForEnd;
         }
     }
 
-    void Bloodstick::Update() {
+    void UI::Update() {
         timer[0] = (99 - static_cast<int>(GetTime()) / 1000 ) / 10 ;
         timer[1] = (99 - static_cast<int>(GetTime()) / 1000 ) % 10 ;
         if(timer[0]<0){timer[0]=0;}
@@ -87,7 +101,7 @@ namespace Util {
         bloodfrontP2_image->SetDrawData({{(227 * (P2blood / 100)) + 51.2 , 276}, 0, {1, 1}}, {bloodfrontP2_image->GetScaledSize().x *3.15 * (P2blood / 100) , bloodfrontP2_image->GetScaledSize().y * 3.15}, 10.0f);
     }
 
-    void Bloodstick::DrawBloodstick() {
+    void UI::DrawBloodstick() {
         AllPictures={timerTens_image,timerUnits_image,bloodfrontP1_image,bloodfrontP2_image,ko_image,bloodback_image,P1name_image,P2name_image};
         for(const auto& i:AllPictures) {
             i->custom_Draw();
@@ -96,7 +110,7 @@ namespace Util {
         if(round_image){round_image->custom_Draw();}
         if(fight_image){fight_image->custom_Draw();}
     }
-    float Bloodstick::GetTime() const {
+    float UI::GetTime() const {
         return static_cast<int>(Time::GetElapsedTimeMs() - start_time);
     }
 

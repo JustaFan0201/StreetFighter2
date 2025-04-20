@@ -8,7 +8,7 @@
 #include "Scene.hpp"
 #include "Others/FighterInfo.hpp"
 #include "Others/Camera.hpp"
-#include "Others/Bloodstick.hpp"
+#include "Others/UI.hpp"
 #include "FlyingObject/FlyingObject.hpp"
 #include "FlyingObject/FireBall.hpp"
 
@@ -20,7 +20,7 @@ namespace Util {
         std::shared_ptr<Controller> playerController=std::make_shared<Controller>(PlayerType::Null);
         std::shared_ptr<Controller> enemyController=std::make_shared<Controller>(PlayerType::Null);
         std::shared_ptr<Camera> camera=std::make_shared<Camera>();
-        std::shared_ptr<Bloodstick> bloodstick=std::make_shared<Bloodstick>();
+        std::shared_ptr<UI> bloodstick=std::make_shared<UI>();
         std::vector<std::shared_ptr<FlyingObect>> PlayerFlyingObjects;
         std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects;
         int round=1;
@@ -33,7 +33,6 @@ namespace Util {
         void Render() override;
         void addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength);
         void UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObect>>& flyingObjects,glm::vec2 cameraOffset);
-
     };
 }
 
