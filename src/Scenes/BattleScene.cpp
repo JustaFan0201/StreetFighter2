@@ -12,7 +12,18 @@ namespace Util {
             true,
             0
         );
-        //設置背景 相機最大可移動範圍
+        m_BGM = enemy->GetBGM();
+        m_BGM->SetVolume(15);
+        m_BGM->Play(-1);
+        //BGM設定
+        round=1;
+        PlayerWinCounter=0;
+        EnemyWinCounter=0;
+        RoundStart(context);
+    }
+    void BattleScene::RoundStart(std::shared_ptr<Core::Context> context) {
+        defeatedType=DefeatedType::Null;
+        lossType=LossType::Null;
         float scaleFactor = context->GetWindowHeight() / m_Animation->GetScaledSize().y;
         camera->Init(player,enemy);
         camera->SetMaxOffsetX((m_Animation->GetScaledSize().x * scaleFactor - context->GetWindowWidth())/2);
@@ -20,29 +31,22 @@ namespace Util {
                     {m_Animation->GetScaledSize().x * scaleFactor, context->GetWindowHeight()},
                     0);
         //背景初始位置
-        m_BGM = enemy->GetBGM();
-        m_BGM->SetVolume(15);
-        m_BGM->Play(-1);
-        //BGM設定
         start_time = Time::GetElapsedTimeMs();
-
         playerController->SetState(ControllerState::Pause);
         enemyController->SetState(ControllerState::Pause);
         playerController->SetPlayerController(PlayerType::Player1);
         enemyController->SetPlayerController(PlayerType::Player2);
         player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left),playerController,camera->GetMaxOffsetX());
         enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right),enemyController,camera->GetMaxOffsetX());
-
         player->SetEntityAdder([this](FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
             this->addEntities(type, sender, strength);
         });
         enemy->SetEntityAdder([this](FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
             this->addEntities(type, sender, strength);
         });
-
         player->SetEnemy(enemy);
         enemy->SetEnemy(player);
-        bloodstick->Init(player, enemy);
+        ui->Init(player, enemy);
     }
     void BattleScene::addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
         std::shared_ptr<FlyingObect> object=nullptr;
@@ -76,16 +80,11 @@ namespace Util {
         }
     }
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {
-        if(!bloodstick->GetRoundStartIsEnd()) {
-            playerController->SetState(ControllerState::Pause);
-            enemyController->SetState(ControllerState::Pause);
-            bloodstick->RoundStart(round);
-        }
-        else{
-            playerController->SetState(ControllerState::Active);
-            enemyController->SetState(ControllerState::Active);
-            bloodstick->Update();
-        }
+        std::cout<<static_cast<int>(ui->GetState())<<std::endl;
+        ControllerState();
+        if(!ui->GetRoundStartIsEnd()) {ui->RoundStart(round);}
+        else{ui->Update();}
+
         playerController->Update(player->GetDirection(),Time::GetElapsedTimeMs());
         enemyController->Update(enemy->GetDirection(),Time::GetElapsedTimeMs());
 
@@ -95,8 +94,122 @@ namespace Util {
         camera->Upload(context->GetWindowWidth()/2);
         UpdateFlyingObjects(PlayerFlyingObjects,camera->GetCameraPos());
         UpdateFlyingObjects(EnemyFlyingObjects,camera->GetCameraPos());
-        if (Input::IsKeyDown(Keycode::RETURN)) {
-            SenseEnd = true;
+
+        if(ui->GetState()==State::WaitForEnd||ui->GetState()==State::TimeOver) {LossJudge();}
+        if(ui->GetState()==State::EndEventLoss) {LossStateForFighter();}
+        if(ui->GetState()==State::EndEventWin) {WinStateForFighter();}
+        if(ui->GetState()==State::End) {EndForRound(context);}
+        if (Input::IsKeyDown(Keycode::RETURN)) {SenseEnd = true;}
+    }
+    void BattleScene::ControllerState() {
+        if(ui->GetState()==State::WaitForEnd) {
+            playerController->SetState(ControllerState::Active);
+            enemyController->SetState(ControllerState::Active);
+        }
+        else {
+            playerController->SetState(ControllerState::Pause);
+            enemyController->SetState(ControllerState::Pause);
+        }
+    }
+    void BattleScene::LossJudge() {
+        if(ui->GetState()==State::TimeOver) {
+            lossType=LossType::TimeOver;
+            if(player->GetHP()==enemy->GetHP()){defeatedType=DefeatedType::Both;}
+            else if(player->GetHP()<enemy->GetHP()){defeatedType=DefeatedType::Player;}
+            else {defeatedType=DefeatedType::Enemy;}
+            ui->ChangeState(State::EndEventLoss);
+        }
+        else if(player->GetHP()<=0||enemy->GetHP()<=0) {
+            lossType=LossType::NoHP;
+            if (player->GetHP()<=0&&enemy->GetHP()<=0) {defeatedType=DefeatedType::Both;}
+            else if(player->GetHP()<=0) {defeatedType=DefeatedType::Player;}
+            else if(enemy->GetHP()<=0) {defeatedType=DefeatedType::Enemy;}
+            ui->ChangeState(State::EndEventLoss);
+        }
+    }
+    void BattleScene::LossStateForFighter() {
+        if(lossType==LossType::NoHP) {
+            switch (defeatedType) {
+                case DefeatedType::Both:
+                    player->ChangeState(FighterState::DefeatedLoss);
+                enemy->ChangeState(FighterState::DefeatedLoss);
+                break;
+                case DefeatedType::Player:
+                    player->ChangeState(FighterState::DefeatedLoss);
+                break;
+                case DefeatedType::Enemy:
+                    enemy->ChangeState(FighterState::DefeatedLoss);
+                break;
+                default:
+                    break;
+            }
+        }
+        start_time = Time::GetElapsedTimeMs();
+        ui->ChangeState(State::EndEventWin);
+    }
+    void BattleScene::WinStateForFighter() {
+        if(GetPassedTime()>=2000) {
+            if(lossType==LossType::TimeOver) {
+                switch (defeatedType) {
+                    case DefeatedType::Both:
+                        player->ChangeState(FighterState::TimeOverLoss);
+                    enemy->ChangeState(FighterState::TimeOverLoss);
+                    break;
+                    case DefeatedType::Player:
+                        player->ChangeState(FighterState::TimeOverLoss);
+                    break;
+                    case DefeatedType::Enemy:
+                        enemy->ChangeState(FighterState::TimeOverLoss);
+                    break;
+                    default:
+                        break;;
+                }
+            }
+            switch (defeatedType) {
+                case DefeatedType::Player:
+                    enemy->ChangeState(FighterState::WinStart);
+                break;
+                case DefeatedType::Enemy:
+                    player->ChangeState(FighterState::WinStart);
+                break;
+                default:
+                    break;
+            }
+            start_time = Time::GetElapsedTimeMs();
+            ui->ChangeState(State::End);
+        }
+    }
+    void BattleScene::EndForRound(std::shared_ptr<Core::Context> context) {
+        if(GetPassedTime()>=4000) {
+            switch (defeatedType) {
+                case DefeatedType::Both:
+                    EnemyWinCounter++;
+                PlayerWinCounter++;
+                break;
+                case DefeatedType::Player:
+                    EnemyWinCounter++;
+                break;
+                case DefeatedType::Enemy:
+                    PlayerWinCounter++;
+                break;
+                default:
+                    break;;
+            }
+            JudgeBattleEnd();
+            round++;
+            RoundStart(context);
+        }
+    }
+    void BattleScene::JudgeBattleEnd() {
+        std::cout<<PlayerWinCounter<<"JudgeBattleEnd"<<EnemyWinCounter<<std::endl;
+        if(PlayerWinCounter==2&&EnemyWinCounter==2) {
+            SenseEnd= true;
+        }
+        else if(PlayerWinCounter==2) {
+            SenseEnd= true;
+        }
+        else if(EnemyWinCounter==2) {
+            SenseEnd= true;
         }
     }
     void BattleScene::Render() {
@@ -106,7 +219,7 @@ namespace Util {
         player->DrawCharacter(camOffset);
         enemy->DrawCharacter(camOffset);
 
-        bloodstick->DrawBloodstick();
+        ui->DrawBloodstick();
 
         for (auto& objectGroup : std::vector{PlayerFlyingObjects, EnemyFlyingObjects}) {
             for (const auto& obj : objectGroup) {

@@ -23,12 +23,15 @@
 #include "Fighters/Honda.hpp"
 
 namespace Util {
-    enum class StartState{
+    enum class State{
         Null,
         Round,
         Fight,
         FightEnd,
         WaitForEnd,
+        TimeOver,
+        EndEventLoss,
+        EndEventWin,
         End
     };
     class UI {
@@ -44,7 +47,7 @@ namespace Util {
         std::shared_ptr<ImageSpace> roundnum_image;
 
         std::shared_ptr<SFX> soundeffect;
-        StartState currentState=StartState::Null;
+        State currentState=State::Null;
         bool RoundStartIsEnd=false;
         float start_time = Time::GetElapsedTimeMs();
 
@@ -68,6 +71,8 @@ namespace Util {
         void DrawBloodstick();
         float GetTime() const;
         bool GetRoundStartIsEnd() const {return RoundStartIsEnd;};
+        State GetState() const {return currentState;};
+        void ChangeState(State state)  {currentState=state;};
     };
 }
 

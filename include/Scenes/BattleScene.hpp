@@ -13,6 +13,17 @@
 #include "FlyingObject/FireBall.hpp"
 
 namespace Util {
+    enum class DefeatedType {
+        Null,
+        Player,
+        Enemy,
+        Both
+    };
+    enum class LossType {
+        Null,
+        NoHP,
+        TimeOver
+    };
     class BattleScene : public Scene{
     private:
         std::shared_ptr<Fighter> player;
@@ -20,10 +31,14 @@ namespace Util {
         std::shared_ptr<Controller> playerController=std::make_shared<Controller>(PlayerType::Null);
         std::shared_ptr<Controller> enemyController=std::make_shared<Controller>(PlayerType::Null);
         std::shared_ptr<Camera> camera=std::make_shared<Camera>();
-        std::shared_ptr<UI> bloodstick=std::make_shared<UI>();
+        std::shared_ptr<UI> ui=std::make_shared<UI>();
         std::vector<std::shared_ptr<FlyingObect>> PlayerFlyingObjects;
         std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects;
         int round=1;
+        int PlayerWinCounter=0;
+        int EnemyWinCounter=0;
+        DefeatedType defeatedType=DefeatedType::Null;
+        LossType lossType=LossType::Null;
     public:
         BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy):
         player(player), enemy(enemy){}
@@ -33,6 +48,14 @@ namespace Util {
         void Render() override;
         void addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength);
         void UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObect>>& flyingObjects,glm::vec2 cameraOffset);
+        void RoundStart(std::shared_ptr<Core::Context> context);
+        float GetPassedTime(){return static_cast<int>(Time::GetElapsedTimeMs() - start_time);}
+        void ControllerState();
+        void LossJudge();
+        void LossStateForFighter();
+        void WinStateForFighter();
+        void EndForRound(std::shared_ptr<Core::Context> context);
+        void JudgeBattleEnd();
     };
 }
 

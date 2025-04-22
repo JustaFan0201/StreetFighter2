@@ -21,13 +21,16 @@ namespace Util {
     void UI::Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2) {
         RoundStartIsEnd=false;
         start_time=Time::GetElapsedTimeMs();
-        currentState=StartState::Round;
+        currentState=State::Round;
         P1 = p1;
         P2 = p2;
         P1blood = p1->GetHP();
         P2blood = p2->GetHP();
         bloodfrontP1_image->SetDrawData({{-((227 * (P1blood / 100)) + 51.2), 276}, 0, {1, 1}}, {bloodfrontP1_image->GetScaledSize().x *3.15 * (P1blood / 100) , bloodfrontP1_image->GetScaledSize().y * 3.15}, 10.0f);
         bloodfrontP2_image->SetDrawData({{(227 * (P2blood / 100)) + 51.2 , 276}, 0, {1, 1}}, {bloodfrontP2_image->GetScaledSize().x *3.15 * (P2blood / 100) , bloodfrontP2_image->GetScaledSize().y * 3.15}, 10.0f);
+
+        timerTens_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/9.png");
+        timerUnits_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/9.png");
         timerTens_image->SetDrawData({{-20 , 220}, 0, {1, 1}}, {timerTens_image->GetScaledSize().x *3.3 , timerTens_image->GetScaledSize().y * 3.3}, 10.0f);
         timerUnits_image->SetDrawData({{20 , 220}, 0, {1, 1}}, {timerUnits_image->GetScaledSize().x *3.3 , timerUnits_image->GetScaledSize().y * 3.3}, 10.0f);
 
@@ -48,7 +51,7 @@ namespace Util {
     }
 
     void UI::RoundStart(int round) {
-        if(currentState==StartState::Round) {
+        if(currentState==State::Round) {
             roundnum_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/"+std::to_string(round)+".png");
             roundnum_image->SetDrawData({{118, 100}, 0, {1, 1}}, {roundnum_image->GetScaledSize().x * 5, roundnum_image->GetScaledSize().y * 5.7}, 10.0f);
             round_image->SetDrawData({{-30, 100}, 0, {1, 1}}, {round_image->GetScaledSize().x * 3.8, round_image->GetScaledSize().y * 3.8}, 10.0f);
@@ -59,33 +62,38 @@ namespace Util {
             roundnum_image->SetVisible(true);
             round_image->SetVisible(true);
             fight_image->SetVisible(false);
-            currentState=StartState::Fight;
+            currentState=State::Fight;
         }
-        else if(GetTime()>1500&&currentState==StartState::Fight) {
+        else if(GetTime()>1500&&currentState==State::Fight) {
             soundeffect=std::make_shared<SFX>(RESOURCE_DIR"/voice/02 Fight Announcer/Fight.wav");
             soundeffect->Play(0);
 
             roundnum_image->SetVisible(false);
             round_image->SetVisible(false);
             fight_image->SetVisible(true);
-            currentState=StartState::FightEnd;
+            currentState=State::FightEnd;
         }
-        else if(GetTime()>2500&&currentState==StartState::FightEnd) {
+        else if(GetTime()>2500&&currentState==State::FightEnd) {
             roundnum_image->SetVisible(false);
             round_image->SetVisible(false);
             fight_image->SetVisible(false);
 
             RoundStartIsEnd=true;
             start_time=Time::GetElapsedTimeMs();
-            currentState=StartState::WaitForEnd;
+            currentState=State::WaitForEnd;
         }
     }
 
     void UI::Update() {
-        timer[0] = (99 - static_cast<int>(GetTime()) / 1000 ) / 10 ;
-        timer[1] = (99 - static_cast<int>(GetTime()) / 1000 ) % 10 ;
-        if(timer[0]<0){timer[0]=0;}
-        if(timer[1]<0){timer[1]=0;}
+        if(currentState==State::WaitForEnd) {
+            timer[0] = (99 - static_cast<int>(GetTime()) / 1000 ) / 10 ;
+            timer[1] = (99 - static_cast<int>(GetTime()) / 1000 ) % 10 ;
+            if(timer[0]<0){timer[0]=0;}
+            if(timer[1]<0){timer[1]=0;}
+            if(timer[0]==0&&timer[1]==0){currentState=State::TimeOver;}
+        }
+        if (Input::IsKeyDown(Keycode::L)) {currentState=State::TimeOver;}
+
         timerTens_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/" + std::to_string(timer[0]) + ".png");
         timerUnits_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/" + std::to_string(timer[1]) + ".png");
 
