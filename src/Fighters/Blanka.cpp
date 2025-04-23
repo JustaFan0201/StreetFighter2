@@ -112,8 +112,8 @@ namespace Util {
         offset[FighterState::HurtHeadL]=offset[FighterState::HurtHeadM]=offset[FighterState::HurtHeadH]={{-65,7},{-98,5},{-125,-15},{-68,-17}};
         offset[FighterState::HurtBodyL]=offset[FighterState::HurtBodyM]=offset[FighterState::HurtBodyH]={{-13,-18},{-31,-26},{-55,-35},{-10,-11}};
 
-        offset[FighterState::BackwardBlock]={{-3,3},{1,5}};
-        offset[FighterState::CrouchBlock]={{35,-44},{16,-38}};
+        offset[FighterState::BackwardBlock]={{-9,-8},{-20,-13}};
+        offset[FighterState::CrouchBlock]={{-14,-65},{-19,-65}};
     }
     void Blanka::LoadAllBox() {
 
@@ -128,11 +128,12 @@ namespace Util {
         boxes.hurtbox.head.offset[FighterState::Idle]={{40,80},{41,80},{35,83}};
         boxes.hurtbox.body.offset[FighterState::Idle]={{-20,37},{-20,36},{-20,41}};
         boxes.hurtbox.leg.offset[FighterState::Idle]={{-44,-60},{-42,-60},{-41,-60}};
+        boxes.hurtbox.head.offset[FighterState::Forward]={{90,50},{90,50},{90,50},{90,50},{90,50},{90,50},{90,50},{90,50}};
         //Crouch
         boxes.hurtbox.head.size[FighterState::Crouch]={{50,50}};
         boxes.hurtbox.body.size[FighterState::Crouch]={{170,50}};
         boxes.hurtbox.leg.size[FighterState::Crouch]={{220,80}};
-        boxes.hurtbox.head.offset[FighterState::Crouch]={{66,18}};
+        boxes.hurtbox.head.offset[FighterState::Crouch]={{80,35}};
         boxes.hurtbox.body.offset[FighterState::Crouch]={{-19,-1}};
         boxes.hurtbox.leg.offset[FighterState::Crouch]={{-30,-64}};
 
@@ -140,80 +141,101 @@ namespace Util {
         boxes.hurtbox.body.size[FighterState::CrouchDown]={{170,80},{170,50}};
         boxes.hurtbox.leg.size[FighterState::CrouchDown]={{220,80},{220,80}};
         boxes.hurtbox.head.offset[FighterState::CrouchDown]={{58,67},{66,18}};
-        boxes.hurtbox.body.offset[FighterState::CrouchDown]={{-22,25},{-19,-1}};
-        boxes.hurtbox.leg.offset[FighterState::CrouchDown]={{-33,-57},{-30,-64}};
+        boxes.hurtbox.body.offset[FighterState::CrouchDown]={{0,25},{-19,-1}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchDown]={{-37,-62},{-41,-71}};
 
         boxes.hurtbox.head.size[FighterState::CrouchUp]={{50,50},{50,50}};
         boxes.hurtbox.body.size[FighterState::CrouchUp]={{170,50},{170,50}};
         boxes.hurtbox.leg.size[FighterState::CrouchUp]={{220,80},{220,80}};
         boxes.hurtbox.head.offset[FighterState::CrouchUp]={{66,18},{58,67}};
-        boxes.hurtbox.body.offset[FighterState::CrouchUp]={{-19,-1},{-22,25}};
+        boxes.hurtbox.body.offset[FighterState::CrouchUp]={{-19,-1},{0,25}};
         boxes.hurtbox.leg.offset[FighterState::CrouchUp]={{-30,-64},{-33,-57}};
         //block
         boxes.hurtbox.head.size[FighterState::CrouchBlock]={{50,50},{50,50}};
         boxes.hurtbox.body.size[FighterState::CrouchBlock]={{150,100},{150,100}};
         boxes.hurtbox.leg.size[FighterState::CrouchBlock]={{180,50},{180,50}};
-        boxes.hurtbox.head.offset[FighterState::CrouchBlock]={{80,10},{58,11}};
-        boxes.hurtbox.body.offset[FighterState::CrouchBlock]={{-42,42},{-42,55}};
-        boxes.hurtbox.leg.offset[FighterState::CrouchBlock]={{30,73},{42,77}};
+        boxes.hurtbox.head.offset[FighterState::CrouchBlock]={{79,10},{69,-1}};
+        boxes.hurtbox.body.offset[FighterState::CrouchBlock]={{-24,28},{-16,37}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchBlock]={{-22,-35},{-21,-34}};
 
-        boxes.hurtbox.head.offset[FighterState::BackwardBlock]={{-19,-63},{7,-61}};
+        boxes.hurtbox.head.offset[FighterState::BackwardBlock]={{33,69},{38,71}};
+        boxes.hurtbox.leg.offset[FighterState::BackwardBlock]={{-24,-63},{-11,-63}};
+
         //hurtbox Crouch Attack
-        boxes.hurtbox.head.size[FighterState::CrouchLP]={{50,50},{50,50},{50,50}};
-        boxes.hurtbox.body.size[FighterState::CrouchLP]={{100,70},{100,70},{100,70}};
-        boxes.hurtbox.leg.size[FighterState::CrouchLP]={{100,70},{100,70},{100,70}};
-        boxes.hurtbox.head.offset[FighterState::CrouchLP]={{29,66},{42,63},{34,64}};
-        boxes.hurtbox.body.offset[FighterState::CrouchLP]={{-9,14},{5,13},{-3,11}};
+        boxes.hurtbox.head.size[FighterState::CrouchLP]={{50,50},{50,50},{50,50},{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchLP]={{150,70},{150,70},{150,70},{150,70},{150,70},{150,70}};
+        boxes.hurtbox.leg.size[FighterState::CrouchLP]={{300,70},{300,70},{300,70},{300,70},{300,70},{300,70}};
+        boxes.hurtbox.head.offset[FighterState::CrouchLP]={{67,28},{112,9},{147,11},{153,6},{111,6},{65,31}};
+        boxes.hurtbox.body.offset[FighterState::CrouchLP]={{-12,13},{20,20},{50,18},{52,20},{12,21},{-25,28}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchLP]={{-43,-48},{20,-45},{39,-48},{35,-52},{10,-48},{-46,-49}};
 
         boxes.hurtbox.head.size[FighterState::CrouchLK]={{50,50},{50,50},{50,50}};
-        boxes.hurtbox.body.size[FighterState::CrouchLK]={{100,70},{100,70},{100,70}};
-        boxes.hurtbox.leg.size[FighterState::CrouchLK]={{120,70},{100,70},{120,70}};
-        boxes.hurtbox.head.offset[FighterState::CrouchLK]={{14,71},{5,71},{12,71}};
-        boxes.hurtbox.body.offset[FighterState::CrouchLK]={{-16,17},{-7,18},{-15,18}};
-        boxes.hurtbox.leg.offset[FighterState::CrouchLK]={{20,-52},{20,-57},{22,-50}};
+        boxes.hurtbox.body.size[FighterState::CrouchLK]={{180,90},{180,100},{180,100}};
+        boxes.hurtbox.leg.size[FighterState::CrouchLK]={{120,90},{200,90},{230,90}};
+        boxes.hurtbox.head.offset[FighterState::CrouchLK]={{84,72},{71,59},{69,74}};
+        boxes.hurtbox.body.offset[FighterState::CrouchLK]={{-6,32},{18,32},{26,42}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchLK]={{-18,-43},{23,-55},{51,-41}};
 
-        boxes.hurtbox.head.size[FighterState::CrouchMP]={{50,50},{50,50},{50,50},{50,50},{50,50}};
-        boxes.hurtbox.body.size[FighterState::CrouchMP]={{100,70},{100,70},{100,70},{100,70},{100,70}};
-        boxes.hurtbox.leg.size[FighterState::CrouchMP]={{100,70},{100,70},{100,70},{100,70},{100,70}};
-        boxes.hurtbox.head.offset[FighterState::CrouchMP]={{38,63},{44,66},{42,69},{43,66},{39,66}};
-        boxes.hurtbox.body.offset[FighterState::CrouchMP]={{1,13},{9,13},{5,19},{4,16},{4,16}};
+        boxes.hurtbox.head.size[FighterState::CrouchMP]={{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchMP]={{150,70},{150,70},{150,70},{150,70},{150,70},{150,70},{150,70},{150,70}};
+        boxes.hurtbox.leg.size[FighterState::CrouchMP]={{100,70},{300,70},{300,70},{300,70},{300,70},{300,70},{300,70},{200,70}};
+        boxes.hurtbox.head.offset[FighterState::CrouchMP]={{82,35},{281,25},{257,46},{275,71},{273,71},{258,48},{288,23},{82,32}};
+        boxes.hurtbox.body.offset[FighterState::CrouchMP]={{-7,29},{206,10},{182,14},{194,14},{202,14},{179,11},{189,11},{-11,23}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchMP]={{-23,-49},{130,-65},{126,-65},{141,-63},{141,-63},{112,-63},{142,-64},{-18,-59}};
 
-        boxes.hurtbox.head.size[FighterState::CrouchMK]={{50,50},{50,50},{50,50},{50,50},{50,50}};
-        boxes.hurtbox.body.size[FighterState::CrouchMK]={{100,70},{100,70},{100,70},{100,70},{100,70}};
-        boxes.hurtbox.leg.size[FighterState::CrouchMK]={{120,70},{150,70},{120,70},{150,70},{120,70}};
-        boxes.hurtbox.head.offset[FighterState::CrouchMK]={{15,71},{-120,59},{-148,43},{-118,58},{11,68}};
-        boxes.hurtbox.body.offset[FighterState::CrouchMK]={{-19,20},{-116,13},{-143,0},{-114,14},{-21,18}};
-        boxes.hurtbox.leg.offset[FighterState::CrouchMK]={{16,-55},{-81,-57},{-80,-58},{-60,-58},{12,-57}};
+        boxes.hurtbox.head.size[FighterState::CrouchMK]=boxes.hurtbox.head.size[FighterState::CrouchLK];
+        boxes.hurtbox.body.size[FighterState::CrouchMK]=boxes.hurtbox.body.size[FighterState::CrouchLK];
+        boxes.hurtbox.leg.size[FighterState::CrouchMK]=boxes.hurtbox.leg.size[FighterState::CrouchLK];
+        boxes.hurtbox.head.offset[FighterState::CrouchMK]=boxes.hurtbox.head.offset[FighterState::CrouchLK];
+        boxes.hurtbox.body.offset[FighterState::CrouchMK]=boxes.hurtbox.body.offset[FighterState::CrouchLK];
+        boxes.hurtbox.leg.offset[FighterState::CrouchMK]=boxes.hurtbox.leg.offset[FighterState::CrouchLK];
 
-        boxes.hurtbox.head.size[FighterState::CrouchHP]={{50,50},{50,50},{50,50},{50,50},{50,50}};
-        boxes.hurtbox.body.size[FighterState::CrouchHP]={{100,70},{100,100},{100,100},{100,100},{100,50}};
-        boxes.hurtbox.leg.size[FighterState::CrouchHP]={{100,70},{100,125},{100,125},{100,125},{100,70}};
-        boxes.hurtbox.head.offset[FighterState::CrouchHP]={{13,86},{30,143},{46,167},{32,143},{16,86}};
-        boxes.hurtbox.body.offset[FighterState::CrouchHP]={{-22,32},{10,78},{58,92},{11,74},{-17,25}};
-        boxes.hurtbox.leg.offset[FighterState::CrouchHP]={{3,-44},{17,-30},{38,-24},{14,-33},{14,-48}};
+        boxes.hurtbox.head.size[FighterState::CrouchHP]={{50,50},{50,50},{50,50},{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchHP]={{140,70},{200,70},{200,70},{200,70},{200,70},{140,70}};
+        boxes.hurtbox.leg.size[FighterState::CrouchHP]={{180,80},{200,80},{200,80},{200,80},{200,80},{180,80}};
+        boxes.hurtbox.head.offset[FighterState::CrouchHP]={{98,25},{105,32},{207,55},{207,55},{104,30},{87,27}};
+        boxes.hurtbox.body.offset[FighterState::CrouchHP]={{9,25},{36,14},{134,36},{139,30},{36,12},{-12,25}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchHP]={{-9,-36},{-24,-46},{41,-28},{43,-28},{-24,-45},{-24,-39}};
 
-        boxes.hurtbox.head.size[FighterState::CrouchHK]={{50,50},{50,50},{50,50},{50,50},{50,50}};
-        boxes.hurtbox.body.size[FighterState::CrouchHK]={{100,70},{100,70},{100,70},{100,70},{100,70}};
-        boxes.hurtbox.leg.size[FighterState::CrouchHK]={{100,50},{100,50},{120,50},{120,50},{120,50}};
-        boxes.hurtbox.head.offset[FighterState::CrouchHK]={{8,66},{5,66},{-26,66},{-66,66},{-39,69}};
-        boxes.hurtbox.body.offset[FighterState::CrouchHK]={{-23,9},{-23,15},{-11,15},{-36,17},{-55,22}};
-        boxes.hurtbox.leg.offset[FighterState::CrouchHK]={{-9,-46},{0,-48},{16,-48},{-64,-53},{-53,-41}};
+        boxes.hurtbox.head.size[FighterState::CrouchHK]={{50,50},{50,50},{50,50},{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::CrouchHK]={{120,70},{140,70},{150,70},{150,70},{140,70},{120,70}};
+        boxes.hurtbox.leg.size[FighterState::CrouchHK]={{180,90},{200,90},{200,90},{200,90},{200,90},{180,90}};
+        boxes.hurtbox.head.offset[FighterState::CrouchHK]={{-59,69},{-18,55},{-23,34},{-24,33},{-31,54},{-42,67}};
+        boxes.hurtbox.body.offset[FighterState::CrouchHK]={{31,18},{70,14},{77,17},{78,17},{56,19},{35,20}};
+        boxes.hurtbox.leg.offset[FighterState::CrouchHK]={{23,-59},{80,-66},{89,-64},{89,-64},{64,-59},{46,-64}};
         //hurtbox Stand Attack
-        boxes.hurtbox.head.offset[FighterState::HP]={{49,111},{74,111},{65,114},{49,127},{50,113}};
-        boxes.hurtbox.body.offset[FighterState::HP]={{23,51},{47,48},{57,53},{52,56},{11,49},{19,46}};
-        boxes.hurtbox.leg.offset[FighterState::HP]={{8,-63},{23,-66},{34,-68},{21,-65},{-3,-70},{5,-62}};
+        boxes.hurtbox.body.size[FighterState::LP]={{140,80},{180,80},{180,80},{180,80},{180,80},{140,80}};
+        boxes.hurtbox.leg.size[FighterState::LP]={{240,125},{240,125},{240,125},{240,125},{240,125},{240,125}};
+        boxes.hurtbox.head.offset[FighterState::LP]={{43,90},{55,104},{76,96},{76,96},{59,104},{49,95}};
+        boxes.hurtbox.body.offset[FighterState::LP]={{-31,39},{-14,47},{-11,46},{-9,46},{-12,46},{-21,45}};
+        boxes.hurtbox.leg.offset[FighterState::LP]={{-9,-60},{4,-61},{16,-65},{12,-68},{6,-69},{-6,-64}};
 
-        boxes.hurtbox.head.offset[FighterState::LK]={{8,115},{58,114},{80,113},{57,113}};
-        boxes.hurtbox.body.offset[FighterState::LK]={{-9,44},{26,43},{66,45},{29,46}};
-        boxes.hurtbox.leg.offset[FighterState::LK]={{-17,-66},{54,-49},{74,-58},{56,-57}};
+        boxes.hurtbox.body.size[FighterState::MP]={{140,80},{180,80},{180,80},{180,80}};
+        boxes.hurtbox.leg.size[FighterState::MP]={{200,125},{220,125},{220,125},{220,125}};
+        boxes.hurtbox.head.offset[FighterState::MP]={{54,61},{53,58},{53,48},{86,26}};
+        boxes.hurtbox.body.offset[FighterState::MP]={{-9,8},{-2,3},{-9,-9},{5,-14}};
+        boxes.hurtbox.leg.offset[FighterState::MP]={{-9,-122},{4,-125},{17,-123},{20,-121}};
 
-        boxes.hurtbox.head.offset[FighterState::MK]={{11,111},{-53,110},{-152,106},{-55,111},{15,112}};
-        boxes.hurtbox.body.offset[FighterState::MK]={{-11,41},{-50,48},{-120,50},{-52,51},{-6,45}};
-        boxes.hurtbox.leg.offset[FighterState::MK]={{-16,-68},{-46,-58},{-62,-59},{-60,-58},{-16,-61}};
+        boxes.hurtbox.body.size[FighterState::HP]={{140,80},{140,80},{140,80},{140,80},{140,80},{140,80}};
+        boxes.hurtbox.leg.size[FighterState::HP]={{200,125},{220,125},{220,125},{220,125},{220,125},{200,125}};
+        boxes.hurtbox.head.offset[FighterState::HP]={{31,88},{36,96},{38,111},{38,111},{35,100},{30,88}};
+        boxes.hurtbox.body.offset[FighterState::HP]={{-34,37},{-32,35},{-32,47},{-32,47},{-31,44},{-32,37}};
+        boxes.hurtbox.leg.offset[FighterState::HP]={{-24,-69},{-7,-66},{-2,-61},{-6,-61},{1,-62},{-12,-63}};
 
-        boxes.hurtbox.head.offset[FighterState::HK]={{-65,51},{-95,52},{-113,63},{-112,75},{-101,88}};
-        boxes.hurtbox.body.offset[FighterState::HK]={{25,37},{-18,31},{-41,30},{-54,39},{-56,35}};
-        boxes.hurtbox.leg.offset[FighterState::HK]={{59,-56},{44,-55},{24,-52},{17,-53},{-4,-62}};
+        boxes.hurtbox.head.offset[FighterState::LK]={{23,95},{12,93},{-1,80},{-1,80},{10,83},{17,92}};
+        boxes.hurtbox.body.offset[FighterState::LK]={{-15,30},{-26,24},{-38,17},{-38,17},{-21,16},{-15,25}};
+        boxes.hurtbox.leg.offset[FighterState::LK]={{-11,-70},{-10,-74},{-19,-81},{-19,-81},{-15,-77},{-27,-80}};
+
+        boxes.hurtbox.leg.size[FighterState::MK]={{160,125},{200,125},{160,125},{160,125},{200,125},{160,125}};
+        boxes.hurtbox.head.offset[FighterState::MK]={{78,76},{53,77},{80,75},{83,73},{64,70},{82,70}};
+        boxes.hurtbox.body.offset[FighterState::MK]={{7,42},{-4,37},{27,34},{28,34},{2,33},{13,36}};
+        boxes.hurtbox.leg.offset[FighterState::MK]={{37,-56},{10,-45},{41,-55},{41,-55},{14,-45},{22,-56}};
+
+        boxes.hurtbox.body.size[FighterState::HK]={{120,80},{120,80},{120,80},{120,80},{120,80},{120,80},{120,80}};
+        boxes.hurtbox.leg.size[FighterState::HK]={{120,125},{120,125},{120,125},{120,125},{120,125},{120,125},{120,125}};
+        boxes.hurtbox.head.offset[FighterState::HK]={{-51,37},{-186,-11},{-89,8},{-71,25},{17,32},{93,33},{11,65}};
+        boxes.hurtbox.body.offset[FighterState::HK]={{-63,38},{-63,38},{-63,38},{-63,38},{-63,38},{-63,38},{-63,38}};
+        boxes.hurtbox.leg.offset[FighterState::HK]={{-55,-59},{-55,-59},{-55,-59},{-55,-59},{-55,-59},{-55,-59},{-55,-59}};
         //hitbox Crouch Attack
         boxes.hitbox.size[FighterState::CrouchLP]={100,50};
         boxes.hitbox.offset[FighterState::CrouchLP]={{-1,-1},{133,36},{-1,-1}};
