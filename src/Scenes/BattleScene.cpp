@@ -19,6 +19,7 @@ namespace Util {
         round=1;
         PlayerWinCounter=0;
         EnemyWinCounter=0;
+        ui->JudgeWinCount(PlayerWinCounter,EnemyWinCounter);
         RoundStart(context);
     }
     void BattleScene::RoundStart(std::shared_ptr<Core::Context> context) {
@@ -80,7 +81,6 @@ namespace Util {
         }
     }
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {
-        std::cout<<static_cast<int>(ui->GetState())<<std::endl;
         ControllerState();
         if(!ui->GetRoundStartIsEnd()) {ui->RoundStart(round);}
         else{ui->Update();}
@@ -132,13 +132,17 @@ namespace Util {
             switch (defeatedType) {
                 case DefeatedType::Both:
                     player->ChangeState(FighterState::DefeatedLoss);
-                enemy->ChangeState(FighterState::DefeatedLoss);
+                    enemy->ChangeState(FighterState::DefeatedLoss);
+                    PlayerWinCounter++;
+                    EnemyWinCounter++;
                 break;
                 case DefeatedType::Player:
                     player->ChangeState(FighterState::DefeatedLoss);
+                    EnemyWinCounter++;
                 break;
                 case DefeatedType::Enemy:
                     enemy->ChangeState(FighterState::DefeatedLoss);
+                    PlayerWinCounter++;
                 break;
                 default:
                     break;
@@ -176,21 +180,18 @@ namespace Util {
                     break;
             }
             start_time = Time::GetElapsedTimeMs();
+            ui->JudgeWinCount(PlayerWinCounter,EnemyWinCounter);
             ui->ChangeState(State::End);
         }
     }
     void BattleScene::EndForRound(std::shared_ptr<Core::Context> context) {
-        if(GetPassedTime()>=4000) {
+        if(GetPassedTime()>=3000) {
             switch (defeatedType) {
                 case DefeatedType::Both:
-                    EnemyWinCounter++;
-                PlayerWinCounter++;
                 break;
                 case DefeatedType::Player:
-                    EnemyWinCounter++;
                 break;
                 case DefeatedType::Enemy:
-                    PlayerWinCounter++;
                 break;
                 default:
                     break;;
@@ -219,8 +220,7 @@ namespace Util {
         player->DrawCharacter(camOffset);
         enemy->DrawCharacter(camOffset);
 
-        ui->DrawBloodstick();
-
+        ui->DrawUI();
         for (auto& objectGroup : std::vector{PlayerFlyingObjects, EnemyFlyingObjects}) {
             for (const auto& obj : objectGroup) {
                 obj->Draw(camOffset);

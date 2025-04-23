@@ -16,9 +16,49 @@ namespace Util {
         fight_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/Fight.png");
         round_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/Round.png");
         roundnum_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/1.png");
+        PlayerWinCountImage = {
+            std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/WinCount.png"),
+            std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/WinCount.png")
+        };
+        EnemyWinCountImage = {
+            std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/WinCount.png"),
+            std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/WinCount.png")
+        };
     }
-
+    void UI::JudgeWinCount(int PlayerWinCounter,int EnemyWinCounter) {
+        this->PlayerWinCounter=PlayerWinCounter;
+        this->EnemyWinCounter=EnemyWinCounter;
+        if(PlayerWinCounter==1) {
+            PlayerWinCountImage[0]->SetVisible(true);
+            PlayerWinCountImage[1]->SetVisible(false);
+        }
+        else if(PlayerWinCounter==2) {
+            PlayerWinCountImage[0]->SetVisible(true);
+            PlayerWinCountImage[1]->SetVisible(true);
+        }
+        else {
+            PlayerWinCountImage[0]->SetVisible(false);
+            PlayerWinCountImage[1]->SetVisible(false);
+        }
+        if(EnemyWinCounter==1) {
+            EnemyWinCountImage[0]->SetVisible(true);
+            EnemyWinCountImage[1]->SetVisible(false);
+        }
+        else if(PlayerWinCounter==2) {
+            EnemyWinCountImage[0]->SetVisible(true);
+            EnemyWinCountImage[1]->SetVisible(true);
+        }
+        else {
+            EnemyWinCountImage[0]->SetVisible(false);
+            EnemyWinCountImage[1]->SetVisible(false);
+        }
+    }
     void UI::Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2) {
+        PlayerWinCountImage[0]->SetDrawData({{-595,275},0,{1, 1}},{PlayerWinCountImage[0]->GetScaledSize()*glm::vec2(3,3)},10.0f);
+        PlayerWinCountImage[1]->SetDrawData({{-540,275},0,{1, 1}},{PlayerWinCountImage[1]->GetScaledSize()*glm::vec2(3,3)},10.0f);
+        EnemyWinCountImage[0]->SetDrawData({{595,275},0,{1, 1}},{EnemyWinCountImage[0]->GetScaledSize()*glm::vec2(3,3)},10.0f);
+        EnemyWinCountImage[1]->SetDrawData({{540,275},0,{1, 1}},{EnemyWinCountImage[1]->GetScaledSize()*glm::vec2(3,3)},10.0f);
+
         RoundStartIsEnd=false;
         start_time=Time::GetElapsedTimeMs();
         currentState=State::Round;
@@ -109,15 +149,20 @@ namespace Util {
         bloodfrontP2_image->SetDrawData({{(227 * (P2blood / 100)) + 51.2 , 276}, 0, {1, 1}}, {bloodfrontP2_image->GetScaledSize().x *3.15 * (P2blood / 100) , bloodfrontP2_image->GetScaledSize().y * 3.15}, 10.0f);
     }
 
-    void UI::DrawBloodstick() {
-        AllPictures={timerTens_image,timerUnits_image,bloodfrontP1_image,bloodfrontP2_image,ko_image,bloodback_image,P1name_image,P2name_image};
+    void UI::DrawUI() {
+        AllPictures={timerTens_image,timerUnits_image,
+            bloodfrontP1_image,bloodfrontP2_image,
+            ko_image,bloodback_image,fight_image,
+            P1name_image,P2name_image,
+            roundnum_image,round_image,
+            PlayerWinCountImage[0],EnemyWinCountImage[0],
+            PlayerWinCountImage[1],EnemyWinCountImage[1]
+        };
         for(const auto& i:AllPictures) {
             i->custom_Draw();
         }
-        if(roundnum_image){roundnum_image->custom_Draw();}
-        if(round_image){round_image->custom_Draw();}
-        if(fight_image){fight_image->custom_Draw();}
     }
+
     float UI::GetTime() const {
         return static_cast<int>(Time::GetElapsedTimeMs() - start_time);
     }

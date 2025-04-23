@@ -45,6 +45,8 @@ namespace Util {
         std::shared_ptr<ImageSpace> fight_image;
         std::shared_ptr<ImageSpace> round_image;
         std::shared_ptr<ImageSpace> roundnum_image;
+        std::vector<std::shared_ptr<ImageSpace>> PlayerWinCountImage,EnemyWinCountImage;
+        int PlayerWinCounter=0,EnemyWinCounter=0;
 
         std::shared_ptr<SFX> soundeffect;
         State currentState=State::Null;
@@ -68,7 +70,8 @@ namespace Util {
         void Init(std::shared_ptr<Fighter> p1, std::shared_ptr<Fighter> p2);
         void RoundStart(int round);
         void Update();
-        void DrawBloodstick();
+        void DrawUI();
+        void JudgeWinCount(int PlayerWinCounter,int EnemyWinCounter);
         float GetTime() const;
         bool GetRoundStartIsEnd() const {return RoundStartIsEnd;};
         State GetState() const {return currentState;};
