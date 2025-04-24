@@ -237,30 +237,30 @@ namespace Util {
         boxes.hurtbox.body.offset[FighterState::HK]={{-63,38},{-63,38},{-63,38},{-63,38},{-63,38},{-63,38},{-63,38}};
         boxes.hurtbox.leg.offset[FighterState::HK]={{-55,-59},{-55,-59},{-55,-59},{-55,-59},{-55,-59},{-55,-59},{-55,-59}};
         //hitbox Crouch Attack
-        boxes.hitbox.size[FighterState::CrouchLP]={100,50};
-        boxes.hitbox.offset[FighterState::CrouchLP]={{-1,-1},{133,36},{-1,-1}};
-        boxes.hitbox.size[FighterState::CrouchMP]={140,50};
-        boxes.hitbox.offset[FighterState::CrouchMP]={{-1,-1},{-1,-1},{121,44},{-1,-1},{-1,-1}};
-        boxes.hitbox.size[FighterState::CrouchHP]={50,100};
-        boxes.hitbox.offset[FighterState::CrouchHP]={{-1,-1},{-1,-1},{81,205},{-1,-1},{-1,-1}};
-        boxes.hitbox.size[FighterState::CrouchLK]={150,60};
-        boxes.hitbox.offset[FighterState::CrouchLK]={{-1,-1},{141,-63},{-1,-1}};
-        boxes.hitbox.size[FighterState::CrouchMK]={150,80};
-        boxes.hitbox.offset[FighterState::CrouchMK]={{-1,-1},{-1,-1},{60,-61},{-1,-1},{-1,-1}};
-        boxes.hitbox.size[FighterState::CrouchHK]={150,80};
-        boxes.hitbox.offset[FighterState::CrouchHK]={{-1,-1},{130,-49},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::CrouchLP]={160,40};
+        boxes.hitbox.offset[FighterState::CrouchLP]={{-1,-1},{216,4},{-1,-1},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::CrouchMP]={150,70};
+        boxes.hitbox.offset[FighterState::CrouchMP]={{-1,-1},{-1,-1},{310,75},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::CrouchHP]={140,70};
+        boxes.hitbox.offset[FighterState::CrouchHP]={{-1,-1},{-1,-1},{305,125},{-1,-1},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::CrouchLK]={212,45};
+        boxes.hitbox.offset[FighterState::CrouchLK]={{-1,-1},{-1,-1},{230,-35}};
+        boxes.hitbox.size[FighterState::CrouchMK]=boxes.hitbox.size[FighterState::CrouchLK];
+        boxes.hitbox.offset[FighterState::CrouchMK]=boxes.hitbox.offset[FighterState::CrouchLK];
+        boxes.hitbox.size[FighterState::CrouchHK]={220,70};
+        boxes.hitbox.offset[FighterState::CrouchHK]={{-1,-1},{-1,-1},{268,-80},{-1,-1},{-1,-1},{-1,-1}};
         //hitbox Stand Attack
-        boxes.hitbox.size[FighterState::LP]={100,50};
-        boxes.hitbox.offset[FighterState::LP]={{-1,-1},{110,78},{-1,-1}};
-        boxes.hitbox.size[FighterState::MP]={140,50};
-        boxes.hitbox.offset[FighterState::MP]={{-1,-1},{-1,-1},{125,79},{-1,-1},{-1,-1}};
-        boxes.hitbox.size[FighterState::HP]={50,100};
-        boxes.hitbox.offset[FighterState::HP]={{-1,-1},{-1,-1},{-1,-1},{130,142},{-1,-1},{-1,-1}};
-        boxes.hitbox.size[FighterState::LK]={150,80};
-        boxes.hitbox.offset[FighterState::LK]={{-1,-1},{-1,-1},{150,-20},{-1,-1}};
-        boxes.hitbox.size[FighterState::MK]={100,100};
-        boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{56,99},{-1,-1},{-1,-1}};
-        boxes.hitbox.size[FighterState::HK]={120,100};
-        boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{152,102},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::LP]={180,50};
+        boxes.hitbox.offset[FighterState::LP]={{-1,-1},{168,61},{-1,-1},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::MP]={160,47};
+        boxes.hitbox.offset[FighterState::MP]={{-1,-1},{-1,-1},{171,-21},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::HP]={160,80};
+        boxes.hitbox.offset[FighterState::HP]={{-1,-1},{142,60},{-1,-1},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::LK]={180,80};
+        boxes.hitbox.offset[FighterState::LK]={{-1,-1},{-1,-1},{185,18},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::MK]={160,60};
+        boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{185,93},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::HK]={180,140};
+        boxes.hitbox.offset[FighterState::HK]={{-1,-1},{134,36},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1}};
     }
 }

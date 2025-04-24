@@ -202,7 +202,7 @@ namespace Util {
         }
     }
     void BattleScene::JudgeBattleEnd() {
-        std::cout<<PlayerWinCounter<<"JudgeBattleEnd"<<EnemyWinCounter<<std::endl;
+        //std::cout<<PlayerWinCounter<<"JudgeBattleEnd"<<EnemyWinCounter<<std::endl;
         if(PlayerWinCounter==2&&EnemyWinCounter==2) {
             SenseEnd= true;
         }
