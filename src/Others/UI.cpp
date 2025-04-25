@@ -44,7 +44,7 @@ namespace Util {
             EnemyWinCountImage[0]->SetVisible(true);
             EnemyWinCountImage[1]->SetVisible(false);
         }
-        else if(PlayerWinCounter==2) {
+        else if(EnemyWinCounter==2) {
             EnemyWinCountImage[0]->SetVisible(true);
             EnemyWinCountImage[1]->SetVisible(true);
         }

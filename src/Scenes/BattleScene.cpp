@@ -133,16 +133,12 @@ namespace Util {
                 case DefeatedType::Both:
                     player->ChangeState(FighterState::DefeatedLoss);
                     enemy->ChangeState(FighterState::DefeatedLoss);
-                    PlayerWinCounter++;
-                    EnemyWinCounter++;
                 break;
                 case DefeatedType::Player:
                     player->ChangeState(FighterState::DefeatedLoss);
-                    EnemyWinCounter++;
                 break;
                 case DefeatedType::Enemy:
                     enemy->ChangeState(FighterState::DefeatedLoss);
-                    PlayerWinCounter++;
                 break;
                 default:
                     break;
@@ -157,7 +153,7 @@ namespace Util {
                 switch (defeatedType) {
                     case DefeatedType::Both:
                         player->ChangeState(FighterState::TimeOverLoss);
-                    enemy->ChangeState(FighterState::TimeOverLoss);
+                        enemy->ChangeState(FighterState::TimeOverLoss);
                     break;
                     case DefeatedType::Player:
                         player->ChangeState(FighterState::TimeOverLoss);
@@ -170,11 +166,17 @@ namespace Util {
                 }
             }
             switch (defeatedType) {
+                case DefeatedType::Both:
+                    PlayerWinCounter++;
+                    EnemyWinCounter++;
+                break;
                 case DefeatedType::Player:
                     enemy->ChangeState(FighterState::WinStart);
+                    EnemyWinCounter++;
                 break;
                 case DefeatedType::Enemy:
                     player->ChangeState(FighterState::WinStart);
+                    PlayerWinCounter++;
                 break;
                 default:
                     break;
