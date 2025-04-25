@@ -182,12 +182,12 @@ namespace Util {
         StateUpload[FighterState::CrouchDown] = [this] {CrouchDownUpload(); };
         StateUpload[FighterState::CrouchUp] = [this] {CrouchUpUpload(); };
 
-        StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::MP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::HP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::LK] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::MK] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::HK] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::LP] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
+        StateUpload[FighterState::MP] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
+        StateUpload[FighterState::HP] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
+        StateUpload[FighterState::LK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
+        StateUpload[FighterState::MK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
+        StateUpload[FighterState::HK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
 
         StateUpload[FighterState::CrouchLP] = [this] {AttackStateUpload(); };
         StateUpload[FighterState::CrouchMP] = [this] {AttackStateUpload();};
@@ -203,7 +203,7 @@ namespace Util {
         StateUpload[FighterState::HurtBodyM] = [this] { HurtStateUpload(); };
         StateUpload[FighterState::HurtBodyH] = [this] { HurtStateUpload(); };
 
-        StateUpload[FighterState::BackwardBlock] = [this] { BlockStateUpload(); };
+        StateUpload[FighterState::BackwardBlock] = [this] {BlockStateUpload(); };
         StateUpload[FighterState::CrouchBlock] = [this] { BlockStateUpload(); };
 
         StateUpload[FighterState::WinStart] = [this] { WinStartStateUpload(); };
@@ -335,9 +335,9 @@ namespace Util {
         auto currentEnter = StateUpload.find(currentState);
         currentEnter->second();
 
-        glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
+        /*glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
             ActionNow->GetTransform().translation.y+velocity.y};
-        ActionNow->SetTransform({position,0,{direction,1}});
+        ActionNow->SetTransform({position,0,{direction,1}});*/
     }
 
     void Fighter::HitboxIsCollidedEnemy() {
@@ -460,10 +460,10 @@ namespace Util {
 
     void Fighter::PostionTester() {
         if (Input::IsKeyDown(Keycode::NUM_1)) {
-            ChangeState(FighterState::WinStart);
+            ChangeState(FighterState::BackwardBlock);
         }
         if (Input::IsKeyDown(Keycode::NUM_2)) {
-            ChangeState(FighterState::Win);
+            ChangeState(FighterState::CrouchBlock);
         }
         if (Input::IsKeyDown(Keycode::NUM_3)) {
             ChangeState(FighterState::DefeatedLoss);
