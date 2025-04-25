@@ -4,7 +4,7 @@
 
 #include "Fighters/Ryu.hpp"
 namespace Util {
-    Ryu::Ryu(): Fighter("Ryu",{0,0}) {
+    Ryu::Ryu(): Fighter("Ryu") {
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/japan.png");
@@ -352,9 +352,9 @@ namespace Util {
         boxes.hitbox.size[FighterState::Special_3]={250,80};
         boxes.hitbox.offset[FighterState::Special_3]={{-1,-1},{-1,-1},{-1,-1},{76,29},{-1,-1},{-155,27},{-1,-1},{76,29},{-1,-1},{-1,-1}};
 
-        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::LK]=10;
-        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::MK]=15;
-        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::HK]=22;
+        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::LK]=8;
+        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::MK]=12;
+        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::HK]=15;
 
         SpecialMoveData.attackdata[FighterState::Special_3].HitStrength[Keys::LK]=HitStrength::L;
         SpecialMoveData.attackdata[FighterState::Special_3].HitStrength[Keys::MK]=HitStrength::M;
@@ -391,8 +391,7 @@ namespace Util {
         soundeffect[currentState]->Play();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity.x=Initialvelocity.x[currentState];
-        velocity.y=Initialvelocity.y[currentState];
+        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Ryu::ShoryukenStateUpload() {
@@ -409,7 +408,7 @@ namespace Util {
         soundeffect[currentState]->Play();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity.x=Initialvelocity.x[currentState];
+        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Ryu::TatsumakiSenpuStateUpload() {

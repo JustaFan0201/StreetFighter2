@@ -45,7 +45,7 @@ namespace Util {
         std::string Name;
         FlyingObjectType Type;
         int direction;
-        velocity velocity;
+        glm::vec2 velocity;
         Keys Strength=Keys::Null;
 
         FlyingObjectState currentState;

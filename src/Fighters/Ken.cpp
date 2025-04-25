@@ -4,7 +4,7 @@
 
 #include "Fighters/Ken.hpp"
 namespace Util {
-    Ken::Ken(): Fighter("Ken",{0,0}) {
+    Ken::Ken(): Fighter("Ken") {
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/usa.png");
@@ -137,7 +137,6 @@ namespace Util {
         offset[FighterState::DefeatedLoss]={{10,-74},{16,-85},{17,-85},{20,-86}};
     }
     void Ken::LoadAllBox() {
-
         boxes.pushbox.size[FighterState::Idle]={100,200};
         boxes.pushbox.offset[FighterState::Idle]={15,0};
         boxes.pushbox.size[FighterState::Crouch]=boxes.pushbox.size[FighterState::CrouchDown]=boxes.pushbox.size[FighterState::CrouchUp]={100,120};
@@ -342,9 +341,9 @@ namespace Util {
         boxes.hitbox.size[FighterState::Special_3]={250,80};
         boxes.hitbox.offset[FighterState::Special_3]={{-1,-1},{-1,-1},{-1,-1},{76,29},{-1,-1},{-155,27},{-1,-1},{76,29},{-1,-1},{-1,-1}};
 
-        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::LK]=10;
-        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::MK]=15;
-        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::HK]=22;
+        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::LK]=8;
+        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::MK]=12;
+        SpecialMoveData.attackdata[FighterState::Special_3].attack[Keys::HK]=15;
 
         SpecialMoveData.attackdata[FighterState::Special_3].HitStrength[Keys::LK]=HitStrength::L;
         SpecialMoveData.attackdata[FighterState::Special_3].HitStrength[Keys::MK]=HitStrength::M;
@@ -398,7 +397,7 @@ namespace Util {
         soundeffect[currentState]->Play();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity.x=Initialvelocity.x[currentState];
+        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Ken::TatsumakiSenpuStateUpload() {

@@ -4,7 +4,7 @@
 
 #include "Fighters/Dhalsim.hpp"
 namespace Util {
-    Dhalsim::Dhalsim(): Fighter("Dhalsim",{0,0}) {
+    Dhalsim::Dhalsim(): Fighter("Dhalsim") {
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/Dhalsim_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/Dhalsim_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/india.png");

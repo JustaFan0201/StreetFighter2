@@ -10,10 +10,6 @@ namespace Util {
         Left  = 1,
         Right = -1
     };
-    struct velocity {
-        float x=0;
-        float y=0;
-    };
     enum class FighterState {
         Idle,
         Forward,
@@ -163,8 +159,8 @@ namespace Util {
     };
     struct SpecialSkillAnimation {
         std::unordered_map<Keys, std::vector<int>> frames;
-        std::unordered_map<Keys, velocity> velocitys;
-        std::unordered_map<Keys, velocity> initialvelocitys;
+        std::unordered_map<Keys, glm::vec2> velocitys;
+        std::unordered_map<Keys, glm::vec2> initialvelocitys;
     };
     struct AttackData {
         std::unordered_map<Keys, HitStrength> HitStrength;

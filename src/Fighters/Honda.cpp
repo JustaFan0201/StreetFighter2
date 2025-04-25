@@ -4,7 +4,7 @@
 
 #include "Fighters/Honda.hpp"
 namespace Util {
-    Honda::Honda():Fighter("Honda",{0,0}){
+    Honda::Honda():Fighter("Honda"){
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/japan.png");
@@ -18,6 +18,7 @@ namespace Util {
         Honda::LoadAllBox();
         Fighter::LoadAttackSound();
         Fighter::LoadAttackAndType();
+        LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -55,6 +56,12 @@ namespace Util {
         animations[FighterState::CrouchMK] = animations[FighterState::CrouchLK];
         animations[FighterState::CrouchHK] = ActionInit(5, "CrouchHK");
 
+        animations[FighterState::WinStart]=ActionInit(1, "WinStart");
+        animations[FighterState::Win]=ActionInit(2, "Win");
+
+        animations[FighterState::TimeOverLoss]=ActionInit(1, "TimeOverLoss");
+        animations[FighterState::DefeatedLoss]=ActionInit(3, "DefeatedLoss");
+
         frames[FighterState::Idle]={100, 150, 150, 100};
         frames[FighterState::Forward]={120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120};
@@ -87,6 +94,12 @@ namespace Util {
 
         frames[FighterState::BackwardBlock] = {150,150};
         frames[FighterState::CrouchBlock] = {150,150};
+
+        frames[FighterState::WinStart]={180};
+        frames[FighterState::Win]={180,180};
+
+        frames[FighterState::TimeOverLoss]={180};
+        frames[FighterState::DefeatedLoss]={180,180,180};
     }
     void Honda::LoadOffsetVelocity() {
         offset[FighterState::Idle]={{-3,0},{3,-3},{13,-10},{5,-2}};
@@ -113,6 +126,12 @@ namespace Util {
 
         offset[FighterState::BackwardBlock]={{-18,5},{-33,20}};
         offset[FighterState::CrouchBlock]={{6,-23},{-9,-26}};
+
+        offset[FighterState::Win]={{2,8},{-5,66}};
+        offset[FighterState::WinStart]={{-13,-10}};
+
+        offset[FighterState::TimeOverLoss]={{5,-7}};
+        offset[FighterState::DefeatedLoss]={{-39,-2},{-68,-67},{-153,-78}};
     }
     void Honda::LoadAllBox() {
 
@@ -123,7 +142,7 @@ namespace Util {
 
         boxes.hurtbox.head.size[FighterState::Idle]={{50,50},{50,50},{50,50},{50,50}};
         boxes.hurtbox.body.size[FighterState::Idle]={{190,100},{190,100},{190,100},{190,100}};
-        boxes.hurtbox.leg.size[FighterState::Idle]={{250,125},{250,125},{250,125},{250,125},};
+        boxes.hurtbox.leg.size[FighterState::Idle]={{250,125},{250,125},{250,125},{250,125}};
         boxes.hurtbox.head.offset[FighterState::Idle]={{42,96},{36,91},{35,82},{38,90}};
         boxes.hurtbox.body.offset[FighterState::Idle]={{8,35},{10,27},{25,20},{9,31}};
         boxes.hurtbox.leg.offset[FighterState::Idle]={{-13,-67},{-7,-63},{8,-61},{-7,-65}};
@@ -249,5 +268,70 @@ namespace Util {
         boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{250,-100},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HK]={220,60};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{-1,-1},{-1,-1},{185,125},{-1,-1},{-1,-1},{-1,-1},{-1,-1}};
+    }
+    void Honda::LoadSpecialMove() {
+        animations[FighterState::Special_1]=ActionInit(12, "Special_1");
+        offset[FighterState::Special_1]={{0,-4},{-9,7},{-13,14},{-3,15},{5,-6},{38,30},{-2,59},{-23,88},{9,22},{2,-36},{3,-26},{-2,-14}};
+
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={30,30,30,30,90,420,90,60,34,34,17,17};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={30,30,30,30,120,560,120,60,34,34,17,17};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={30,30,30,30,150,720,150,60,34,34,17,17};
+
+        boxes.hurtbox.body.size[FighterState::Special_1]={{190,100},{190,100},{160,100},{160,100},{190,100},{190,100},{190,100},{190,100},{190,100},{190,100},{190,100},{190,100}};
+        boxes.hurtbox.leg.size[FighterState::Special_1]={{250,125},{250,125},{250,125},{250,125},{230,125},{150,50},{100,125},{50,125},{220,125},{250,125},{250,125},{250,125}};
+        boxes.hurtbox.head.offset[FighterState::Special_1]={{42,94},{1,112},{-43,130},{30,128},{93,91},{200,9},{121,14},{-77,4},{-115,4},{74,28},{64,47},{54,74}};
+        boxes.hurtbox.body.offset[FighterState::Special_1]={{5,26},{-18,35},{-55,54},{-7,58},{46,43},{83,27},{52,87},{-8,54},{-22,-35},{15,-7},{17,-4},{9,21}};
+        boxes.hurtbox.leg.offset[FighterState::Special_1]={{-6,-71},{-13,-68},{-21,-64},{-6,-68},{28,-65},{-68,19},{-81,54},{-73,119},{61,69},{10,-77},{7,-71},{1,-67}};
+
+        boxes.hitbox.size[FighterState::Special_1]={150,100};
+        boxes.hitbox.offset[FighterState::Special_1]={{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{170,25},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1}};
+
+        StateEnter[FighterState::Special_1]=[this] { HeadbuttStateEnter(); };
+        StateUpload[FighterState::Special_1]=[this] { HeadbuttStateUpload(); };
+
+        soundeffect[FighterState::Special_1]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_62 - EHonda Dosukoi.wav")};
+
+        SpecialMoveData.animationData[FighterState::Special_1].initialvelocitys[Keys::LP]={9,0};
+        SpecialMoveData.animationData[FighterState::Special_1].initialvelocitys[Keys::MP]={12,0};
+        SpecialMoveData.animationData[FighterState::Special_1].initialvelocitys[Keys::HP]={15,0};
+
+        SpecialMoveData.attackdata[FighterState::Special_1].attack[Keys::LP]=10;
+        SpecialMoveData.attackdata[FighterState::Special_1].attack[Keys::MP]=15;
+        SpecialMoveData.attackdata[FighterState::Special_1].attack[Keys::HP]=20;
+
+        SpecialMoveData.attackdata[FighterState::Special_1].HitStrength[Keys::LP]=HitStrength::H;
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].command={
+            SpecialMoveDirection::Forward,
+            SpecialMoveDirection::Forward_down,
+            SpecialMoveDirection::down
+        };
+        SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ANY_PUNCH;
+        SpecificStates.borderCheckStates.insert(FighterState::Special_1);
+    }
+    void Honda::HeadbuttStateEnter() {
+        ResetVelocity();
+        soundeffect[currentState]->Play();
+        ButtonType=controller->GetCurrentAttackKey();
+        LoadCurrentSpecialMove(ButtonType);
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Honda::HeadbuttStateUpload() {
+        /*if(ActionNow->GetCurrentFrameIndex()==5&&HitEnemy) {
+            ActionNow->SetCurrentFrame(ActionNow->GetCurrentFrameIndex()+1);
+        }*/
+        if(ActionNow->GetCurrentFrameIndex()==5) {
+            velocity=GetInitialvelocity();
+        }
+        if (6>= ActionNow->GetCurrentFrameIndex()&&ActionNow->GetCurrentFrameIndex()> 5) {
+            velocity.x += velocity.x * 0.1 * Time::GetDeltaTimeMs()/1000;
+        }
+        else if (9>= ActionNow->GetCurrentFrameIndex()) {
+            velocity.x -= velocity.x* 20 * Time::GetDeltaTimeMs()/1000;
+        }
+        else {
+            ResetVelocity();
+        }
+        if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
     }
 }

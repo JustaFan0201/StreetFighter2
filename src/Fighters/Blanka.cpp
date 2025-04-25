@@ -4,7 +4,7 @@
 
 #include "Fighters/Blanka.hpp"
 namespace Util {
-    Blanka::Blanka(): Fighter("Blanka",{0,0}) {
+    Blanka::Blanka(): Fighter("Blanka") {
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/Blanka_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/Blanka_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/brazil.png");
@@ -55,6 +55,12 @@ namespace Util {
         animations[FighterState::CrouchMK] = animations[FighterState::CrouchLK];
         animations[FighterState::CrouchHK] = ActionInit(6, "CrouchHK");
 
+        animations[FighterState::WinStart]=ActionInit(1, "WinStart");
+        animations[FighterState::Win]=ActionInit(2, "Win");
+
+        animations[FighterState::TimeOverLoss]=ActionInit(1, "TimeOverLoss");
+        animations[FighterState::DefeatedLoss]=ActionInit(3, "DefeatedLoss");
+
         frames[FighterState::Idle]={150, 150, 150};
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120, 120, 120, 120, 120};
@@ -87,6 +93,12 @@ namespace Util {
 
         frames[FighterState::BackwardBlock] = {150,150};
         frames[FighterState::CrouchBlock] = {150,150};
+
+        frames[FighterState::WinStart]={180};
+        frames[FighterState::Win]={180, 180};
+
+        frames[FighterState::TimeOverLoss]={180};
+        frames[FighterState::DefeatedLoss]={180,180,180};
     }
     void Blanka::LoadOffsetVelocity() {
         offset[FighterState::Idle]={{0,0},{0,0},{0,0}};
@@ -114,6 +126,12 @@ namespace Util {
 
         offset[FighterState::BackwardBlock]={{-9,-8},{-20,-13}};
         offset[FighterState::CrouchBlock]={{-14,-65},{-19,-65}};
+
+        offset[FighterState::Win]={{-85,51},{-74,84}};
+        offset[FighterState::WinStart]={{-27,26}};
+
+        offset[FighterState::TimeOverLoss]={{-18,-14}};
+        offset[FighterState::DefeatedLoss]={{-196,-32},{-255,-66},{-297,-87}};
     }
     void Blanka::LoadAllBox() {
 

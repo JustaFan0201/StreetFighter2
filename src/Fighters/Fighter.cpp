@@ -472,7 +472,7 @@ namespace Util {
             ChangeState(FighterState::TimeOverLoss);
         }
         if (Input::IsKeyDown(Keycode::NUM_5)) {
-            ChangeState(FighterState::CrouchMK);
+            ChangeState(FighterState::Special_1);
         }
         if (Input::IsKeyDown(Keycode::NUM_6)) {
             ChangeState(FighterState::CrouchHK);
@@ -579,7 +579,7 @@ namespace Util {
     }
 
     void Fighter::WalkStateEnter(){
-        velocity.x=Initialvelocity.x[currentState];
+        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::ForwardStateUpload() {
@@ -610,8 +610,7 @@ namespace Util {
     }
 
     void Fighter::JumpStateEnter(){
-        velocity.x=Initialvelocity.x[currentState];
-        velocity.y=Initialvelocity.y[currentState];
+        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::JumpStateUpload(){
@@ -656,7 +655,7 @@ namespace Util {
 
     void Fighter::HurtStateEnter() {
         ResetVelocity();
-        velocity.x=Initialvelocity.x[currentState];
+        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::HurtStateUpload() {
@@ -666,7 +665,7 @@ namespace Util {
     }
     void Fighter::BlockStateEnter() {
         ResetVelocity();
-        velocity.x=Initialvelocity.x[currentState];
+        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
         soundeffect[currentState]->Play();
     }
@@ -687,8 +686,7 @@ namespace Util {
     }
     void Fighter::LossStateEnter() {
         ResetVelocity();
-        velocity.x=Initialvelocity.x[currentState];
-        velocity.y=Initialvelocity.y[currentState];
+        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::LossStateUpload() {

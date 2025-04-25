@@ -30,7 +30,7 @@ namespace Util {
     class Fighter : public std::enable_shared_from_this<Fighter>{
     public:
 
-        Fighter(std::string name,velocity velocity): m_name(name),velocity(velocity){}
+        Fighter(std::string name): m_name(name){velocity={0,0};}
         virtual ~Fighter() = default;
 
         virtual void IdleStateEnter();
@@ -90,7 +90,16 @@ namespace Util {
         float GetAttackNum(){return attacks.count(currentState)?attacks[currentState]:0;}
         void GetAttack(float dmg){hp-=dmg;}
         int GetDirection() const{return direction;}
-        velocity GetVelocity() const{return velocity;}
+        glm::vec2 GetVelocity() const{return velocity;}
+        glm::vec2 GetInitialvelocity() {
+            return glm::vec2{
+                Initialvelocity.x.count(currentState) ?
+                 Initialvelocity.x[currentState] : 0,
+
+                Initialvelocity.y.count(currentState) ?
+                 Initialvelocity.y[currentState] : 0,
+            };
+        }
         HitStrength GetHitStrength(){return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
         FighterState GetBeHitState(HitStrength Strength,HitLocation Location);
         FighterState GetBlockState();
@@ -247,7 +256,7 @@ namespace Util {
         float MaxWidth;
         int MaxCameraOffsetX;
 
-        velocity velocity;
+        glm::vec2 velocity;
         Initialvelocity Initialvelocity;
 
         Boxes boxes;

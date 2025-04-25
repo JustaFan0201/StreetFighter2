@@ -107,6 +107,10 @@ namespace Util {
         bool GetVisible() {
             return m_Visible;
         }
+        void SetCurrentFrame(int frame) {
+            auto animation = std::dynamic_pointer_cast<Animation>(m_Drawable);
+            animation->SetCurrentFrame(frame);
+        }
 
         void SetFrameIntervals(const std::vector<int>& intervals) {
             frameIntervals = intervals;
