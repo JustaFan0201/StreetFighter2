@@ -296,6 +296,7 @@ namespace Util {
             SpecialMoveDirection::down
         };
         SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ANY_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Command;
 
         animations[FighterState::Special_2]=ActionInit(6, "Special_2");
         offset[FighterState::Special_2]={{35,-3},{53,-4},{104,72},{47,57},{17,42},{0,24}};
@@ -334,6 +335,7 @@ namespace Util {
             SpecialMoveDirection::Forward
         };
         SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ANY_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].commandtype=CommandType::Command;
         SpecificStates.borderCheckStates.insert(FighterState::Special_2);
 
         animations[FighterState::Special_3]=ActionInit(10, "Special_3");
@@ -371,6 +373,7 @@ namespace Util {
             SpecialMoveDirection::down
         };
         SpecialMoveData.SkillCommand[FighterState::Special_3].requiredAttack=AttackButton::ANY_KICK;
+        SpecialMoveData.SkillCommand[FighterState::Special_3].commandtype=CommandType::Command;
         SpecificStates.borderCheckStates.insert(FighterState::Special_3);
         SpecificStates.InvincibleForFlyObj.insert(FighterState::Special_3);
     }

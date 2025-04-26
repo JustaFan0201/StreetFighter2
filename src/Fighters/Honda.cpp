@@ -303,10 +303,10 @@ namespace Util {
 
         SpecialMoveData.SkillCommand[FighterState::Special_1].command={
             SpecialMoveDirection::Forward,
-            SpecialMoveDirection::Forward_down,
-            SpecialMoveDirection::down
+            SpecialMoveDirection::Backward
         };
         SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ANY_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Pressed;
         SpecificStates.borderCheckStates.insert(FighterState::Special_1);
     }
     void Honda::HeadbuttStateEnter() {
@@ -317,19 +317,13 @@ namespace Util {
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Honda::HeadbuttStateUpload() {
-        /*if(ActionNow->GetCurrentFrameIndex()==5&&HitEnemy) {
+        if(ActionNow->GetCurrentFrameIndex()==5&&HitEnemy) {
             ActionNow->SetCurrentFrame(ActionNow->GetCurrentFrameIndex()+1);
-        }*/
+        }
         if(ActionNow->GetCurrentFrameIndex()==5) {
             velocity=GetInitialvelocity();
         }
-        if (6>= ActionNow->GetCurrentFrameIndex()&&ActionNow->GetCurrentFrameIndex()> 5) {
-            velocity.x += velocity.x * 0.1 * Time::GetDeltaTimeMs()/1000;
-        }
-        else if (9>= ActionNow->GetCurrentFrameIndex()) {
-            velocity.x -= velocity.x* 20 * Time::GetDeltaTimeMs()/1000;
-        }
-        else {
+        else if(ActionNow->GetCurrentFrameIndex()>=7){
             ResetVelocity();
         }
         if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}

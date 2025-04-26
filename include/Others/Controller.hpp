@@ -24,7 +24,7 @@ namespace Util {
         ControllerState currentState=ControllerState::Pause;
 
         Keys CurrentAttack=Keys::Null;
-        float MoveDelay=500;
+        float MoveDelay=250;
         int MaxInput=10;
         std::deque<InputRecord> inputBuffer;
         void InitializeKeyMap() {
@@ -80,7 +80,7 @@ namespace Util {
             InputRecord currentRecord = { GetCurrentMove(direction), currentTime, GetCurrentAttacks() };
             if (inputBuffer.empty() || IsInputRecordDifferent(currentRecord, inputBuffer.front())) {
                 //debug
-                //PrintInputBuffer();
+                PrintInputBuffer();
                 inputBuffer.push_front(currentRecord);
                 if (static_cast<int>(inputBuffer.size()) > MaxInput) inputBuffer.pop_back();
             }
@@ -135,9 +135,19 @@ namespace Util {
             }
         }
         bool IsSpecialMove(SpecialMoveInput special) {
+            if(special.commandtype==CommandType::Command) {
+                return Commandskill(special);
+            }
+            return false;
+        }
+
+        bool Commandskill(SpecialMoveInput special) {
             int commandIndex = static_cast<int>(special.command.size()) - 1;
             int bufferIndex = static_cast<int>(inputBuffer.size()) - 1;
+            int finishDirectionIndex = -1;
             float directionFinishTime = -1.0f;
+            bool RightCommandOnce=false;
+            std::deque<InputRecord> TempData;
 
             for (; bufferIndex >= 0; bufferIndex--) {
                 auto record = inputBuffer[bufferIndex];
@@ -145,28 +155,32 @@ namespace Util {
                     commandIndex--;
                     if (commandIndex < 0) {
                         directionFinishTime = record.timestamp;
-                        break;
+                        finishDirectionIndex = bufferIndex;
+                        RightCommandOnce=true;
+                        commandIndex = static_cast<int>(special.command.size()) - 1;
                     }
                 }
                 else if (record.move != SpecialMoveDirection::Null) {
                     commandIndex = static_cast<int>(special.command.size()) - 1;
                 }
             }
-            if (commandIndex >= 0) return false;
-            for (; bufferIndex >= 0; bufferIndex--) {
-                auto record = inputBuffer[bufferIndex];
+            if (!RightCommandOnce) return false;
+
+            for (int i = finishDirectionIndex ; i >= 0; i--) {
+                auto record = inputBuffer[i];
                 if (record.timestamp - directionFinishTime > MoveDelay) {
-                    inputBuffer.clear();
-                    break;
+                    return false;
                 }
                 if (IsAttackMatched(record.attacks, special.requiredAttack)) {
-                    CurrentAttack=GetPunchOrKick(record,special.requiredAttack);
+                    CurrentAttack = GetPunchOrKick(record, special.requiredAttack);
                     inputBuffer.clear();
                     return true;
                 }
             }
+
             return false;
         }
+
         //debug
         void PrintInputBuffer() const {
             std::cout <<static_cast<int>(Player)<< "Input History: \n";
@@ -175,7 +189,7 @@ namespace Util {
                 for (bool b : input.attacks) {
                     std::cout << (b ? "1" : "0");
                 }
-                std::cout << "\n";
+                std::cout <<" Time:"<<input.timestamp<< "\n";
             }
         }
         int randomNum(int range) {

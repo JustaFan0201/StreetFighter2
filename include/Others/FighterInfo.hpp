@@ -153,9 +153,15 @@ namespace Util {
         ALL_PUNCH,
         ALL_KICK
     };
+    enum class CommandType {
+        Null,
+        Command,
+        Pressed
+    };
     struct SpecialMoveInput {
         std::vector<SpecialMoveDirection> command;
         AttackButton requiredAttack;
+        CommandType commandtype;
     };
     struct SpecialSkillAnimation {
         std::unordered_map<Keys, std::vector<int>> frames;

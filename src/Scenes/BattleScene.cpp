@@ -127,19 +127,19 @@ namespace Util {
             ui->ChangeState(State::EndEventLoss);
         }
     }
-    void BattleScene::LossStateForFighter() {
+    void BattleScene::LossStateForFighter(){
         if(lossType==LossType::NoHP) {
             switch (defeatedType) {
                 case DefeatedType::Both:
                     player->ChangeState(FighterState::DefeatedLoss);
                     enemy->ChangeState(FighterState::DefeatedLoss);
-                break;
+                    break;
                 case DefeatedType::Player:
                     player->ChangeState(FighterState::DefeatedLoss);
-                break;
+                    break;
                 case DefeatedType::Enemy:
                     enemy->ChangeState(FighterState::DefeatedLoss);
-                break;
+                    break;
                 default:
                     break;
             }

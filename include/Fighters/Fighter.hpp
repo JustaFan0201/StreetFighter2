@@ -255,6 +255,7 @@ namespace Util {
         float Friction=16;
         float MaxWidth;
         int MaxCameraOffsetX;
+        float currentCameraX;
 
         glm::vec2 velocity;
         Initialvelocity Initialvelocity;
