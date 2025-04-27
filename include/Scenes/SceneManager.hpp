@@ -30,7 +30,7 @@ namespace Util {
         std::shared_ptr<Core::Context> context;
         std::shared_ptr<Scene> m_NowScene=nullptr;//目前場景
         int mode=0;//0=story 1=battle
-        std::shared_ptr<Fighter> player=std::make_shared<Guile>();
+        std::shared_ptr<Fighter> player=std::make_shared<Honda>();
         std::shared_ptr<Fighter> enemy=std::make_shared<Ken>();
 
         std::vector<std::shared_ptr<Fighter>> characters = {

@@ -307,6 +307,9 @@ namespace Util {
         };
         SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ANY_PUNCH;
         SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Pressed;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::LP]=250;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::MP]=500;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::HP]=750;
         SpecificStates.borderCheckStates.insert(FighterState::Special_1);
     }
     void Honda::HeadbuttStateEnter() {

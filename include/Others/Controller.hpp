@@ -25,6 +25,7 @@ namespace Util {
 
         Keys CurrentAttack=Keys::Null;
         float MoveDelay=250;
+        float AtLeastChargeTime=250;
         int MaxInput=10;
         std::deque<InputRecord> inputBuffer;
         void InitializeKeyMap() {
@@ -80,7 +81,7 @@ namespace Util {
             InputRecord currentRecord = { GetCurrentMove(direction), currentTime, GetCurrentAttacks() };
             if (inputBuffer.empty() || IsInputRecordDifferent(currentRecord, inputBuffer.front())) {
                 //debug
-                PrintInputBuffer();
+                //PrintInputBuffer(inputBuffer);
                 inputBuffer.push_front(currentRecord);
                 if (static_cast<int>(inputBuffer.size()) > MaxInput) inputBuffer.pop_back();
             }
@@ -138,6 +139,102 @@ namespace Util {
             if(special.commandtype==CommandType::Command) {
                 return Commandskill(special);
             }
+            if(special.commandtype==CommandType::Pressed) {
+                return CommandSkillCharge(special,AtLeastChargeTime);
+            }
+            return false;
+        }
+        static bool DirectionContain(SpecialMoveDirection input, SpecialMoveDirection required) {
+            // 判斷 input 是否包含 required 的方向成分
+            if (required == SpecialMoveDirection::Backward) {
+                return input == SpecialMoveDirection::Backward || input == SpecialMoveDirection::Backward_down || input == SpecialMoveDirection::Backward_up;
+            }
+            if (required == SpecialMoveDirection::down) {
+                return input == SpecialMoveDirection::down || input == SpecialMoveDirection::Backward_down || input == SpecialMoveDirection::Forward_down;
+            }
+            if (required == SpecialMoveDirection::Forward) {
+                return input == SpecialMoveDirection::Forward || input == SpecialMoveDirection::Forward_down || input == SpecialMoveDirection::Forward_up;
+            }
+            if (required == SpecialMoveDirection::Up) {
+                return input == SpecialMoveDirection::Up || input == SpecialMoveDirection::Backward_up || input == SpecialMoveDirection::Forward_up;
+            }
+            return false; // Null方向不管
+        }
+        bool CommandSkillCharge(SpecialMoveInput special, float ChargeTime) {
+            if (inputBuffer.empty()) return false;
+
+            int commandIndex = static_cast<int>(special.command.size()) - 1;
+            int bufferIndex = static_cast<int>(inputBuffer.size()) - 1;
+            int finishchargeindex=static_cast<int>(inputBuffer.size()) - 1;
+            int finishDirectionIndex = -1;
+
+            float chargeStartTime = -1.0f;
+            float chargeEndTime = -1.0f;
+            bool chargeFound = false;
+            bool chargeFoundOnce = false;
+
+            for (int i = bufferIndex; i >= 0; --i) {
+                SpecialMoveDirection inputDir = inputBuffer[i].move;
+
+                if (DirectionContain(inputDir, special.command[commandIndex])) {
+                    if (!chargeFound) {
+                        chargeStartTime = inputBuffer[i].timestamp;
+                        chargeFound = true;
+                        chargeFoundOnce=true;
+                        //std::cout<<"Start"<<std::endl;
+                        //PrintInputBuffer(std::deque{inputBuffer[i]});
+                    }
+                }
+                else if(chargeFound&&!DirectionContain(inputDir, special.command[commandIndex])) {
+                    chargeEndTime = inputBuffer[i].timestamp;
+                    finishchargeindex=i;
+                    chargeFound = false;
+                    //std::cout<<"End"<<std::endl;
+                    //PrintInputBuffer(std::deque{inputBuffer[i]});
+                }
+            }
+
+            if (!chargeFoundOnce) return false;
+
+            float holdDuration = chargeEndTime - chargeStartTime;
+            if (holdDuration < ChargeTime) return false; // 蓄力時間不足
+            //std::cout<<"ChargeSucess"<<std::endl;
+            --commandIndex;
+            bool RightCommandOnce = false;
+            float directionFinishTime = -1.0f;
+
+            for (int i = finishchargeindex; i >= 0; --i) {
+                auto record = inputBuffer[i];
+                if (record.move == special.command[commandIndex]) {
+                    commandIndex--;
+                    if (commandIndex < 0) {
+                        directionFinishTime = record.timestamp;
+                        finishDirectionIndex = i;
+                        commandIndex = static_cast<int>(special.command.size()) - 2;
+                        RightCommandOnce=true;
+                    }
+                }
+                else if (record.move != SpecialMoveDirection::Null) {
+                    commandIndex = static_cast<int>(special.command.size()) - 2;
+                }
+            }
+            if (!RightCommandOnce) return false;
+            //std::cout<<"CommandSucess"<<std::endl;
+            for (int i = finishDirectionIndex ; i >= 0; i--) {
+                auto record = inputBuffer[i];
+                if (record.timestamp - directionFinishTime > MoveDelay) {
+                    return false;
+                }
+                if (IsAttackMatched(record.attacks, special.requiredAttack)) {
+                    CurrentAttack = GetPunchOrKick(record, special.requiredAttack);
+                    inputBuffer.clear();
+                    if(special.chargetime[CurrentAttack]<=holdDuration) {
+                        return true;
+                    }
+                    CurrentAttack=Keys::Null;
+                    return false;
+                }
+            }
             return false;
         }
 
@@ -156,8 +253,8 @@ namespace Util {
                     if (commandIndex < 0) {
                         directionFinishTime = record.timestamp;
                         finishDirectionIndex = bufferIndex;
-                        RightCommandOnce=true;
                         commandIndex = static_cast<int>(special.command.size()) - 1;
+                        RightCommandOnce=true;
                     }
                 }
                 else if (record.move != SpecialMoveDirection::Null) {
@@ -177,21 +274,19 @@ namespace Util {
                     return true;
                 }
             }
-
             return false;
         }
 
         //debug
-        void PrintInputBuffer() const {
-            /*std::cout <<static_cast<int>(Player)<< "Input History: \n";
+        void PrintInputBuffer(const std::deque<InputRecord>& inputBuffer) const {
+            std::cout <<static_cast<int>(Player)<< "Input History: \n";
             for (const auto& input : inputBuffer) {
                 std::cout << "Dir: " << static_cast<int>(input.move) << ", Attacks: ";
                 for (bool b : input.attacks) {
                     std::cout << (b ? "1" : "0");
                 }
                 std::cout <<" Time:"<<input.timestamp<< "\n";
-            }*/
-
+            }
         }
         int randomNum(int range) {
             timeForAi=0;

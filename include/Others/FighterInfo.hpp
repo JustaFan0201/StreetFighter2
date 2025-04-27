@@ -162,6 +162,7 @@ namespace Util {
         std::vector<SpecialMoveDirection> command;
         AttackButton requiredAttack;
         CommandType commandtype;
+        std::unordered_map<Keys, float> chargetime;
     };
     struct SpecialSkillAnimation {
         std::unordered_map<Keys, std::vector<int>> frames;
