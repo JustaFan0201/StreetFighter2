@@ -183,14 +183,15 @@ namespace Util {
 
         //debug
         void PrintInputBuffer() const {
-            std::cout <<static_cast<int>(Player)<< "Input History: \n";
+            /*std::cout <<static_cast<int>(Player)<< "Input History: \n";
             for (const auto& input : inputBuffer) {
                 std::cout << "Dir: " << static_cast<int>(input.move) << ", Attacks: ";
                 for (bool b : input.attacks) {
                     std::cout << (b ? "1" : "0");
                 }
                 std::cout <<" Time:"<<input.timestamp<< "\n";
-            }
+            }*/
+
         }
         int randomNum(int range) {
             timeForAi=0;
