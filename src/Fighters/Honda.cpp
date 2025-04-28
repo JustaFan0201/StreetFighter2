@@ -311,6 +311,30 @@ namespace Util {
         SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::MP]=500;
         SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::HP]=750;
         SpecificStates.borderCheckStates.insert(FighterState::Special_1);
+
+        animations[FighterState::Special_2]=ActionInit(10, "Special_2");
+        offset[FighterState::Special_2]={{5,3},{41,1},{117,-2},{63,14},{112,-10},{84,-11},{126,11},{54,-12},{46,-2},{4,0}};
+
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LP]={60,120,180,120,180,120,180,120,120,60};
+        boxes.hurtbox.head.offset[FighterState::Special_2]={{43,97},{61,88},{72,75},{79,68},{83,69},{83,68},{83,68},{84,68},{63,86},{39,91}};
+        boxes.hurtbox.body.offset[FighterState::Special_2]={{5,32},{11,35},{10,34},{24,16},{24,21},{30,16},{18,26},{22,19},{13,30},{-5,32}};
+        boxes.hurtbox.leg.offset[FighterState::Special_2]={{-7,-74},{-5,-69},{14,-49},{29,-53},{29,-54},{26,-58},{27,-57},{27,-57},{7,-68},{-12,-67}};
+
+        boxes.hitbox.size[FighterState::Special_2]={200,100};
+        boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{274,54},{187,85},{243,-17},{207,15},{271,85},{152,-44},{-1,-1},{-1,-1}};
+
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LP]=5;
+
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::H;
+
+        StateEnter[FighterState::Special_2]=[this] { HundredSlapStateEnter(); };
+        StateUpload[FighterState::Special_2]=[this] { HundredSlapStateUpload(); };
+
+        soundeffect[FighterState::Special_2]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_64 - Grunt2.wav")};
+
+        SpecialMoveData.SkillCommand[FighterState::Special_2].command={};
+        SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ALL_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].commandtype=CommandType::Null;
     }
     void Honda::HeadbuttStateEnter() {
         ResetVelocity();
@@ -329,6 +353,16 @@ namespace Util {
         else if(ActionNow->GetCurrentFrameIndex()>=7){
             ResetVelocity();
         }
+        if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
+    }
+    void Honda::HundredSlapStateEnter() {
+        ResetVelocity();
+        soundeffect[currentState]->Play();
+        ButtonType=controller->GetCurrentAttackKey();
+        LoadCurrentSpecialMove(ButtonType);
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Honda::HundredSlapStateUpload() {
         if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
     }
 }

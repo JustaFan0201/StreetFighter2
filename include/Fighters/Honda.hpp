@@ -17,6 +17,8 @@ namespace Util {
         void LoadSpecialMove();
         void HeadbuttStateEnter();
         void HeadbuttStateUpload();
+        void HundredSlapStateEnter();
+        void HundredSlapStateUpload();
     };
 }
 #endif //HONDA_HPP

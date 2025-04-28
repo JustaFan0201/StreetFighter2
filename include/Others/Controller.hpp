@@ -136,6 +136,9 @@ namespace Util {
             }
         }
         bool IsSpecialMove(SpecialMoveInput special) {
+            if(special.commandtype==CommandType::Null) {
+                return Nullskill(special);
+            }
             if(special.commandtype==CommandType::Command) {
                 return Commandskill(special);
             }
@@ -160,6 +163,7 @@ namespace Util {
             }
             return false; // Null方向不管
         }
+
         bool CommandSkillCharge(SpecialMoveInput special, float ChargeTime) {
             if (inputBuffer.empty()) return false;
 
@@ -262,7 +266,6 @@ namespace Util {
                 }
             }
             if (!RightCommandOnce) return false;
-
             for (int i = finishDirectionIndex ; i >= 0; i--) {
                 auto record = inputBuffer[i];
                 if (record.timestamp - directionFinishTime > MoveDelay) {
@@ -277,6 +280,19 @@ namespace Util {
             return false;
         }
 
+        bool Nullskill(SpecialMoveInput special) {
+            int bufferIndex = static_cast<int>(inputBuffer.size()) - 1;
+
+            for (; bufferIndex >= 0; bufferIndex--) {
+                auto record = inputBuffer[bufferIndex];
+                if (IsAttackMatched(record.attacks, special.requiredAttack)) {
+                    CurrentAttack = GetPunchOrKick(record, special.requiredAttack);
+                    inputBuffer.clear();
+                    return true;
+                }
+            }
+            return false;
+        }
         //debug
         void PrintInputBuffer(const std::deque<InputRecord>& inputBuffer) const {
             std::cout <<static_cast<int>(Player)<< "Input History: \n";

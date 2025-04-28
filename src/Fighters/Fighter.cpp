@@ -38,40 +38,37 @@ namespace Util {
     }
 
     void Fighter::LoadCurrentSpecialMove(Keys ButtonType) {
-        if (SpecialMoveData.SkillCommand[currentState].requiredAttack == AttackButton::ANY_PUNCH ||
-            SpecialMoveData.SkillCommand[currentState].requiredAttack == AttackButton::ANY_KICK) {
+        Keys fallbackKey = (SpecialMoveData.SkillCommand[currentState].requiredAttack == AttackButton::ANY_PUNCH||
+                            SpecialMoveData.SkillCommand[currentState].requiredAttack == AttackButton::ALL_PUNCH)
+                            ? Keys::LP : Keys::LK;
 
-            Keys fallbackKey = (SpecialMoveData.SkillCommand[currentState].requiredAttack == AttackButton::ANY_PUNCH)
-                                ? Keys::LP : Keys::LK;
+        auto& anim = SpecialMoveData.animationData[currentState];
+        auto& atk = SpecialMoveData.attackdata[currentState];
 
-            auto& anim = SpecialMoveData.animationData[currentState];
-            auto& atk = SpecialMoveData.attackdata[currentState];
+        // Frames
+        if (anim.frames.count(ButtonType)) {
+            frames[currentState] = anim.frames[ButtonType];
+        } else {
+            frames[currentState] = anim.frames[fallbackKey];
+        }
 
-            // Frames
-            if (anim.frames.count(ButtonType)) {
-                frames[currentState] = anim.frames[ButtonType];
-            } else {
-                frames[currentState] = anim.frames[fallbackKey];
-            }
+        // Velocity
+        if (anim.velocitys.count(ButtonType)) {
+            velocity = anim.velocitys[ButtonType];
+        }
 
-            // Velocity
-            if (anim.velocitys.count(ButtonType)) {
-                velocity = anim.velocitys[ButtonType];
-            }
+        // Initial Velocity
+        if (anim.initialvelocitys.count(ButtonType)) {
+            Initialvelocity.x[currentState] = anim.initialvelocitys[ButtonType].x;
+            Initialvelocity.y[currentState] = anim.initialvelocitys[ButtonType].y;
+        }
 
-            // Initial Velocity
-            if (anim.initialvelocitys.count(ButtonType)) {
-                Initialvelocity.x[currentState] = anim.initialvelocitys[ButtonType].x;
-                Initialvelocity.y[currentState] = anim.initialvelocitys[ButtonType].y;
-            }
-
-            // Attack Info
-            if (atk.attack.count(ButtonType)) {
-                attacks[currentState] = atk.attack[ButtonType];
-            }
-            if (atk.HitStrength.count(ButtonType)) {
-                hitstrength[currentState] = atk.HitStrength[ButtonType];
-            }
+        // Attack Info
+        if (atk.attack.count(ButtonType)) {
+            attacks[currentState] = atk.attack[ButtonType];
+        }
+        if (atk.HitStrength.count(ButtonType)) {
+            hitstrength[currentState] = atk.HitStrength[ButtonType];
         }
     }
 
