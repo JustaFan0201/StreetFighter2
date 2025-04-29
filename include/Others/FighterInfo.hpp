@@ -173,10 +173,14 @@ namespace Util {
         std::unordered_map<Keys, HitStrength> HitStrength;
         std::unordered_map<Keys, float> attack;
     };
+    struct SoundData {
+        std::unordered_map<Keys, std::shared_ptr<SFX>> sound;
+    };
     struct SpecialSkillData {
         std::unordered_map<FighterState, SpecialSkillAnimation> animationData;
         std::unordered_map<FighterState, SpecialMoveInput> SkillCommand;
         std::unordered_map<FighterState, AttackData> attackdata;
+        std::unordered_map<FighterState, SoundData> sounddata;
     };
     struct SpecificStates {
         std::unordered_set<FighterState> borderCheckStates;

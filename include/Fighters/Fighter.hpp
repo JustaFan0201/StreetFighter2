@@ -195,7 +195,11 @@ namespace Util {
         void ClearButtonType(){ButtonType=Keys::Null;}
         void AddFlyingObject(FlyingObjectType object, Keys strength) {
             if (ButtonType!=Keys::Null) {addEntityFunc(object, shared_from_this(), strength);}}
-
+        void PlayCurrentSound() {
+            if(soundeffect.count(currentState)) {
+                soundeffect[currentState]->Play();
+            }
+        }
         void BackgroundInit(int picture_number);
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
         void InitPosition(glm::vec2 position,int side,std::shared_ptr<Controller> controller,int MaxCameraOffsetX);

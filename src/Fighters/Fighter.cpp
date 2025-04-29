@@ -44,6 +44,7 @@ namespace Util {
 
         auto& anim = SpecialMoveData.animationData[currentState];
         auto& atk = SpecialMoveData.attackdata[currentState];
+        auto& sound = SpecialMoveData.sounddata[currentState];
 
         // Frames
         if (anim.frames.count(ButtonType)) {
@@ -69,6 +70,10 @@ namespace Util {
         }
         if (atk.HitStrength.count(ButtonType)) {
             hitstrength[currentState] = atk.HitStrength[ButtonType];
+        }
+        //sound
+        if(sound.sound.count(ButtonType)) {
+            soundeffect[currentState] = sound.sound[ButtonType];
         }
     }
 
@@ -646,7 +651,7 @@ namespace Util {
     void Fighter::AttackStateEnter() {
         ResetVelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
-        soundeffect[currentState]->Play();
+        PlayCurrentSound();
     }
     void Fighter::AttackStateUpload() {
         if(enemy->GetCharacterIsInBorder()&&HitEnemy
@@ -671,7 +676,7 @@ namespace Util {
         ResetVelocity();
         velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
-        soundeffect[currentState]->Play();
+        PlayCurrentSound();
     }
     void Fighter::BlockStateUpload() {
         velocity.x+=Friction/2*Time::GetDeltaTimeMs()/1000;
@@ -679,6 +684,7 @@ namespace Util {
         else if (GetAnimationIsEnd()&&velocity.x>=0&&currentState==FighterState::BackwardBlock) {ChangeState(FighterState::Idle);}
     }
     void Fighter::WinStateEnter() {
+        PlayCurrentSound();
         ResetVelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
@@ -689,6 +695,7 @@ namespace Util {
         if (GetAnimationIsEnd()){ActionNow->AnimationPlay();}
     }
     void Fighter::LossStateEnter() {
+        PlayCurrentSound();
         ResetVelocity();
         velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());

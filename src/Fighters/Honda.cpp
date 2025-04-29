@@ -289,7 +289,7 @@ namespace Util {
         StateEnter[FighterState::Special_1]=[this] { HeadbuttStateEnter(); };
         StateUpload[FighterState::Special_1]=[this] { HeadbuttStateUpload(); };
 
-        soundeffect[FighterState::Special_1]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_62 - EHonda Dosukoi.wav")};
+        SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Honda/SP1.wav");
 
         SpecialMoveData.animationData[FighterState::Special_1].initialvelocitys[Keys::LP]={9,0};
         SpecialMoveData.animationData[FighterState::Special_1].initialvelocitys[Keys::MP]={12,0};
@@ -330,17 +330,20 @@ namespace Util {
         StateEnter[FighterState::Special_2]=[this] { HundredSlapStateEnter(); };
         StateUpload[FighterState::Special_2]=[this] { HundredSlapStateUpload(); };
 
-        soundeffect[FighterState::Special_2]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_64 - Grunt2.wav")};
+        SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Honda/SP2.wav");
 
         SpecialMoveData.SkillCommand[FighterState::Special_2].command={};
         SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ALL_PUNCH;
         SpecialMoveData.SkillCommand[FighterState::Special_2].commandtype=CommandType::Null;
+
+        soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Honda/Win.wav");
+        soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Honda/Loss.wav");
     }
     void Honda::HeadbuttStateEnter() {
         ResetVelocity();
-        soundeffect[currentState]->Play();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
+        PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Honda::HeadbuttStateUpload() {
@@ -357,9 +360,9 @@ namespace Util {
     }
     void Honda::HundredSlapStateEnter() {
         ResetVelocity();
-        soundeffect[currentState]->Play();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
+        PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Honda::HundredSlapStateUpload() {

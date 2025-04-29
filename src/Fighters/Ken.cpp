@@ -277,7 +277,7 @@ namespace Util {
         StateEnter[FighterState::Special_1]=[this] { HandoukenStateEnter(); };
         StateUpload[FighterState::Special_1]=[this] { HandoukenStateUpload(); };
 
-        soundeffect[FighterState::Special_1]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_69 - RyuKen Hadouken.wav")};
+        SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/SP1.wav");
 
         SpecialMoveData.SkillCommand[FighterState::Special_1].command={
             SpecialMoveDirection::Forward,
@@ -316,7 +316,7 @@ namespace Util {
         StateEnter[FighterState::Special_2]=[this] { ShoryukenStateEnter(); };
         StateUpload[FighterState::Special_2]=[this] { ShoryukenStateUpload(); };
 
-        soundeffect[FighterState::Special_2]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_70 - RyuKen Shoryuken.wav")};
+        SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/SP2.wav");
 
         SpecialMoveData.SkillCommand[FighterState::Special_2].command={
             SpecialMoveDirection::down,
@@ -354,7 +354,9 @@ namespace Util {
         StateEnter[FighterState::Special_3]=[this] { TatsumakiSenpuStateEnter(); };
         StateUpload[FighterState::Special_3]=[this] { TatsumakiSenpuStateUpload(); };
 
-        soundeffect[FighterState::Special_3]={std::make_shared<SFX>(RESOURCE_DIR"/voice/05 Character Voices/SFII_71 - RyuKen Tatsumaki Senpuukyaku.wav")};
+        SpecialMoveData.sounddata[FighterState::Special_3].sound[Keys::LK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/SP3_L.wav");
+        SpecialMoveData.sounddata[FighterState::Special_3].sound[Keys::MK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/SP3_M.wav");
+        SpecialMoveData.sounddata[FighterState::Special_3].sound[Keys::HK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/SP3_H.wav");
 
         SpecialMoveData.SkillCommand[FighterState::Special_3].command={
             SpecialMoveDirection::Backward,
@@ -365,12 +367,15 @@ namespace Util {
         SpecialMoveData.SkillCommand[FighterState::Special_3].commandtype=CommandType::Command;
         SpecificStates.borderCheckStates.insert(FighterState::Special_3);
         SpecificStates.InvincibleForFlyObj.insert(FighterState::Special_3);
+
+        soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/Win.wav");
+        soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/Loss.wav");
     }
     void Ken::HandoukenStateEnter() {
         ResetVelocity();
-        soundeffect[currentState]->Play();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
+        PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Ken::HandoukenStateUpload() {
@@ -379,11 +384,10 @@ namespace Util {
     }
     void Ken::ShoryukenStateEnter() {
         ResetVelocity();
-        soundeffect[currentState]->Play();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity.x=Initialvelocity.x[currentState];
-        velocity.y=Initialvelocity.y[currentState];
+        velocity=GetInitialvelocity();
+        PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Ken::ShoryukenStateUpload() {
@@ -397,10 +401,10 @@ namespace Util {
     }
     void Ken::TatsumakiSenpuStateEnter() {
         ResetVelocity();
-        soundeffect[currentState]->Play();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
         velocity=GetInitialvelocity();
+        PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Ken::TatsumakiSenpuStateUpload() {
