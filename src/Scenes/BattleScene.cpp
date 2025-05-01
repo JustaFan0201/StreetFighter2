@@ -3,6 +3,9 @@
 //
 
 #include "Scenes/BattleScene.hpp"
+
+#include "../../PTSD/lib/sdl2/src/joystick/windows/SDL_windowsjoystick_c.h"
+
 namespace Util {
     void BattleScene::Init(std::shared_ptr<Core::Context> context) {
         m_Animation = std::make_shared<AnimationSpace>(
@@ -50,15 +53,8 @@ namespace Util {
         ui->Init(player, enemy);
     }
     void BattleScene::addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
-        std::shared_ptr<FlyingObect> object=nullptr;
-        switch (type) {
-            case FlyingObjectType::FireBall:
-                object=std::make_shared<FireBall>();
-                break;
-            case FlyingObjectType::Null:
-                break;
-        }
-        if (object!=nullptr) {
+        std::shared_ptr<FlyingObect> object= flyingObjFactory[type]();
+        if (object) {
             if (sender==player) {
                 object->Init(sender, strength,EnemyFlyingObjects);
                 PlayerFlyingObjects.push_back(object);

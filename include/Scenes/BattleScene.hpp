@@ -39,9 +39,14 @@ namespace Util {
         int EnemyWinCounter=0;
         DefeatedType defeatedType=DefeatedType::Null;
         LossType lossType=LossType::Null;
+
+        std::pmr::unordered_map<FlyingObjectType, std::function<std::shared_ptr<FlyingObect>()>> flyingObjFactory;
     public:
         BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy):
-        player(player), enemy(enemy){}
+        player(player), enemy(enemy) {
+            flyingObjFactory[FlyingObjectType::Null] = []() { return nullptr; };
+            flyingObjFactory[FlyingObjectType::FireBall] = []() {return std::make_shared<FireBall>();};
+        }
 
         void Init(std::shared_ptr<Core::Context> context) override;
         void Update(std::shared_ptr<Core::Context> context) override;
@@ -58,5 +63,4 @@ namespace Util {
         void JudgeBattleEnd();
     };
 }
-
 #endif //BATTLESCENE_HPP
