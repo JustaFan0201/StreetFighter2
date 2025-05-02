@@ -17,6 +17,8 @@ namespace Util {
         void LoadSpecialMove();
         void HeadbuttStateEnter();
         void HeadbuttStateUpload();
+        void HeadbuttRecoveryStateEnter();
+        void HeadbuttRecoveryStateUpload();
         void HundredSlapStateEnter();
         void HundredSlapStateUpload();
     };

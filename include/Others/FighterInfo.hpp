@@ -41,6 +41,9 @@ namespace Util {
         Special_1,
         Special_2,
         Special_3,
+        SpecialRecovery_1,
+        SpecialRecovery_2,
+        SpecialRecovery_3,
         HurtHeadL,
         HurtHeadM,
         HurtHeadH,
@@ -158,6 +161,10 @@ namespace Util {
         Command,
         Pressed
     };
+    struct ButtonList {
+        static inline const std::vector<Keys> punch{Keys::LP, Keys::MP, Keys::HP};
+        static inline const std::vector<Keys> kick{Keys::LK, Keys::MK, Keys::HK};
+    };
     struct SpecialMoveInput {
         std::vector<SpecialMoveDirection> command;
         AttackButton requiredAttack;
@@ -189,6 +196,7 @@ namespace Util {
         std::unordered_set<FighterState> SpecialStates;
         std::unordered_set<FighterState> IdleStates;
         std::unordered_set<FighterState> BlockStates;
+        std::unordered_set<FighterState> CanBlockStates;
         std::unordered_set<FighterState> InvincibleForFlyObj;
         std::unordered_set<FighterState> Invincible;
     };

@@ -112,6 +112,7 @@ namespace Util {
             if (down) return SpecialMoveDirection::down;
             return SpecialMoveDirection::Null;
         }
+
         std::vector<bool> GetCurrentAttacks() {
             bool LP = IsKeyDown(Keys::LP);
             bool MP = IsKeyDown(Keys::MP);
@@ -121,6 +122,7 @@ namespace Util {
             bool HK = IsKeyDown(Keys::HK);
             return std::vector<bool>{LP,MP,HP,LK,MK,HK};
         }
+
         static bool IsAttackMatched(const std::vector<bool>& attacks, AttackButton button) {
             switch (button) {
                 case AttackButton::ANY_PUNCH:
@@ -135,6 +137,7 @@ namespace Util {
                     return false;
             }
         }
+
         bool IsSpecialMove(SpecialMoveInput special) {
             if(special.commandtype==CommandType::Null) {
                 return Nullskill(special);
@@ -147,6 +150,7 @@ namespace Util {
             }
             return false;
         }
+
         static bool DirectionContain(SpecialMoveDirection input, SpecialMoveDirection required) {
             // 判斷 input 是否包含 required 的方向成分
             if (required == SpecialMoveDirection::Backward) {
@@ -361,15 +365,13 @@ namespace Util {
                     return Keys::LP;
                 }
                 if(request==AttackButton::ANY_PUNCH&&AiMove==6) {
-                    std::vector punch={Keys::LP,Keys::MP,Keys::HP};
-                    return punch[randomNum(2)];
+                    return ButtonList::punch[randomNum(2)];
                 }
                 if(request==AttackButton::ALL_KICK&&AiMove==7) {
                     return Keys::LK;
                 }
                 if(request==AttackButton::ANY_KICK&&AiMove==8) {
-                    std::vector kick={Keys::LK,Keys::MK,Keys::HK};
-                    return kick[randomNum(2)];
+                    return ButtonList::kick[randomNum(2)];
                 }
             }
             if(record.attacks[0]){return Keys::LP;}
@@ -381,6 +383,12 @@ namespace Util {
             return Keys::Null;
         }
         Keys GetCurrentAttackKey(){Keys now=CurrentAttack;CurrentAttack=Keys::Null; return now;}
+        static bool IsInDomainKey(Keys key, const std::vector<Keys>& reqType) {
+            for (auto button : reqType) {
+                if (key == button) return true;
+            }
+            return false;
+        }
     };
 }
 

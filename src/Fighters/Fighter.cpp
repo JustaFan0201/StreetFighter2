@@ -26,7 +26,6 @@ namespace Util {
         hitstrength[FighterState::MP]=hitstrength[FighterState::MK]=hitstrength[FighterState::CrouchMP]=hitstrength[FighterState::CrouchMK]=HitStrength::M;
         hitstrength[FighterState::HP]=hitstrength[FighterState::HK]=hitstrength[FighterState::CrouchHP]=hitstrength[FighterState::CrouchHK]=HitStrength::H;
     }
-
     void Fighter::LoadAttackSound() {
         soundeffect[FighterState::LP]=soundeffect[FighterState::LK]=soundeffect[FighterState::CrouchLP]=soundeffect[FighterState::CrouchLK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_38 - Light Attack.wav")};
         soundeffect[FighterState::MP]=soundeffect[FighterState::MK]=soundeffect[FighterState::CrouchMP]=soundeffect[FighterState::CrouchMK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_39 - Medium Attack.wav")};
@@ -124,6 +123,11 @@ namespace Util {
             FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH
         };
         SpecificStates.BlockStates={
+            FighterState::BackwardBlock, FighterState::CrouchBlock
+        };
+        SpecificStates.CanBlockStates={
+            FighterState::Idle,FighterState::Forward,
+            FighterState::Backward, FighterState::Crouch,
             FighterState::BackwardBlock, FighterState::CrouchBlock
         };
         SpecificStates.SpecialStates={
@@ -340,6 +344,13 @@ namespace Util {
         }
     }
 
+    void Fighter::SkillErrorPrevent(Keys key, const std::vector<Keys>& reqType) {
+        if (!controller->IsInDomainKey(key,reqType)) {
+            ClearButtonType();
+            ChangeState(FighterState::Idle);
+        }
+    }
+
     void Fighter::UploadStateAndNewXY() {
         auto currentEnter = StateUpload.find(currentState);
         currentEnter->second();
@@ -398,11 +409,9 @@ namespace Util {
 
     bool Fighter::IsBlocking() {
         if(!SpecificStates.HurtStates.count(currentState)) {
-            if(currentState==FighterState::Backward||currentState==FighterState::Crouch
-                ||currentState==FighterState::Idle||currentState==FighterState::BackwardBlock
-                ||currentState==FighterState::CrouchBlock) {
+            if(SpecificStates.CanBlockStates.count(currentState)) {
                 return controller->IsBackward(direction);
-                }
+            }
         }
         return false;
     }

@@ -210,6 +210,7 @@ namespace Util {
         void ChangeState(FighterState newState);
         void BorderDetection(int MaxWidth,glm::vec2 cameraOffset);
         virtual void SkillDetection();
+        void SkillErrorPrevent(Keys key, const std::vector<Keys>& reqType);
         void ReSize();
         void UploadStateAndNewXY();
 
