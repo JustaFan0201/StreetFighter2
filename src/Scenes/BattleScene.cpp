@@ -53,7 +53,7 @@ namespace Util {
         ui->Init(player, enemy);
     }
     void BattleScene::addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
-        std::shared_ptr<FlyingObect> object= flyingObjFactory[type]();
+        std::shared_ptr<FlyingObject> object= flyingObjFactory[type]();
         if (object) {
             if (sender==player) {
                 object->Init(sender, strength,EnemyFlyingObjects);
@@ -65,9 +65,9 @@ namespace Util {
             }
         }
     }
-    void BattleScene::UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObect>>& flyingObjects,glm::vec2 cameraOffset) {
+    void BattleScene::UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObject>>& flyingObjects,glm::vec2 cameraOffset) {
         if (!flyingObjects.empty()) {
-            std::vector<std::shared_ptr<FlyingObect>> newFlyingObjects;
+            std::vector<std::shared_ptr<FlyingObject>> newFlyingObjects;
             for (auto& FlyingObj : flyingObjects) {
                 if (flyingObjects==PlayerFlyingObjects) {FlyingObj->Update(EnemyFlyingObjects,cameraOffset);}
                 else {FlyingObj->Update(PlayerFlyingObjects,cameraOffset);}

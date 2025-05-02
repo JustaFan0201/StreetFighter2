@@ -14,6 +14,11 @@ namespace Util {
         void LoadAnimations() override;
         void LoadOffsetVelocity() override;
         void LoadAllBox()override;
+        void LoadSpecialMove();
+        void SonicBoomStateEnter();
+        void SonicBoomStateUpload();
+        void SommersaultStateEnter();
+        void SommersaultStateUpload();
     };
 
 }

@@ -8,10 +8,9 @@
 #include "FlyingObject/FlyingObject.hpp"
 
 namespace Util {
-    class FireBall:public FlyingObect {
+    class FireBall:public FlyingObject {
     public:
         FireBall();
-        void Init(std::shared_ptr<Fighter> fighter,Keys Strength,std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects)override;
     };
 }
 #endif //FIREBALL_HPP

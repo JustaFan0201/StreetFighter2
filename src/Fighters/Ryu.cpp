@@ -68,12 +68,12 @@ namespace Util {
         frames[FighterState::Idle]={100, 150, 200, 150, 100};
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120, 120, 120};
-        frames[FighterState::JumpUP]={120,120,120,120,120,120,120};
+        frames[FighterState::JumpUP]={60,90,120,150,120,90,60};
         frames[FighterState::JumpForward]={60,90,120,120,90,60};
         frames[FighterState::JumpBackward]={60,90,120,120,90,60};
         frames[FighterState::Crouch]={60};
-        frames[FighterState::CrouchDown]={120,60};
-        frames[FighterState::CrouchUp]={60,120};
+        frames[FighterState::CrouchDown]={60,60};
+        frames[FighterState::CrouchUp]={60,60};
 
         frames[FighterState::LP]={30,60,90};
         frames[FighterState::MP]={30,60,120,60,30};

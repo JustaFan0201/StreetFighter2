@@ -32,7 +32,7 @@ namespace Util {
 
         Fighter(std::string name): m_name(name){velocity={0,0};}
         virtual ~Fighter() = default;
-
+        //FMS
         virtual void IdleStateEnter();
         virtual void IdleStateUpload();
 
@@ -63,7 +63,7 @@ namespace Util {
 
         virtual void LossStateEnter();
         virtual void LossStateUpload();
-
+        //Loader
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
         void LoadCommonVelocities();
@@ -71,11 +71,11 @@ namespace Util {
         virtual void LoadAttackSound();
         virtual void LoadAttackAndType();
         void LoadCurrentSpecialMove(Keys ButtonType);
-
+        //Setter
         void SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
         void SetEnemy(std::shared_ptr<Fighter> enemy){this->enemy=enemy;}
         void SetEntityAdder(std::function<void(FlyingObjectType type, std::shared_ptr<Fighter>, Keys)> func) {addEntityFunc = func;}
-
+        //Getter ForScene
         std::string GetFace() const { return face; }
         std::string GetNameTag() const { return nametag; }
         std::string GetCountry() const { return country; }
@@ -84,7 +84,7 @@ namespace Util {
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
         std::unordered_map<FighterState, std::shared_ptr<SFX>> GetSFX() { return soundeffect; }
-
+        //Getter ForFighter
         float GetHP() const{return hp;}
         std::shared_ptr<Fighter> GetEnemy(){return enemy;}
         float GetAttackNum(){return attacks.count(currentState)?attacks[currentState]:0;}

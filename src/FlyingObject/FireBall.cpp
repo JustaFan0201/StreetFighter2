@@ -4,38 +4,24 @@
 
 #include "FlyingObject/FireBall.hpp"
 namespace Util {
-    FireBall::FireBall(): FlyingObect("FireBall") {
+    FireBall::FireBall(): FlyingObject("FireBall") {
         Type=FlyingObjectType::FireBall;
 
-        FireBallVelocity[Keys::LP]=450;
-        FireBallVelocity[Keys::MP]=660;
-        FireBallVelocity[Keys::HP]=900;
+        FlyingObjVelocity[Keys::LP]=450;
+        FlyingObjVelocity[Keys::MP]=650;
+        FlyingObjVelocity[Keys::HP]=750;
 
-        FireBallDmg[Keys::LP]=10;
-        FireBallDmg[Keys::MP]=20;
-        FireBallDmg[Keys::HP]=30;
+        FlyingObjDmg[Keys::LP]=10;
+        FlyingObjDmg[Keys::MP]=15;
+        FlyingObjDmg[Keys::HP]=20;
 
         animations[FlyingObjectState::Start]=ActionInit(2,"Start");
         animations[FlyingObjectState::Collide]=ActionInit(3,"Collide");
-        hitbox.size[FlyingObjectState::Start]={100,100};
+        hitbox.size[FlyingObjectState::Start]={150,150};
 
         animationNow=std::make_shared<AnimationSpace>(
             animations[FlyingObjectState::Start],
             true,120,true,3
         );
-    }
-
-    void FireBall::Init(std::shared_ptr<Fighter> fighter,Keys Strength,std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects) {
-        this->EnemyFlyingObjects=EnemyFlyingObjects;
-        this->fighter=fighter;
-        enemy=fighter->GetEnemy();
-        direction=fighter->GetNewDirection();
-        velocity.x=FireBallVelocity[Strength];
-        this->Strength=Strength;
-
-        animationNow->SetDrawData({(fighter->GetCurrentOffsetPosition()+glm::vec2 {150*direction,40}),
-            0,{direction,1}},
-            animationNow->GetOriginalSize()*glm::vec2{3,3},3);
-        ChangeState(FlyingObjectState::Start);
     }
 }

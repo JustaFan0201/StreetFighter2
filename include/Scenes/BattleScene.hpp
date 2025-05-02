@@ -11,7 +11,7 @@
 #include "Others/UI.hpp"
 #include "FlyingObject/FlyingObject.hpp"
 #include "FlyingObject/FireBall.hpp"
-
+#include "FlyingObject/SonicBoom.hpp"
 namespace Util {
     enum class DefeatedType {
         Null,
@@ -32,27 +32,28 @@ namespace Util {
         std::shared_ptr<Controller> enemyController=std::make_shared<Controller>(PlayerType::Null);
         std::shared_ptr<Camera> camera=std::make_shared<Camera>();
         std::shared_ptr<UI> ui=std::make_shared<UI>();
-        std::vector<std::shared_ptr<FlyingObect>> PlayerFlyingObjects;
-        std::vector<std::shared_ptr<FlyingObect>> EnemyFlyingObjects;
+        std::vector<std::shared_ptr<FlyingObject>> PlayerFlyingObjects;
+        std::vector<std::shared_ptr<FlyingObject>> EnemyFlyingObjects;
         int round=1;
         int PlayerWinCounter=0;
         int EnemyWinCounter=0;
         DefeatedType defeatedType=DefeatedType::Null;
         LossType lossType=LossType::Null;
 
-        std::pmr::unordered_map<FlyingObjectType, std::function<std::shared_ptr<FlyingObect>()>> flyingObjFactory;
+        std::pmr::unordered_map<FlyingObjectType, std::function<std::shared_ptr<FlyingObject>()>> flyingObjFactory;
     public:
         BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy):
         player(player), enemy(enemy) {
             flyingObjFactory[FlyingObjectType::Null] = []() { return nullptr; };
             flyingObjFactory[FlyingObjectType::FireBall] = []() {return std::make_shared<FireBall>();};
+            flyingObjFactory[FlyingObjectType::SonicBoom] = []() {return std::make_shared<SonicBoom>();};
         }
 
         void Init(std::shared_ptr<Core::Context> context) override;
         void Update(std::shared_ptr<Core::Context> context) override;
         void Render() override;
         void addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength);
-        void UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObect>>& flyingObjects,glm::vec2 cameraOffset);
+        void UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObject>>& flyingObjects,glm::vec2 cameraOffset);
         void RoundStart(std::shared_ptr<Core::Context> context);
         float GetPassedTime(){return static_cast<int>(Time::GetElapsedTimeMs() - start_time);}
         void ControllerState();

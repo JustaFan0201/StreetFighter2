@@ -70,8 +70,8 @@ namespace Util {
         frames[FighterState::JumpForward]={60,90,90,120,90,90,60};
         frames[FighterState::JumpBackward]={60,90,90,120,90,90,60};
         frames[FighterState::Crouch]={60};
-        frames[FighterState::CrouchDown]={120,60};
-        frames[FighterState::CrouchUp]={60,120};
+        frames[FighterState::CrouchDown]={60,60};
+        frames[FighterState::CrouchUp]={60,60};
 
         frames[FighterState::LP]={30,60,90};
         frames[FighterState::MP]={30,60,120,60,30};

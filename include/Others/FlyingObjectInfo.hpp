@@ -6,7 +6,8 @@
 #define FLYINGOBJECTINFO_HPP
 enum class FlyingObjectType {
     Null,
-    FireBall
+    FireBall,
+    SonicBoom
 };
 enum class FlyingObjectState {
     Start,

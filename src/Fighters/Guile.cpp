@@ -18,6 +18,7 @@ namespace Util {
         Guile::LoadAllBox();
         Fighter::LoadAttackSound();
         Fighter::LoadAttackAndType();
+        LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -25,8 +26,8 @@ namespace Util {
         animations[FighterState::Idle] = ActionInit(6,"Idle");
         animations[FighterState::Backward] = ActionInit(5,"Backward");
         animations[FighterState::Forward] = ActionInit(5,"Forward");
-        animations[FighterState::JumpUP] = ActionInit(10, "JumpUP");
-        animations[FighterState::JumpForward] = ActionInit(8, "JumpForward");
+        animations[FighterState::JumpUP] = ActionInit(8, "JumpUP");
+        animations[FighterState::JumpForward] = ActionInit(7, "JumpForward");
         std::vector<std::string> reversedAnimations = animations[FighterState::JumpForward];
         std::reverse(reversedAnimations.begin(), reversedAnimations.end());
         animations[FighterState::JumpBackward] = reversedAnimations;
@@ -55,8 +56,8 @@ namespace Util {
         animations[FighterState::CrouchMK] = ActionInit(5, "CrouchMK");
         animations[FighterState::CrouchHK] = ActionInit(11, "CrouchHK");
 
-        animations[FighterState::WinStart]=ActionInit(1, "WinStart");
-        animations[FighterState::Win]=ActionInit(3, "Win");
+        animations[FighterState::WinStart]=ActionInit(2, "WinStart");
+        animations[FighterState::Win]=ActionInit(1, "Win");
 
         animations[FighterState::TimeOverLoss]=ActionInit(2, "TimeOverLoss");
         animations[FighterState::DefeatedLoss]=ActionInit(3, "DefeatedLoss");
@@ -64,16 +65,16 @@ namespace Util {
         frames[FighterState::Idle]={100, 100, 100, 100, 100, 100};
         frames[FighterState::Forward]={120, 120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120, 120};
-        frames[FighterState::JumpUP]={60,60,60,60,60,60,60,60,60,60};
-        frames[FighterState::JumpForward]={60,60,60,60,60,60,60,60};
-        frames[FighterState::JumpBackward]={60,60,60,60,60,60,60,60};
+        frames[FighterState::JumpUP]={60,90,120,120,120,120,90,60};
+        frames[FighterState::JumpForward]={60,90,120,150,120,90,60};
+        frames[FighterState::JumpBackward]={60,90,120,150,120,90,60};
         frames[FighterState::Crouch]={60};
         frames[FighterState::CrouchDown]={60,60,60};
         frames[FighterState::CrouchUp]={60,60,60};
-        frames[FighterState::LP]={60,60,60};
-        frames[FighterState::MP]={60,60,60,60,60};
-        frames[FighterState::HP]={60,60,60,60,60};
-        frames[FighterState::LK]={60,60,60};
+        frames[FighterState::LP]={30,60,90};
+        frames[FighterState::MP]={30,60,120,60,30};
+        frames[FighterState::HP]={60,90,120,180,60};
+        frames[FighterState::LK]={30,60,90};
         frames[FighterState::MK]={60,60,60,60,60,60};
         frames[FighterState::HK]={60,60,60,60,60,60};
 
@@ -94,8 +95,8 @@ namespace Util {
         frames[FighterState::BackwardBlock] = {150,150,150};
         frames[FighterState::CrouchBlock] = {150,150};
 
-        frames[FighterState::WinStart]={10};
-        frames[FighterState::Win]={200, 200, 200};
+        frames[FighterState::WinStart]={200, 200};
+        frames[FighterState::Win]={200};
 
         frames[FighterState::TimeOverLoss]={180, 180};
         frames[FighterState::DefeatedLoss]={180,180,180};
@@ -126,8 +127,8 @@ namespace Util {
         offset[FighterState::BackwardBlock]={{-8,-4},{-9,-23},{11,-8}};
         offset[FighterState::CrouchBlock]={{-18,-32},{-24,-30}};
 
-        offset[FighterState::Win]={{-24,52},{-29,45},{-26,34}};
-        offset[FighterState::WinStart]={{-25,52}};
+        offset[FighterState::Win]={{-23,14}};
+        offset[FighterState::WinStart]={{-27,33},{-32,24}};
 
         offset[FighterState::TimeOverLoss]={{24,33},{24,33}};
         offset[FighterState::DefeatedLoss]={{-73,7},{-153,-46},{-262,-103}};
@@ -263,14 +264,60 @@ namespace Util {
         boxes.hitbox.size[FighterState::LP]={140,50};
         boxes.hitbox.offset[FighterState::LP]={{-1,-1},{129,85},{-1,-1}};
         boxes.hitbox.size[FighterState::MP]={60,160};
-        boxes.hitbox.offset[FighterState::MP]={{-1,-1},{75,89},{-1,-1},{-1,-1},{-1,-1}};
-        boxes.hitbox.size[FighterState::HP]={150,50};
-        boxes.hitbox.offset[FighterState::HP]={{-1,-1},{-1,-1},{-1,-1},{335,85},{-1,-1},{-1,-1}};
+        boxes.hitbox.offset[FighterState::MP]={{-1,-1},{-1,-1},{45,139},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::HP]={240,50};
+        boxes.hitbox.offset[FighterState::HP]={{-1,-1},{-1,-1},{-1,-1},{25,85},{-1,-1}};
         boxes.hitbox.size[FighterState::LK]={200,70};
         boxes.hitbox.offset[FighterState::LK]={{-1,-1},{-1,-1},{170,-24}};
         boxes.hitbox.size[FighterState::MK]={200,60};
         boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{-1,-1},{-1,-1},{245,-30},{-1,-1}};
         boxes.hitbox.size[FighterState::HK]={140,80};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{200,115},{-1,-1},{-1,-1},{-1,-1}};
+    }
+    void Guile::LoadSpecialMove() {
+        animations[FighterState::Special_1]=ActionInit(4, "Special_1");
+        offset[FighterState::Special_1]={{-1,-14},{-47,-4},{4,-12},{89,-6}};
+
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={60,90,60,60};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={60,120,90,60};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,150,120,90};
+
+        boxes.hurtbox.head.offset[FighterState::Special_1]={{38,90},{74,75},{76,76},{76,76}};
+        boxes.hurtbox.body.offset[FighterState::Special_1]={{13,45},{20,44},{15,47},{7,50}};
+
+        StateEnter[FighterState::Special_1]=[this] { SonicBoomStateEnter(); };
+        StateUpload[FighterState::Special_1]=[this] { SonicBoomStateUpload(); };
+
+        SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/SP1_L.wav");
+        SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::MP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/SP1_H.wav");
+        SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::HP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/SP1_H.wav");
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].command={
+            SpecialMoveDirection::Forward,
+            SpecialMoveDirection::Backward
+        };
+        SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ANY_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Pressed;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::LP]=250;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::MP]=500;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::HP]=750;
+    }
+    void Guile::SonicBoomStateEnter() {
+        ResetVelocity();
+        ButtonType=controller->GetCurrentAttackKey();
+        SkillErrorPrevent(ButtonType,ButtonList::punch);
+        LoadCurrentSpecialMove(ButtonType);
+        PlayCurrentSound();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Guile::SonicBoomStateUpload() {
+        if (ActionNow->GetCurrentFrameIndex()==3){AddFlyingObject(FlyingObjectType::SonicBoom,ButtonType);ClearButtonType();}
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
+    }
+    void Guile::SommersaultStateEnter() {
+
+    }
+    void Guile::SommersaultStateUpload() {
+
     }
 }

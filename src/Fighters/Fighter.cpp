@@ -490,10 +490,10 @@ namespace Util {
             ChangeState(FighterState::TimeOverLoss);
         }
         if (Input::IsKeyDown(Keycode::NUM_5)) {
-            ChangeState(FighterState::Special_1);
+            ChangeState(FighterState::Win);
         }
         if (Input::IsKeyDown(Keycode::NUM_6)) {
-            ChangeState(FighterState::CrouchHK);
+            ChangeState(FighterState::WinStart);
         }
         if (Input::IsKeyDown(Keycode::MOUSE_MB)) {
             mouse = Input::GetCursorPosition();
