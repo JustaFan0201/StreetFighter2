@@ -266,7 +266,7 @@ namespace Util {
         boxes.hitbox.size[FighterState::MP]={60,160};
         boxes.hitbox.offset[FighterState::MP]={{-1,-1},{-1,-1},{45,139},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HP]={240,50};
-        boxes.hitbox.offset[FighterState::HP]={{-1,-1},{-1,-1},{-1,-1},{25,85},{-1,-1}};
+        boxes.hitbox.offset[FighterState::HP]={{-1,-1},{-1,-1},{-1,-1},{285,85},{-1,-1}};
         boxes.hitbox.size[FighterState::LK]={200,70};
         boxes.hitbox.offset[FighterState::LK]={{-1,-1},{-1,-1},{170,-24}};
         boxes.hitbox.size[FighterState::MK]={200,60};
@@ -301,6 +301,53 @@ namespace Util {
         SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::LP]=250;
         SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::MP]=500;
         SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::HP]=750;
+
+        animations[FighterState::Special_2]=ActionInit(10, "Special_2");
+        offset[FighterState::Special_2]={{9,-37},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::LK]={3,7};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::MK]={4,9};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::HK]={5,11};
+
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LK]={30,30,30,60,60,90,120,90,90,60};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::MP]={30,30,30,60,90,120,180,120,120,90};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::HP]={30,30,30,90,90,120,240,180,180,120};
+
+        boxes.hurtbox.body.size[FighterState::Special_2]={{100,100},{100,100},{100,100},{100,100},{100,100},{100,100},{100,100},{100,100},{100,100},{100,100}};
+        boxes.hurtbox.leg.size[FighterState::Special_2]={{120,85},{100,80},{100,85},{100,125},{100,125},{100,125},{100,125},{100,125},{100,125},{100,125}};
+        boxes.hurtbox.head.offset[FighterState::Special_2]={{33,69},{9,143},{26,110},{-24,131},{-97,71},{-74,3},{-141,-55},{67,22},{32,86},{9,141}};
+        boxes.hurtbox.body.offset[FighterState::Special_2]={{19,26},{-17,90},{-12,64},{-36,69},{0,72},{-3,60},{-66,-41},{29,62},{-21,64},{-23,85}};
+        boxes.hurtbox.leg.offset[FighterState::Special_2]={{30,-46},{-19,1},{-9,-2},{15,-6},{90,1},{103,65},{-13,56},{-31,31},{-18,-1},{-19,-16}};
+
+        boxes.hitbox.size[FighterState::Special_2]={200,300};
+        boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{131,43},{-1,-1},{-1,-1},{-1,-1}};
+
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LK]=10;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MK]=15;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HK]=22;
+
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LK]=HitStrength::L;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MK]=HitStrength::M;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HK]=HitStrength::H;
+
+        StateEnter[FighterState::Special_2]=[this] { SommersaultStateEnter(); };
+        StateUpload[FighterState::Special_2]=[this] { SommersaultStateUpload(); };
+
+        SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/SP2_L.wav");
+        SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::MK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/SP2_L.wav");
+        SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::HK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/SP2_H.wav");
+        SpecialMoveData.SkillCommand[FighterState::Special_2].command={
+            SpecialMoveDirection::Up,
+            SpecialMoveDirection::down
+        };
+        SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ANY_KICK;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].commandtype=CommandType::Pressed;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::LK]=250;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::MK]=500;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::HK]=750;
+        SpecificStates.borderCheckStates.insert(FighterState::Special_2);
+
+        soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/Win.wav");
+        soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/Loss.wav");
     }
     void Guile::SonicBoomStateEnter() {
         ResetVelocity();
@@ -315,9 +362,21 @@ namespace Util {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Guile::SommersaultStateEnter() {
-
+        ResetVelocity();
+        ButtonType=controller->GetCurrentAttackKey();
+        SkillErrorPrevent(ButtonType,ButtonList::kick);
+        LoadCurrentSpecialMove(ButtonType);
+        velocity=GetInitialvelocity();
+        PlayCurrentSound();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Guile::SommersaultStateUpload() {
-
+        if (ActionNow->GetCurrentFrameIndex() <= 7) {
+            velocity.x += velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
+            velocity.y += velocity.y * 0.05f * Time::GetDeltaTimeMs() / 1000.0f;
+        } else {
+            velocity.y += Gravity * Time::GetDeltaTimeMs() / 1000.0f;
+        }
+        if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
 }
