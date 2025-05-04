@@ -191,19 +191,19 @@ namespace Util {
         StateUpload[FighterState::CrouchDown] = [this] {CrouchDownUpload(); };
         StateUpload[FighterState::CrouchUp] = [this] {CrouchUpUpload(); };
 
-        StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::MP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::HP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::LK] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::MK] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::HK] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::LP] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
+        StateUpload[FighterState::MP] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
+        StateUpload[FighterState::HP] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
+        StateUpload[FighterState::LK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
+        StateUpload[FighterState::MK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
+        StateUpload[FighterState::HK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();AttackStateUpload(); };
 
         StateUpload[FighterState::CrouchLP] = [this] {AttackStateUpload(); };
         StateUpload[FighterState::CrouchMP] = [this] {AttackStateUpload();};
         StateUpload[FighterState::CrouchHP] = [this] {AttackStateUpload(); };
         StateUpload[FighterState::CrouchLK] = [this] {AttackStateUpload(); };
         StateUpload[FighterState::CrouchMK] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::CrouchHK] = [this] {AttackStateUpload(); };
+        StateUpload[FighterState::CrouchHK] = [this] {  AttackStateUpload(); };
 
         StateUpload[FighterState::HurtHeadL] = [this] { HurtStateUpload(); };
         StateUpload[FighterState::HurtHeadM] = [this] { HurtStateUpload(); };
@@ -355,9 +355,9 @@ namespace Util {
         auto currentEnter = StateUpload.find(currentState);
         currentEnter->second();
 
-        glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
+        /*glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
             ActionNow->GetTransform().translation.y+velocity.y};
-        ActionNow->SetTransform({position,0,{direction,1}});
+        ActionNow->SetTransform({position,0,{direction,1}});*/
     }
 
     void Fighter::HitboxIsCollidedEnemy() {
