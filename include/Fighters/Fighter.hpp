@@ -233,7 +233,7 @@ namespace Util {
         std::unordered_map<FighterState, std::shared_ptr<SFX>> soundeffect;
 
         float currentAnimationIndex=0;
-        FighterState currentState;
+        FighterState currentState=FighterState::Null;
 
         std::unordered_map<FighterState, std::function<void()>> StateEnter;
         std::unordered_map<FighterState, std::function<void()>> StateUpload;

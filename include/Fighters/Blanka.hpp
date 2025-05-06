@@ -16,7 +16,9 @@ namespace Util {
         void LoadAnimations() override;
         void LoadOffsetVelocity() override;
         void LoadAllBox()override;
-
+        void LoadSpecialMove();
+        void ElectricThunderStateEnter();
+        void ElectricThunderStateUpload();
     };
 }
 #endif //BLANKA_HPP

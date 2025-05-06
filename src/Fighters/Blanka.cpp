@@ -18,6 +18,7 @@ namespace Util {
         Blanka::LoadAllBox();
         Fighter::LoadAttackSound();
         Fighter::LoadAttackAndType();
+        LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -280,5 +281,45 @@ namespace Util {
         boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{185,93},{-1,-1},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HK]={180,140};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{134,36},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1}};
+    }
+    void Blanka::LoadSpecialMove() {
+        animations[FighterState::Special_1]=ActionInit(4, "Special_1");
+        offset[FighterState::Special_1]={{-23,-33},{-14,-37},{-8,-19},{-15,-51}};
+
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={90,30,360,30};
+
+        boxes.hurtbox.body.size[FighterState::Special_1]={{150,80},{150,80},{180,80},{180,80}};
+        boxes.hurtbox.leg.offset[FighterState::Special_1]={{180,100},{180,100},{180,100},{180,100}};
+        boxes.hurtbox.head.offset[FighterState::Special_1]={{84,39},{84,39},{90,12},{89,14}};
+        boxes.hurtbox.body.offset[FighterState::Special_1]={{3,28},{9,26},{4,7},{4,7}};
+        boxes.hurtbox.leg.offset[FighterState::Special_1]={{-4,-49},{-4,-49},{-5,-59},{-5,-59}};
+        boxes.hitbox.size[FighterState::Special_1]={360,250};
+        boxes.hitbox.offset[FighterState::Special_1]={{-1,-1},{-1,-1},{17,-7},{-1,-1}};
+
+        SpecialMoveData.attackdata[FighterState::Special_1].attack[Keys::LP]=20;
+        SpecialMoveData.attackdata[FighterState::Special_1].HitStrength[Keys::LP]=HitStrength::H;
+
+        StateEnter[FighterState::Special_1]=[this] { ElectricThunderStateEnter(); };
+        StateUpload[FighterState::Special_1]=[this] { ElectricThunderStateUpload(); };
+
+        SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Blanka/SP1.wav");
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].command={};
+        SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ALL_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Null;
+
+        soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Blanka/Win.wav");
+        soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Blanka/Loss.wav");
+    }
+    void Blanka::ElectricThunderStateEnter() {
+        ResetVelocity();
+        ButtonType=controller->GetCurrentAttackKey();
+        SkillErrorPrevent(ButtonType,ButtonList::punch);
+        LoadCurrentSpecialMove(ButtonType);
+        PlayCurrentSound();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Blanka::ElectricThunderStateUpload() {
+        if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
     }
 }

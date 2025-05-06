@@ -11,6 +11,7 @@ namespace Util {
         Right = -1
     };
     enum class FighterState {
+        Null,
         Idle,
         Forward,
         Backward,
