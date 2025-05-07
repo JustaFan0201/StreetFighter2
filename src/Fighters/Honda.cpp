@@ -274,9 +274,10 @@ namespace Util {
         animations[FighterState::SpecialRecovery_1]=ActionInit(6, "SpecialRecovery_1");
         offset[FighterState::Special_1]={{0,-4},{-9,7},{-13,14},{-3,15},{5,-6},{38,30}};
         offset[FighterState::SpecialRecovery_1]={{-2,59},{-23,88},{9,22},{2,-36},{3,-26},{-2,-14}};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={30,30,30,30,90,420,90,60,34,34,17,17};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={30,30,30,30,120,560,120,60,34,34,17,17};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={30,30,30,30,150,720,150,60,34,34,17,17};
+        frames[FighterState::SpecialRecovery_1]={90,60,34,34,17,17};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={30,30,30,30,90,420};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={30,30,30,30,120,560};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={30,30,30,30,150,720};
 
         boxes.hurtbox.body.size[FighterState::Special_1]={{190,100},{190,100},{160,100},{160,100},{190,100},{190,100}};
         boxes.hurtbox.leg.size[FighterState::Special_1]={{250,125},{250,125},{250,125},{250,125},{230,125},{150,50}};

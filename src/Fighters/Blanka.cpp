@@ -308,6 +308,60 @@ namespace Util {
         SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ALL_PUNCH;
         SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Null;
 
+        animations[FighterState::Special_2]=ActionInit(8, "Special_2");
+        animations[FighterState::SpecialRecovery_2]=ActionInit(6, "SpecialRecovery_2");
+
+        offset[FighterState::SpecialRecovery_2]={{-34,14},{-33,15},{-30,17},{-14,16},{-30,15},{-26,9}};
+        frames[FighterState::SpecialRecovery_2]={90,90,90,90,90,90};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LP]={45,45,45,45,45,45,45,45};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::MP]={45,45,45,45,45,45,45,45};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::HP]={45,45,45,45,45,45,45,45};
+
+        boxes.hurtbox.head.offset[FighterState::Special_2]={{-52,-60},{-84,-20},{-80,19},{-31,60},{58,51},{90,13},{90,-19},{43,-62}};
+        boxes.hurtbox.body.offset[FighterState::Special_2]={{19,-24},{-2,-28},{-28,-7},{-26,6},{-11,14},{9,20},{28,19},{30,2}};
+        boxes.hurtbox.leg.offset[FighterState::Special_2]={{-7,45},{24,40},{54,5},{44,-15},{0,-38},{-26,-28},{-44,2},{-34,20}};
+
+        boxes.hurtbox.body.size[FighterState::SpecialRecovery_2]={{180,80},{180,80},{150,120},{180,90},{180,80},{100,200}};
+        boxes.hurtbox.leg.size[FighterState::SpecialRecovery_2]={{180,125},{180,125},{180,125},{180,125},{180,125},{200,100}};
+        boxes.hurtbox.head.offset[FighterState::SpecialRecovery_2]={{37,-41},{85,2},{91,78},{-47,104},{-115,-60},{-81,-6}};
+        boxes.hurtbox.body.offset[FighterState::SpecialRecovery_2]={{33,29},{-2,34},{19,26},{-15,23},{-78,3},{-111,-9}};
+        boxes.hurtbox.leg.offset[FighterState::SpecialRecovery_2]={{-53,-23},{-45,-48},{-20,-69},{57,-34},{87,32},{23,106}};
+
+        boxes.hitbox.size[FighterState::Special_2]={220,200};
+        boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{-1,-1},{2,2},{9,2},{14,6},{11,9},{15,0}};
+
+        StateEnter[FighterState::Special_2]=[this] { RollingAttackStateEnter(); };
+        StateUpload[FighterState::Special_2]=[this] { RollingAttackStateUpload(); };
+        StateEnter[FighterState::SpecialRecovery_2]=[this] { RollingAttackRecoveryStateEnter(); };
+        StateUpload[FighterState::SpecialRecovery_2]=[this] { RollingAttackRecoveryStateUpload(); };
+
+        SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Blanka/SP2.wav");
+
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::LP]={20,0};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::MP]={25,0};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::HP]={30,0};
+
+        Initialvelocity.x[FighterState::SpecialRecovery_2]=-10;
+        Initialvelocity.y[FighterState::SpecialRecovery_2]=38;
+
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LP]=10;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=15;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HP]=20;
+
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::H;
+
+        SpecialMoveData.SkillCommand[FighterState::Special_2].command={
+            SpecialMoveDirection::Forward,
+            SpecialMoveDirection::Backward
+        };
+        SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ANY_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].commandtype=CommandType::Pressed;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::LP]=250;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::MP]=500;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::HP]=750;
+        SpecificStates.borderCheckStates.insert(FighterState::Special_2);
+        SpecificStates.borderCheckStates.insert(FighterState::SpecialRecovery_2);
+
         soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Blanka/Win.wav");
         soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Blanka/Loss.wav");
     }
@@ -321,5 +375,31 @@ namespace Util {
     }
     void Blanka::ElectricThunderStateUpload() {
         if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
+    }
+    void Blanka::RollingAttackStateEnter() {
+        ResetVelocity();
+        ButtonType=controller->GetCurrentAttackKey();
+        SkillErrorPrevent(ButtonType,ButtonList::punch);
+        LoadCurrentSpecialMove(ButtonType);
+        velocity=GetInitialvelocity();
+        PlayCurrentSound();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Blanka::RollingAttackStateUpload() {
+        if(HitEnemy) {
+            ClearButtonType();
+            ChangeState(FighterState::SpecialRecovery_2);
+        }
+        if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
+    }
+    void Blanka::RollingAttackRecoveryStateEnter() {
+        ResetVelocity();
+        velocity=GetInitialvelocity();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Blanka::RollingAttackRecoveryStateUpload() {
+        if(GetCharacterIsOnFloor()&&velocity.y<0){velocity.y=0;}
+        else{velocity.y+=Gravity*Time::GetDeltaTimeMs()/1000;}
+        if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ClearButtonType();ChangeState(FighterState::Idle);}
     }
 }

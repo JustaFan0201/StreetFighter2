@@ -19,6 +19,10 @@ namespace Util {
         void LoadSpecialMove();
         void ElectricThunderStateEnter();
         void ElectricThunderStateUpload();
+        void RollingAttackStateEnter();
+        void RollingAttackStateUpload();
+        void RollingAttackRecoveryStateEnter();
+        void RollingAttackRecoveryStateUpload();
     };
 }
 #endif //BLANKA_HPP
