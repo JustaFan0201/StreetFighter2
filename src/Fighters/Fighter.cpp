@@ -187,14 +187,14 @@ namespace Util {
         StateEnter[FighterState::TimeOverLoss] = [this] { LossStateEnter(); };
         StateEnter[FighterState::DefeatedLoss] = [this] { LossStateEnter(); };
 
-        StateUpload[FighterState::Idle] = [this] {IdleStateUpload(); };
+        StateUpload[FighterState::Idle] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();IdleStateUpload(); };
         StateUpload[FighterState::Forward] = [this] { ForwardStateUpload(); };
         StateUpload[FighterState::Backward] = [this] { BackwardStateUpload(); };
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::Crouch] = [this] { CrouchUpload(); };
-        StateUpload[FighterState::CrouchDown] = [this] {CrouchDownUpload(); };
+        StateUpload[FighterState::Crouch] = [this] { ActionNow->AnimationPause();ActionNow->TestPictureoffset();CrouchUpload(); };
+        StateUpload[FighterState::CrouchDown] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();CrouchDownUpload(); };
         StateUpload[FighterState::CrouchUp] = [this] {CrouchUpUpload(); };
 
         StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
@@ -361,9 +361,9 @@ namespace Util {
         auto currentEnter = StateUpload.find(currentState);
         currentEnter->second();
 
-        glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
+        /*glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
             ActionNow->GetTransform().translation.y+velocity.y};
-        ActionNow->SetTransform({position,0,{direction,1}});
+        ActionNow->SetTransform({position,0,{direction,1}});*/
     }
 
     void Fighter::HitboxIsCollidedEnemy() {
