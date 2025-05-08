@@ -187,14 +187,14 @@ namespace Util {
         StateEnter[FighterState::TimeOverLoss] = [this] { LossStateEnter(); };
         StateEnter[FighterState::DefeatedLoss] = [this] { LossStateEnter(); };
 
-        StateUpload[FighterState::Idle] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();IdleStateUpload(); };
+        StateUpload[FighterState::Idle] = [this] {IdleStateUpload(); };
         StateUpload[FighterState::Forward] = [this] { ForwardStateUpload(); };
         StateUpload[FighterState::Backward] = [this] { BackwardStateUpload(); };
         StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
         StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::Crouch] = [this] { ActionNow->AnimationPause();ActionNow->TestPictureoffset();CrouchUpload(); };
-        StateUpload[FighterState::CrouchDown] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();CrouchDownUpload(); };
+        StateUpload[FighterState::Crouch] = [this] {CrouchUpload(); };
+        StateUpload[FighterState::CrouchDown] = [this] {CrouchDownUpload(); };
         StateUpload[FighterState::CrouchUp] = [this] {CrouchUpUpload(); };
 
         StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
@@ -218,8 +218,8 @@ namespace Util {
         StateUpload[FighterState::HurtBodyM] = [this] { HurtStateUpload(); };
         StateUpload[FighterState::HurtBodyH] = [this] { HurtStateUpload(); };
 
-        StateUpload[FighterState::BackwardBlock] = [this] {BlockStateUpload(); };
-        StateUpload[FighterState::CrouchBlock] = [this] { BlockStateUpload(); };
+        StateUpload[FighterState::BackwardBlock] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();BlockStateUpload(); };
+        StateUpload[FighterState::CrouchBlock] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset(); BlockStateUpload(); };
 
         StateUpload[FighterState::WinStart] = [this] { WinStartStateUpload(); };
         StateUpload[FighterState::Win] = [this] { WinStateUpload(); };
