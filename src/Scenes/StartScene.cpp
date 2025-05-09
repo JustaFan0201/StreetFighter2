@@ -48,17 +48,17 @@ namespace Util {
 
                 if (storymode) storymode->custom_Draw();
                 if (battlemode) battlemode->custom_Draw();
-                if (Input::IsKeyPressed(Keycode::A) && mode == 1) {
+                if (Input::IsKeyPressed(Keycode::A) && mode == ModeType::Battle) {
                     storymode = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/start/Storymodesel.png");
                     battlemode = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/start/Battlemode.png");
                     soundEffect->Play(0);
-                    mode = 0;
+                    mode = ModeType::Story;
                 }
-                if (Input::IsKeyPressed(Keycode::D) && mode == 0) {
+                if (Input::IsKeyPressed(Keycode::D) && mode == ModeType::Story) {
                     storymode = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/start/Storymode.png");
                     battlemode = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/start/Battlemodesel.png");
                     soundEffect->Play(0);
-                    mode = 1;
+                    mode = ModeType::Battle;
                 }//選中改色
                 if (Input::IsKeyDown(Keycode::RETURN)) {
                     soundEffect->Play(0);

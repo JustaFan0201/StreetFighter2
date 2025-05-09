@@ -28,7 +28,10 @@
 #include "Fighters/Blanka.hpp"
 #include "Fighters/Ken.hpp"
 #include "Fighters/Honda.hpp"
-
+enum class ModeType {
+    Story,
+    Battle
+};
 namespace Util {
     class Scene {
     public:
@@ -37,7 +40,9 @@ namespace Util {
         virtual void Update(std::shared_ptr<Core::Context> context) = 0;//更新
         virtual void Render() = 0;//渲染
         bool getSenseEnd() const;//判斷場景能否結束 true=結束 false=繼續
+        void SetMode(ModeType modetype){mode=modetype;}
     protected:
+        ModeType mode=ModeType::Story;
         std::shared_ptr<AnimationSpace> m_Animation;//背景
         std::shared_ptr<BGM> m_BGM;
         bool SenseEnd=false;

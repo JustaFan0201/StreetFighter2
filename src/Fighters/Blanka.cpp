@@ -8,8 +8,10 @@ namespace Util {
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/Blanka_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/Blanka_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/brazil.png");
+        country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/brazil_dark.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/BlankaTheme.mp3");
         country_position={{323, 23},0,{1,1}};
+        face_postion={{54, -150},0,{1,1}};
         BackgroundInit(4);
         StateInit();
         LoadCommonVelocities();
@@ -309,23 +311,23 @@ namespace Util {
         SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Null;
 
         animations[FighterState::Special_2]=ActionInit(8, "Special_2");
-        animations[FighterState::SpecialRecovery_2]=ActionInit(6, "SpecialRecovery_2");
+        animations[FighterState::SpecialRecovery_2]=ActionInit(7, "SpecialRecovery_2");
 
-        offset[FighterState::SpecialRecovery_2]={{-34,14},{-33,15},{-30,17},{-14,16},{-30,15},{-26,9}};
-        frames[FighterState::SpecialRecovery_2]={90,90,90,90,90,90};
+        offset[FighterState::SpecialRecovery_2]={{-34,14},{-33,15},{-30,17},{-14,16},{-30,15},{50,-12},{61,-2}};
+        frames[FighterState::SpecialRecovery_2]={90,90,90,90,120,120,120,150};
         SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LP]={45,45,45,45,45,45,45,45};
-        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::MP]={45,45,45,45,45,45,45,45};
-        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::HP]={45,45,45,45,45,45,45,45};
 
-        boxes.hurtbox.head.offset[FighterState::Special_2]={{-52,-60},{-84,-20},{-80,19},{-31,60},{58,51},{90,13},{90,-19},{43,-62}};
-        boxes.hurtbox.body.offset[FighterState::Special_2]={{19,-24},{-2,-28},{-28,-7},{-26,6},{-11,14},{9,20},{28,19},{30,2}};
-        boxes.hurtbox.leg.offset[FighterState::Special_2]={{-7,45},{24,40},{54,5},{44,-15},{0,-38},{-26,-28},{-44,2},{-34,20}};
+        boxes.hurtbox.body.size[FighterState::Special_2]={{180,80},{180,80},{180,80},{180,80},{180,80},{180,80},{180,80},{180,80}};
+        boxes.hurtbox.leg.size[FighterState::Special_2]={{180,125},{180,125},{180,125},{180,125},{180,125},{180,125},{180,125},{180,125}};
+        boxes.hurtbox.head.offset[FighterState::Special_2]={{-52,-60},{-84,-20},{-80,19},{-31,60},{58,51},{90,13},{60,-19},{13,-62}};
+        boxes.hurtbox.body.offset[FighterState::Special_2]={{19,-24},{-2,-28},{-28,-7},{-26,6},{-11,14},{9,20},{-2,19},{0,2}};
+        boxes.hurtbox.leg.offset[FighterState::Special_2]={{-7,45},{24,40},{54,5},{44,-15},{0,-38},{-26,-28},{-74,2},{-64,20}};
 
-        boxes.hurtbox.body.size[FighterState::SpecialRecovery_2]={{180,80},{180,80},{150,120},{180,90},{180,80},{100,200}};
-        boxes.hurtbox.leg.size[FighterState::SpecialRecovery_2]={{180,125},{180,125},{180,125},{180,125},{180,125},{200,100}};
-        boxes.hurtbox.head.offset[FighterState::SpecialRecovery_2]={{37,-41},{85,2},{91,78},{-47,104},{-115,-60},{-81,-6}};
-        boxes.hurtbox.body.offset[FighterState::SpecialRecovery_2]={{33,29},{-2,34},{19,26},{-15,23},{-78,3},{-111,-9}};
-        boxes.hurtbox.leg.offset[FighterState::SpecialRecovery_2]={{-53,-23},{-45,-48},{-20,-69},{57,-34},{87,32},{23,106}};
+        boxes.hurtbox.body.size[FighterState::SpecialRecovery_2]={{180,80},{180,80},{150,120},{180,90},{180,80},{100,250},{100,180}};
+        boxes.hurtbox.leg.size[FighterState::SpecialRecovery_2]={{180,125},{180,125},{180,125},{180,125},{240,100},{180,100}};
+        boxes.hurtbox.head.offset[FighterState::SpecialRecovery_2]={{37,-41},{85,2},{91,78},{-47,104},{-115,-60},{6,-24},{65,-53}};
+        boxes.hurtbox.body.offset[FighterState::SpecialRecovery_2]={{33,29},{-2,34},{19,26},{-15,23},{-78,3},{-13,-24},{68,-47}};
+        boxes.hurtbox.leg.offset[FighterState::SpecialRecovery_2]={{-53,-23},{-45,-48},{-20,-69},{57,-34},{87,32},{122,90},{172,73}};
 
         boxes.hitbox.size[FighterState::Special_2]={220,200};
         boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{-1,-1},{2,2},{9,2},{14,6},{11,9},{15,0}};
@@ -386,6 +388,7 @@ namespace Util {
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Blanka::RollingAttackStateUpload() {
+        if(ActionNow->GetCurrentFrameIndex()>=8){ResetVelocity();}
         if(HitEnemy) {
             ClearButtonType();
             ChangeState(FighterState::SpecialRecovery_2);

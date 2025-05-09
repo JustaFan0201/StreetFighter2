@@ -79,7 +79,9 @@ namespace Util {
         std::string GetFace() const { return face; }
         std::string GetNameTag() const { return nametag; }
         std::string GetCountry() const { return country; }
+        std::string GetCountryDark() const { return country_dark; }
         Transform GetCountryPosition() const { return country_position; }
+        Transform GetFacePosition() const { return face_postion; }
         std::vector<std::string> GetStageBackground() { return stage_background; }
         std::string GetName() const { return m_name; }
         std::shared_ptr<BGM> GetBGM() { return m_BGM; }
@@ -227,7 +229,9 @@ namespace Util {
         std::string face;
         std::string nametag;
         std::string country;
+        std::string country_dark;
         Transform country_position;
+        Transform face_postion;
         std::vector<std::string> stage_background;
         std::shared_ptr<BGM> m_BGM;
         std::unordered_map<FighterState, std::shared_ptr<SFX>> soundeffect;

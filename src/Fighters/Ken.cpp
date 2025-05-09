@@ -8,8 +8,10 @@ namespace Util {
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/usa.png");
+        country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/usa_dark.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/KenTheme.mp3");
         country_position={{338, 245},0,{1,1}};
+        face_postion={{-160, -253},0,{1,1}};
         BackgroundInit(14);
         StateInit();
         LoadCommonVelocities();

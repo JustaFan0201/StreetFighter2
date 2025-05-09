@@ -40,6 +40,7 @@ namespace Util {
                 keyMap[Keys::LK] = Keycode::G;
                 keyMap[Keys::MK] = Keycode::H;
                 keyMap[Keys::HK] = Keycode::J;
+                keyMap[Keys::ENTER] = Keycode::RETURN;
             }
             else if (Player == PlayerType::Player2) {
                 keyMap[Keys::UP] = Keycode::UP;
@@ -52,6 +53,7 @@ namespace Util {
                 keyMap[Keys::LK] = Keycode::KP_4;
                 keyMap[Keys::MK] = Keycode::KP_5;
                 keyMap[Keys::HK] = Keycode::KP_6;
+                keyMap[Keys::ENTER] = Keycode::KP_ENTER;
             }
             else if (Player == PlayerType::Ai) {
                 keyMap[Keys::UP] = Keycode::UNKNOWN;
@@ -64,6 +66,7 @@ namespace Util {
                 keyMap[Keys::LK] = Keycode::UNKNOWN;
                 keyMap[Keys::MK] = Keycode::UNKNOWN;
                 keyMap[Keys::HK] = Keycode::UNKNOWN;
+                keyMap[Keys::ENTER] = Keycode::UNKNOWN;
             }
         }
     public:

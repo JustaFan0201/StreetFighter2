@@ -5,8 +5,22 @@
 #ifndef SLECTSCENE_HPP
 #define SLECTSCENE_HPP
 #include "Scenes/Scene.hpp"
-
+#include "Others/Controller.hpp"
 namespace Util {
+    struct PlayerData{
+        bool Ready=false;
+        int number;
+        int chooseIndex;
+        FighterDirection direction=FighterDirection::Left;
+        std::shared_ptr<Fighter> player;
+        std::shared_ptr<Controller> controller=std::make_shared<Controller>(PlayerType::Null);
+        std::shared_ptr<ImageSpace> character;//角色
+        std::shared_ptr<ImageSpace> character_match_country;//當前角色國家
+        std::shared_ptr<ImageSpace> character_nametag;//當前角色Nametag
+        std::shared_ptr<ImageSpace> player_number;//1p
+        std::shared_ptr<ImageSpace> player_number_screen;//1p框框
+        std::vector<std::shared_ptr<ImageSpace>> AllPictures;
+    };
     class SlectScene : public Scene {
         private:
         bool m_WaitingForEnter=true;
@@ -24,32 +38,20 @@ namespace Util {
             std::make_shared<Zangief>(),// 指向子類 Zangief
             std::make_shared<Dhalsim>() // 指向子類 Dhalsim
         };
+        PlayerData player1data;
+        PlayerData player2data;
 
-        std::shared_ptr<ImageSpace> character;//角色
-        std::shared_ptr<ImageSpace> character_match_country;//當前角色國家
-        std::shared_ptr<ImageSpace> character_nametag;//當前角色Nametag
-        std::shared_ptr<ImageSpace> first_player;//1p
-        std::shared_ptr<ImageSpace> first_player_screen;//1p框框
-
-        std::vector<std::shared_ptr<ImageSpace>> AllPictures={};//要渲染的圖
-
-        std::vector<std::shared_ptr<ImageSpace>> countries_dark = {
-               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/japan_dark.png"),
-               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/japan_dark.png"),
-               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/brazil_dark.png"),
-               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/usa_dark.png"),
-               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/usa_dark.png"),
-               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/china_dark.png"),
-               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/ussr_dark.png"),
-               std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/india_dark.png")
-        };
-        int chooseIndex = 0;//0~7 characters角色選擇
+        std::vector<std::shared_ptr<ImageSpace>> countries_dark;
         public:
         SlectScene();
+        void PlayerDataInit(PlayerData &playerdata) const;
+        void PlayerDataUpload(PlayerData &playerdata);
+        static void PlayerDataRender(PlayerData &playerdata);
         void Init(std::shared_ptr<Core::Context> context) override;
         void Update(std::shared_ptr<Core::Context> context) override;
         void Render() override;
-        std::shared_ptr<Fighter> GetPlayerCharacter(){return characters[chooseIndex];}//回傳1p玩家角色
+        [[nodiscard]] std::shared_ptr<Fighter> GetPlayer1Character() const{return player1data.player;}//回傳1p玩家角色
+        [[nodiscard]] std::shared_ptr<Fighter> GetPlayer2Character() const{return player2data.player;}//回傳1p玩家角色
     };
 }
 #endif //SLECTSCENE_HPP

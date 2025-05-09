@@ -218,8 +218,8 @@ namespace Util {
         StateUpload[FighterState::HurtBodyM] = [this] { HurtStateUpload(); };
         StateUpload[FighterState::HurtBodyH] = [this] { HurtStateUpload(); };
 
-        StateUpload[FighterState::BackwardBlock] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();BlockStateUpload(); };
-        StateUpload[FighterState::CrouchBlock] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset(); BlockStateUpload(); };
+        StateUpload[FighterState::BackwardBlock] = [this] {BlockStateUpload(); };
+        StateUpload[FighterState::CrouchBlock] = [this] {BlockStateUpload(); };
 
         StateUpload[FighterState::WinStart] = [this] { WinStartStateUpload(); };
         StateUpload[FighterState::Win] = [this] { WinStateUpload(); };
@@ -361,9 +361,9 @@ namespace Util {
         auto currentEnter = StateUpload.find(currentState);
         currentEnter->second();
 
-        /*glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
+        glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
             ActionNow->GetTransform().translation.y+velocity.y};
-        ActionNow->SetTransform({position,0,{direction,1}});*/
+        ActionNow->SetTransform({position,0,{direction,1}});
     }
 
     void Fighter::HitboxIsCollidedEnemy() {
@@ -665,6 +665,7 @@ namespace Util {
 
     void Fighter::AttackStateEnter() {
         ResetVelocity();
+        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
         PlayCurrentSound();
     }

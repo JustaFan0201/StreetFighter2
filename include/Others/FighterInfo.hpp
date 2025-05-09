@@ -136,7 +136,8 @@ namespace Util {
         HP,
         LK,
         MK,
-        HK
+        HK,
+        ENTER
     };
     enum class SpecialMoveDirection {
         Backward_down=1,

@@ -8,8 +8,10 @@ namespace Util {
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Guile/Guile_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Guile/Guile_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/usa.png");
+        country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/usa_dark.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/GuileTheme.mp3");
         country_position={{350, 140},0,{1,1}};
+        face_postion={{161, -150},0,{1,1}};
         BackgroundInit(5);
         StateInit();
         LoadCommonVelocities();

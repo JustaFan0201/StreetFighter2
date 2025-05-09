@@ -8,8 +8,10 @@ namespace Util {
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Zangief/Zangief_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Zangief/Zangief_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/ussr.png");
+        country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/ussr_dark.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/ZangiefTheme.mp3");
         country_position={{-244, 220},0,{1,1}};
+        face_postion={{54, -253},0,{1,1}};
         BackgroundInit(8);
         StateInit();
         LoadCommonVelocities();
@@ -70,16 +72,16 @@ namespace Util {
         frames[FighterState::Crouch]={60};
         frames[FighterState::CrouchDown]={120,60,60};
         frames[FighterState::CrouchUp]={60,60,120};
-        frames[FighterState::LP]={60,60,60};
-        frames[FighterState::MP]={60,60,60,60};
-        frames[FighterState::HP]={60,60,60,60,60,60,60};
-        frames[FighterState::LK]={60,60,60};
-        frames[FighterState::MK]={60,60,60,60,60};
-        frames[FighterState::HK]={60,60,60};
+        frames[FighterState::LP]={90,110,100};
+        frames[FighterState::MP]={100,120,150,100};
+        frames[FighterState::HP]={100,120,120,140,140,120,100};
+        frames[FighterState::LK]={90,90,90};
+        frames[FighterState::MK]={80,120,160,140,80};
+        frames[FighterState::HK]={140,160,140};
 
-        frames[FighterState::CrouchLP]={60,60};
-        frames[FighterState::CrouchMP]={60,60,60};
-        frames[FighterState::CrouchHP]={60,60,60,60,60};
+        frames[FighterState::CrouchLP]={140,160};
+        frames[FighterState::CrouchMP]={120,160,140};
+        frames[FighterState::CrouchHP]={110,130,150,140,120};
         frames[FighterState::CrouchLK]=frames[FighterState::CrouchMP];
         frames[FighterState::CrouchMK]=frames[FighterState::CrouchHP];
         frames[FighterState::CrouchHK]=frames[FighterState::CrouchHP];
@@ -101,6 +103,7 @@ namespace Util {
         frames[FighterState::DefeatedLoss]={180,180,180};
     }
     void Zangief::LoadOffsetVelocity() {
+        attacks[FighterState::LP]=5;
         offset[FighterState::Idle]={{{0,0},{-17,-1},{-25,-4},{-16,2}}};
         offset[FighterState::Crouch]={{-29,-47}};
         offset[FighterState::CrouchDown]={{-15,-10},{-25,-34},{-29,-47}};

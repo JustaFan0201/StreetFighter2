@@ -8,8 +8,10 @@ namespace Util {
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/japan.png");
+        country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/japan_dark.png");
         m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/HondaTheme.mp3");
         country_position={{28, 168},0,{1,1}};
+        face_postion={{-53, -150},0,{1,1}};
         BackgroundInit(7);
         StateInit();
         LoadCommonVelocities();
