@@ -20,7 +20,7 @@ namespace Util {
         Guile::LoadAllBox();
         Fighter::LoadAttackSound();
         Fighter::LoadAttackAndType();
-        LoadSpecialMove();
+        Guile::LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -288,7 +288,7 @@ namespace Util {
         boxes.hurtbox.body.offset[FighterState::Special_1]={{13,45},{20,44},{15,47},{7,50}};
 
         StateEnter[FighterState::Special_1]=[this] { SonicBoomStateEnter(); };
-        StateUpload[FighterState::Special_1]=[this] { SonicBoomStateUpload(); };
+        StateUpdate[FighterState::Special_1]=[this] { SonicBoomStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/SP1_L.wav");
         SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::MP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/SP1_H.wav");
@@ -332,7 +332,7 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HK]=HitStrength::H;
 
         StateEnter[FighterState::Special_2]=[this] { SommersaultStateEnter(); };
-        StateUpload[FighterState::Special_2]=[this] { SommersaultStateUpload(); };
+        StateUpdate[FighterState::Special_2]=[this] { SommersaultStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/SP2_L.wav");
         SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::MK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/SP2_L.wav");
@@ -359,7 +359,7 @@ namespace Util {
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Guile::SonicBoomStateUpload() {
+    void Guile::SonicBoomStateUpdate() {
         if (ActionNow->GetCurrentFrameIndex()==3){AddFlyingObject(FlyingObjectType::SonicBoom,ButtonType);ClearButtonType();}
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
@@ -372,7 +372,7 @@ namespace Util {
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Guile::SommersaultStateUpload() {
+    void Guile::SommersaultStateUpdate() {
         if (ActionNow->GetCurrentFrameIndex() <= 7) {
             velocity.x += velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
             velocity.y += velocity.y * 0.05f * Time::GetDeltaTimeMs() / 1000.0f;

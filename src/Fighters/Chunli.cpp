@@ -20,6 +20,7 @@ namespace Util {
         Chunli::LoadAllBox();
         Chunli::LoadAttackSound();
         Fighter::LoadAttackAndType();
+        Chunli::LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -274,5 +275,112 @@ namespace Util {
         boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{91,100},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HK]={140,95};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{-1,-1},{196,130},{-1,-1},{-1,-1},{-1,-1}};
+    }
+    void Chunli::LoadSpecialMove() {
+        animations[FighterState::Special_1]=ActionInit(12, "Special_1");
+        offset[FighterState::Special_1]={{-40,6},{-38,11},{-25,21},{0,26},{-6,15},{19,14},{-2,11},{43,14},{-31,11},{18,13},{-41,12},{-41,7}};
+
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LK]={60,90,120,60,120,60,120,60,120,60,90,60};
+        boxes.hurtbox.head.size[FighterState::Special_1]={{80,70},{80,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{80,70},{80,70}};
+        boxes.hurtbox.body.size[FighterState::Special_1]={{100,150},{150,150},{50,150},{50,150},{50,150},{50,150},{50,150},{50,150},{50,150},{50,150},{100,150},{150,150}};
+
+        boxes.hurtbox.head.offset[FighterState::Special_1]={{-10,100},{-6,109},{-69,117},{-68,118},{-68,118},{-68,118},{-57,111},{-66,118},{-61,113},{-67,118},{-9,112},{-9,101}};
+        boxes.hurtbox.body.offset[FighterState::Special_1]={{-34,49},{-28,56},{-61,62},{-61,62},{-61,62},{-61,62},{-61,62},{-63,63},{-54,61},{-62,62},{-33,58},{-38,53}};
+        boxes.hurtbox.leg.offset[FighterState::Special_1]={{-11,-45},{-1,-41},{-43,-42},{-42,-41},{-42,-41},{-42,-41},{-42,-41},{-44,-43},{-40,-42},{-47,-46},{-1,-41},{-12,-46}};
+        boxes.hitbox.size[FighterState::Special_1]={200,100};
+        boxes.hitbox.offset[FighterState::Special_1]={{-1,-1},{-1,-1},{90,110},{-1,-1},{102,17},{-1,-1},{102,49},{-1,-1},{72,-10},{-1,-1},{-1,-1},{-1,-1}};
+
+        SpecialMoveData.attackdata[FighterState::Special_1].attack[Keys::LK]=8;
+
+        SpecialMoveData.attackdata[FighterState::Special_1].HitStrength[Keys::LK]=HitStrength::H;
+
+        StateEnter[FighterState::Special_1]=[this] { HyakurretsuKyakuStateEnter(); };
+        StateUpdate[FighterState::Special_1]=[this] { HyakurretsuKyakuStateUpdate(); };
+
+        SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Chunli/SP1.wav");
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].command={};
+        SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ALL_KICK;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Null;
+
+        animations[FighterState::Special_2]=ActionInit(23, "Special_2");
+        offset[FighterState::Special_2]={{6,-8},{-51,33},{40,29},{88,34},{72,49},{75,52},{83,43},{76,51},{47,27},{-20,20},{57,14},{80,14},{25,13},{10
+,13},{45,9},{120,13},{76,51},{83,43},{75,52},{59,51},{100,48},{44,49},{-52,35}};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LK]={30,30,30,30,30,60,60,60,60,60,60,120,60,60,60,120,75,60,60,30,30,30,30};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::MK]={30,30,30,30,30,60,60,60,75,75,75,150,75,75,75,150,90,75,60,30,30,30,30};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::HK]={30,30,30,30,30,60,60,60,90,90,90,180,90,90,90,240,120,90,60,30,30,30,30};
+
+        boxes.hurtbox.body.size[FighterState::Special_2]={{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::Special_2]={{150,125},{100,150},{100,125},{200,100},{150,100},{100,150},{100,150},{100,150},{100,50},{100,50},{100,50},{100,50},{100,50},{100,50},{100,50},{100,50},{100,150},{100,150},{100,150},{100,150},{150,125}};
+        boxes.hurtbox.head.offset[FighterState::Special_2]={{-4,90},{-70,171},{118,98},{224,11},{179,-42},{69,-42},{84,-59},{72,-41},{18,-49},{-22,-54},{70,-67},{86,-53},{37
+,-51},{4,-52},{20,-53},{101,-53},{70,-42},{81,-59},{74,-43},{165,-42},{235,31},{121,119},{-70,174}};
+        boxes.hurtbox.body.offset[FighterState::Special_2]={{-25,39},{-70,118},{61,109},{185,49},{153,11},{81,13},{86,-9},{82,10},{28,12},{-23,5},{64,-10},{82,5},{38,0},{3,2
+},{20,0},{103,6},{79,10},{86,-8},{78,9},{136,19},{189,66},{65,134},{-71,124}};
+        boxes.hurtbox.leg.offset[FighterState::Special_2]={{-4,-53},{-56,6},{-17,37},{39,42},{54,91},{84,122},{91,99},{85,119},{24,81},{-13,76},{70,71},{84,71},{30,68},{-2,
+68},{4,68},{91,68},{80,115},{85,98},{77,116},{37,94},{50,56},{-18,55},{-56,0}};
+        boxes.hitbox.size[FighterState::Special_2]={350,100};
+        boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{76,73},{-1,-1},{-1,-1},{-1,-1},{99,72},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1}};
+
+        StateEnter[FighterState::Special_2]=[this] { SpinningBirdKickStateEnter(); };
+        StateUpdate[FighterState::Special_2]=[this] { SpinningBirdKickStateUpdate(); };
+
+        SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Chunli/SP2.wav");
+
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::LK]={9,0};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::MK]={12,0};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::HK]={15,0};
+
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LK]=5;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MK]=8;
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HK]=10;
+
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LK]=HitStrength::H;
+
+        SpecialMoveData.SkillCommand[FighterState::Special_2].command={
+            SpecialMoveDirection::Up,
+            SpecialMoveDirection::down
+        };
+        SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ANY_KICK;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].commandtype=CommandType::Pressed;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::LK]=250;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::MK]=500;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::HK]=750;
+        SpecificStates.InvincibleForFlyObj.insert(FighterState::Special_2);
+        SpecificStates.borderCheckStates.insert(FighterState::Special_2);
+
+        soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Chunli/Win.wav");
+        soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Chunli/Loss.wav");
+    }
+    void Chunli::HyakurretsuKyakuStateEnter() {
+        ResetVelocity();
+        ButtonType=controller->GetCurrentAttackKey();
+        LoadCurrentSpecialMove(ButtonType);
+        PlayCurrentSound();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Chunli::HyakurretsuKyakuStateUpdate() {
+        if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
+    }
+    void Chunli::SpinningBirdKickStateEnter() {
+        ResetVelocity();
+        ButtonType=controller->GetCurrentAttackKey();
+        LoadCurrentSpecialMove(ButtonType);
+        PlayCurrentSound();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Chunli::SpinningBirdKickStateUpdate() {
+        if (ActionNow->GetCurrentFrameIndex() > 8&&ActionNow->GetCurrentFrameIndex() <= 11) {
+            velocity.x += velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
+        }
+        else if (ActionNow->GetCurrentFrameIndex() >= 12&&ActionNow->GetCurrentFrameIndex() <= 15) {
+            velocity.x -= velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
+        }
+        else if (ActionNow->GetCurrentFrameIndex() == 8) {
+            velocity=GetInitialvelocity();
+        }
+        else {
+            ResetVelocity();
+        }
+        if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
     }
 }

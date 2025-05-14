@@ -20,6 +20,7 @@ namespace Util {
         Zangief::LoadAllBox();
         Zangief::LoadAttackSound();
         Fighter::LoadAttackAndType();
+        Zangief::LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -255,5 +256,56 @@ namespace Util {
         boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{225,37},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HK]={240,80};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{145,118},{-1,-1}};
+    }
+    void Zangief::LoadSpecialMove() {
+        animations[FighterState::Special_1]=ActionInit(9, "Special_1");
+        offset[FighterState::Special_1]={{-61,11},{-62,7},{-42,4},{-92,5},{-152,6},{-72,7},{-67,1},{-109,5},{-158,8}};
+
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={90,90,120,90,120,90,120,90,120};
+        boxes.hurtbox.body.size[FighterState::Special_1]={{170,80},{150,80},{150,80},{150,80},{170,80},{150,80},{150,80},{150,80},{170,80}};
+        boxes.hurtbox.leg.size[FighterState::Special_1]={{180,160},{150,160},{150,160},{100,160},{150,160},{150,160},{150,160},{100,160},{150,160}};
+        boxes.hurtbox.head.offset[FighterState::Special_1]={{61,139},{42,136},{-7,134},{-44,135},{-64,135},{32,136},{-31,133},{-62,137},{-73,138}};
+        boxes.hurtbox.body.offset[FighterState::Special_1]={{48,75},{0,69},{-35,64},{-35,66},{-75,66},{-13,66},{-61,65},{-50,68},{-76,68}};
+        boxes.hurtbox.leg.offset[FighterState::Special_1]={{38,-61},{3,-58},{-12,-67},{-21,-61},{-69,-68},{-8,-63},{-33,-75},{-41,-65},{-73,-69}};
+
+        boxes.hitbox.size[FighterState::Special_1]={350,100};
+        boxes.hitbox.offset[FighterState::Special_1]={{-1,-1},{-1,-1},{14,78},{-1,-1},{-88,82},{-1,-1},{14,78},{-1,-1},{-88,82}};
+
+        SpecialMoveData.animationData[FighterState::Special_1].initialvelocitys[Keys::LP]={4,0};
+        SpecialMoveData.attackdata[FighterState::Special_1].attack[Keys::LP]=10;
+        SpecialMoveData.attackdata[FighterState::Special_1].HitStrength[Keys::LP]=HitStrength::H;
+
+        StateEnter[FighterState::Special_1]=[this] { DoubleLariatStateEnter(); };
+        StateUpdate[FighterState::Special_1]=[this] { DoubleLariatStateUpdate(); };
+
+        SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Zangief/SP1.wav");
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].command={};
+        SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ALL_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Null;
+        SpecificStates.borderCheckStates.insert(FighterState::Special_1);
+        SpecificStates.InvincibleForFlyObj.insert(FighterState::Special_1);
+
+        soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Zangief/Win.wav");
+        soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Zangief/Loss.wav");
+    }
+    void Zangief::DoubleLariatStateEnter() {
+        ResetVelocity();
+        ButtonType=controller->GetCurrentAttackKey();
+        LoadCurrentSpecialMove(ButtonType);
+        PlayCurrentSound();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Zangief::DoubleLariatStateUpdate() {
+        if(controller->IsForward(direction)) {
+            velocity=GetInitialvelocity();
+        }
+        else if(controller->IsBackward(direction)) {
+            velocity=glm::vec2{-1,1}* GetInitialvelocity();
+        }
+        else{
+            ResetVelocity();
+        }
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 }

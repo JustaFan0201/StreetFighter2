@@ -20,7 +20,7 @@ namespace Util {
         Blanka::LoadAllBox();
         Fighter::LoadAttackSound();
         Fighter::LoadAttackAndType();
-        LoadSpecialMove();
+        Blanka::LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -302,7 +302,7 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_1].HitStrength[Keys::LP]=HitStrength::H;
 
         StateEnter[FighterState::Special_1]=[this] { ElectricThunderStateEnter(); };
-        StateUpload[FighterState::Special_1]=[this] { ElectricThunderStateUpload(); };
+        StateUpdate[FighterState::Special_1]=[this] { ElectricThunderStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Blanka/SP1.wav");
 
@@ -333,9 +333,9 @@ namespace Util {
         boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{-1,-1},{2,2},{9,2},{14,6},{11,9},{15,0}};
 
         StateEnter[FighterState::Special_2]=[this] { RollingAttackStateEnter(); };
-        StateUpload[FighterState::Special_2]=[this] { RollingAttackStateUpload(); };
+        StateUpdate[FighterState::Special_2]=[this] { RollingAttackStateUpdate(); };
         StateEnter[FighterState::SpecialRecovery_2]=[this] { RollingAttackRecoveryStateEnter(); };
-        StateUpload[FighterState::SpecialRecovery_2]=[this] { RollingAttackRecoveryStateUpload(); };
+        StateUpdate[FighterState::SpecialRecovery_2]=[this] { RollingAttackRecoveryStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Blanka/SP2.wav");
 
@@ -375,8 +375,8 @@ namespace Util {
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Blanka::ElectricThunderStateUpload() {
-        if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
+    void Blanka::ElectricThunderStateUpdate() {
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Blanka::RollingAttackStateEnter() {
         ResetVelocity();
@@ -387,22 +387,21 @@ namespace Util {
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Blanka::RollingAttackStateUpload() {
+    void Blanka::RollingAttackStateUpdate() {
         if(ActionNow->GetCurrentFrameIndex()>=8){ResetVelocity();}
         if(HitEnemy) {
-            ClearButtonType();
             ChangeState(FighterState::SpecialRecovery_2);
         }
-        if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Blanka::RollingAttackRecoveryStateEnter() {
         ResetVelocity();
         velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Blanka::RollingAttackRecoveryStateUpload() {
+    void Blanka::RollingAttackRecoveryStateUpdate() {
         if(GetCharacterIsOnFloor()&&velocity.y<0){velocity.y=0;}
         else{velocity.y+=Gravity*Time::GetDeltaTimeMs()/1000;}
-        if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ClearButtonType();ChangeState(FighterState::Idle);}
+        if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
 }

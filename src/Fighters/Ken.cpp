@@ -20,7 +20,7 @@ namespace Util {
         Ken::LoadAllBox();
         Fighter::LoadAttackSound();
         Fighter::LoadAttackAndType();
-        LoadSpecialMove();
+        Ken::LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -267,9 +267,9 @@ namespace Util {
         animations[FighterState::Special_1]=ActionInit(4, "Special_1");
         offset[FighterState::Special_1]={{-23,1},{-23,-11},{-31,-9},{-12,-19}};
 
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={60,90,60,60};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={60,120,90,60};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,150,120,90};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={60,90,60,210};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={60,120,90,240};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,150,120,270};
 
         boxes.hurtbox.leg.size[FighterState::Special_1]={{150,100},{200,100},{200,100},{200,100}};
         boxes.hurtbox.head.offset[FighterState::Special_1]={{-12,111},{-31,89},{-1,80},{72,72}};
@@ -277,7 +277,7 @@ namespace Util {
         boxes.hurtbox.leg.offset[FighterState::Special_1]={{-13,-62},{-26,-73},{-16,-76},{12,-78}};
 
         StateEnter[FighterState::Special_1]=[this] { HandoukenStateEnter(); };
-        StateUpload[FighterState::Special_1]=[this] { HandoukenStateUpload(); };
+        StateUpdate[FighterState::Special_1]=[this] { HandoukenStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/SP1.wav");
 
@@ -316,7 +316,7 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HP]=HitStrength::H;
 
         StateEnter[FighterState::Special_2]=[this] { ShoryukenStateEnter(); };
-        StateUpload[FighterState::Special_2]=[this] { ShoryukenStateUpload(); };
+        StateUpdate[FighterState::Special_2]=[this] { ShoryukenStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/SP2.wav");
 
@@ -354,7 +354,7 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_3].HitStrength[Keys::HK]=HitStrength::H;
 
         StateEnter[FighterState::Special_3]=[this] { TatsumakiSenpuStateEnter(); };
-        StateUpload[FighterState::Special_3]=[this] { TatsumakiSenpuStateUpload(); };
+        StateUpdate[FighterState::Special_3]=[this] { TatsumakiSenpuStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_3].sound[Keys::LK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/SP3_L.wav");
         SpecialMoveData.sounddata[FighterState::Special_3].sound[Keys::MK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/SP3_M.wav");
@@ -380,9 +380,9 @@ namespace Util {
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Ken::HandoukenStateUpload() {
+    void Ken::HandoukenStateUpdate() {
         if (ActionNow->GetCurrentFrameIndex()==3){AddFlyingObject(FlyingObjectType::FireBall,ButtonType);ClearButtonType();}
-        if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Ken::ShoryukenStateEnter() {
         ResetVelocity();
@@ -392,7 +392,7 @@ namespace Util {
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Ken::ShoryukenStateUpload() {
+    void Ken::ShoryukenStateUpdate() {
         if (ActionNow->GetCurrentFrameIndex() <= 2) {
             velocity.x += velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
             velocity.y += velocity.y * 0.05f * Time::GetDeltaTimeMs() / 1000.0f;
@@ -409,7 +409,7 @@ namespace Util {
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Ken::TatsumakiSenpuStateUpload() {
+    void Ken::TatsumakiSenpuStateUpdate() {
         if (ActionNow->GetCurrentFrameIndex() <= 5) {
             velocity.x += velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
         }

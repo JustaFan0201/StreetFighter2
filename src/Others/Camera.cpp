@@ -12,7 +12,7 @@ namespace Util {
         maxOffsetX = 0;
         cameraPos = {0,0};
     }
-    void Camera::Upload(float MaxWidth) {
+    void Camera::Update(float MaxWidth) {
         float playerX = player->GetCurrentPosition().x;
         float enemyX = enemy->GetCurrentPosition().x;
 

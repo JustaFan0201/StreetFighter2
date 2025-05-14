@@ -134,6 +134,7 @@ namespace Util {
         SpecificStates.CanBlockStates={
             FighterState::Idle,FighterState::Forward,
             FighterState::Backward, FighterState::Crouch,
+            FighterState::CrouchDown,FighterState::CrouchUp,
             FighterState::BackwardBlock, FighterState::CrouchBlock
         };
         SpecificStates.SpecialStates={
@@ -187,45 +188,45 @@ namespace Util {
         StateEnter[FighterState::TimeOverLoss] = [this] { LossStateEnter(); };
         StateEnter[FighterState::DefeatedLoss] = [this] { LossStateEnter(); };
 
-        StateUpload[FighterState::Idle] = [this] {IdleStateUpload(); };
-        StateUpload[FighterState::Forward] = [this] { ForwardStateUpload(); };
-        StateUpload[FighterState::Backward] = [this] { BackwardStateUpload(); };
-        StateUpload[FighterState::JumpUP] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::JumpForward] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::JumpBackward] = [this] { JumpStateUpload(); };
-        StateUpload[FighterState::Crouch] = [this] {CrouchUpload(); };
-        StateUpload[FighterState::CrouchDown] = [this] {CrouchDownUpload(); };
-        StateUpload[FighterState::CrouchUp] = [this] {CrouchUpUpload(); };
+        StateUpdate[FighterState::Idle] = [this] {IdleStateUpdate(); };
+        StateUpdate[FighterState::Forward] = [this] { ForwardStateUpdate(); };
+        StateUpdate[FighterState::Backward] = [this] { BackwardStateUpdate(); };
+        StateUpdate[FighterState::JumpUP] = [this] { JumpStateUpdate(); };
+        StateUpdate[FighterState::JumpForward] = [this] { JumpStateUpdate(); };
+        StateUpdate[FighterState::JumpBackward] = [this] { JumpStateUpdate(); };
+        StateUpdate[FighterState::Crouch] = [this] {CrouchUpdate(); };
+        StateUpdate[FighterState::CrouchDown] = [this] {CrouchDownUpdate(); };
+        StateUpdate[FighterState::CrouchUp] = [this] {CrouchUpUpdate(); };
 
-        StateUpload[FighterState::LP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::MP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::HP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::LK] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::MK] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::HK] = [this] {AttackStateUpload(); };
+        StateUpdate[FighterState::LP] = [this] {AttackStateUpdate(); };
+        StateUpdate[FighterState::MP] = [this] {AttackStateUpdate(); };
+        StateUpdate[FighterState::HP] = [this] {AttackStateUpdate(); };
+        StateUpdate[FighterState::LK] = [this] {AttackStateUpdate(); };
+        StateUpdate[FighterState::MK] = [this] {AttackStateUpdate(); };
+        StateUpdate[FighterState::HK] = [this] {AttackStateUpdate(); };
 
-        StateUpload[FighterState::CrouchLP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::CrouchMP] = [this] {AttackStateUpload();};
-        StateUpload[FighterState::CrouchHP] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::CrouchLK] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::CrouchMK] = [this] {AttackStateUpload(); };
-        StateUpload[FighterState::CrouchHK] = [this] {  AttackStateUpload(); };
+        StateUpdate[FighterState::CrouchLP] = [this] {AttackStateUpdate(); };
+        StateUpdate[FighterState::CrouchMP] = [this] {AttackStateUpdate();};
+        StateUpdate[FighterState::CrouchHP] = [this] {AttackStateUpdate(); };
+        StateUpdate[FighterState::CrouchLK] = [this] {AttackStateUpdate(); };
+        StateUpdate[FighterState::CrouchMK] = [this] {AttackStateUpdate(); };
+        StateUpdate[FighterState::CrouchHK] = [this] {  AttackStateUpdate(); };
 
-        StateUpload[FighterState::HurtHeadL] = [this] { HurtStateUpload(); };
-        StateUpload[FighterState::HurtHeadM] = [this] { HurtStateUpload(); };
-        StateUpload[FighterState::HurtHeadH] = [this] { HurtStateUpload(); };
-        StateUpload[FighterState::HurtBodyL] = [this] { HurtStateUpload(); };
-        StateUpload[FighterState::HurtBodyM] = [this] { HurtStateUpload(); };
-        StateUpload[FighterState::HurtBodyH] = [this] { HurtStateUpload(); };
+        StateUpdate[FighterState::HurtHeadL] = [this] { HurtStateUpdate(); };
+        StateUpdate[FighterState::HurtHeadM] = [this] { HurtStateUpdate(); };
+        StateUpdate[FighterState::HurtHeadH] = [this] { HurtStateUpdate(); };
+        StateUpdate[FighterState::HurtBodyL] = [this] { HurtStateUpdate(); };
+        StateUpdate[FighterState::HurtBodyM] = [this] { HurtStateUpdate(); };
+        StateUpdate[FighterState::HurtBodyH] = [this] { HurtStateUpdate(); };
 
-        StateUpload[FighterState::BackwardBlock] = [this] {BlockStateUpload(); };
-        StateUpload[FighterState::CrouchBlock] = [this] {BlockStateUpload(); };
+        StateUpdate[FighterState::BackwardBlock] = [this] {BlockStateUpdate(); };
+        StateUpdate[FighterState::CrouchBlock] = [this] {BlockStateUpdate(); };
 
-        StateUpload[FighterState::WinStart] = [this] { WinStartStateUpload(); };
-        StateUpload[FighterState::Win] = [this] { WinStateUpload(); };
+        StateUpdate[FighterState::WinStart] = [this] { WinStartStateUpdate(); };
+        StateUpdate[FighterState::Win] = [this] { WinStateUpdate(); };
 
-        StateUpload[FighterState::TimeOverLoss] = [this] { LossStateUpload(); };
-        StateUpload[FighterState::DefeatedLoss] = [this] { LossStateUpload(); };
+        StateUpdate[FighterState::TimeOverLoss] = [this] { LossStateUpdate(); };
+        StateUpdate[FighterState::DefeatedLoss] = [this] { LossStateUpdate(); };
         //ActionNow->AnimationPause();ActionNow->TestPictureoffset();
     }
 
@@ -357,8 +358,8 @@ namespace Util {
         }
     }
 
-    void Fighter::UploadStateAndNewXY() {
-        auto currentEnter = StateUpload.find(currentState);
+    void Fighter::UpdateStateAndNewXY() {
+        auto currentEnter = StateUpdate.find(currentState);
         currentEnter->second();
 
         glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
@@ -543,14 +544,14 @@ namespace Util {
         }
     }
 
-    void Fighter::Upload(std::shared_ptr<Core::Context> context,std::shared_ptr<Controller> controller,glm::vec2 cameraOffset) {
+    void Fighter::Update(std::shared_ptr<Core::Context> context,std::shared_ptr<Controller> controller,glm::vec2 cameraOffset) {
         PostionTester();
         PushBoxTester();
         PrintPostion();
 
         this->controller=controller;
         SkillDetection();
-        UploadStateAndNewXY();
+        UpdateStateAndNewXY();
         ReSize();
         BorderDetection(context->GetWindowWidth()/2,cameraOffset);
         HitboxIsCollidedEnemy();
@@ -587,7 +588,7 @@ namespace Util {
         ResetVelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Fighter::IdleStateUpload() {
+    void Fighter::IdleStateUpdate() {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
         else if (controller->IsForward(direction)) {ChangeState(FighterState::Forward);}
         else if (controller->IsBackward(direction)) {ChangeState(FighterState::Backward);}
@@ -606,7 +607,7 @@ namespace Util {
         velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Fighter::ForwardStateUpload() {
+    void Fighter::ForwardStateUpdate() {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
         if (!controller->IsForward(direction)) {ChangeState(FighterState::Idle);}
         if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpForward);}
@@ -619,7 +620,7 @@ namespace Util {
         else if (controller->IsKeyDown(Keys::HK)) {ChangeState(FighterState::HK);}
         direction=GetNewDirection();
     }
-    void Fighter::BackwardStateUpload() {
+    void Fighter::BackwardStateUpdate() {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
         if (!controller->IsBackward(direction)) {ChangeState(FighterState::Idle);}
         if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpBackward);}
@@ -637,7 +638,7 @@ namespace Util {
         velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Fighter::JumpStateUpload(){
+    void Fighter::JumpStateUpdate(){
         velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
         if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
@@ -646,7 +647,7 @@ namespace Util {
         ResetVelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Fighter::CrouchUpload() {
+    void Fighter::CrouchUpdate() {
         if (!controller->IsKeyPressed(Keys::DOWN)){ChangeState(FighterState::CrouchUp);}
         else if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::CrouchLP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::CrouchMP);}
@@ -656,10 +657,10 @@ namespace Util {
         else if (controller->IsKeyDown(Keys::HK)) {ChangeState(FighterState::CrouchHK);}
         direction=GetNewDirection();
     }
-    void Fighter::CrouchDownUpload() {
+    void Fighter::CrouchDownUpdate() {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Crouch);}
     }
-    void Fighter::CrouchUpUpload() {
+    void Fighter::CrouchUpUpdate() {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 
@@ -669,7 +670,7 @@ namespace Util {
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
         PlayCurrentSound();
     }
-    void Fighter::AttackStateUpload() {
+    void Fighter::AttackStateUpdate() {
         if(enemy->GetCharacterIsInBorder()&&HitEnemy
             &&(enemy->SpecificStates.HurtStates.count(enemy->currentState)||
                 enemy->SpecificStates.BlockStates.count(enemy->currentState)))
@@ -683,9 +684,10 @@ namespace Util {
         velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Fighter::HurtStateUpload() {
+    void Fighter::HurtStateUpdate() {
         velocity.x+=Friction*Time::GetDeltaTimeMs()/1000;
         velocity.y+=Gravity*Time::GetDeltaTimeMs()/1000;
+        direction=GetNewDirection();
         if (GetAnimationIsEnd()&&velocity.x>=0&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
     void Fighter::BlockStateEnter() {
@@ -694,8 +696,9 @@ namespace Util {
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
         PlayCurrentSound();
     }
-    void Fighter::BlockStateUpload() {
+    void Fighter::BlockStateUpdate() {
         velocity.x+=Friction/2*Time::GetDeltaTimeMs()/1000;
+        direction=GetNewDirection();
         if (GetAnimationIsEnd()&&velocity.x>=0&&currentState==FighterState::CrouchBlock) {ChangeState(FighterState::Crouch);}
         else if (GetAnimationIsEnd()&&velocity.x>=0&&currentState==FighterState::BackwardBlock) {ChangeState(FighterState::Idle);}
     }
@@ -704,10 +707,10 @@ namespace Util {
         ResetVelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Fighter::WinStartStateUpload() {
+    void Fighter::WinStartStateUpdate() {
         if (GetAnimationIsEnd()){ChangeState(FighterState::Win);}
     }
-    void Fighter::WinStateUpload() {
+    void Fighter::WinStateUpdate() {
         if (GetAnimationIsEnd()){ActionNow->AnimationPlay();}
     }
     void Fighter::LossStateEnter() {
@@ -716,7 +719,7 @@ namespace Util {
         velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Fighter::LossStateUpload() {
+    void Fighter::LossStateUpdate() {
         if(velocity.x<0){velocity.x+=Friction*Time::GetDeltaTimeMs()/1000;}
         else{velocity.x=0;}
         if(GetCharacterIsOnFloor()&&velocity.y<0){velocity.y=0;}

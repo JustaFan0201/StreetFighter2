@@ -45,8 +45,8 @@ namespace Util {
     }
 
     void SlectScene::Update(std::shared_ptr<Core::Context> context) {
-        PlayerDataUpload(player1data);
-        if(mode==ModeType::Battle){PlayerDataUpload(player2data);}
+        PlayerDataUpdate(player1data);
+        if(mode==ModeType::Battle){PlayerDataUpdate(player2data);}
         if(player1data.Ready&&player2data.Ready&&(Time::GetElapsedTimeMs()-start_time>600)) {
             SenseEnd=true;
         }
@@ -85,7 +85,7 @@ namespace Util {
                 {72, 58},
                 2.0f);
     }
-    void SlectScene::PlayerDataUpload(PlayerData &playerdata) {
+    void SlectScene::PlayerDataUpdate(PlayerData &playerdata) {
         int row = playerdata.chooseIndex / 4;
         int col = playerdata.chooseIndex % 4;
         if (!SenseEnd) {

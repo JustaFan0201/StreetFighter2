@@ -34,35 +34,35 @@ namespace Util {
         virtual ~Fighter() = default;
         //FMS
         virtual void IdleStateEnter();
-        virtual void IdleStateUpload();
+        virtual void IdleStateUpdate();
 
         virtual void WalkStateEnter();
-        virtual void ForwardStateUpload();
-        virtual void BackwardStateUpload();
+        virtual void ForwardStateUpdate();
+        virtual void BackwardStateUpdate();
 
         virtual void JumpStateEnter();
-        virtual void JumpStateUpload();
+        virtual void JumpStateUpdate();
 
         virtual void CrouchEnter();
-        virtual void CrouchUpload();
-        virtual void CrouchDownUpload();
-        virtual void CrouchUpUpload();
+        virtual void CrouchUpdate();
+        virtual void CrouchDownUpdate();
+        virtual void CrouchUpUpdate();
 
         virtual void AttackStateEnter();
-        virtual void AttackStateUpload();
+        virtual void AttackStateUpdate();
 
         virtual void HurtStateEnter();
-        virtual void HurtStateUpload();
+        virtual void HurtStateUpdate();
 
         virtual void BlockStateEnter();
-        virtual void BlockStateUpload();
+        virtual void BlockStateUpdate();
 
         virtual void WinStateEnter();
-        virtual void WinStartStateUpload();
-        virtual void WinStateUpload();
+        virtual void WinStartStateUpdate();
+        virtual void WinStateUpdate();
 
         virtual void LossStateEnter();
-        virtual void LossStateUpload();
+        virtual void LossStateUpdate();
         //Loader
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
@@ -70,6 +70,7 @@ namespace Util {
         virtual void LoadAllBox(){}
         virtual void LoadAttackSound();
         virtual void LoadAttackAndType();
+        virtual void LoadSpecialMove(){};
         void LoadCurrentSpecialMove(Keys ButtonType);
         //Setter
         void SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
@@ -214,9 +215,9 @@ namespace Util {
         virtual void SkillDetection();
         void SkillErrorPrevent(Keys key, const std::vector<Keys>& reqType);
         void ReSize();
-        void UploadStateAndNewXY();
+        void UpdateStateAndNewXY();
 
-        void Upload(std::shared_ptr<Core::Context> context,std::shared_ptr<Controller> controller,glm::vec2 cameraOffset);
+        void Update(std::shared_ptr<Core::Context> context,std::shared_ptr<Controller> controller,glm::vec2 cameraOffset);
         void DrawCharacter(glm::vec2 cameraOffset);
 
         //debugTest
@@ -240,7 +241,7 @@ namespace Util {
         FighterState currentState=FighterState::Null;
 
         std::unordered_map<FighterState, std::function<void()>> StateEnter;
-        std::unordered_map<FighterState, std::function<void()>> StateUpload;
+        std::unordered_map<FighterState, std::function<void()>> StateUpdate;
         std::unordered_map<FighterState, std::vector<std::string>> animations;
         std::unordered_map<FighterState, std::vector<int>> frames;
         std::unordered_map<FighterState, std::vector<glm::vec2>> offset;

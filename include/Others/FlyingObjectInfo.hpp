@@ -7,9 +7,11 @@
 enum class FlyingObjectType {
     Null,
     FireBall,
-    SonicBoom
+    SonicBoom,
+    YogaFire
 };
 enum class FlyingObjectState {
+    Null,
     Start,
     Collide
 };

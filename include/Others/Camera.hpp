@@ -17,7 +17,7 @@ namespace Util {
         float boundary=200;
     public:
         void Init(std::shared_ptr<Fighter> player,std::shared_ptr<Fighter> enemy);
-        void Upload(float MaxWidth);
+        void Update(float MaxWidth);
         void SetMaxOffsetX(float border);
         int GetMaxOffsetX();
         glm::vec2 GetCameraPos();

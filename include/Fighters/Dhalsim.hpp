@@ -14,6 +14,11 @@ namespace Util {
         void LoadAnimations() override;
         void LoadOffsetVelocity() override;
         void LoadAllBox()override;
+        void LoadSpecialMove()override;
+        void YogaFireStateEnter();
+        void YogaFireStateUpdate();
+        void YogaFlameStateEnter();
+        void YogaFlameStateUpdate();
     };
 }
 #endif //DHALSIM_HPP

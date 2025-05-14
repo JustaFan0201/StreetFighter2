@@ -16,13 +16,13 @@ namespace Util {
         void LoadAnimations() override;
         void LoadOffsetVelocity() override;
         void LoadAllBox()override;
-        void LoadSpecialMove();
+        void LoadSpecialMove()override;
         void ElectricThunderStateEnter();
-        void ElectricThunderStateUpload();
+        void ElectricThunderStateUpdate();
         void RollingAttackStateEnter();
-        void RollingAttackStateUpload();
+        void RollingAttackStateUpdate();
         void RollingAttackRecoveryStateEnter();
-        void RollingAttackRecoveryStateUpload();
+        void RollingAttackRecoveryStateUpdate();
     };
 }
 #endif //BLANKA_HPP

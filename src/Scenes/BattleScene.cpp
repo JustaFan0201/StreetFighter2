@@ -70,7 +70,7 @@ namespace Util {
             std::vector<std::shared_ptr<FlyingObject>> newFlyingObjects;
             for (auto& FlyingObj : flyingObjects) {
                 if (flyingObjects==PlayerFlyingObjects) {FlyingObj->Update(EnemyFlyingObjects,cameraOffset);}
-                else {FlyingObj->Update(PlayerFlyingObjects,cameraOffset);}
+                else if (flyingObjects==EnemyFlyingObjects) {FlyingObj->Update(PlayerFlyingObjects,cameraOffset);}
                 if (!FlyingObj->IsEnd()) {newFlyingObjects.push_back(FlyingObj);}
             }
             flyingObjects = newFlyingObjects;
@@ -84,17 +84,33 @@ namespace Util {
         playerController->Update(player->GetDirection(),Time::GetElapsedTimeMs());
         enemyController->Update(enemy->GetDirection(),Time::GetElapsedTimeMs());
 
-        player->Upload(context,playerController,camera->GetCameraPos());
-        enemy->Upload(context,enemyController,camera->GetCameraPos());
+        player->Update(context,playerController,camera->GetCameraPos());
+        enemy->Update(context,enemyController,camera->GetCameraPos());
 
-        camera->Upload(context->GetWindowWidth()/2);
+        camera->Update(context->GetWindowWidth()/2);
         UpdateFlyingObjects(PlayerFlyingObjects,camera->GetCameraPos());
         UpdateFlyingObjects(EnemyFlyingObjects,camera->GetCameraPos());
 
-        if(ui->GetState()==State::WaitForEnd||ui->GetState()==State::TimeOver) {LossJudge();}
+        switch (ui->GetState()) {
+            case State::WaitForEnd:case State::TimeOver:
+                LossJudge();
+                break;
+            case State::EndEventLoss:
+                LossStateForFighter();
+                break;
+            case State::EndEventWin:
+                WinStateForFighter();
+                break;
+            case State::End:
+                EndForRound(context);
+                break;
+            default:
+                break;
+        }
+        /*if(ui->GetState()==State::WaitForEnd||ui->GetState()==State::TimeOver) {LossJudge();}
         if(ui->GetState()==State::EndEventLoss) {LossStateForFighter();}
         if(ui->GetState()==State::EndEventWin) {WinStateForFighter();}
-        if(ui->GetState()==State::End) {EndForRound(context);}
+        if(ui->GetState()==State::End) {EndForRound(context);}*/
         if (Input::IsKeyDown(Keycode::RETURN)) {SenseEnd = true;}
     }
     void BattleScene::ControllerState() {

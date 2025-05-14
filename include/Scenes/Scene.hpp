@@ -5,6 +5,7 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 #include <memory>
+#include <string>
 #include <iostream>
 
 #include "Core/Context.hpp"

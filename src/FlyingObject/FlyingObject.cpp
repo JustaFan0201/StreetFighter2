@@ -95,11 +95,10 @@ namespace Util {
         direction=fighter->GetNewDirection();
         velocity.x=FlyingObjVelocity[Strength];
         this->Strength=Strength;
-
+        ChangeState(FlyingObjectState::Start);
         animationNow->SetDrawData({(fighter->GetCurrentOffsetPosition()+glm::vec2 {150*direction,40}),
             0,{direction,1}},
             animationNow->GetOriginalSize()*glm::vec2{3,3},3);
-        ChangeState(FlyingObjectState::Start);
     }
     void FlyingObject::Update(std::vector<std::shared_ptr<FlyingObject>> EnemyFlyingObjects,glm::vec2 cameraOffset) {
         this->EnemyFlyingObjects=EnemyFlyingObjects;

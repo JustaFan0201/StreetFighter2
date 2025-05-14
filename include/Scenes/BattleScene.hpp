@@ -12,6 +12,8 @@
 #include "FlyingObject/FlyingObject.hpp"
 #include "FlyingObject/FireBall.hpp"
 #include "FlyingObject/SonicBoom.hpp"
+#include "FlyingObject/YogaFire.hpp"
+
 namespace Util {
     enum class DefeatedType {
         Null,
@@ -47,6 +49,7 @@ namespace Util {
             flyingObjFactory[FlyingObjectType::Null] = []() { return nullptr; };
             flyingObjFactory[FlyingObjectType::FireBall] = []() {return std::make_shared<FireBall>();};
             flyingObjFactory[FlyingObjectType::SonicBoom] = []() {return std::make_shared<SonicBoom>();};
+            flyingObjFactory[FlyingObjectType::YogaFire] = []() {return std::make_shared<YogaFire>();};
         }
 
         void Init(std::shared_ptr<Core::Context> context) override;

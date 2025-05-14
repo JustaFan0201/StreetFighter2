@@ -20,7 +20,7 @@ namespace Util {
         Honda::LoadAllBox();
         Fighter::LoadAttackSound();
         Fighter::LoadAttackAndType();
-        LoadSpecialMove();
+        Honda::LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -297,9 +297,9 @@ namespace Util {
         boxes.hitbox.offset[FighterState::Special_1]={{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{170,25}};
 
         StateEnter[FighterState::Special_1]=[this] { HeadbuttStateEnter(); };
-        StateUpload[FighterState::Special_1]=[this] { HeadbuttStateUpload(); };
+        StateUpdate[FighterState::Special_1]=[this] { HeadbuttStateUpdate(); };
         StateEnter[FighterState::SpecialRecovery_1]=[this] { HeadbuttRecoveryStateEnter(); };
-        StateUpload[FighterState::SpecialRecovery_1]=[this] { HeadbuttRecoveryStateUpload(); };
+        StateUpdate[FighterState::SpecialRecovery_1]=[this] { HeadbuttRecoveryStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Honda/SP1.wav");
 
@@ -340,7 +340,7 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::H;
 
         StateEnter[FighterState::Special_2]=[this] { HundredSlapStateEnter(); };
-        StateUpload[FighterState::Special_2]=[this] { HundredSlapStateUpload(); };
+        StateUpdate[FighterState::Special_2]=[this] { HundredSlapStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Honda/SP2.wav");
 
@@ -359,7 +359,7 @@ namespace Util {
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Honda::HeadbuttStateUpload() {
+    void Honda::HeadbuttStateUpdate() {
         if(ActionNow->GetCurrentFrameIndex()==5&&HitEnemy) {
             ClearButtonType();
             ChangeState(FighterState::SpecialRecovery_1);
@@ -376,7 +376,7 @@ namespace Util {
         ResetVelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Honda::HeadbuttRecoveryStateUpload() {
+    void Honda::HeadbuttRecoveryStateUpdate() {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Honda::HundredSlapStateEnter() {
@@ -386,7 +386,7 @@ namespace Util {
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
-    void Honda::HundredSlapStateUpload() {
-        if (GetAnimationIsEnd()) {ClearButtonType();ChangeState(FighterState::Idle);}
+    void Honda::HundredSlapStateUpdate() {
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 }

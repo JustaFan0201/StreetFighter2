@@ -45,7 +45,7 @@ namespace Util {
         public:
         SlectScene();
         void PlayerDataInit(PlayerData &playerdata) const;
-        void PlayerDataUpload(PlayerData &playerdata);
+        void PlayerDataUpdate(PlayerData &playerdata);
         static void PlayerDataRender(PlayerData &playerdata);
         void Init(std::shared_ptr<Core::Context> context) override;
         void Update(std::shared_ptr<Core::Context> context) override;

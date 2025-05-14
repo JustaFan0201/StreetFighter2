@@ -48,7 +48,7 @@ namespace Util {
         glm::vec2 velocity;
         Keys Strength=Keys::Null;
 
-        FlyingObjectState currentState;
+        FlyingObjectState currentState=FlyingObjectState::Null;
         std::unordered_map<Keys, float> FlyingObjVelocity;
         std::unordered_map<Keys, float> FlyingObjDmg;
         std::unordered_map<FlyingObjectState, std::vector<std::string>> animations;

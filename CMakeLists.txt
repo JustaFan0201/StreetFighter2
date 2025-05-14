@@ -59,7 +59,7 @@ add_executable(${PROJECT_NAME}
         src/FlyingObject/FlyingObject.cpp
         src/FlyingObject/FireBall.cpp
         src/FlyingObject/SonicBoom.cpp
-
+        src/FlyingObject/YogaFire.cpp
         ${HEADER_FILES}
         include/ImageSpace.hpp
         include/AnimationSpace.hpp
@@ -89,6 +89,7 @@ add_executable(${PROJECT_NAME}
         include/FlyingObject/FlyingObject.hpp
         include/FlyingObject/FireBall.hpp
         include/FlyingObject/SonicBoom.hpp
+        include/FlyingObject/YogaFire.hpp
 )
 
 if(MSVC)

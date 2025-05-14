@@ -20,6 +20,7 @@ namespace Util {
         Dhalsim::LoadAllBox();
         Fighter::LoadAttackSound();
         Fighter::LoadAttackAndType();
+        Dhalsim::LoadSpecialMove();
         ActionNow = std::make_shared<AnimationSpace>(animations[FighterState::Idle],true,120,true,4);
         debugInit();
     }
@@ -262,5 +263,87 @@ namespace Util {
         boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{337,162},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HK]={380,90};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{-1,-1},{-1,-1},{320,130},{-1,-1}};
+    }
+    void Dhalsim::LoadSpecialMove() {
+        animations[FighterState::Special_1]=ActionInit(6, "Special_1");
+        offset[FighterState::Special_1]={{-6,-10},{-48,-9},{-76,1},{1,2},{30,-6},{50,-6}};
+
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={60,60,90,60,60,210};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={60,90,90,60,90,240};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={60,120,90,60,120,270};
+
+        boxes.hurtbox.body.size[FighterState::Special_1]={{100,80},{100,80},{120,100},{100,100},{120,100},{120,80}};
+        boxes.hurtbox.leg.size[FighterState::Special_1]={{100,150},{100,140},{100,160},{100,160},{100,160},{100,150}};
+
+        boxes.hurtbox.head.offset[FighterState::Special_1]={{-22,120},{-97,125},{-155,135},{68,132},{137,81},{170,35}};
+        boxes.hurtbox.body.offset[FighterState::Special_1]={{-41,56},{-70,56},{-101,85},{1,91},{46,83},{85,50}};
+        boxes.hurtbox.leg.offset[FighterState::Special_1]={{-21,-59},{-25,-59},{-34,-46},{14,-43},{20,-50},{38,-60}};
+
+        StateEnter[FighterState::Special_1]=[this] { YogaFireStateEnter(); };
+        StateUpdate[FighterState::Special_1]=[this] { YogaFireStateUpdate(); };
+
+        SpecialMoveData.sounddata[FighterState::Special_1].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Dhalsim/SP1.wav");
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].command={
+            SpecialMoveDirection::Forward,
+            SpecialMoveDirection::Forward_down,
+            SpecialMoveDirection::down
+        };
+        SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ANY_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Command;
+
+        animations[FighterState::Special_2]=ActionInit(19, "Special_2");
+        offset[FighterState::Special_2]={{-7,-6},{-48,-8},{-75,1},{1,8},{32,-1},{56,-5},{119,-11},{129,-11},{149,-13},{159,-12},{164,-12},{173,-13},{170,
+-14},{173,-9},{167,-13},{158,-14},{150,-13},{138,-13},{134,-14}};
+
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LP]={60,90,120,60,60,60,60,60,60,60,60,60,60,60,60,60,120,90,60};
+
+        boxes.hurtbox.body.size[FighterState::Special_2]={{100,100},{100,100},{120,120},{100,120},{120,120},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80}};
+        boxes.hurtbox.leg.size[FighterState::Special_2]={{100,140},{100,140},{100,150},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140}};
+
+        boxes.hurtbox.head.offset[FighterState::Special_2]={{-20,116},{-95,122},{-150,134},{70,134},{142,85},{172,34},{173,34},{171,30},{169,26},{173,28},{167,26},{169,26},{169,26},{172,27},{172,27},{169,26},{174,27},{171,26},{171,26}};
+        boxes.hurtbox.body.offset[FighterState::Special_2]={{-43,59},{-61,55},{-88,81},{-6,93},{35,79},{78,53},{77,49},{76,49},{76,49},{76,49},{76,49},{74,49},{71,47},{75,48},{72,48},{73,47},{78,50},{73,47},{74,48}};
+        boxes.hurtbox.leg.offset[FighterState::Special_2]={{-22,-57},{-23,-61},{-31,-46},{16,-36},{24,-46},{39,-54},{40,-63},{40,-64},{38,-64},{38,-64},{36,-64},{39,-62},{39,-62},{39,-62},{38,-62},{38,-62},{39,-62},{40,-62},{40,-62}};
+
+        boxes.hitbox.size[FighterState::Special_2]={280,200};
+        boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{-1,-1},{300,22},{300,27},{300,27},{300,28},{300,28},{300,33},{300,31},{300,30},{-1,-1},{-1,-1},{-1,-1},};
+
+        SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LP]=15;
+
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::H;
+
+        StateEnter[FighterState::Special_2]=[this] { YogaFlameStateEnter(); };
+        StateUpdate[FighterState::Special_2]=[this] { YogaFlameStateUpdate(); };
+
+        SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Dhalsim/SP2.wav");
+
+        SpecialMoveData.SkillCommand[FighterState::Special_2].command={};
+        SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ALL_PUNCH;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].commandtype=CommandType::Null;
+
+        soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Dhalsim/Win.wav");
+        soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Dhalsim/Loss.wav");
+    }
+    void Dhalsim::YogaFireStateEnter() {
+        ResetVelocity();
+        ButtonType=controller->GetCurrentAttackKey();
+        LoadCurrentSpecialMove(ButtonType);
+        PlayCurrentSound();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Dhalsim::YogaFireStateUpdate() {
+        if (ActionNow->GetCurrentFrameIndex()==5){AddFlyingObject(FlyingObjectType::YogaFire,ButtonType);ClearButtonType();}
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
+    }
+    void Dhalsim::YogaFlameStateEnter() {
+        ResetVelocity();
+        ButtonType=controller->GetCurrentAttackKey();
+        LoadCurrentSpecialMove(ButtonType);
+        PlayCurrentSound();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Dhalsim::YogaFlameStateUpdate() {
+        if (HitEnemy&&ActionNow->GetCurrentFrameIndex()<=15){ActionNow->SetCurrentFrame(16);}
+        if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
 }

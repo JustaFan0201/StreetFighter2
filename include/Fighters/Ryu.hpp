@@ -14,13 +14,13 @@ namespace Util {
         void LoadAnimations() override;
         void LoadOffsetVelocity() override;
         void LoadAllBox()override;
-        void LoadSpecialMove();
+        void LoadSpecialMove()override;
         void HandoukenStateEnter();
-        void HandoukenStateUpload();
+        void HandoukenStateUpdate();
         void ShoryukenStateEnter();
-        void ShoryukenStateUpload();
+        void ShoryukenStateUpdate();
         void TatsumakiSenpuStateEnter();
-        void TatsumakiSenpuStateUpload();
+        void TatsumakiSenpuStateUpdate();
     };
 }
 #endif //RYU_HPP

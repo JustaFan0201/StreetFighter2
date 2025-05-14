@@ -21,7 +21,7 @@ namespace Util {
 
         animationNow=std::make_shared<AnimationSpace>(
             animations[FlyingObjectState::Start],
-            true,120,true,3
+            false,60,true,3
         );
     }
 }

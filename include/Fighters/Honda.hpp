@@ -14,13 +14,13 @@ namespace Util {
         void LoadAnimations() override;
         void LoadOffsetVelocity() override;
         void LoadAllBox()override;
-        void LoadSpecialMove();
+        void LoadSpecialMove()override;
         void HeadbuttStateEnter();
-        void HeadbuttStateUpload();
+        void HeadbuttStateUpdate();
         void HeadbuttRecoveryStateEnter();
-        void HeadbuttRecoveryStateUpload();
+        void HeadbuttRecoveryStateUpdate();
         void HundredSlapStateEnter();
-        void HundredSlapStateUpload();
+        void HundredSlapStateUpdate();
     };
 }
 #endif //HONDA_HPP

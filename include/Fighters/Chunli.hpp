@@ -14,6 +14,11 @@ namespace Util {
         void LoadAnimations() override;
         void LoadOffsetVelocity() override;
         void LoadAllBox()override;
+        void LoadSpecialMove()override;
+        void HyakurretsuKyakuStateEnter();
+        void HyakurretsuKyakuStateUpdate();
+        void SpinningBirdKickStateEnter();
+        void SpinningBirdKickStateUpdate();
     };
 
 }
