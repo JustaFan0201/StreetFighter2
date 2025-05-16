@@ -388,7 +388,7 @@ namespace Util {
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
@@ -405,7 +405,7 @@ namespace Util {
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }

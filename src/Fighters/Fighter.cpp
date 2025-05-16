@@ -1,21 +1,33 @@
 #include "Fighters/Fighter.hpp"
 namespace Util {
     void Fighter::LoadCommonVelocities() {
-        Initialvelocity.x[FighterState::Forward]=8;
-        Initialvelocity.x[FighterState::Backward]=-8;
-        Initialvelocity.x[FighterState::JumpForward]=10;
-        Initialvelocity.x[FighterState::JumpBackward]=-10;
-        Initialvelocity.y[FighterState::JumpForward]=38;
-        Initialvelocity.y[FighterState::JumpBackward]=38;
-        Initialvelocity.y[FighterState::JumpUP]=38;
+        InitialvelocityForOwn.x[FighterState::Forward]=8;
+        InitialvelocityForOwn.x[FighterState::Backward]=-8;
+        InitialvelocityForOwn.x[FighterState::JumpForward]=10;
+        InitialvelocityForOwn.x[FighterState::JumpBackward]=-10;
+        InitialvelocityForOwn.y[FighterState::JumpForward]=38;
+        InitialvelocityForOwn.y[FighterState::JumpBackward]=38;
+        InitialvelocityForOwn.y[FighterState::JumpUP]=38;
 
-        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-6;
-        Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-8;
-        Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-10;
+        InitialvelocityForEnemy.x[FighterState::HurtBodyL]=InitialvelocityForEnemy.x[FighterState::HurtHeadL]=-6;
+        InitialvelocityForEnemy.x[FighterState::HurtBodyM]=InitialvelocityForEnemy.x[FighterState::HurtHeadM]=-8;
+        InitialvelocityForEnemy.x[FighterState::HurtBodyH]=InitialvelocityForEnemy.x[FighterState::HurtHeadH]=-10;
 
-        Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-4;
-        Initialvelocity.x[FighterState::DefeatedLoss]=-10;
-        Initialvelocity.y[FighterState::DefeatedLoss]=35;
+        InitialvelocityForEnemy.x[FighterState::LP]=InitialvelocityForEnemy.y[FighterState::LK]=-6;
+        InitialvelocityForEnemy.x[FighterState::MP]=InitialvelocityForEnemy.y[FighterState::MK]=-8;
+        InitialvelocityForEnemy.x[FighterState::HP]=InitialvelocityForEnemy.y[FighterState::HP]=-10;
+
+        InitialvelocityForEnemy.x[FighterState::CrouchLK]=InitialvelocityForEnemy.y[FighterState::CrouchLK]=-6;
+        InitialvelocityForEnemy.x[FighterState::CrouchMP]=InitialvelocityForEnemy.y[FighterState::CrouchMK]=-8;
+        InitialvelocityForEnemy.x[FighterState::CrouchHP]=InitialvelocityForEnemy.y[FighterState::CrouchHP]=-10;
+
+        InitialvelocityForEnemy.x[FighterState::Special_1]=InitialvelocityForEnemy.y[FighterState::Special_1]=0;
+        InitialvelocityForEnemy.x[FighterState::Special_2]=InitialvelocityForEnemy.y[FighterState::Special_2]=0;
+        InitialvelocityForEnemy.x[FighterState::Special_3]=InitialvelocityForEnemy.y[FighterState::Special_3]=0;
+
+        InitialvelocityForOwn.x[FighterState::BackwardBlock]=InitialvelocityForOwn.x[FighterState::CrouchBlock]=-4;
+        InitialvelocityForOwn.x[FighterState::DefeatedLoss]=-10;
+        InitialvelocityForOwn.y[FighterState::DefeatedLoss]=35;
     }
     void Fighter::LoadAttackAndType() {
         attacks[FighterState::LP]=attacks[FighterState::LK]=attacks[FighterState::CrouchLP]=attacks[FighterState::CrouchLK]=5;
@@ -59,8 +71,8 @@ namespace Util {
 
         // Initial Velocity
         if (anim.initialvelocitys.count(ButtonType)) {
-            Initialvelocity.x[currentState] = anim.initialvelocitys[ButtonType].x;
-            Initialvelocity.y[currentState] = anim.initialvelocitys[ButtonType].y;
+            InitialvelocityForOwn.x[currentState] = anim.initialvelocitys[ButtonType].x;
+            InitialvelocityForOwn.y[currentState] = anim.initialvelocitys[ButtonType].y;
         }
 
         // Attack Info
@@ -604,7 +616,7 @@ namespace Util {
     }
 
     void Fighter::WalkStateEnter(){
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::ForwardStateUpdate() {
@@ -635,7 +647,7 @@ namespace Util {
     }
 
     void Fighter::JumpStateEnter(){
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::JumpStateUpdate(){
@@ -666,7 +678,7 @@ namespace Util {
 
     void Fighter::AttackStateEnter() {
         ResetVelocity();
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
         PlayCurrentSound();
     }
@@ -681,7 +693,7 @@ namespace Util {
 
     void Fighter::HurtStateEnter() {
         ResetVelocity();
-        velocity=GetInitialvelocity();
+        velocity=GetEnemyInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::HurtStateUpdate() {
@@ -692,7 +704,7 @@ namespace Util {
     }
     void Fighter::BlockStateEnter() {
         ResetVelocity();
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
         PlayCurrentSound();
     }
@@ -716,7 +728,7 @@ namespace Util {
     void Fighter::LossStateEnter() {
         PlayCurrentSound();
         ResetVelocity();
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::LossStateUpdate() {

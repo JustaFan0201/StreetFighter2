@@ -55,9 +55,9 @@ namespace Util {
         animations[FighterState::CrouchMP] = ActionInit(7, "CrouchMP");
         animations[FighterState::CrouchHP] = animations[FighterState::CrouchMP];
         animations[FighterState::CrouchHK] = animations[FighterState::CrouchMK] = animations[FighterState::CrouchLK] = ActionInit(2, "CrouchLK");
-        Initialvelocity.x[FighterState::CrouchLK] = 8;
-        Initialvelocity.x[FighterState::CrouchMK] = 11;
-        Initialvelocity.x[FighterState::CrouchHK] = 14;
+        InitialvelocityForOwn.x[FighterState::CrouchLK] = 2;
+        InitialvelocityForOwn.x[FighterState::CrouchMK] = 4;
+        InitialvelocityForOwn.x[FighterState::CrouchHK] = 6;
 
 
         animations[FighterState::WinStart]=ActionInit(1, "WinStart");

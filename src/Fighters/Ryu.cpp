@@ -326,6 +326,10 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::M;
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HP]=HitStrength::H;
 
+        SpecialMoveData.attackdata[FighterState::Special_2].InitialvelocityForEnemy[Keys::LP]={-5,0};
+        SpecialMoveData.attackdata[FighterState::Special_2].InitialvelocityForEnemy[Keys::MP]={-5,0};
+        SpecialMoveData.attackdata[FighterState::Special_2].InitialvelocityForEnemy[Keys::HP]={-5,0};
+
         StateEnter[FighterState::Special_2]=[this] { ShoryukenStateEnter(); };
         StateUpdate[FighterState::Special_2]=[this] { ShoryukenStateUpdate(); };
 
@@ -400,7 +404,7 @@ namespace Util {
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
@@ -417,7 +421,7 @@ namespace Util {
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }

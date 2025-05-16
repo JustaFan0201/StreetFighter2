@@ -94,13 +94,24 @@ namespace Util {
         void GetAttack(float dmg){hp-=dmg;}
         int GetDirection() const{return direction;}
         glm::vec2 GetVelocity() const{return velocity;}
-        glm::vec2 GetInitialvelocity() {
+        Initialvelocity GetInitialvelocityForOwn() {return InitialvelocityForOwn;}
+        Initialvelocity GetInitialvelocityForEnemy() {return InitialvelocityForEnemy;}
+        glm::vec2 GetOwnInitialvelocity() {
             return glm::vec2{
-                Initialvelocity.x.count(currentState) ?
-                 Initialvelocity.x[currentState] : 0,
+                InitialvelocityForOwn.x.count(currentState) ?
+                 InitialvelocityForOwn.x[currentState] : 0,
 
-                Initialvelocity.y.count(currentState) ?
-                 Initialvelocity.y[currentState] : 0,
+                InitialvelocityForOwn.y.count(currentState) ?
+                 InitialvelocityForOwn.y[currentState] : 0,
+            };
+        }
+        glm::vec2 GetEnemyInitialvelocity() const {
+            return glm::vec2{
+                enemy->GetInitialvelocityForEnemy().x.count(currentState) ?
+                    enemy->GetInitialvelocityForEnemy().x[currentState] : 0,
+
+                enemy->GetInitialvelocityForEnemy().y.count(currentState) ?
+                    enemy->GetInitialvelocityForEnemy().y[currentState] : 0,
             };
         }
         HitStrength GetHitStrength(){return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
@@ -268,7 +279,8 @@ namespace Util {
         float currentCameraX;
 
         glm::vec2 velocity;
-        Initialvelocity Initialvelocity;
+        Initialvelocity InitialvelocityForOwn;
+        Initialvelocity InitialvelocityForEnemy;
 
         Boxes boxes;
         SpecialSkillData SpecialMoveData;

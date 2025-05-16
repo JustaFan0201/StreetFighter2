@@ -376,7 +376,7 @@ namespace Util {
             velocity.x -= velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
         }
         else if (ActionNow->GetCurrentFrameIndex() == 8) {
-            velocity=GetInitialvelocity();
+            velocity=GetOwnInitialvelocity();
         }
         else {
             ResetVelocity();

@@ -343,8 +343,8 @@ namespace Util {
         SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::MP]={25,0};
         SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::HP]={30,0};
 
-        Initialvelocity.x[FighterState::SpecialRecovery_2]=-10;
-        Initialvelocity.y[FighterState::SpecialRecovery_2]=38;
+        InitialvelocityForOwn.x[FighterState::SpecialRecovery_2]=-10;
+        InitialvelocityForOwn.y[FighterState::SpecialRecovery_2]=38;
 
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LP]=10;
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=15;
@@ -383,7 +383,7 @@ namespace Util {
         ButtonType=controller->GetCurrentAttackKey();
         SkillErrorPrevent(ButtonType,ButtonList::punch);
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
@@ -396,7 +396,7 @@ namespace Util {
     }
     void Blanka::RollingAttackRecoveryStateEnter() {
         ResetVelocity();
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Blanka::RollingAttackRecoveryStateUpdate() {

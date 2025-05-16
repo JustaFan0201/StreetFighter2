@@ -365,7 +365,7 @@ namespace Util {
             ChangeState(FighterState::SpecialRecovery_1);
         }
         if(ActionNow->GetCurrentFrameIndex()>=5) {
-            velocity=GetInitialvelocity();
+            velocity=GetOwnInitialvelocity();
         }
         if (GetAnimationIsEnd()) {
             ClearButtonType();

@@ -368,7 +368,7 @@ namespace Util {
         ButtonType=controller->GetCurrentAttackKey();
         SkillErrorPrevent(ButtonType,ButtonList::kick);
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetInitialvelocity();
+        velocity=GetOwnInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }

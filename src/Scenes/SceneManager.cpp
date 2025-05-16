@@ -24,13 +24,13 @@ namespace Util {
             }
             std::cout << "Mode selected: " << static_cast<int>(mode) << std::endl;
             std::shared_ptr<Scene> nextScene;
-            /*nextScene = std::make_shared<SlectScene>(); //切到Story模式
+            nextScene = std::make_shared<SlectScene>(); //切到Story模式
             nextScene->SetMode(mode);
             NowSceneType=SceneType::Slect;
-            ChangeScene(nextScene);*/
-            nextScene = std::make_shared<BattleScene>(player,enemy);
-            NowSceneType=SceneType::Battle;
             ChangeScene(nextScene);
+            /*nextScene = std::make_shared<BattleScene>(player,enemy);
+            NowSceneType=SceneType::Battle;
+            ChangeScene(nextScene);*/
         }
         if (m_NowScene!=nullptr && m_NowScene->getSenseEnd() && NowSceneType==SceneType::Slect) {
             std::shared_ptr<Scene> nextScene;
