@@ -55,9 +55,9 @@ namespace Util {
         animations[FighterState::CrouchMP] = ActionInit(7, "CrouchMP");
         animations[FighterState::CrouchHP] = animations[FighterState::CrouchMP];
         animations[FighterState::CrouchHK] = animations[FighterState::CrouchMK] = animations[FighterState::CrouchLK] = ActionInit(2, "CrouchLK");
-        InitialvelocityForOwn.x[FighterState::CrouchLK] = 2;
-        InitialvelocityForOwn.x[FighterState::CrouchMK] = 4;
-        InitialvelocityForOwn.x[FighterState::CrouchHK] = 6;
+        Initialvelocity.x[FighterState::CrouchLK] = 4;
+        Initialvelocity.x[FighterState::CrouchMK] = 5;
+        Initialvelocity.x[FighterState::CrouchHK] = 6;
 
 
         animations[FighterState::WinStart]=ActionInit(1, "WinStart");
@@ -76,18 +76,18 @@ namespace Util {
         frames[FighterState::CrouchDown]={60,60,60};
         frames[FighterState::CrouchUp]={60,60,60};
         frames[FighterState::LP]={80,90,100,90,80};
-        frames[FighterState::MP]={60,80,140,170,140,100,80};
-        frames[FighterState::HP]={60,80,160,190,160,100,80};
-        frames[FighterState::LK]={60,100,140,100,60};
-        frames[FighterState::MK]={60,100,160,100,60};
+        frames[FighterState::MP]={80,80,140,170,140,100,80};
+        frames[FighterState::HP]={80,80,160,190,160,100,80};
+        frames[FighterState::LK]={80,100,140,100,80};
+        frames[FighterState::MK]={80,100,160,100,80};
         frames[FighterState::HK]={100,100,100,100,140,100};
 
-        frames[FighterState::CrouchLP]={100,120};
+        frames[FighterState::CrouchLP]={110,140};
         frames[FighterState::CrouchMP]={100,100,120,160,120,100,100};
         frames[FighterState::CrouchHP]={100,100,120,190,120,100,100};
-        frames[FighterState::CrouchLK]={120,160};
-        frames[FighterState::CrouchMK]={140,180};
-        frames[FighterState::CrouchHK]={160,200};
+        frames[FighterState::CrouchLK]={150,350};
+        frames[FighterState::CrouchMK]={150,360};
+        frames[FighterState::CrouchHK]={150,380};
 
         frames[FighterState::HurtHeadL] = {100,100};
         frames[FighterState::HurtHeadM] = {150,150};
@@ -121,7 +121,7 @@ namespace Util {
         offset[FighterState::CrouchLP]={{3,-56},{87,-58}};;
         offset[FighterState::CrouchMP]={{-45,-38},{27,-72},{103,-98},{200,-98},{102,-100},{25,-73},{-44,-40}};
         offset[FighterState::CrouchHP]=offset[FighterState::CrouchMP];
-        offset[FighterState::CrouchLK]={{-1,-57},{172,-77}};
+        offset[FighterState::CrouchLK]={{-30,-57},{-30,-77}};
         offset[FighterState::CrouchMK]=offset[FighterState::CrouchLK];
         offset[FighterState::CrouchHK]=offset[FighterState::CrouchLK];
 

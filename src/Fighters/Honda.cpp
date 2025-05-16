@@ -74,18 +74,18 @@ namespace Util {
         frames[FighterState::CrouchDown]={60,60};
         frames[FighterState::CrouchUp]={60,60};
         frames[FighterState::LP]={60,60,60,60,60};
-        frames[FighterState::MP]={60,60,60,60,60,60,60};
-        frames[FighterState::HP]={60,60,60,60,60,60,60,60,60};
-        frames[FighterState::LK]={60,60,60,60,60,60,60};
-        frames[FighterState::MK]={60,60,60,60,60};
-        frames[FighterState::HK]={60,60,60,60,60,60,60,60,60};
+        frames[FighterState::MP]={60,60,80,100,80,60,60};
+        frames[FighterState::HP]={80,80,80,80,120,100,80,80,80};
+        frames[FighterState::LK]={80,80,80,120,100,80,80};
+        frames[FighterState::MK]={100,100,130,110,110};
+        frames[FighterState::HK]={70,70,70,70,110,80,80,80,80};
 
-        frames[FighterState::CrouchLP]={60,90,60};
-        frames[FighterState::CrouchMP]={60,60,60,60,60};
-        frames[FighterState::CrouchHP]={60,60,60,60,60,60,60};
-        frames[FighterState::CrouchLK]={60,60,60,60,60};
-        frames[FighterState::CrouchMK]={60,60,60,60,60};
-        frames[FighterState::CrouchHK]={60,60,60,60,60};
+        frames[FighterState::CrouchLP]={70,90,90};
+        frames[FighterState::CrouchMP]={70,70,90,80,80};
+        frames[FighterState::CrouchHP]={80,80,80,100,90,80,80};
+        frames[FighterState::CrouchLK]={60,60,70,60,60};
+        frames[FighterState::CrouchMK]={80,80,90,80,80};
+        frames[FighterState::CrouchHK]={100,100,100,100,100};
 
         frames[FighterState::HurtHeadL] = {100,100};
         frames[FighterState::HurtHeadM] = {150,150};
@@ -365,7 +365,7 @@ namespace Util {
             ChangeState(FighterState::SpecialRecovery_1);
         }
         if(ActionNow->GetCurrentFrameIndex()>=5) {
-            velocity=GetOwnInitialvelocity();
+            velocity=GetInitialvelocity();
         }
         if (GetAnimationIsEnd()) {
             ClearButtonType();

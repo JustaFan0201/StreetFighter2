@@ -17,7 +17,7 @@ namespace Util {
 
         animations[FlyingObjectState::Start]=ActionInit(2,"Start");
         animations[FlyingObjectState::Collide]=ActionInit(3,"Collide");
-        hitbox.size[FlyingObjectState::Start]={150,150};
+        hitbox.size[FlyingObjectState::Start]={135,135};
 
         animationNow=std::make_shared<AnimationSpace>(
             animations[FlyingObjectState::Start],

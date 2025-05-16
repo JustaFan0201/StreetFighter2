@@ -73,19 +73,19 @@ namespace Util {
         frames[FighterState::Crouch]={60};
         frames[FighterState::CrouchDown]={120,60,60};
         frames[FighterState::CrouchUp]={60,120};
-        frames[FighterState::LP]={60,60,60,60,60};
-        frames[FighterState::MP]={60,60,60,60,60};
-        frames[FighterState::HP]={60,60,60,60,60};
-        frames[FighterState::LK]={60,60,60,60,60};
-        frames[FighterState::MK]={60,60,60,60,60};
-        frames[FighterState::HK]={60,60,60,60,60,60};
+        frames[FighterState::LP]={60,70,80,70,60};
+        frames[FighterState::MP]={80,80,100,90,80};
+        frames[FighterState::HP]={80,90,100,100,90};
+        frames[FighterState::LK]={80,90,90,90,90};
+        frames[FighterState::MK]={90,90,100,90,90};
+        frames[FighterState::HK]={70,80,90,90,90,90};
 
-        frames[FighterState::CrouchLP]={60,60,60,60,60};
-        frames[FighterState::CrouchMP]={60,60,60,60,60};
-        frames[FighterState::CrouchHP]={60,60,60,60,60};
-        frames[FighterState::CrouchLK]={60,60,60,60,60};
-        frames[FighterState::CrouchMK]={60,60,60};
-        frames[FighterState::CrouchHK]={60,60,60,60,60};
+        frames[FighterState::CrouchLP]={70,70,80,70,70};
+        frames[FighterState::CrouchMP]={70,70,80,70,70};
+        frames[FighterState::CrouchHP]={70,70,80,70,70};
+        frames[FighterState::CrouchLK]={70,70,80,70,70};
+        frames[FighterState::CrouchMK]={90,110,100};
+        frames[FighterState::CrouchHK]={80,90,120,110,90};
 
         frames[FighterState::HurtHeadL] = {100,100};
         frames[FighterState::HurtHeadM] = {150,150};
@@ -376,7 +376,7 @@ namespace Util {
             velocity.x -= velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
         }
         else if (ActionNow->GetCurrentFrameIndex() == 8) {
-            velocity=GetOwnInitialvelocity();
+            velocity=GetInitialvelocity();
         }
         else {
             ResetVelocity();

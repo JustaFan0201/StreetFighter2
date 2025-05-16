@@ -73,19 +73,19 @@ namespace Util {
         frames[FighterState::Crouch]={60};
         frames[FighterState::CrouchDown]={120,60};
         frames[FighterState::CrouchUp]={60,120};
-        frames[FighterState::LP]={30,60,60,60,60,30};
-        frames[FighterState::MP]={60,60,60,60};
-        frames[FighterState::HP]={60,60,60,60,60,60};
-        frames[FighterState::LK]={60,60,60,60,60,60};
-        frames[FighterState::MK]={60,60,60,60,60,60};
-        frames[FighterState::HK]={60,60,60,60,60,60,60};
+        frames[FighterState::LP]={60,60,60,60,60,60};
+        frames[FighterState::MP]={70,70,80,80};
+        frames[FighterState::HP]={70,70,80,80,80,80};
+        frames[FighterState::LK]={60,60,70,70,70,60};
+        frames[FighterState::MK]={70,70,70,90,90,80};
+        frames[FighterState::HK]={80,80,80,100,100,90,90};
 
-        frames[FighterState::CrouchLP]={60,60,60,60,60,60};
-        frames[FighterState::CrouchMP]={60,60,60,60,60,60,60,60};
-        frames[FighterState::CrouchHP]={60,60,60,60,60,60};
-        frames[FighterState::CrouchLK]={60,60,60};
-        frames[FighterState::CrouchMK]={60,60,60};
-        frames[FighterState::CrouchHK]={60,60,60,60,60,60};
+        frames[FighterState::CrouchLP]={60,60,80,80,70,70};
+        frames[FighterState::CrouchMP]={70,70,70,80,90,80,80,70};
+        frames[FighterState::CrouchHP]={80,80,100,100,100,100};
+        frames[FighterState::CrouchLK]={70,100,90};
+        frames[FighterState::CrouchMK]={80,120,100};
+        frames[FighterState::CrouchHK]={80,80,80,100,90,90};
 
         frames[FighterState::HurtHeadL] = {100,100};
         frames[FighterState::HurtHeadM] = {150,150};
@@ -343,8 +343,8 @@ namespace Util {
         SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::MP]={25,0};
         SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::HP]={30,0};
 
-        InitialvelocityForOwn.x[FighterState::SpecialRecovery_2]=-10;
-        InitialvelocityForOwn.y[FighterState::SpecialRecovery_2]=38;
+        Initialvelocity.x[FighterState::SpecialRecovery_2]=-10;
+        Initialvelocity.y[FighterState::SpecialRecovery_2]=38;
 
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LP]=10;
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=15;
@@ -383,7 +383,7 @@ namespace Util {
         ButtonType=controller->GetCurrentAttackKey();
         SkillErrorPrevent(ButtonType,ButtonList::punch);
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetOwnInitialvelocity();
+        velocity=GetInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
@@ -396,7 +396,7 @@ namespace Util {
     }
     void Blanka::RollingAttackRecoveryStateEnter() {
         ResetVelocity();
-        velocity=GetOwnInitialvelocity();
+        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Blanka::RollingAttackRecoveryStateUpdate() {

@@ -51,6 +51,12 @@ namespace Util {
         virtual void AttackStateEnter();
         virtual void AttackStateUpdate();
 
+        virtual void JumpAttackStateEnter();
+        virtual void JumpAttackStateUpdate();
+
+        virtual void JumpAttackEndStateEnter();
+        virtual void JumpAttackEndStateUpdate();
+
         virtual void HurtStateEnter();
         virtual void HurtStateUpdate();
 
@@ -94,26 +100,16 @@ namespace Util {
         void GetAttack(float dmg){hp-=dmg;}
         int GetDirection() const{return direction;}
         glm::vec2 GetVelocity() const{return velocity;}
-        Initialvelocity GetInitialvelocityForOwn() {return InitialvelocityForOwn;}
-        Initialvelocity GetInitialvelocityForEnemy() {return InitialvelocityForEnemy;}
-        glm::vec2 GetOwnInitialvelocity() {
+        glm::vec2 GetInitialvelocity() {
             return glm::vec2{
-                InitialvelocityForOwn.x.count(currentState) ?
-                 InitialvelocityForOwn.x[currentState] : 0,
+                Initialvelocity.x.count(currentState) ?
+                 Initialvelocity.x[currentState] : 0,
 
-                InitialvelocityForOwn.y.count(currentState) ?
-                 InitialvelocityForOwn.y[currentState] : 0,
+                Initialvelocity.y.count(currentState) ?
+                 Initialvelocity.y[currentState] : 0,
             };
         }
-        glm::vec2 GetEnemyInitialvelocity() const {
-            return glm::vec2{
-                enemy->GetInitialvelocityForEnemy().x.count(currentState) ?
-                    enemy->GetInitialvelocityForEnemy().x[currentState] : 0,
 
-                enemy->GetInitialvelocityForEnemy().y.count(currentState) ?
-                    enemy->GetInitialvelocityForEnemy().y[currentState] : 0,
-            };
-        }
         HitStrength GetHitStrength(){return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
         FighterState GetBeHitState(HitStrength Strength,HitLocation Location);
         FighterState GetBlockState();
@@ -279,8 +275,7 @@ namespace Util {
         float currentCameraX;
 
         glm::vec2 velocity;
-        Initialvelocity InitialvelocityForOwn;
-        Initialvelocity InitialvelocityForEnemy;
+        Initialvelocity Initialvelocity;
 
         Boxes boxes;
         SpecialSkillData SpecialMoveData;

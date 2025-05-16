@@ -53,6 +53,9 @@ namespace Util {
         animations[FighterState::CrouchMK] = ActionInit(5, "CrouchMK");
         animations[FighterState::CrouchHK] = ActionInit(5, "CrouchHK");
 
+        animations[FighterState::JumpLP] = ActionInit(2, "JumpLP");
+        animations[FighterState::JumpAttackEnd] = ActionInit(2, "JumpAttackEnd");
+
         animations[FighterState::HurtHeadL] = animations[FighterState::HurtHeadM] = animations[FighterState::HurtHeadH] =ActionInit(2, "HurtHead");
         animations[FighterState::HurtBodyL] = animations[FighterState::HurtBodyM] = animations[FighterState::HurtBodyH] = ActionInit(2, "HurtBody");
 
@@ -89,6 +92,9 @@ namespace Util {
         frames[FighterState::CrouchMK]={30,60,120,60,30};
         frames[FighterState::CrouchHK]={60,180,120,90,60};
 
+        frames[FighterState::JumpLP]={60,60};
+        frames[FighterState::JumpAttackEnd]={60,60};
+
         frames[FighterState::HurtHeadL] = {150,150};
         frames[FighterState::HurtHeadM] = {180,180};
         frames[FighterState::HurtHeadH] = {240,240};
@@ -104,7 +110,6 @@ namespace Util {
 
         frames[FighterState::TimeOverLoss]={180};
         frames[FighterState::DefeatedLoss]={180,180,180,180};
-
     }
     void Ken::LoadOffsetVelocity() {
         offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
@@ -125,6 +130,14 @@ namespace Util {
         offset[FighterState::CrouchLK]={{38,-42},{107,-43},{37,-43}};
         offset[FighterState::CrouchMK]={{39,-42},{-15,-49},{-17,-52},{-14,-49},{37,-44}};
         offset[FighterState::CrouchHK]={{68,-45},{115,-46},{76,-48},{17,-45},{11,-42}};
+
+        offset[FighterState::JumpUP]={{8,-3},{-2,25},{-12,26},{14,17},{2,8},{-16,11},{-5,32}};
+        offset[FighterState::JumpForward]={{12,26},{15,17},{6,-19},{29,-20},{9,1},{-3,31}};
+        std::vector<glm::vec2> reversedoffset = offset[FighterState::JumpForward];
+        std::reverse(reversedoffset.begin(), reversedoffset.end());
+        offset[FighterState::JumpBackward]=reversedoffset;
+        offset[FighterState::JumpLP]={{0,0},{27,-2}};
+        offset[FighterState::JumpAttackEnd]={{-16,11},{-5,32}};
 
         offset[FighterState::HurtHeadL]=offset[FighterState::HurtHeadM]=offset[FighterState::HurtHeadH]={{-24,-8},{-39,-0}};
         offset[FighterState::HurtBodyL]=offset[FighterState::HurtBodyM]=offset[FighterState::HurtBodyH]={{-1,-7},{9,-15}};
@@ -388,7 +401,7 @@ namespace Util {
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetOwnInitialvelocity();
+        velocity=GetInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
@@ -405,7 +418,7 @@ namespace Util {
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetOwnInitialvelocity();
+        velocity=GetInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }

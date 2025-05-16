@@ -83,6 +83,7 @@ namespace Util {
                 GetCurrentHitbox(),
                 EnemyEntityPos,
                 EnemyEntitySize)){
+                EnemyEntity->ChangeState(FlyingObjectState::Collide);
                 return FlyingObjectCollidedState::FlyingObject;
             }
         }

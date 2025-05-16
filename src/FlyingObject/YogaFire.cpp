@@ -7,9 +7,9 @@ namespace Util {
     YogaFire::YogaFire(): FlyingObject("YogaFire") {
         Type=FlyingObjectType::YogaFire;
 
-        FlyingObjVelocity[Keys::LP]=400;
-        FlyingObjVelocity[Keys::MP]=600;
-        FlyingObjVelocity[Keys::HP]=800;
+        FlyingObjVelocity[Keys::LP]=300;
+        FlyingObjVelocity[Keys::MP]=500;
+        FlyingObjVelocity[Keys::HP]=700;
 
         FlyingObjDmg[Keys::LP]=12;
         FlyingObjDmg[Keys::MP]=17;
@@ -17,7 +17,7 @@ namespace Util {
 
         animations[FlyingObjectState::Start]=ActionInit(8,"Start");
         animations[FlyingObjectState::Collide]=ActionInit(3,"Collide");
-        hitbox.size[FlyingObjectState::Start]={150,100};
+        hitbox.size[FlyingObjectState::Start]={135,100};
 
         animationNow=std::make_shared<AnimationSpace>(
             animations[FlyingObjectState::Start],

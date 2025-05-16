@@ -298,10 +298,10 @@ namespace Util {
     }
     void Zangief::DoubleLariatStateUpdate() {
         if(controller->IsForward(direction)) {
-            velocity=GetOwnInitialvelocity();
+            velocity=GetInitialvelocity();
         }
         else if(controller->IsBackward(direction)) {
-            velocity=glm::vec2{-1,1}* GetOwnInitialvelocity();
+            velocity=glm::vec2{-1,1}* GetInitialvelocity();
         }
         else{
             ResetVelocity();

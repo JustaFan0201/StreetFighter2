@@ -39,6 +39,7 @@ namespace Util {
         JumpLK,
         JumpMK,
         JumpHK,
+        JumpAttackEnd,
         Special_1,
         Special_2,
         Special_3,
@@ -181,7 +182,6 @@ namespace Util {
     struct AttackData {
         std::unordered_map<Keys, HitStrength> HitStrength;
         std::unordered_map<Keys, float> attack;
-        std::unordered_map<Keys, glm::vec2> InitialvelocityForEnemy;
     };
     struct SoundData {
         std::unordered_map<Keys, std::shared_ptr<SFX>> sound;

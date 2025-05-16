@@ -73,19 +73,19 @@ namespace Util {
         frames[FighterState::Crouch]={60};
         frames[FighterState::CrouchDown]={60,60,60};
         frames[FighterState::CrouchUp]={60,60,60};
-        frames[FighterState::LP]={30,60,90};
-        frames[FighterState::MP]={30,60,120,60,30};
-        frames[FighterState::HP]={60,90,120,180,60};
-        frames[FighterState::LK]={30,60,90};
-        frames[FighterState::MK]={60,60,60,60,60,60};
-        frames[FighterState::HK]={60,60,60,60,60,60};
+        frames[FighterState::LP]={70,90,70};
+        frames[FighterState::MP]={70,80,90,80,80};
+        frames[FighterState::HP]={80,80,110,100,100};
+        frames[FighterState::LK]={80,80,90};
+        frames[FighterState::MK]={80,80,90,90,90,90};
+        frames[FighterState::HK]={70,70,90,100,100,100};
 
-        frames[FighterState::CrouchLP]={60,90,60};
-        frames[FighterState::CrouchMP]={60,60,60,60};
-        frames[FighterState::CrouchHP]={60,60,60,60,60};
-        frames[FighterState::CrouchLK]={60,60,60};
-        frames[FighterState::CrouchMK]={60,60,60,60,60};
-        frames[FighterState::CrouchHK]={60,60,60,60,60,60,60,60,60,60,60};
+        frames[FighterState::CrouchLP]={80,90,80};
+        frames[FighterState::CrouchMP]={70,90,90,70};
+        frames[FighterState::CrouchHP]={80,80,110,130,90};
+        frames[FighterState::CrouchLK]={80,90,90};
+        frames[FighterState::CrouchMK]={70,70,70,70,70};
+        frames[FighterState::CrouchHK]={70,70,70,70,70,70,70,70,70,70,70};
 
         frames[FighterState::HurtHeadL] = {100,100};
         frames[FighterState::HurtHeadM] = {150,150};
@@ -116,7 +116,7 @@ namespace Util {
         offset[FighterState::MK]={{-18,16},{-24,18},{31,12},{60,1},{116,-8},{51,-9}};
         offset[FighterState::HK]={{-5,14},{57,14},{107,14},{55,23},{87,14},{14,19}};
         //Crouch attack offset
-        offset[FighterState::CrouchLP]={{1,-33},{49,-35},{49,-35}};
+        offset[FighterState::CrouchLP]={{20,-43},{64,-43},{52,-45}};
         offset[FighterState::CrouchMP]={{34,-48},{55,-51},{39,-50},{31,-48}};
         offset[FighterState::CrouchHP]={{2,-30},{17,-19},{25,6},{5,62},{25,8}};
         offset[FighterState::CrouchLK]={{24,-47},{24,-47},{93,-57}};
@@ -368,7 +368,7 @@ namespace Util {
         ButtonType=controller->GetCurrentAttackKey();
         SkillErrorPrevent(ButtonType,ButtonList::kick);
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetOwnInitialvelocity();
+        velocity=GetInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }

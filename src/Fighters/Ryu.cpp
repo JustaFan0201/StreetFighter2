@@ -53,13 +53,16 @@ namespace Util {
         animations[FighterState::CrouchMK] = ActionInit(5, "CrouchMK");
         animations[FighterState::CrouchHK] = ActionInit(5, "CrouchHK");
 
+        animations[FighterState::JumpLP] = ActionInit(2, "JumpLP");
+        animations[FighterState::JumpMP] = ActionInit(3, "JumpMP");
+        animations[FighterState::JumpHP] = ActionInit(3, "JumpHP");
+        animations[FighterState::JumpAttackEnd] = ActionInit(2, "JumpAttackEnd");
+
         animations[FighterState::HurtHeadL] = animations[FighterState::HurtHeadM] = animations[FighterState::HurtHeadH] =ActionInit(2, "HurtHead");
         animations[FighterState::HurtBodyL] = animations[FighterState::HurtBodyM] = animations[FighterState::HurtBodyH] = ActionInit(2, "HurtBody");
 
         animations[FighterState::BackwardBlock]=ActionInit(2, "BackwardBlock");
         animations[FighterState::CrouchBlock]=ActionInit(2, "CrouchBlock");
-
-        animations[FighterState::Special_1]=ActionInit(4, "Special_1");
 
         animations[FighterState::WinStart]=ActionInit(3, "WinStart");
         animations[FighterState::Win]=ActionInit(2, "Win");
@@ -91,6 +94,11 @@ namespace Util {
         frames[FighterState::CrouchMK]={30,60,120,60,30};
         frames[FighterState::CrouchHK]={60,180,120,90,60};
 
+        frames[FighterState::JumpLP]={120,360};
+        frames[FighterState::JumpMP]={120,120,420};
+        frames[FighterState::JumpHP]={120,120,480};
+        frames[FighterState::JumpAttackEnd]={120,90};
+
         frames[FighterState::HurtHeadL] = {150,150};
         frames[FighterState::HurtHeadM] = {180,180};
         frames[FighterState::HurtHeadH] = {240,240};
@@ -100,8 +108,6 @@ namespace Util {
 
         frames[FighterState::BackwardBlock] = {150,150};
         frames[FighterState::CrouchBlock] = {150,150};
-
-        frames[FighterState::Special_1]={120,120,120,120};
 
         frames[FighterState::WinStart]={180,180,180};
         frames[FighterState::Win]={180};
@@ -129,13 +135,21 @@ namespace Util {
         offset[FighterState::CrouchMK]={{39,-42},{-15,-49},{-17,-52},{-14,-49},{37,-44}};
         offset[FighterState::CrouchHK]={{68,-45},{115,-46},{76,-48},{17,-45},{11,-42}};
 
+        offset[FighterState::JumpUP]={{8,-3},{-2,25},{-12,26},{14,17},{2,8},{-16,11},{-5,32}};
+        offset[FighterState::JumpForward]={{12,26},{15,17},{6,-19},{29,-20},{9,1},{-3,31}};
+        std::vector<glm::vec2> reversedoffset = offset[FighterState::JumpForward];
+        std::reverse(reversedoffset.begin(), reversedoffset.end());
+        offset[FighterState::JumpBackward]=reversedoffset;
+        offset[FighterState::JumpLP]={{0,0},{27,-2}};
+        offset[FighterState::JumpLP]={{20,19},{6,20},{6,17}};
+        offset[FighterState::JumpHP]={{2,9},{-26,18},{36,11}};
+        offset[FighterState::JumpAttackEnd]={{-16,11},{-5,32}};
+
         offset[FighterState::HurtHeadL]=offset[FighterState::HurtHeadM]=offset[FighterState::HurtHeadH]={{-14,-1},{-22,-4}};
         offset[FighterState::HurtBodyL]=offset[FighterState::HurtBodyM]=offset[FighterState::HurtBodyH]={{2,-7},{10,-17}};
 
         offset[FighterState::BackwardBlock]={{-3,3},{1,5}};
         offset[FighterState::CrouchBlock]={{35,-44},{16,-38}};
-
-        offset[FighterState::Special_1]={{-23,1},{-23,-11},{-31,-9},{-12,-19}};
 
         offset[FighterState::Win]={{5,6},{7,7}};
         offset[FighterState::WinStart]={{8,12},{7,6},{5,7}};
@@ -242,11 +256,45 @@ namespace Util {
         boxes.hurtbox.head.offset[FighterState::HK]={{-65,51},{-95,52},{-113,63},{-112,75},{-101,88}};
         boxes.hurtbox.body.offset[FighterState::HK]={{25,37},{-18,31},{-41,30},{-54,39},{-56,35}};
         boxes.hurtbox.leg.offset[FighterState::HK]={{59,-56},{44,-55},{24,-52},{17,-53},{-4,-62}};
-        //SpecialAttack
-        boxes.hurtbox.leg.size[FighterState::Special_1]={{150,100},{200,100},{200,100},{200,100}};
-        boxes.hurtbox.head.offset[FighterState::Special_1]={{-12,111},{-31,89},{-1,80},{72,72}};
-        boxes.hurtbox.body.offset[FighterState::Special_1]={{-25,53},{-49,34},{-23,27},{39,21}};
-        boxes.hurtbox.leg.offset[FighterState::Special_1]={{-13,-62},{-26,-73},{-16,-76},{12,-78}};
+        //hurtbox Jump
+        boxes.hurtbox.head.offset[FighterState::JumpUP]={{31,100},{-14,148},{-13,135},{26,109},{36,85},{-11,113},{-13,141}};
+        boxes.hurtbox.body.offset[FighterState::JumpUP]={{-4,43},{-19,76},{-31,64},{-8,53},{-8,29},{-28,47},{-18,74}};
+        boxes.hurtbox.leg.offset[FighterState::JumpUP]={{2,-55},{-4,-18},{-19,-13},{7,-28},{-2,-39},{-28,-36},{-21,-18}};
+
+        boxes.hurtbox.body.size[FighterState::JumpForward]={{100,100},{100,100},{120,100},{120,100},{100,100},{100,100}};
+        boxes.hurtbox.leg.size[FighterState::JumpForward]={{120,150},{100,125},{120,80},{120,80},{100,125},{100,125}};
+        boxes.hurtbox.head.offset[FighterState::JumpForward]={{-3,124},{62,76},{115,-86},{-135,-79},{-83,78},{-15,112}};
+        boxes.hurtbox.body.offset[FighterState::JumpForward]={{-25,53},{-2,54},{60,-38},{-37,-69},{-32,30},{-19,38}};
+        boxes.hurtbox.leg.offset[FighterState::JumpForward]={{-11,-38},{-2,-42},{-61,-47},{92,-21},{42,-55},{-23,-63}};
+
+        std::vector<glm::vec2> reversedhurtbox = boxes.hurtbox.head.offset[FighterState::JumpForward];
+        std::reverse(reversedhurtbox.begin(), reversedhurtbox.end());
+        boxes.hurtbox.head.offset[FighterState::JumpBackward]=reversedhurtbox;
+
+        std::vector<glm::vec2> reversedsize = boxes.hurtbox.body.size[FighterState::JumpForward];
+        std::reverse(reversedsize.begin(), reversedsize.end());
+        boxes.hurtbox.body.size[FighterState::JumpBackward]=reversedsize;
+
+        reversedhurtbox = boxes.hurtbox.body.offset[FighterState::JumpForward];
+        std::reverse(reversedhurtbox.begin(), reversedhurtbox.end());
+        boxes.hurtbox.body.offset[FighterState::JumpBackward]=reversedhurtbox;
+
+        reversedsize = boxes.hurtbox.leg.size[FighterState::JumpForward];
+        std::reverse(reversedsize.begin(), reversedsize.end());
+        boxes.hurtbox.leg.size[FighterState::JumpBackward]=reversedsize;
+
+        reversedhurtbox = boxes.hurtbox.leg.offset[FighterState::JumpForward];
+        std::reverse(reversedhurtbox.begin(), reversedhurtbox.end());
+        boxes.hurtbox.leg.offset[FighterState::JumpBackward]=reversedhurtbox;
+
+        boxes.hurtbox.head.offset[FighterState::JumpLP]={{38,73},{40,76}};
+        boxes.hurtbox.body.offset[FighterState::JumpLP]={{-2,22},{-2,23}};
+        boxes.hurtbox.leg.offset[FighterState::JumpLP]={{-6,-50},{-9,-44}};
+
+        boxes.hurtbox.head.offset[FighterState::JumpAttackEnd]={{0,103},{-3,131}};
+        boxes.hurtbox.body.offset[FighterState::JumpAttackEnd]={{-18,37},{-8,64}};
+        boxes.hurtbox.leg.offset[FighterState::JumpAttackEnd]={{-18,-46},{-11,-38}};
+
         //hitbox Crouch Attack
         boxes.hitbox.size[FighterState::CrouchLP]={100,50};
         boxes.hitbox.offset[FighterState::CrouchLP]={{-1,-1},{133,36},{-1,-1}};
@@ -273,6 +321,19 @@ namespace Util {
         boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{56,99},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HK]={120,100};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{152,102},{-1,-1},{-1,-1}};
+        //hitbox Jump Attack
+        boxes.hitbox.size[FighterState::JumpLP]={100,80};
+        boxes.hitbox.offset[FighterState::JumpLP]={{-1,-1},{99,4}};
+        boxes.hitbox.size[FighterState::JumpMP]={140,50};
+        boxes.hitbox.offset[FighterState::JumpMP]={{-1,-1},{-1,-1},{125,79},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::JumpHP]={50,100};
+        boxes.hitbox.offset[FighterState::JumpHP]={{-1,-1},{-1,-1},{-1,-1},{130,142},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::JumpLK]={150,80};
+        boxes.hitbox.offset[FighterState::JumpLK]={{-1,-1},{-1,-1},{150,-20},{-1,-1}};
+        boxes.hitbox.size[FighterState::JumpMK]={100,100};
+        boxes.hitbox.offset[FighterState::JumpMK]={{-1,-1},{-1,-1},{56,99},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::JumpHK]={120,100};
+        boxes.hitbox.offset[FighterState::JumpHK]={{-1,-1},{-1,-1},{152,102},{-1,-1},{-1,-1}};
     }
     void Ryu::LoadSpecialMove() {
         animations[FighterState::Special_1]=ActionInit(4, "Special_1");
@@ -325,10 +386,6 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::L;
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::M;
         SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HP]=HitStrength::H;
-
-        SpecialMoveData.attackdata[FighterState::Special_2].InitialvelocityForEnemy[Keys::LP]={-5,0};
-        SpecialMoveData.attackdata[FighterState::Special_2].InitialvelocityForEnemy[Keys::MP]={-5,0};
-        SpecialMoveData.attackdata[FighterState::Special_2].InitialvelocityForEnemy[Keys::HP]={-5,0};
 
         StateEnter[FighterState::Special_2]=[this] { ShoryukenStateEnter(); };
         StateUpdate[FighterState::Special_2]=[this] { ShoryukenStateUpdate(); };
@@ -404,7 +461,7 @@ namespace Util {
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetOwnInitialvelocity();
+        velocity=GetInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
@@ -412,7 +469,8 @@ namespace Util {
         if (ActionNow->GetCurrentFrameIndex() <= 2) {
             velocity.x += velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
             velocity.y += velocity.y * 0.05f * Time::GetDeltaTimeMs() / 1000.0f;
-        } else {
+        }
+        else {
             velocity.y += Gravity * Time::GetDeltaTimeMs() / 1000.0f;
         }
         if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
@@ -421,7 +479,7 @@ namespace Util {
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
-        velocity=GetOwnInitialvelocity();
+        velocity=GetInitialvelocity();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
