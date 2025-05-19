@@ -133,9 +133,9 @@ namespace Util {
                 case AttackButton::ANY_KICK:
                     return attacks[3] || attacks[4] || attacks[5];
                 case AttackButton::ALL_PUNCH:
-                    return attacks[0] && attacks[1] && attacks[2];
+                    return (attacks[0] && attacks[1])|| (attacks[1] && attacks[2])||(attacks[0] && attacks[2]);
                 case AttackButton::ALL_KICK:
-                    return attacks[3] && attacks[4] && attacks[5];
+                    return (attacks[3] && attacks[4])|| (attacks[4] && attacks[5])||(attacks[3] && attacks[5]);
                 default:
                     return false;
             }

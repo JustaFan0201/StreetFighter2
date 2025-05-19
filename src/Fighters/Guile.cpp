@@ -104,6 +104,7 @@ namespace Util {
         frames[FighterState::DefeatedLoss]={180,180,180};
     }
     void Guile::LoadOffsetVelocity() {
+        attacktype[FighterState::CrouchHK]=attacktype[FighterState::CrouchMK]=attacktype[FighterState::CrouchLK]=AttackType::Lower;
         offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
         offset[FighterState::Crouch]={{11,-43}};
         offset[FighterState::CrouchDown]={{10,-9},{11,-30},{11,-30}};

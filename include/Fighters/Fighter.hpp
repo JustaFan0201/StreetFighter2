@@ -111,6 +111,7 @@ namespace Util {
         }
 
         HitStrength GetHitStrength(){return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
+        AttackType GetAttackType(){return attacktype.count(currentState)?attacktype[currentState]:AttackType::Null;}
         FighterState GetBeHitState(HitStrength Strength,HitLocation Location);
         FighterState GetBlockState();
         FighterState GetCurrentState() const {return currentState;};
@@ -255,6 +256,7 @@ namespace Util {
 
         std::unordered_map<FighterState, HitStrength> hitstrength;
         std::unordered_map<FighterState, float> attacks;
+        std::unordered_map<FighterState, AttackType> attacktype;
 
         std::shared_ptr<AnimationSpace> ActionNow;
         std::shared_ptr<Fighter> enemy;

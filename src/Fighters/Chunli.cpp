@@ -104,6 +104,7 @@ namespace Util {
         frames[FighterState::DefeatedLoss]={180,180,180};
     }
     void Chunli::LoadOffsetVelocity() {
+        attacktype[FighterState::CrouchMK]=attacktype[FighterState::CrouchLK]=AttackType::Lower;
         offset[FighterState::Idle]={{0,0},{0,0},{0,0},{0,0}};
         offset[FighterState::Crouch]={{-3,-29}};
         offset[FighterState::CrouchDown]={{-15,-11},{-4,-22},{-3,-29}};

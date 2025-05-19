@@ -32,6 +32,10 @@ namespace Util {
         hitstrength[FighterState::JumpLP]=hitstrength[FighterState::JumpLK]=HitStrength::L;
         hitstrength[FighterState::JumpMP]=hitstrength[FighterState::JumpMK]=HitStrength::M;
         hitstrength[FighterState::JumpHP]=hitstrength[FighterState::JumpHK]=HitStrength::H;
+
+        attacktype[FighterState::JumpLP]=attacktype[FighterState::JumpLK]=AttackType::Upper;
+        attacktype[FighterState::JumpMP]=attacktype[FighterState::JumpMK]=AttackType::Upper;
+        attacktype[FighterState::JumpHP]=attacktype[FighterState::JumpHK]=AttackType::Upper;
     }
     void Fighter::LoadAttackSound() {
         soundeffect[FighterState::LP]=soundeffect[FighterState::LK]=soundeffect[FighterState::CrouchLP]=soundeffect[FighterState::CrouchLK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_38 - Light Attack.wav")};
@@ -154,6 +158,12 @@ namespace Util {
             FighterState::Idle, FighterState::Forward, FighterState::Backward,
             FighterState::Crouch,FighterState::CrouchDown,FighterState::CrouchUp
         };
+        SpecificStates.StandStates={
+            FighterState::Idle, FighterState::Forward, FighterState::Backward, FighterState::BackwardBlock
+        };
+        SpecificStates.CrouchStates={
+            FighterState::Crouch,FighterState::CrouchDown,FighterState::CrouchUp, FighterState::CrouchBlock
+        };
         SpecificStates.Invincible={
             FighterState::Win, FighterState::WinStart, FighterState::TimeOverLoss,
             FighterState::DefeatedLoss
@@ -185,6 +195,9 @@ namespace Util {
         StateEnter[FighterState::JumpLP] = [this] { JumpAttackStateEnter(); };
         StateEnter[FighterState::JumpMP] = [this] { JumpAttackStateEnter(); };
         StateEnter[FighterState::JumpHP] = [this] { JumpAttackStateEnter(); };
+        StateEnter[FighterState::JumpLK] = [this] { JumpAttackStateEnter(); };
+        StateEnter[FighterState::JumpMK] = [this] { JumpAttackStateEnter(); };
+        StateEnter[FighterState::JumpHK] = [this] { JumpAttackStateEnter(); };
         StateEnter[FighterState::JumpAttackEnd] = [this] { JumpAttackEndStateEnter(); };
 
         StateEnter[FighterState::HurtHeadL] = [this] { HurtStateEnter(); };
@@ -228,8 +241,11 @@ namespace Util {
         StateUpdate[FighterState::CrouchHK] = [this] {  AttackStateUpdate(); };
 
         StateUpdate[FighterState::JumpLP] = [this] { JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpMP] = [this] { ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpHP] = [this] { ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpMP] = [this] { JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpHP] = [this] { JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpLK] = [this] { JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpMK] = [this] { JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpHK] = [this] { JumpAttackStateUpdate(); };
         StateUpdate[FighterState::JumpAttackEnd] = [this] { JumpAttackEndStateUpdate(); };
 
         StateUpdate[FighterState::HurtHeadL] = [this] { HurtStateUpdate(); };
@@ -437,7 +453,22 @@ namespace Util {
     bool Fighter::IsBlocking() {
         if(!SpecificStates.HurtStates.count(currentState)) {
             if(SpecificStates.CanBlockStates.count(currentState)) {
-                return controller->IsBackward(direction);
+                switch(enemy->GetAttackType()){
+                    case AttackType::Upper:
+                        if(SpecificStates.StandStates.count(currentState)) {
+                            return controller->IsBackward(direction);
+                        }
+                        break;
+                    case AttackType::Lower:
+                        if(SpecificStates.CrouchStates.count(currentState)) {
+                            return controller->IsBackward(direction);
+                        }
+                        break;
+                    case AttackType::Null:
+                        return controller->IsBackward(direction);
+                    default:
+                        return false;
+                }
             }
         }
         return false;
@@ -464,10 +495,10 @@ namespace Util {
 
     FighterState Fighter::GetBlockState() {
         switch (currentState) {
-            case FighterState::Backward:
+            case FighterState::Backward:case FighterState::BackwardBlock:
                 return FighterState::BackwardBlock;
             break;
-            case FighterState::Crouch:
+            case FighterState::Crouch:case FighterState::CrouchBlock:
                 return FighterState::CrouchBlock;
             break;
             default:
@@ -660,9 +691,12 @@ namespace Util {
     }
     void Fighter::JumpStateUpdate(){
         velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
-        /*if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::JumpLP);}
+        if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::JumpLP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::JumpMP);}
-        else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::JumpHP);}*/
+        else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::JumpHP);}
+        else if (controller->IsKeyDown(Keys::LK)) {ChangeState(FighterState::JumpLK);}
+        else if (controller->IsKeyDown(Keys::MK)) {ChangeState(FighterState::JumpMK);}
+        else if (controller->IsKeyDown(Keys::HK)) {ChangeState(FighterState::JumpHK);}
         if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
 

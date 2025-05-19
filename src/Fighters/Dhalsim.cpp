@@ -55,10 +55,6 @@ namespace Util {
         animations[FighterState::CrouchMP] = ActionInit(7, "CrouchMP");
         animations[FighterState::CrouchHP] = animations[FighterState::CrouchMP];
         animations[FighterState::CrouchHK] = animations[FighterState::CrouchMK] = animations[FighterState::CrouchLK] = ActionInit(2, "CrouchLK");
-        Initialvelocity.x[FighterState::CrouchLK] = 4;
-        Initialvelocity.x[FighterState::CrouchMK] = 5;
-        Initialvelocity.x[FighterState::CrouchHK] = 6;
-
 
         animations[FighterState::WinStart]=ActionInit(1, "WinStart");
         animations[FighterState::Win]=ActionInit(2, "Win");
@@ -106,6 +102,10 @@ namespace Util {
         frames[FighterState::DefeatedLoss]={180,180,180};
     }
     void Dhalsim::LoadOffsetVelocity() {
+        Initialvelocity.x[FighterState::CrouchLK] = 2;
+        Initialvelocity.x[FighterState::CrouchMK] = 3;
+        Initialvelocity.x[FighterState::CrouchHK] = 4;
+        attacktype[FighterState::CrouchHK]=attacktype[FighterState::CrouchMK]=attacktype[FighterState::CrouchLK]=AttackType::Lower;
         offset[FighterState::Idle]={{-3,-1},{-11,2},{-10,-8},{-3,-16},{3,-17},{-1,-8}};
         offset[FighterState::Crouch]={{-7,-56}};
         offset[FighterState::CrouchDown]={{-8,-21},{-17,-39},{-7,-56}};
@@ -249,7 +249,7 @@ namespace Util {
         boxes.hitbox.size[FighterState::CrouchHP]=boxes.hitbox.size[FighterState::CrouchMP]={410,40};
         boxes.hitbox.offset[FighterState::CrouchHP]=boxes.hitbox.offset[FighterState::CrouchMP]={{-1,-1},{-1,-1},{-1,-1},{338,-43},{-1,-1},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::CrouchHK]=boxes.hitbox.size[FighterState::CrouchMK]=boxes.hitbox.size[FighterState::CrouchLK]={290,90};
-        boxes.hitbox.offset[FighterState::CrouchHK]=boxes.hitbox.offset[FighterState::CrouchMK]=boxes.hitbox.offset[FighterState::CrouchLK]={{-1,-1},{255,-32}};
+        boxes.hitbox.offset[FighterState::CrouchHK]=boxes.hitbox.offset[FighterState::CrouchMK]=boxes.hitbox.offset[FighterState::CrouchLK]={{-1,-1},{95,-32}};
         //hitbox Stand Attack
         boxes.hitbox.size[FighterState::LP]={190,50};
         boxes.hitbox.offset[FighterState::LP]={{-1,-1},{-1,-1},{185,78},{-1,-1},{-1,-1}};

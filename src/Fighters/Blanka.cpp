@@ -104,6 +104,7 @@ namespace Util {
         frames[FighterState::DefeatedLoss]={180,180,180};
     }
     void Blanka::LoadOffsetVelocity() {
+        attacktype[FighterState::CrouchHK]=attacktype[FighterState::CrouchMK]=attacktype[FighterState::CrouchLK]=AttackType::Lower;
         offset[FighterState::Idle]={{0,0},{0,0},{0,0}};
         offset[FighterState::Forward]={{0,-20},{0,-20},{0,-20},{0,-20},{0,-20},{0,-20},{0,-20},{0,-20}};
         offset[FighterState::Crouch]={{-13,-52}};

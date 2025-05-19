@@ -104,6 +104,7 @@ namespace Util {
         frames[FighterState::DefeatedLoss]={180,180,180};
     }
     void Honda::LoadOffsetVelocity() {
+        attacktype[FighterState::CrouchHK]=attacktype[FighterState::MK]=AttackType::Lower;
         offset[FighterState::Idle]={{-3,0},{3,-3},{13,-10},{5,-2}};
         offset[FighterState::Crouch]={{1,-32}};
         offset[FighterState::CrouchDown]={{-5,-12},{3,-23}};

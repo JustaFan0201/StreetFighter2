@@ -71,6 +71,12 @@ namespace Util {
         M = 1,
         H = 2
     };
+    enum class AttackType {
+        Null=-1,
+        Upper = 0,
+        Lower = 1,
+        Middle = 2
+    };
     struct Initialvelocity {
         std::unordered_map<FighterState,float> x;
         std::unordered_map<FighterState,float> y;
@@ -198,6 +204,8 @@ namespace Util {
         std::unordered_set<FighterState> HurtStates;
         std::unordered_set<FighterState> SpecialStates;
         std::unordered_set<FighterState> IdleStates;
+        std::unordered_set<FighterState> StandStates;
+        std::unordered_set<FighterState> CrouchStates;
         std::unordered_set<FighterState> BlockStates;
         std::unordered_set<FighterState> CanBlockStates;
         std::unordered_set<FighterState> InvincibleForFlyObj;
