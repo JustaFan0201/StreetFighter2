@@ -219,8 +219,8 @@ namespace Util {
         StateUpdate[FighterState::Idle] = [this] {IdleStateUpdate(); };
         StateUpdate[FighterState::Forward] = [this] { ForwardStateUpdate(); };
         StateUpdate[FighterState::Backward] = [this] { BackwardStateUpdate(); };
-        StateUpdate[FighterState::JumpUP] = [this] { JumpStateUpdate(); };
-        StateUpdate[FighterState::JumpForward] = [this] { JumpStateUpdate(); };
+        StateUpdate[FighterState::JumpUP] = [this] {JumpStateUpdate(); };
+        StateUpdate[FighterState::JumpForward] = [this] {JumpStateUpdate(); };
         StateUpdate[FighterState::JumpBackward] = [this] { JumpStateUpdate(); };
         StateUpdate[FighterState::Crouch] = [this] {CrouchUpdate(); };
         StateUpdate[FighterState::CrouchDown] = [this] {CrouchDownUpdate(); };
@@ -240,11 +240,11 @@ namespace Util {
         StateUpdate[FighterState::CrouchMK] = [this] {AttackStateUpdate(); };
         StateUpdate[FighterState::CrouchHK] = [this] {  AttackStateUpdate(); };
 
-        StateUpdate[FighterState::JumpLP] = [this] { JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpLP] = [this] {JumpAttackStateUpdate(); };
         StateUpdate[FighterState::JumpMP] = [this] { JumpAttackStateUpdate(); };
         StateUpdate[FighterState::JumpHP] = [this] { JumpAttackStateUpdate(); };
         StateUpdate[FighterState::JumpLK] = [this] { JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpMK] = [this] { JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpMK] = [this] {JumpAttackStateUpdate(); };
         StateUpdate[FighterState::JumpHK] = [this] { JumpAttackStateUpdate(); };
         StateUpdate[FighterState::JumpAttackEnd] = [this] { JumpAttackEndStateUpdate(); };
 
@@ -536,13 +536,13 @@ namespace Util {
 
     void Fighter::PostionTester() {
         if (Input::IsKeyDown(Keycode::NUM_1)) {
-            ChangeState(FighterState::BackwardBlock);
+            ChangeState(FighterState::JumpLP);
         }
         if (Input::IsKeyDown(Keycode::NUM_2)) {
-            ChangeState(FighterState::CrouchBlock);
+            ChangeState(FighterState::JumpMP);
         }
         if (Input::IsKeyDown(Keycode::NUM_3)) {
-            ChangeState(FighterState::DefeatedLoss);
+            ChangeState(FighterState::JumpHP);
         }
         if (Input::IsKeyDown(Keycode::NUM_4)) {
             ChangeState(FighterState::TimeOverLoss);
