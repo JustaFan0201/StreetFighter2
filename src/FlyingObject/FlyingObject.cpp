@@ -37,18 +37,7 @@ namespace Util {
             3.0f
         );
         if (IsCollidedEnemy()==FlyingObjectCollidedState::Enemy) {
-            if(!enemy->GetSpecificState().InvincibleForFlyObj.count(enemy->GetCurrentState())&&
-                !enemy->GetSpecificState().Invincible.count(enemy->GetCurrentState())) {
-                if(enemy->IsBlocking()) {
-                    enemy->GetAttack(FlyingObjDmg[Strength]/5);
-                    enemy->AttackBlock();
-                }
-                else {
-                    fighter->AttackHit(HitStrength::H,HitLocation::Head,FlyingObjDmg[Strength]);
-                    enemy->GetSFX()[enemy->GetCurrentState()]->Play();
-                }
-                ChangeState(FlyingObjectState::Collide);
-            }
+            ChangeState(FlyingObjectState::Collide);
         }
         if (IsCollidedEntity()==FlyingObjectCollidedState::FlyingObject) {
             ChangeState(FlyingObjectState::Collide);
@@ -68,7 +57,22 @@ namespace Util {
                 GetCurrentHitbox(),
                 enemyPos+BodyOffset,
                 BodySize)){
-                return FlyingObjectCollidedState::Enemy;}
+                glm::vec2 EffectPos=enemyPos+BodyOffset-glm::vec2{12,12}+glm::vec2{GetRandomNum(0,24),GetRandomNum(0,24)};
+                if(!enemy->GetSpecificState().InvincibleForFlyObj.count(enemy->GetCurrentState())&&
+                    !enemy->GetSpecificState().Invincible.count(enemy->GetCurrentState())) {
+                    if(enemy->IsBlocking()) {
+                        addEffectFunc(HitStrength::H,BeHitType::Block,EffectPos);
+                        enemy->GetAttack(FlyingObjDmg[Strength]/5);
+                        enemy->AttackBlock();
+                    }
+                    else {
+                        addEffectFunc(HitStrength::H,BeHitType::Hit,EffectPos);
+                        fighter->AttackHit(HitStrength::H,HitLocation::Head,FlyingObjDmg[Strength]);
+                        enemy->GetSFX()[enemy->GetCurrentState()]->Play();
+                    }
+                    return FlyingObjectCollidedState::Enemy;
+                }
+            }
         }
         return FlyingObjectCollidedState::Null;
     }
@@ -77,14 +81,15 @@ namespace Util {
         for (auto EnemyEntity : EnemyFlyingObjects) {
             auto EnemyEntityPos = EnemyEntity->GetCurrentPosition();
             auto EnemyEntitySize = EnemyEntity->GetCurrentHitbox();
-
-            if(RectangleOverlap(
-                GetCurrentPosition(),
-                GetCurrentHitbox(),
-                EnemyEntityPos,
-                EnemyEntitySize)){
-                EnemyEntity->ChangeState(FlyingObjectState::Collide);
-                return FlyingObjectCollidedState::FlyingObject;
+            if(EnemyEntity->currentState!=FlyingObjectState::Collide) {
+                if(RectangleOverlap(
+                    GetCurrentPosition(),
+                    GetCurrentHitbox(),
+                    EnemyEntityPos,
+                    EnemyEntitySize)){
+                    EnemyEntity->ChangeState(FlyingObjectState::Collide);
+                    return FlyingObjectCollidedState::FlyingObject;
+                }
             }
         }
         return FlyingObjectCollidedState::Null;

@@ -36,18 +36,18 @@ namespace Util {
             return hitbox.size.count(currentState) ?
                    hitbox.size[currentState] : glm::vec2{0,0};
         }
-
         void ChangeState(FlyingObjectState newState);
         bool IsAnimationEnd() const {return animationNow->IsAnimationEnds();}
         std::vector<std::string> ActionInit(int picture_number,std::string Action);
         void SetAnimation(FlyingObjectState action, int duration);
+        void SetEffectAdder(std::function<void(HitStrength strength,BeHitType behittype, glm::vec2 position)> effectfunc) {addEffectFunc = effectfunc;}
     protected:
         std::string Name;
-        FlyingObjectType Type;
         int direction;
         glm::vec2 velocity;
         Keys Strength=Keys::Null;
 
+        std::function<void(HitStrength strength,BeHitType behittype, glm::vec2 position)> addEffectFunc;
         FlyingObjectState currentState=FlyingObjectState::Null;
         std::unordered_map<Keys, float> FlyingObjVelocity;
         std::unordered_map<Keys, float> FlyingObjDmg;

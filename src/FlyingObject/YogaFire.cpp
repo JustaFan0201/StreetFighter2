@@ -5,11 +5,9 @@
 #include "FlyingObject/YogaFire.hpp"
 namespace Util {
     YogaFire::YogaFire(): FlyingObject("YogaFire") {
-        Type=FlyingObjectType::YogaFire;
-
         FlyingObjVelocity[Keys::LP]=300;
-        FlyingObjVelocity[Keys::MP]=500;
-        FlyingObjVelocity[Keys::HP]=700;
+        FlyingObjVelocity[Keys::MP]=400;
+        FlyingObjVelocity[Keys::HP]=500;
 
         FlyingObjDmg[Keys::LP]=12;
         FlyingObjDmg[Keys::MP]=17;

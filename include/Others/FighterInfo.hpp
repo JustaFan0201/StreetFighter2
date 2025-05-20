@@ -4,6 +4,7 @@
 
 #ifndef FIGHTERINFO_HPP
 #define FIGHTERINFO_HPP
+#include <random>
 namespace Util {
     constexpr float StageFloor = -310.0f;
     enum class FighterDirection {
@@ -77,6 +78,11 @@ namespace Util {
         Lower = 1,
         Middle = 2
     };
+    enum class BeHitType {
+        Null=-1,
+        Block = 0,
+        Hit = 1
+    };
     struct Initialvelocity {
         std::unordered_map<FighterState,float> x;
         std::unordered_map<FighterState,float> y;
@@ -103,7 +109,12 @@ namespace Util {
         HurtBox hurtbox;
         HitBox hitbox;
     };
-
+    inline float GetRandomNum(float min,float max){
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<float> dist(min, max);
+        return dist(gen);
+    }
     inline bool RectangleOverlap(glm::vec2 Rec1_position, glm::vec2 Rec1_HW,
                                  glm::vec2 Rec2_position, glm::vec2 Rec2_HW) {
 

@@ -420,14 +420,17 @@ namespace Util {
                 enemyPos+BodyOffset,
                 BodySize))
                 {
+                glm::vec2 EffectPos=enemyPos+BodyOffset-glm::vec2{12,12}+glm::vec2{GetRandomNum(0,24),GetRandomNum(0,24)};
                 if(!SpecificStates.Invincible.count(enemy->currentState)) {
                     if(enemy->IsBlocking()) {
                         if(SpecificStates.SpecialStates.count(currentState)) {enemy->GetAttack(GetAttackNum()/5);}
+                        addEffectFunc(GetHitStrength(),BeHitType::Block,EffectPos);
                         enemy->AttackBlock();
                         HitEnemy=true;
                     }
                     else {
                         AttackHit(GetHitStrength(),static_cast<HitLocation>(i),GetAttackNum());
+                        addEffectFunc(GetHitStrength(),BeHitType::Hit,EffectPos);
                         enemy->GetSFX()[enemy->GetCurrentState()]->Play();
                         HitEnemy=true;
                     }
@@ -494,16 +497,13 @@ namespace Util {
     }
 
     FighterState Fighter::GetBlockState() {
-        switch (currentState) {
-            case FighterState::Backward:case FighterState::BackwardBlock:
-                return FighterState::BackwardBlock;
-            break;
-            case FighterState::Crouch:case FighterState::CrouchBlock:
-                return FighterState::CrouchBlock;
-            break;
-            default:
-                return FighterState::Idle;
+        if(SpecificStates.StandStates.count(currentState)) {
+            return FighterState::BackwardBlock;
         }
+        if(SpecificStates.CrouchStates.count(currentState)) {
+            return FighterState::CrouchBlock;
+        }
+        return FighterState::Idle;
     }
     //debug
     void Fighter::debugInit() {

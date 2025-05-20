@@ -81,7 +81,8 @@ namespace Util {
         //Setter
         void SetAnimation(FighterState action,std::vector<int> intervals,std::vector<glm::vec2> offsets);
         void SetEnemy(std::shared_ptr<Fighter> enemy){this->enemy=enemy;}
-        void SetEntityAdder(std::function<void(FlyingObjectType type, std::shared_ptr<Fighter>, Keys)> func) {addEntityFunc = func;}
+        void SetEntityAdder(std::function<void(FlyingObjectType type, std::shared_ptr<Fighter>, Keys)> entityfunc) {addEntityFunc = entityfunc;}
+        void SetEffectAdder(std::function<void(HitStrength strength,BeHitType behittype, glm::vec2 position)> effectfunc) {addEffectFunc = effectfunc;}
         //Getter ForScene
         std::string GetFace() const { return face; }
         std::string GetNameTag() const { return nametag; }
@@ -264,6 +265,7 @@ namespace Util {
 
         Keys ButtonType=Keys::Null;
         std::function<void(FlyingObjectType type, std::shared_ptr<Fighter>, Keys)> addEntityFunc;
+        std::function<void(HitStrength strength,BeHitType behittype, glm::vec2 position)> addEffectFunc;
 
         bool AttackStruck=false;
         bool HitEnemy=false;

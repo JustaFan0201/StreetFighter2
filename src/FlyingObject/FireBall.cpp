@@ -5,11 +5,9 @@
 #include "FlyingObject/FireBall.hpp"
 namespace Util {
     FireBall::FireBall(): FlyingObject("FireBall") {
-        Type=FlyingObjectType::FireBall;
-
-        FlyingObjVelocity[Keys::LP]=450;
-        FlyingObjVelocity[Keys::MP]=650;
-        FlyingObjVelocity[Keys::HP]=750;
+        FlyingObjVelocity[Keys::LP]=400;
+        FlyingObjVelocity[Keys::MP]=475;
+        FlyingObjVelocity[Keys::HP]=550;
 
         FlyingObjDmg[Keys::LP]=10;
         FlyingObjDmg[Keys::MP]=15;

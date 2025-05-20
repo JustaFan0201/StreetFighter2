@@ -14,6 +14,13 @@
 #include "FlyingObject/SonicBoom.hpp"
 #include "FlyingObject/YogaFire.hpp"
 
+#include "Effect/Effect.hpp"
+#include "Effect/Hit_L.hpp"
+#include "Effect/Hit_M.hpp"
+#include "Effect/Hit_H.hpp"
+#include "Effect/Block_L.hpp"
+#include "Effect/Block_M.hpp"
+#include "Effect/Block_H.hpp"
 namespace Util {
     enum class DefeatedType {
         Null,
@@ -36,6 +43,7 @@ namespace Util {
         std::shared_ptr<UI> ui=std::make_shared<UI>();
         std::vector<std::shared_ptr<FlyingObject>> PlayerFlyingObjects;
         std::vector<std::shared_ptr<FlyingObject>> EnemyFlyingObjects;
+        std::vector<std::shared_ptr<Effect>> Effects;
         int round=1;
         int PlayerWinCounter=0;
         int EnemyWinCounter=0;
@@ -43,6 +51,8 @@ namespace Util {
         LossType lossType=LossType::Null;
 
         std::pmr::unordered_map<FlyingObjectType, std::function<std::shared_ptr<FlyingObject>()>> flyingObjFactory;
+        std::pmr::unordered_map<HitStrength, std::function<std::shared_ptr<Effect>()>> HitEffectFactory;
+        std::pmr::unordered_map<HitStrength, std::function<std::shared_ptr<Effect>()>> BlockEffectFactory;
     public:
         BattleScene(const std::shared_ptr<Fighter> &player, const std::shared_ptr<Fighter> &enemy):
         player(player), enemy(enemy) {
@@ -50,13 +60,22 @@ namespace Util {
             flyingObjFactory[FlyingObjectType::FireBall] = []() {return std::make_shared<FireBall>();};
             flyingObjFactory[FlyingObjectType::SonicBoom] = []() {return std::make_shared<SonicBoom>();};
             flyingObjFactory[FlyingObjectType::YogaFire] = []() {return std::make_shared<YogaFire>();};
+
+            HitEffectFactory[HitStrength::L] = []() {return std::make_shared<Hit_L>();};
+            HitEffectFactory[HitStrength::M] = []() {return std::make_shared<Hit_M>();};
+            HitEffectFactory[HitStrength::H] = []() {return std::make_shared<Hit_H>();};
+            BlockEffectFactory[HitStrength::L] = []() {return std::make_shared<Block_L>();};
+            BlockEffectFactory[HitStrength::M] = []() {return std::make_shared<Block_M>();};
+            BlockEffectFactory[HitStrength::H] = []() {return std::make_shared<Block_H>();};
         }
 
         void Init(std::shared_ptr<Core::Context> context) override;
         void Update(std::shared_ptr<Core::Context> context) override;
         void Render() override;
         void addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength);
+        void addEffects(HitStrength strength,BeHitType behittype, glm::vec2 position);
         void UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObject>>& flyingObjects,glm::vec2 cameraOffset);
+        void UpdateEffects();
         void RoundStart(std::shared_ptr<Core::Context> context);
         float GetPassedTime(){return static_cast<int>(Time::GetElapsedTimeMs() - start_time);}
         void ControllerState();

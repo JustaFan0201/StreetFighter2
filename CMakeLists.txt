@@ -60,6 +60,14 @@ add_executable(${PROJECT_NAME}
         src/FlyingObject/FireBall.cpp
         src/FlyingObject/SonicBoom.cpp
         src/FlyingObject/YogaFire.cpp
+
+        src/Effect/Effect.cpp
+        src/Effect/Hit_L.cpp
+        src/Effect/Hit_M.cpp
+        src/Effect/Hit_H.cpp
+        src/Effect/Block_L.cpp
+        src/Effect/Block_M.cpp
+        src/Effect/Block_H.cpp
         ${HEADER_FILES}
         include/ImageSpace.hpp
         include/AnimationSpace.hpp
@@ -90,6 +98,14 @@ add_executable(${PROJECT_NAME}
         include/FlyingObject/FireBall.hpp
         include/FlyingObject/SonicBoom.hpp
         include/FlyingObject/YogaFire.hpp
+
+        include/Effect/Effect.hpp
+        include/Effect/Hit_L.hpp
+        include/Effect/Hit_M.hpp
+        include/Effect/Hit_H.hpp
+        include/Effect/Block_L.hpp
+        include/Effect/Block_M.hpp
+        include/Effect/Block_H.hpp
 )
 
 if(MSVC)

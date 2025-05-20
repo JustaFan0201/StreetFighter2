@@ -40,13 +40,19 @@ namespace Util {
         enemyController->SetState(ControllerState::Pause);
         playerController->SetPlayerController(PlayerType::Player1);
         enemyController->SetPlayerController(PlayerType::Player2);
-        player->InitPosition({-150, StageFloor+50},static_cast<int>(FighterDirection::Left),playerController,camera->GetMaxOffsetX());
+        player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left),playerController,camera->GetMaxOffsetX());
         enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right),enemyController,camera->GetMaxOffsetX());
         player->SetEntityAdder([this](FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
             this->addEntities(type, sender, strength);
         });
         enemy->SetEntityAdder([this](FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
             this->addEntities(type, sender, strength);
+        });
+        player->SetEffectAdder([this](HitStrength strength,BeHitType behittype, glm::vec2 position) {
+            this->addEffects(strength, behittype, position);
+        });
+        enemy->SetEffectAdder([this](HitStrength strength,BeHitType behittype, glm::vec2 position) {
+            this->addEffects(strength, behittype, position);
         });
         player->SetEnemy(enemy);
         enemy->SetEnemy(player);
@@ -55,6 +61,9 @@ namespace Util {
     void BattleScene::addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
         std::shared_ptr<FlyingObject> object= flyingObjFactory[type]();
         if (object) {
+            object->SetEffectAdder([this](HitStrength strength,BeHitType behittype, glm::vec2 position) {
+                this->addEffects(strength, behittype, position);
+            });
             if (sender==player) {
                 object->Init(sender, strength,EnemyFlyingObjects);
                 PlayerFlyingObjects.push_back(object);
@@ -76,6 +85,31 @@ namespace Util {
             flyingObjects = newFlyingObjects;
         }
     }
+    void BattleScene::addEffects(HitStrength strength,BeHitType behittype, glm::vec2 position) {
+        std::shared_ptr<Effect> effect;
+        switch (behittype) {
+            case BeHitType::Hit:
+                effect= HitEffectFactory[strength]();
+            break;
+            case BeHitType::Block:
+                effect= BlockEffectFactory[strength]();
+            break;
+            default:
+                return;
+        }
+        effect->Init(position);
+        Effects.push_back(effect);
+    }
+    void BattleScene::UpdateEffects() {
+        if (!Effects.empty()) {
+            std::vector<std::shared_ptr<Effect>> newEffects;
+            for (auto& effect :Effects) {
+                effect->Update();
+                if(!effect->IsEnd()) {newEffects.push_back(effect);}
+            }
+            Effects = newEffects;
+        }
+    }
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {
         ControllerState();
         if(!ui->GetRoundStartIsEnd()) {ui->RoundStart(round);}
@@ -90,7 +124,7 @@ namespace Util {
         camera->Update(context->GetWindowWidth()/2);
         UpdateFlyingObjects(PlayerFlyingObjects,camera->GetCameraPos());
         UpdateFlyingObjects(EnemyFlyingObjects,camera->GetCameraPos());
-
+        UpdateEffects();
         switch (ui->GetState()) {
             case State::WaitForEnd:case State::TimeOver:
                 LossJudge();
@@ -107,10 +141,6 @@ namespace Util {
             default:
                 break;
         }
-        /*if(ui->GetState()==State::WaitForEnd||ui->GetState()==State::TimeOver) {LossJudge();}
-        if(ui->GetState()==State::EndEventLoss) {LossStateForFighter();}
-        if(ui->GetState()==State::EndEventWin) {WinStateForFighter();}
-        if(ui->GetState()==State::End) {EndForRound(context);}*/
         if (Input::IsKeyDown(Keycode::RETURN)) {SenseEnd = true;}
     }
     void BattleScene::ControllerState() {
@@ -239,6 +269,9 @@ namespace Util {
             for (const auto& obj : objectGroup) {
                 obj->Draw(camOffset);
             }
+        }
+        for (auto& effect : Effects) {
+            effect->Draw(camOffset);
         }
     }
 }

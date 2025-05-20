@@ -4,11 +4,9 @@
 #include "FlyingObject/SonicBoom.hpp"
 namespace Util {
     SonicBoom::SonicBoom(): FlyingObject("SonicBoom") {
-        Type=FlyingObjectType::SonicBoom;
-
-        FlyingObjVelocity[Keys::LP]=400;
-        FlyingObjVelocity[Keys::MP]=600;
-        FlyingObjVelocity[Keys::HP]=800;
+        FlyingObjVelocity[Keys::LP]=450;
+        FlyingObjVelocity[Keys::MP]=550;
+        FlyingObjVelocity[Keys::HP]=650;
 
         FlyingObjDmg[Keys::LP]=10;
         FlyingObjDmg[Keys::MP]=15;
