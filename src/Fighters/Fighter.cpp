@@ -241,12 +241,12 @@ namespace Util {
         StateUpdate[FighterState::CrouchHK] = [this] {  AttackStateUpdate(); };
 
         StateUpdate[FighterState::JumpLP] = [this] {JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpMP] = [this] { JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpHP] = [this] { JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpLK] = [this] { JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpMP] = [this] {JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpHP] = [this] {JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpLK] = [this] {JumpAttackStateUpdate(); };
         StateUpdate[FighterState::JumpMK] = [this] {JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpHK] = [this] { JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpAttackEnd] = [this] { JumpAttackEndStateUpdate(); };
+        StateUpdate[FighterState::JumpHK] = [this] {JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpAttackEnd] = [this] {JumpAttackEndStateUpdate(); };
 
         StateUpdate[FighterState::HurtHeadL] = [this] { HurtStateUpdate(); };
         StateUpdate[FighterState::HurtHeadM] = [this] { HurtStateUpdate(); };
@@ -536,7 +536,7 @@ namespace Util {
 
     void Fighter::PostionTester() {
         if (Input::IsKeyDown(Keycode::NUM_1)) {
-            ChangeState(FighterState::JumpLP);
+            ChangeState(FighterState::CrouchUp);
         }
         if (Input::IsKeyDown(Keycode::NUM_2)) {
             ChangeState(FighterState::JumpMP);

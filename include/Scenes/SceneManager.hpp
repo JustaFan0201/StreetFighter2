@@ -30,7 +30,7 @@ namespace Util {
         SceneType NowSceneType=SceneType::Start;//目前階段
         std::shared_ptr<Scene> m_NowScene=nullptr;//目前場景
         ModeType mode=ModeType::Story;//0=story 1=battle
-        std::shared_ptr<Fighter> player=std::make_shared<Ryu>();
+        std::shared_ptr<Fighter> player=std::make_shared<Honda>();
         std::shared_ptr<Fighter> enemy=std::make_shared<Ken>();
 
         std::vector<std::shared_ptr<Fighter>> characters = {

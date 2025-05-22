@@ -40,7 +40,7 @@ namespace Util {
         enemyController->SetState(ControllerState::Pause);
         playerController->SetPlayerController(PlayerType::Player1);
         enemyController->SetPlayerController(PlayerType::Player2);
-        player->InitPosition({-350, StageFloor},static_cast<int>(FighterDirection::Left),playerController,camera->GetMaxOffsetX());
+        player->InitPosition({-350, StageFloor },static_cast<int>(FighterDirection::Left),playerController,camera->GetMaxOffsetX());
         enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right),enemyController,camera->GetMaxOffsetX());
         player->SetEntityAdder([this](FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
             this->addEntities(type, sender, strength);
