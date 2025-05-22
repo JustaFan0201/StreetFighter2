@@ -12,7 +12,9 @@ This is a [PTSD](https://github.com/ntut-open-source-club/practical-tools-for-si
    ```bash
    git clone git@github.com:JustaFan0201/StreetFighter2.git --recursive
    ```
-
+   ```bash
+   git clone https://github.com/JustaFan0201/StreetFighter2.git --recursive
+   ```
 3. Build your project
 
   > [!WARNING]
