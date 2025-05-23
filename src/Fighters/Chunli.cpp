@@ -5,6 +5,7 @@
 #include "Fighters/Chunli.hpp"
 namespace Util {
     Chunli::Chunli(): Fighter("Chunli") {
+        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_LossFace.png");
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/china.png");

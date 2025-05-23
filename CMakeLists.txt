@@ -106,6 +106,8 @@ add_executable(${PROJECT_NAME}
         include/Effect/Block_L.hpp
         include/Effect/Block_M.hpp
         include/Effect/Block_H.hpp
+        src/Scenes/WinLossScene.cpp
+        include/Scenes/WinLossScene.hpp
 )
 
 if(MSVC)

@@ -85,6 +85,7 @@ namespace Util {
         void SetEffectAdder(std::function<void(HitStrength strength,BeHitType behittype, glm::vec2 position)> effectfunc) {addEffectFunc = effectfunc;}
         //Getter ForScene
         std::string GetFace() const { return face; }
+        std::string GetLossFace() const { return lossface; }
         std::string GetNameTag() const { return nametag; }
         std::string GetCountry() const { return country; }
         std::string GetCountryDark() const { return country_dark; }
@@ -203,6 +204,9 @@ namespace Util {
         void AttackHit(HitStrength Strength,HitLocation Location,float dmg);
         void AttackBlock();
         bool IsBlocking();
+        void AddEffect(HitStrength hit_strength,BeHitType be_hit,glm::vec2 position) const {
+            addEffectFunc(hit_strength,be_hit,position);
+        }
 
         void ClearButtonType(){ButtonType=Keys::Null;}
         void AddFlyingObject(FlyingObjectType object, Keys strength) {
@@ -236,6 +240,7 @@ namespace Util {
 
     protected:
         std::string m_name;
+        std::string lossface;
         std::string face;
         std::string nametag;
         std::string country;

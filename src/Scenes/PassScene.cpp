@@ -48,7 +48,7 @@ namespace Util {
         //位置設定
     }
     void PassScene::Update(std::shared_ptr<Core::Context> context) {
-        if (Time::GetElapsedTimeMs() - start_time > 4500){
+        if (GetPassedTime() > 4500){
             SenseEnd=true;
         }
     }

@@ -61,12 +61,12 @@ namespace Util {
                 if(!enemy->GetSpecificState().InvincibleForFlyObj.count(enemy->GetCurrentState())&&
                     !enemy->GetSpecificState().Invincible.count(enemy->GetCurrentState())) {
                     if(enemy->IsBlocking()) {
-                        addEffectFunc(HitStrength::H,BeHitType::Block,EffectPos);
+                        enemy->AddEffect(HitStrength::H,BeHitType::Block,EffectPos);
                         enemy->GetAttack(FlyingObjDmg[Strength]/5);
                         enemy->AttackBlock();
                     }
                     else {
-                        addEffectFunc(HitStrength::H,BeHitType::Hit,EffectPos);
+                        enemy->AddEffect(HitStrength::H,BeHitType::Hit,EffectPos);
                         fighter->AttackHit(HitStrength::H,HitLocation::Head,FlyingObjDmg[Strength]);
                         enemy->GetSFX()[enemy->GetCurrentState()]->Play();
                     }

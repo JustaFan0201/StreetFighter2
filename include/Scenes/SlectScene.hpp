@@ -28,15 +28,25 @@ namespace Util {
         std::shared_ptr<SFX> soundEffect_slect = std::make_shared<SFX>(RESOURCE_DIR"/voice/01 Select Screen & World Map/SFII_02 - Move Cursor.wav");
         std::shared_ptr<SFX> soundEffect_enter = std::make_shared<SFX>(RESOURCE_DIR"/voice/01 Select Screen & World Map/SFII_03 - Selection.wav");
         //全部角色vector
-        std::vector<std::shared_ptr<Fighter>> characters = {
-            std::make_shared<Ryu>(),    // 指向子類 Ryu
-            std::make_shared<Honda>(),  // 指向子類 Honda
-            std::make_shared<Blanka>(), // 指向子類 Blanka
-            std::make_shared<Guile>(),  // 指向子類 Guile
-            std::make_shared<Ken>(),    // 指向子類 Ken
-            std::make_shared<Chunli>(), // 指向子類 Chunli
-            std::make_shared<Zangief>(),// 指向子類 Zangief
-            std::make_shared<Dhalsim>() // 指向子類 Dhalsim
+        std::pmr::unordered_map<FighterList, std::function<std::shared_ptr<Fighter>()>> characters = {
+            {FighterList::Ryu,     []() { return std::make_shared<Ryu>(); }},
+            {FighterList::Honda,   []() { return std::make_shared<Honda>(); }},
+            {FighterList::Blanka,  []() { return std::make_shared<Blanka>(); }},
+            {FighterList::Guile,   []() { return std::make_shared<Guile>(); }},
+            {FighterList::Ken,     []() { return std::make_shared<Ken>(); }},
+            {FighterList::Chunli,  []() { return std::make_shared<Chunli>(); }},
+            {FighterList::Zangief, []() { return std::make_shared<Zangief>(); }},
+            {FighterList::Dhalsim, []() { return std::make_shared<Dhalsim>(); }}
+        };
+        std::vector<FighterList> index_to_enum = {
+            FighterList::Ryu,
+            FighterList::Honda,
+            FighterList::Blanka,
+            FighterList::Guile,
+            FighterList::Ken,
+            FighterList::Chunli,
+            FighterList::Zangief,
+            FighterList::Dhalsim
         };
         PlayerData player1data;
         PlayerData player2data;

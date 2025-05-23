@@ -49,6 +49,7 @@ namespace Util {
         int EnemyWinCounter=0;
         DefeatedType defeatedType=DefeatedType::Null;
         LossType lossType=LossType::Null;
+        FinalResult finalresult=FinalResult::Null;
 
         std::pmr::unordered_map<FlyingObjectType, std::function<std::shared_ptr<FlyingObject>()>> flyingObjFactory;
         std::pmr::unordered_map<HitStrength, std::function<std::shared_ptr<Effect>()>> HitEffectFactory;
@@ -64,6 +65,7 @@ namespace Util {
             HitEffectFactory[HitStrength::L] = []() {return std::make_shared<Hit_L>();};
             HitEffectFactory[HitStrength::M] = []() {return std::make_shared<Hit_M>();};
             HitEffectFactory[HitStrength::H] = []() {return std::make_shared<Hit_H>();};
+
             BlockEffectFactory[HitStrength::L] = []() {return std::make_shared<Block_L>();};
             BlockEffectFactory[HitStrength::M] = []() {return std::make_shared<Block_M>();};
             BlockEffectFactory[HitStrength::H] = []() {return std::make_shared<Block_H>();};
@@ -77,13 +79,13 @@ namespace Util {
         void UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObject>>& flyingObjects,glm::vec2 cameraOffset);
         void UpdateEffects();
         void RoundStart(std::shared_ptr<Core::Context> context);
-        float GetPassedTime(){return static_cast<int>(Time::GetElapsedTimeMs() - start_time);}
         void ControllerState();
         void LossJudge();
         void LossStateForFighter();
         void WinStateForFighter();
         void EndForRound(std::shared_ptr<Core::Context> context);
         void JudgeBattleEnd();
+        FinalResult GetFinalResult() const {return finalresult;}
     };
 }
 #endif //BATTLESCENE_HPP

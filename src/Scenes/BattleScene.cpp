@@ -61,9 +61,6 @@ namespace Util {
     void BattleScene::addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
         std::shared_ptr<FlyingObject> object= flyingObjFactory[type]();
         if (object) {
-            object->SetEffectAdder([this](HitStrength strength,BeHitType behittype, glm::vec2 position) {
-                this->addEffects(strength, behittype, position);
-            });
             if (sender==player) {
                 object->Init(sender, strength,EnemyFlyingObjects);
                 PlayerFlyingObjects.push_back(object);
@@ -248,12 +245,15 @@ namespace Util {
     void BattleScene::JudgeBattleEnd() {
         //std::cout<<PlayerWinCounter<<"JudgeBattleEnd"<<EnemyWinCounter<<std::endl;
         if(PlayerWinCounter==2&&EnemyWinCounter==2) {
+            finalresult=FinalResult::Tie;
             SenseEnd= true;
         }
         else if(PlayerWinCounter==2) {
+            finalresult=FinalResult::Player1Win;
             SenseEnd= true;
         }
         else if(EnemyWinCounter==2) {
+            finalresult=FinalResult::Player2Win;
             SenseEnd= true;
         }
     }

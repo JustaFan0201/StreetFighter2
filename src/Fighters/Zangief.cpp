@@ -5,6 +5,7 @@
 #include "Fighters/Zangief.hpp"
 namespace Util {
     Zangief::Zangief(): Fighter("Zangief") {
+        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Zangief/Zangief_LossFace.png");
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Zangief/Zangief_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Zangief/Zangief_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/ussr.png");

@@ -5,6 +5,7 @@
 #include "Fighters/Ken.hpp"
 namespace Util {
     Ken::Ken(): Fighter("Ken") {
+        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_LossFace.png");
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/usa.png");

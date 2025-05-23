@@ -5,6 +5,7 @@
 #include "Fighters/Blanka.hpp"
 namespace Util {
     Blanka::Blanka(): Fighter("Blanka") {
+        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/Blanka_LossFace.png");
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/Blanka_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/Blanka_nametag.png");
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/brazil.png");

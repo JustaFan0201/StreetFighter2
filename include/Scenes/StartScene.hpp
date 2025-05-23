@@ -20,7 +20,6 @@ namespace Util {
         void Init(std::shared_ptr<Core::Context> context) override;
         void Update(std::shared_ptr<Core::Context> context) override;
         void Render() override;
-        [[nodiscard]] ModeType getmode() const { return mode; }//取得當前模式
     };
 
 } // namespace Util

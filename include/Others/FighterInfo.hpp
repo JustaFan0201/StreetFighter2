@@ -6,6 +6,22 @@
 #define FIGHTERINFO_HPP
 #include <random>
 namespace Util {
+    enum class FinalResult {
+        Null,
+        Tie,
+        Player1Win,
+        Player2Win
+    };
+    enum class FighterList {
+        Ryu=0,
+        Honda=1,
+        Blanka=2,
+        Guile=3,
+        Ken=4,
+        Chunli=5,
+        Zangief=6,
+        Dhalsim=7
+    };
     constexpr float StageFloor = -310.0f;
     enum class FighterDirection {
         Left  = 1,

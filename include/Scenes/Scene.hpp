@@ -40,8 +40,10 @@ namespace Util {
         virtual void Init(std::shared_ptr<Core::Context> context) = 0;//初始化
         virtual void Update(std::shared_ptr<Core::Context> context) = 0;//更新
         virtual void Render() = 0;//渲染
-        bool getSenseEnd() const;//判斷場景能否結束 true=結束 false=繼續
+        [[nodiscard]] bool getSenseEnd() const;//判斷場景能否結束 true=結束 false=繼續
         void SetMode(ModeType modetype){mode=modetype;}
+        [[nodiscard]] ModeType getmode() const { return mode; }//取得當前模式
+        float GetPassedTime(){return static_cast<int>(Time::GetElapsedTimeMs() - start_time);}
     protected:
         ModeType mode=ModeType::Story;
         std::shared_ptr<AnimationSpace> m_Animation;//背景

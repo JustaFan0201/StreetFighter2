@@ -5,7 +5,6 @@
 #ifndef PASSSCENE_HPP
 #define PASSSCENE_HPP
 #include "Scene.hpp"
-
 namespace Util {
     class PassScene : public Scene {
     private:

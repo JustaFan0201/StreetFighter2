@@ -27,7 +27,7 @@ namespace Util {
     }
 
     void StartScene::Update(std::shared_ptr<Core::Context> context) {
-        if (Time::GetElapsedTimeMs() - start_time > 4000) {
+        if (GetPassedTime() > 4000) {
             if (m_WaitingForEnter) {
                 if (Input::IsKeyDown(Keycode::RETURN)) {
                     m_WaitingForEnter = false;

@@ -8,32 +8,46 @@ namespace Util {
     void SceneManager::SetContext(std::shared_ptr<Core::Context> context) {
         this->context = context;
     }
-    void SceneManager::ChangeScene(std::shared_ptr<Scene> scene) {
-        m_NowScene=scene;
-        m_NowScene->Init(context);
+    void SceneManager::ChangeSceneType(SceneType newtype) {
+        if (NowSceneType != newtype) {
+            NowSceneType = newtype;
+            auto currentEnter = StateEnter.find(NowSceneType);
+            if (currentEnter != StateEnter.end()) {
+                currentEnter->second();
+            }
+        }
     }
-
+    void SceneManager::UpdateState() const {
+        auto currentEnter = StateUpdate.find(NowSceneType);
+        currentEnter->second();
+    }
     void SceneManager::Update() {
         if (m_NowScene!=nullptr) {
             m_NowScene->Update(context);
         }
-
-        if (m_NowScene!=nullptr && m_NowScene->getSenseEnd() && NowSceneType==SceneType::Start) {
-            if (auto Now_Scene = std::dynamic_pointer_cast<StartScene>(m_NowScene)) {
-                mode = Now_Scene->getmode(); //取mode
-            }
+        UpdateState();
+    }
+    void SceneManager::StartSceneEnter() {
+        ChangeScene(std::make_shared<StartScene>());
+        /*nextScene = std::make_shared<BattleScene>(player,enemy);
+        NowSceneType=SceneType::Battle;
+        ChangeScene(nextScene);*/
+        m_NowScene->Init(context);
+    }
+    void SceneManager::StartSceneUpdate() {
+        if(m_NowScene->getSenseEnd()) {
+            mode = m_NowScene->getmode();
             std::cout << "Mode selected: " << static_cast<int>(mode) << std::endl;
-            std::shared_ptr<Scene> nextScene;
-            /*nextScene = std::make_shared<SlectScene>(); //切到Story模式
-            nextScene->SetMode(mode);
-            NowSceneType=SceneType::Slect;
-            ChangeScene(nextScene);*/
-            nextScene = std::make_shared<BattleScene>(player,enemy);
-            NowSceneType=SceneType::Battle;
-            ChangeScene(nextScene);
+            ChangeSceneType(SceneType::Slect);
         }
-        if (m_NowScene!=nullptr && m_NowScene->getSenseEnd() && NowSceneType==SceneType::Slect) {
-            std::shared_ptr<Scene> nextScene;
+    }
+    void SceneManager::SlectSceneEnter() {
+        auto next = std::make_shared<SlectScene>();
+        next->SetMode(mode);
+        ChangeScene(next);
+    }
+    void SceneManager::SlectSceneUpdate() {
+        if(m_NowScene->getSenseEnd()) {
             if(mode==ModeType::Story) {
                 EnemySlect();
                 if (stage_count<7) {
@@ -45,25 +59,49 @@ namespace Util {
                 player=Now_Scene->GetPlayer1Character();
                 enemy=Now_Scene->GetPlayer2Character();
             }
-            nextScene = std::make_shared<PassScene>(player,enemy); //pass scene
-            NowSceneType=SceneType::Pass;
-            ChangeScene(nextScene);
-        }
-        if (m_NowScene!=nullptr && m_NowScene->getSenseEnd() && NowSceneType==SceneType::Pass) {
-            std::shared_ptr<Scene> nextScene;
-            nextScene = std::make_shared<BattleScene>(player,enemy); //battle scene
-            NowSceneType=SceneType::Battle;
-            ChangeScene(nextScene);
-        }
-        if (m_NowScene!=nullptr && m_NowScene->getSenseEnd() && NowSceneType==SceneType::Battle) {
-            std::shared_ptr<Scene> nextScene;
-            nextScene = std::make_shared<SlectScene>();
-            nextScene->SetMode(mode);
-            NowSceneType=SceneType::Slect;
-            ChangeScene(nextScene);
+            ChangeSceneType(SceneType::Pass);
         }
     }
+    void SceneManager::PassSceneEnter() {
+        ChangeScene(std::make_shared<PassScene>(player,enemy));
 
+    }
+    void SceneManager::PassSceneUpdate() {
+        if(m_NowScene->getSenseEnd()) {
+            ChangeSceneType(SceneType::Battle);
+        }
+    }
+    void SceneManager::BattleSceneEnter() {
+        ChangeScene(std::make_shared<BattleScene>(player,enemy));
+
+    }
+    void SceneManager::BattleSceneUpdate() {
+        if (m_NowScene->getSenseEnd()) {
+            std::shared_ptr<Scene> nextScene;
+            if(mode==ModeType::Battle) {
+                ChangeSceneType(SceneType::Slect);
+            }
+            else if(mode==ModeType::Story){
+                auto NowScene=std::dynamic_pointer_cast<BattleScene>(m_NowScene);
+                finalresult=NowScene->GetFinalResult();
+                ChangeSceneType(SceneType::WinLoss);
+            }
+        }
+    }
+    void SceneManager::WinLossSceneEnter() {
+        ChangeScene(std::make_shared<WinLossScene>(player,enemy,finalresult));
+    }
+    void SceneManager::WinLossSceneUpdate() {
+        if (m_NowScene->getSenseEnd()) {
+            if(finalresult==FinalResult::Player2Win) {
+                ChangeSceneType(SceneType::Start);
+            }
+            else{
+                ChangeSceneType(SceneType::Slect);
+            }
+            finalresult=FinalResult::Null;
+        }
+    }
     void SceneManager::Render() {
         if (m_NowScene!=nullptr) {
             m_NowScene->Render();
@@ -71,19 +109,31 @@ namespace Util {
     }
     void SceneManager::EnemySlect() {
         if (auto Now_Scene = std::dynamic_pointer_cast<SlectScene>(m_NowScene)) {
-            if (player!=Now_Scene->GetPlayer1Character()) {
-                player = Now_Scene->GetPlayer1Character(); //取得遊玩角色
+            if (player != Now_Scene->GetPlayer1Character()) {
+                player = Now_Scene->GetPlayer1Character(); // 取得遊玩角色
             }
             std::cout << "Character selected: " << player->GetName() << std::endl;
         }
-        if (Enemies.size()<characters.size()-1) {//生成Enemies
-            for (auto character : characters) {
-                if (typeid(*player) != typeid(*character)) {
-                    Enemies.push_back(character);
+        if (Enemies.size() < characters.size() - 1) {
+            std::vector<FighterList> sorted_keys;
+            // 收集 keys
+            for (const auto& [key, _] : characters) {
+                sorted_keys.push_back(key);
+            }
+
+            // 根據 enum 值排序（小到大）
+            std::sort(sorted_keys.begin(), sorted_keys.end());
+
+            // 依序建立敵人
+            for (const auto& key : sorted_keys) {
+                auto candidate = characters[key](); // 產生角色
+                if (typeid(*candidate) != typeid(*player)) {
+                    Enemies.push_back(candidate);
                 }
             }
-            for (auto character : Enemies) {
-                std::cout << "Enemy: " << character->GetName() << std::endl;
+
+            for (const auto& enemy : Enemies) {
+                std::cout << "Enemy: " << enemy->GetName() << std::endl;
             }
         }
     }

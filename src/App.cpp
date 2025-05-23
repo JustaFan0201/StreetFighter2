@@ -5,8 +5,7 @@ void App::Start(std::shared_ptr<Core::Context> context) {
     //初始化Manager and 推入StartScene
     if (!m_IsInitialized) {
         m_SceneManager.SetContext(context);
-        std::shared_ptr<Util::StartScene> startScene = std::make_shared<Util::StartScene>();
-        m_SceneManager.ChangeScene(startScene);
+        m_SceneManager.ChangeSceneType(Util::SceneType::Start);
         m_IsInitialized = true;
     }
     m_CurrentState = State::UPDATE;

@@ -35,9 +35,10 @@ namespace Util {
             PlayerDataInit(player2data);
         }
         int j = 0;
-        for(const auto& fighter:characters) {
-            countries_dark.push_back(std::make_shared<ImageSpace>(fighter->GetCountryDark()));
-            countries_dark[j]->SetDrawData(characters[j]->GetCountryPosition(),
+        for(const auto& [key,fighter]:characters) {
+            std::shared_ptr<Fighter> currentFighter=fighter();
+            countries_dark.push_back(std::make_shared<ImageSpace>(currentFighter->GetCountryDark()));
+            countries_dark[j]->SetDrawData(currentFighter->GetCountryPosition(),
                        {72, 58},
                        1.0f);
             j++;
@@ -47,7 +48,7 @@ namespace Util {
     void SlectScene::Update(std::shared_ptr<Core::Context> context) {
         PlayerDataUpdate(player1data);
         if(mode==ModeType::Battle){PlayerDataUpdate(player2data);}
-        if(player1data.Ready&&player2data.Ready&&(Time::GetElapsedTimeMs()-start_time>600)) {
+        if(player1data.Ready&&player2data.Ready&&(GetPassedTime()>600)) {
             SenseEnd=true;
         }
     }
@@ -61,7 +62,8 @@ namespace Util {
         }
     }
     void SlectScene::PlayerDataInit(PlayerData &playerdata) const {
-        playerdata.player=characters[playerdata.chooseIndex];
+        FighterList chosen = index_to_enum[playerdata.chooseIndex];
+        playerdata.player = characters.at(chosen)();
         playerdata.controller->SetState(ControllerState::Active);
         playerdata.character_nametag=std::make_shared<ImageSpace>(playerdata.player->GetNameTag());
         playerdata.character=std::make_shared<ImageSpace>(playerdata.player->GetFace());
@@ -112,7 +114,8 @@ namespace Util {
                 start_time=Time::GetElapsedTimeMs();
             }
         }
-        playerdata.player=characters[playerdata.chooseIndex];
+        FighterList chosen = index_to_enum[playerdata.chooseIndex];
+        playerdata.player = characters.at(chosen)();
         //選擇角色
         playerdata.character_nametag->SetDrawable(std::make_shared<Image>(playerdata.player->GetNameTag()));//1p Nametag
         playerdata.character->SetDrawable(std::make_shared<Image>(playerdata.player->GetFace())); //角色

@@ -78,6 +78,9 @@ namespace Util {
         if (atk.attack.count(ButtonType)) {
             attacks[currentState] = atk.attack[ButtonType];
         }
+        else {
+            attacks[currentState] = atk.attack[fallbackKey];
+        }
         if (atk.HitStrength.count(ButtonType)) {
             hitstrength[currentState] = atk.HitStrength[ButtonType];
         }
@@ -424,13 +427,13 @@ namespace Util {
                 if(!SpecificStates.Invincible.count(enemy->currentState)) {
                     if(enemy->IsBlocking()) {
                         if(SpecificStates.SpecialStates.count(currentState)) {enemy->GetAttack(GetAttackNum()/5);}
-                        addEffectFunc(GetHitStrength(),BeHitType::Block,EffectPos);
+                        enemy->AddEffect(GetHitStrength(),BeHitType::Block,EffectPos);
                         enemy->AttackBlock();
                         HitEnemy=true;
                     }
                     else {
                         AttackHit(GetHitStrength(),static_cast<HitLocation>(i),GetAttackNum());
-                        addEffectFunc(GetHitStrength(),BeHitType::Hit,EffectPos);
+                        enemy->AddEffect(GetHitStrength(),BeHitType::Hit,EffectPos);
                         enemy->GetSFX()[enemy->GetCurrentState()]->Play();
                         HitEnemy=true;
                     }
