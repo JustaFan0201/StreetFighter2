@@ -100,7 +100,7 @@ namespace Util {
         frames[FighterState::JumpHP]={100,120,120,120,100,100};
         frames[FighterState::JumpLK]={160,160,160};
         frames[FighterState::JumpMK]={160,160,160};
-        frames[FighterState::JumpHK]={160,160,160,160};
+        frames[FighterState::JumpHK]={110,110,110,250};
         frames[FighterState::JumpAttackEnd]={120};
 
         frames[FighterState::HurtHeadL] = {100,100};

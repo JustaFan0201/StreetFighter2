@@ -222,8 +222,8 @@ namespace Util {
         StateUpdate[FighterState::Idle] = [this] {IdleStateUpdate(); };
         StateUpdate[FighterState::Forward] = [this] { ForwardStateUpdate(); };
         StateUpdate[FighterState::Backward] = [this] { BackwardStateUpdate(); };
-        StateUpdate[FighterState::JumpUP] = [this] {JumpStateUpdate(); };
-        StateUpdate[FighterState::JumpForward] = [this] {JumpStateUpdate(); };
+        StateUpdate[FighterState::JumpUP] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpStateUpdate(); };
+        StateUpdate[FighterState::JumpForward] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpStateUpdate(); };
         StateUpdate[FighterState::JumpBackward] = [this] { JumpStateUpdate(); };
         StateUpdate[FighterState::Crouch] = [this] {CrouchUpdate(); };
         StateUpdate[FighterState::CrouchDown] = [this] {CrouchDownUpdate(); };
@@ -243,13 +243,13 @@ namespace Util {
         StateUpdate[FighterState::CrouchMK] = [this] {AttackStateUpdate(); };
         StateUpdate[FighterState::CrouchHK] = [this] {  AttackStateUpdate(); };
 
-        StateUpdate[FighterState::JumpLP] = [this] {JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpMP] = [this] {JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpHP] = [this] {JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpLK] = [this] {JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpMK] = [this] {JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpHK] = [this] {JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpAttackEnd] = [this] {JumpAttackEndStateUpdate(); };
+        StateUpdate[FighterState::JumpLP] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpMP] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpHP] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpLK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpMK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpHK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
+        StateUpdate[FighterState::JumpAttackEnd] = [this] {JumpAttackEndStateUpdate();};
 
         StateUpdate[FighterState::HurtHeadL] = [this] { HurtStateUpdate(); };
         StateUpdate[FighterState::HurtHeadM] = [this] { HurtStateUpdate(); };
@@ -401,9 +401,9 @@ namespace Util {
         auto currentEnter = StateUpdate.find(currentState);
         currentEnter->second();
 
-        glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
+        /*glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
             ActionNow->GetTransform().translation.y+velocity.y};
-        ActionNow->SetTransform({position,0,{direction,1}});
+        ActionNow->SetTransform({position,0,{direction,1}});*/
     }
 
     void Fighter::HitboxIsCollidedEnemy() {
@@ -744,14 +744,16 @@ namespace Util {
     void Fighter::JumpAttackStateUpdate() {
         velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
         if(GetAnimationIsEnd()){ChangeState(FighterState::JumpAttackEnd);}
-        if(GetCharacterIsOnFloor()){ChangeState(FighterState::Idle);}
+        //if(GetCharacterIsOnFloor()){ChangeState(FighterState::Idle);}
+        //here
     }
     void Fighter::JumpAttackEndStateEnter() {
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::JumpAttackEndStateUpdate() {
         velocity.y += Gravity * Time::GetDeltaTimeMs()/1000;
-        if(GetCharacterIsOnFloor()){ChangeState(FighterState::Idle);}
+        //if(GetCharacterIsOnFloor()){ChangeState(FighterState::Idle);}
+        //here
     }
     void Fighter::HurtStateEnter() {
         ResetVelocity();
