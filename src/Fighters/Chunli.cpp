@@ -5,6 +5,7 @@
 #include "Fighters/Chunli.hpp"
 namespace Util {
     Chunli::Chunli(): Fighter("Chunli") {
+        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/WinWord.png");
         lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_LossFace.png");
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_nametag.png");

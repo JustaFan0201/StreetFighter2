@@ -5,6 +5,7 @@
 #include "Fighters/Dhalsim.hpp"
 namespace Util {
     Dhalsim::Dhalsim(): Fighter("Dhalsim") {
+        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/WinWord.png");
         lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/Dhalsim_LossFace.png");
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/Dhalsim_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/Dhalsim_nametag.png");

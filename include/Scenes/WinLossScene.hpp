@@ -14,6 +14,7 @@ namespace Util {
 
         std::shared_ptr<ImageSpace> player_face;//1p角色臉
         std::shared_ptr<ImageSpace> enemy_face;//2p角色臉
+        std::shared_ptr<ImageSpace> winword;
 
         std::vector<std::shared_ptr<ImageSpace>> AllPictures;//vector of 要被畫的
     public:

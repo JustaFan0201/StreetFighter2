@@ -73,6 +73,10 @@ namespace Util {
             Initialvelocity.x[currentState] = anim.initialvelocitys[ButtonType].x;
             Initialvelocity.y[currentState] = anim.initialvelocitys[ButtonType].y;
         }
+        else if(anim.initialvelocitys.count(fallbackKey)){
+            Initialvelocity.x[currentState] = anim.initialvelocitys[fallbackKey].x;
+            Initialvelocity.y[currentState] = anim.initialvelocitys[fallbackKey].y;
+        }
 
         // Attack Info
         if (atk.attack.count(ButtonType)) {
@@ -401,9 +405,9 @@ namespace Util {
         auto currentEnter = StateUpdate.find(currentState);
         currentEnter->second();
 
-        /*glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
+        glm::vec2 position={ActionNow->GetTransform().translation.x+direction*velocity.x,
             ActionNow->GetTransform().translation.y+velocity.y};
-        ActionNow->SetTransform({position,0,{direction,1}});*/
+        ActionNow->SetTransform({position,0,{direction,1}});
     }
 
     void Fighter::HitboxIsCollidedEnemy() {

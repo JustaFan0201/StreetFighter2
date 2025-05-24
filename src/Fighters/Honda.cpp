@@ -5,6 +5,7 @@
 #include "Fighters/Honda.hpp"
 namespace Util {
     Honda::Honda():Fighter("Honda"){
+        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/WinWord.png");
         lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_LossFace.png");
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_nametag.png");

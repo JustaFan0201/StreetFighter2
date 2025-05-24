@@ -13,21 +13,27 @@ namespace Util {
             case FinalResult::Player1Win:
                 player_face=std::make_shared<ImageSpace>(player->GetFace());
                 enemy_face=std::make_shared<ImageSpace>(enemy->GetLossFace());
+                winword=std::make_shared<ImageSpace>(player->GetWinWord());
                 break;
             case FinalResult::Player2Win:
                 player_face=std::make_shared<ImageSpace>(player->GetLossFace());
                 enemy_face=std::make_shared<ImageSpace>(enemy->GetFace());
+                winword=std::make_shared<ImageSpace>(enemy->GetWinWord());
                 break;
             default:
                 player_face=std::make_shared<ImageSpace>(player->GetFace());
                 enemy_face=std::make_shared<ImageSpace>(enemy->GetFace());
+                winword=std::make_shared<ImageSpace>(player->GetWinWord());
                 break;
         }
-        player_face->SetDrawData({{-350, 0},0,{1,1}},
-                {288, 306},
+        player_face->SetDrawData({{-350, 50},0,{1,1}},
+                player_face->GetScaledSize()*glm::vec2{3,3},
                 2.0f);
-        enemy_face->SetDrawData({{350, 0},0,{-1,1}},
-                {288, 306},
+        enemy_face->SetDrawData({{350, 50},0,{-1,1}},
+                enemy_face->GetScaledSize()*glm::vec2{3,3},
+                2.0f);
+        winword->SetDrawData({{0, -200},0,{1,1}},
+                winword->GetScaledSize()*glm::vec2{0.65,0.65},
                 2.0f);
     }
     void WinLossScene::Update(std::shared_ptr<Core::Context> context){
@@ -36,9 +42,9 @@ namespace Util {
         }
     }
     void WinLossScene::Render() {
-        AllPictures={player_face,enemy_face};
-        for (const auto& i : AllPictures) {
-            i->custom_Draw();
+        AllPictures={player_face,enemy_face,winword};
+        for (const auto& image : AllPictures) {
+            image->custom_Draw();
         }
     }
 }

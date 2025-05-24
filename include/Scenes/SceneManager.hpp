@@ -11,6 +11,7 @@
 #include "PassScene.hpp"
 #include "BattleScene.hpp"
 #include "WinLossScene.hpp"
+#include "ContinueScene.hpp"
 namespace Util {
     enum class SceneType {
         Null,
@@ -29,14 +30,14 @@ namespace Util {
             StateEnter[SceneType::Pass] = [this] { PassSceneEnter(); };
             StateEnter[SceneType::Battle] = [this] { BattleSceneEnter(); };
             StateEnter[SceneType::WinLoss] = [this] { WinLossSceneEnter(); };
-            StateEnter[SceneType::Continue] = [this] {  };
+            StateEnter[SceneType::Continue] = [this] { ContinueSceneEnter(); };
 
             StateUpdate[SceneType::Start] = [this] {StartSceneUpdate(); };
             StateUpdate[SceneType::Slect] = [this] {SlectSceneUpdate(); };
             StateUpdate[SceneType::Pass] = [this] {PassSceneUpdate(); };
             StateUpdate[SceneType::Battle] = [this] {BattleSceneUpdate(); };
             StateUpdate[SceneType::WinLoss] = [this] {WinLossSceneUpdate(); };
-            StateUpdate[SceneType::Continue] = [this] { };
+            StateUpdate[SceneType::Continue] = [this] {ContinueSceneUpdate();};
         }
         void ChangeSceneType(SceneType newtype);//切場景
         void ChangeScene(const std::shared_ptr<Scene> &NewScene){m_NowScene=NewScene;m_NowScene->Init(context);}//切場景
@@ -56,6 +57,8 @@ namespace Util {
         void BattleSceneUpdate();
         void WinLossSceneEnter();
         void WinLossSceneUpdate();
+        void ContinueSceneEnter();
+        void ContinueSceneUpdate();
     private:
         std::shared_ptr<Core::Context> context;
 
@@ -65,6 +68,7 @@ namespace Util {
         std::shared_ptr<Scene> m_NowScene=nullptr;//目前場景
 
         ModeType mode=ModeType::Story;//0=story 1=battle
+        ChooseResult ContinueOrNot=ChooseResult::Null;//0=story 1=battle
         std::shared_ptr<Fighter> player=std::make_shared<Honda>();
         std::shared_ptr<Fighter> enemy=std::make_shared<Ken>();
 

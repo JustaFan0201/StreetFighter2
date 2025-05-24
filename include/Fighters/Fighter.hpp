@@ -85,6 +85,7 @@ namespace Util {
         void SetEffectAdder(std::function<void(HitStrength strength,BeHitType behittype, glm::vec2 position)> effectfunc) {addEffectFunc = effectfunc;}
         //Getter ForScene
         std::string GetFace() const { return face; }
+        std::string GetWinWord() const { return winword; }
         std::string GetLossFace() const { return lossface; }
         std::string GetNameTag() const { return nametag; }
         std::string GetCountry() const { return country; }
@@ -240,6 +241,7 @@ namespace Util {
 
     protected:
         std::string m_name;
+        std::string winword;
         std::string lossface;
         std::string face;
         std::string nametag;

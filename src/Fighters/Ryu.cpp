@@ -5,6 +5,7 @@
 #include "Fighters/Ryu.hpp"
 namespace Util {
     Ryu::Ryu(): Fighter("Ryu") {
+        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/WinWord.png");
         lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu_LossFace.png");
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu_nametag.png");

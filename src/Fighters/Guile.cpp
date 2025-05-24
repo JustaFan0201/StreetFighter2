@@ -5,6 +5,7 @@
 #include "Fighters/Guile.hpp"
 namespace Util {
     Guile::Guile():Fighter("Guile"){
+        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Guile/WinWord.png");
         lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Guile/Guile_LossFace.png");
         face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Guile/Guile_face.png");
         nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Guile/Guile_nametag.png");

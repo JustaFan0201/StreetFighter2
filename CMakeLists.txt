@@ -40,6 +40,8 @@ add_executable(${PROJECT_NAME}
         src/Scenes/SlectScene.cpp
         src/Scenes/PassScene.cpp
         src/Scenes/BattleScene.cpp
+        src/Scenes/WinLossScene.cpp
+        src/Scenes/ContinueScene.cpp
 
         include/Others/FighterInfo.hpp
         include/Others/Camera.hpp
@@ -79,6 +81,8 @@ add_executable(${PROJECT_NAME}
         include/Scenes/SlectScene.hpp
         include/Scenes/PassScene.hpp
         include/Scenes/BattleScene.hpp
+        include/Scenes/WinLossScene.hpp
+        include/Scenes/ContinueScene.hpp
 
         src/Others/Camera.cpp
         src/Others/UI.cpp
@@ -106,8 +110,6 @@ add_executable(${PROJECT_NAME}
         include/Effect/Block_L.hpp
         include/Effect/Block_M.hpp
         include/Effect/Block_H.hpp
-        src/Scenes/WinLossScene.cpp
-        include/Scenes/WinLossScene.hpp
 )
 
 if(MSVC)
