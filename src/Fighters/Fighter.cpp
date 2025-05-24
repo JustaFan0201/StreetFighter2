@@ -249,7 +249,7 @@ namespace Util {
         StateUpdate[FighterState::JumpLK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
         StateUpdate[FighterState::JumpMK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
         StateUpdate[FighterState::JumpHK] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackStateUpdate(); };
-        StateUpdate[FighterState::JumpAttackEnd] = [this] {JumpAttackEndStateUpdate();};
+        StateUpdate[FighterState::JumpAttackEnd] = [this] {ActionNow->AnimationPause();ActionNow->TestPictureoffset();JumpAttackEndStateUpdate();};
 
         StateUpdate[FighterState::HurtHeadL] = [this] { HurtStateUpdate(); };
         StateUpdate[FighterState::HurtHeadM] = [this] { HurtStateUpdate(); };
@@ -554,7 +554,7 @@ namespace Util {
             ChangeState(FighterState::Win);
         }
         if (Input::IsKeyDown(Keycode::NUM_6)) {
-            ChangeState(FighterState::WinStart);
+            ChangeState(FighterState::JumpAttackEnd);
         }
         if (Input::IsKeyDown(Keycode::MOUSE_MB)) {
             mouse = Input::GetCursorPosition();
