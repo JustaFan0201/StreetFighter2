@@ -60,6 +60,12 @@ namespace Util {
         virtual void HurtStateEnter();
         virtual void HurtStateUpdate();
 
+        virtual void KnockDownStateEnter();
+        virtual void KnockDownStateUpdate();
+
+        virtual void GetUpStateEnter();
+        virtual void GetUpStateUpdate();
+
         virtual void BlockStateEnter();
         virtual void BlockStateUpdate();
 

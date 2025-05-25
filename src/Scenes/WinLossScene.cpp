@@ -27,10 +27,10 @@ namespace Util {
                 break;
         }
         player_face->SetDrawData({{-350, 50},0,{1,1}},
-                player_face->GetScaledSize()*glm::vec2{3,3},
+            {300,player_face->GetScaledSize().y*300/player_face->GetScaledSize().x},
                 2.0f);
         enemy_face->SetDrawData({{350, 50},0,{-1,1}},
-                enemy_face->GetScaledSize()*glm::vec2{3,3},
+            {300,enemy_face->GetScaledSize().y*300/enemy_face->GetScaledSize().x},
                 2.0f);
         winword->SetDrawData({{0, -200},0,{1,1}},
                 winword->GetScaledSize()*glm::vec2{0.65,0.65},

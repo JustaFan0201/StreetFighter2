@@ -9,9 +9,16 @@ namespace Util {
         Initialvelocity.y[FighterState::JumpBackward]=38;
         Initialvelocity.y[FighterState::JumpUP]=38;
 
-        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-6;
+        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-7;
         Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-8;
         Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-10;
+
+        Initialvelocity.x[FighterState::KnockDownL]=-12;
+        Initialvelocity.x[FighterState::KnockDownM]=-14;
+        Initialvelocity.x[FighterState::KnockDownH]=-16;
+        Initialvelocity.y[FighterState::KnockDownL]=20;
+        Initialvelocity.y[FighterState::KnockDownM]=24;
+        Initialvelocity.y[FighterState::KnockDownH]=28;
 
         Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-4;
         Initialvelocity.x[FighterState::DefeatedLoss]=-10;
@@ -41,9 +48,9 @@ namespace Util {
         soundeffect[FighterState::LP]=soundeffect[FighterState::LK]=soundeffect[FighterState::CrouchLP]=soundeffect[FighterState::CrouchLK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_38 - Light Attack.wav")};
         soundeffect[FighterState::MP]=soundeffect[FighterState::MK]=soundeffect[FighterState::CrouchMP]=soundeffect[FighterState::CrouchMK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_39 - Medium Attack.wav")};
         soundeffect[FighterState::HP]=soundeffect[FighterState::HK]=soundeffect[FighterState::CrouchHP]=soundeffect[FighterState::CrouchHK]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_40 - Hard Attack.wav")};
-        soundeffect[FighterState::HurtBodyL]=soundeffect[FighterState::HurtHeadL]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_42 - Jab Hit.wav")};
-        soundeffect[FighterState::HurtBodyM]=soundeffect[FighterState::HurtHeadM]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_43 - Strong Hit.wav")};
-        soundeffect[FighterState::HurtBodyH]=soundeffect[FighterState::HurtHeadH]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_44 - Fierce Hit.wav")};
+        soundeffect[FighterState::KnockDownL]=soundeffect[FighterState::HurtBodyL]=soundeffect[FighterState::HurtHeadL]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_42 - Jab Hit.wav")};
+        soundeffect[FighterState::KnockDownM]=soundeffect[FighterState::HurtBodyM]=soundeffect[FighterState::HurtHeadM]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_43 - Strong Hit.wav")};
+        soundeffect[FighterState::KnockDownH]=soundeffect[FighterState::HurtBodyH]=soundeffect[FighterState::HurtHeadH]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_44 - Fierce Hit.wav")};
         soundeffect[FighterState::BackwardBlock]=soundeffect[FighterState::CrouchBlock]={std::make_shared<SFX>(RESOURCE_DIR"/voice/04 Moves & Hits/SFII_51 - Blocked.wav")};
     }
 
@@ -135,6 +142,7 @@ namespace Util {
             FighterState::Crouch,FighterState::CrouchDown,FighterState::CrouchUp,
             FighterState::HurtBodyL, FighterState::HurtBodyM, FighterState::HurtBodyH,
             FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH,
+            FighterState::KnockDownL, FighterState::KnockDownM, FighterState::KnockDownH,FighterState::GetUp,
             FighterState::JumpLP, FighterState::JumpMP, FighterState::JumpHP,
             FighterState::JumpLK, FighterState::JumpMK, FighterState::JumpHK,
             FighterState::JumpAttackEnd,
@@ -172,6 +180,7 @@ namespace Util {
             FighterState::Crouch,FighterState::CrouchDown,FighterState::CrouchUp, FighterState::CrouchBlock
         };
         SpecificStates.Invincible={
+            FighterState::KnockDownL, FighterState::KnockDownM, FighterState::KnockDownH,FighterState::GetUp,
             FighterState::Win, FighterState::WinStart, FighterState::TimeOverLoss,
             FighterState::DefeatedLoss
         };
@@ -213,6 +222,11 @@ namespace Util {
         StateEnter[FighterState::HurtBodyL] = [this] { HurtStateEnter(); };
         StateEnter[FighterState::HurtBodyM] = [this] { HurtStateEnter(); };
         StateEnter[FighterState::HurtBodyH] = [this] { HurtStateEnter(); };
+
+        StateEnter[FighterState::KnockDownL] = [this] { KnockDownStateEnter(); };
+        StateEnter[FighterState::KnockDownM] = [this] { KnockDownStateEnter(); };
+        StateEnter[FighterState::KnockDownH] = [this] { KnockDownStateEnter(); };
+        StateEnter[FighterState::GetUp] = [this] { GetUpStateEnter(); };
 
         StateEnter[FighterState::BackwardBlock] = [this] { BlockStateEnter(); };
         StateEnter[FighterState::CrouchBlock] = [this] { BlockStateEnter(); };
@@ -261,6 +275,11 @@ namespace Util {
         StateUpdate[FighterState::HurtBodyL] = [this] { HurtStateUpdate(); };
         StateUpdate[FighterState::HurtBodyM] = [this] { HurtStateUpdate(); };
         StateUpdate[FighterState::HurtBodyH] = [this] { HurtStateUpdate(); };
+
+        StateUpdate[FighterState::KnockDownL] = [this] { KnockDownStateUpdate(); };
+        StateUpdate[FighterState::KnockDownM] = [this] { KnockDownStateUpdate(); };
+        StateUpdate[FighterState::KnockDownH] = [this] { KnockDownStateUpdate(); };
+        StateUpdate[FighterState::GetUp] = [this] { GetUpStateUpdate(); };
 
         StateUpdate[FighterState::BackwardBlock] = [this] {BlockStateUpdate(); };
         StateUpdate[FighterState::CrouchBlock] = [this] {BlockStateUpdate(); };
@@ -485,19 +504,34 @@ namespace Util {
     }
 
     FighterState Fighter::GetBeHitState(HitStrength Strength,HitLocation Location) {
+        if(!enemy->GetCharacterIsOnFloor()) {
+            switch (Strength) {
+                case HitStrength::L:
+                    return FighterState::KnockDownL;
+                break;
+                case HitStrength::M:
+                    return FighterState::KnockDownM;
+                break;
+                case HitStrength::H:
+                    return FighterState::KnockDownH;
+                break;
+                default:
+                    return FighterState::Idle;
+            }
+        }
         switch (Strength) {
             case HitStrength::L:
                 if(Location==HitLocation::Head)return FighterState::HurtHeadL;
-                return FighterState::HurtBodyL;
-                break;
+            return FighterState::HurtBodyL;
+            break;
             case HitStrength::M:
                 if(Location==HitLocation::Head)return FighterState::HurtHeadM;
-                return FighterState::HurtBodyM;
-                break;
+            return FighterState::HurtBodyM;
+            break;
             case HitStrength::H:
                 if(Location==HitLocation::Head)return FighterState::HurtHeadH;
-                return FighterState::HurtBodyH;
-                break;
+            return FighterState::HurtBodyH;
+            break;
             default:
                 return FighterState::Idle;
         }
@@ -546,16 +580,16 @@ namespace Util {
             ChangeState(FighterState::CrouchUp);
         }
         if (Input::IsKeyDown(Keycode::NUM_2)) {
-            ChangeState(FighterState::JumpMP);
+            ChangeState(FighterState::KnockDownL);
         }
         if (Input::IsKeyDown(Keycode::NUM_3)) {
-            ChangeState(FighterState::JumpHP);
+            ChangeState(FighterState::KnockDownM);
         }
         if (Input::IsKeyDown(Keycode::NUM_4)) {
-            ChangeState(FighterState::TimeOverLoss);
+            ChangeState(FighterState::KnockDownH);
         }
         if (Input::IsKeyDown(Keycode::NUM_5)) {
-            ChangeState(FighterState::Win);
+            ChangeState(FighterState::GetUp);
         }
         if (Input::IsKeyDown(Keycode::NUM_6)) {
             ChangeState(FighterState::JumpAttackEnd);
@@ -770,6 +804,27 @@ namespace Util {
         direction=GetNewDirection();
         if (GetAnimationIsEnd()&&velocity.x>=0&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
+
+    void Fighter::KnockDownStateEnter() {
+        ResetVelocity();
+        velocity=GetInitialvelocity();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::KnockDownStateUpdate() {
+        velocity.x+=Friction*Time::GetDeltaTimeMs()/1000;
+        velocity.y+=Gravity*Time::GetDeltaTimeMs()/1000;
+        if(velocity.x>0){velocity.x=0;}
+        if (GetAnimationIsEnd()&&velocity.x<=0&&GetCharacterIsOnFloor()) {ChangeState(FighterState::GetUp);}
+    }
+
+    void Fighter::GetUpStateEnter() {
+        ResetVelocity();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+    }
+    void Fighter::GetUpStateUpdate() {
+        if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
+    }
+
     void Fighter::BlockStateEnter() {
         ResetVelocity();
         velocity=GetInitialvelocity();

@@ -37,7 +37,8 @@ namespace Util {
             std::cout << "Mode selected: " << static_cast<int>(mode) << std::endl;
             Enemies.clear();
             ChangeSceneType(SceneType::Slect);
-            //ChangeSceneType(SceneType::Battle);
+            /*ChangeSceneType(SceneType::Battle);
+            EnemySlect();*/
         }
     }
     void SceneManager::SlectSceneEnter() {
@@ -69,7 +70,6 @@ namespace Util {
     }
     void SceneManager::BattleSceneEnter() {
         ChangeScene(std::make_shared<BattleScene>(player,enemy));
-
     }
     void SceneManager::BattleSceneUpdate() {
         if (m_NowScene->getSenseEnd()) {
@@ -77,7 +77,7 @@ namespace Util {
             if(mode==ModeType::Battle) {
                 ChangeSceneType(SceneType::Slect);
             }
-            else if(mode==ModeType::Story){
+            else{
                 auto NowScene=std::dynamic_pointer_cast<BattleScene>(m_NowScene);
                 finalresult=NowScene->GetFinalResult();
                 ChangeSceneType(SceneType::WinLoss);

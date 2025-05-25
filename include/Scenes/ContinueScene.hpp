@@ -15,16 +15,17 @@ namespace Util {
     enum class ContinueSceneState {
         Null,
         Start,
-        WaitForEnd,
-        End
+        WaitForEnd
     };
     class ContinueScene : public Scene {
     private:
         std::shared_ptr<Fighter> player;
         std::shared_ptr<SFX> countsound;
         std::shared_ptr<SFX> continuesound;
+        std::shared_ptr<SFX> gameoversound;
         std::shared_ptr<ImageSpace> player_face;//1p角色臉
         std::shared_ptr<ImageSpace> time_picture;
+        std::shared_ptr<ImageSpace> gameover_picture;
 
         int timer=10;
         ContinueSceneState currentstate=ContinueSceneState::Null;
