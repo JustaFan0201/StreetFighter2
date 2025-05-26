@@ -60,6 +60,14 @@ namespace Util {
         animations[FighterState::CrouchMK] = ActionInit(3, "CrouchMK");
         animations[FighterState::CrouchHK] = ActionInit(5, "CrouchHK");
 
+        animations[FighterState::JumpLP] = ActionInit(3, "JumpLP");
+        animations[FighterState::JumpMP] = ActionInit(4, "JumpMP");
+        animations[FighterState::JumpHP] = ActionInit(7, "JumpHP");
+        animations[FighterState::JumpLK] = ActionInit(3, "JumpLK");
+        animations[FighterState::JumpMK] = ActionInit(5, "JumpMK");
+        animations[FighterState::JumpHK] = ActionInit(5, "JumpHK");
+        animations[FighterState::JumpAttackEnd] = ActionInit(1, "JumpAttackEnd");
+
         animations[FighterState::WinStart]=ActionInit(1, "WinStart");
         animations[FighterState::Win]=ActionInit(5, "Win");
 
@@ -88,6 +96,14 @@ namespace Util {
         frames[FighterState::CrouchLK]={70,70,80,70,70};
         frames[FighterState::CrouchMK]={90,110,100};
         frames[FighterState::CrouchHK]={80,90,120,110,90};
+
+        frames[FighterState::JumpLP]={120,120,160};
+        frames[FighterState::JumpMP]={100,100,100,180};
+        frames[FighterState::JumpHP]={100,100,100,180,100,100,100};
+        frames[FighterState::JumpLK]={120,120,180};
+        frames[FighterState::JumpMK]={120,120,180,120,120};
+        frames[FighterState::JumpHK]={120,120,200,120,120};
+        frames[FighterState::JumpAttackEnd]={100};
 
         frames[FighterState::HurtHeadL] = {100,100};
         frames[FighterState::HurtHeadM] = {150,150};
@@ -137,6 +153,19 @@ namespace Util {
 
         offset[FighterState::TimeOverLoss]={{17,19},{15,18},{14,12}};
         offset[FighterState::DefeatedLoss]={{-212,-2},{-192,-36},{-201,-100}};
+
+        offset[FighterState::JumpUP]={{-16,-11},{-60,50},{-32,26},{-21,16},{-17,17},{-21,16},{-32,26},{-60,50},{-16,-11}};
+        offset[FighterState::JumpForward]={{-11,-7},{-59,53},{-36,27},{-116,-2},{-113,40},{-76,52},{-76,33},{-67,13},{-97,17},{-56,52},{-14,-7}};
+        std::vector<glm::vec2> reversedoffset = offset[FighterState::JumpForward];
+        std::reverse(reversedoffset.begin(), reversedoffset.end());
+        offset[FighterState::JumpBackward]=reversedoffset;
+        offset[FighterState::JumpLP]={{-35,13},{-13,11},{27,14}};
+            offset[FighterState::JumpMP]={{-2,43},{-24,35},{26,26},{29,26}};
+        offset[FighterState::JumpHP]={{1,41},{-15,43},{36,32},{38,32},{36,32},{-15,43},{1,41}};
+        offset[FighterState::JumpLK]={{-61,43},{-15,47},{-33,49}};
+        offset[FighterState::JumpMK]={{-67,42},{-10,43},{-39,48},{-10,43},{-67,42}};
+        offset[FighterState::JumpHK]={{-55,10},{-75,14},{-37,12},{-75,14},{-55,10}};
+        offset[FighterState::JumpAttackEnd]={{-10,-9}};
     }
     void Chunli::LoadAllBox() {
 
@@ -252,6 +281,77 @@ namespace Util {
         boxes.hurtbox.body.offset[FighterState::HK]={{17,53},{33,53},{38,61},{21,69},{13,68},{-37,81}};
         boxes.hurtbox.leg.size[FighterState::HK]={{140,120},{50,130},{50,140},{70,140},{80,120},{140,140}};
         boxes.hurtbox.leg.offset[FighterState::HK]={{7,-45},{59,-37},{66,-37},{71,-34},{53,-27},{20,-20}};
+
+        boxes.hurtbox.head.offset[FighterState::JumpUP]={{-4,88},{-59,192},{0,128},{24,104},{39,90},{24,104},{0,128},{-59,192},{-4,88}};
+        boxes.hurtbox.body.offset[FighterState::JumpUP]={{-26,45},{-65,150},{-20,91},{-2,64},{6,57},{-2,64},{-20,91},{-65,150},{-26,45}};
+        boxes.hurtbox.leg.size[FighterState::JumpUP]={{140,140},{130,160},{140,120},{150,100},{160,90},{150,100},{140,120},{130,160},{180,125},{140,140}};
+        boxes.hurtbox.leg.offset[FighterState::JumpUP]={{-27,-54},{-43,25},{-16,0},{-9,-9},{4,1},{-9,-9},{-16,0},{-43,25},{-27,-54}};
+
+        boxes.hurtbox.leg.size[FighterState::JumpForward]={{140,140},{130,160},{120,150},{200,100},{190,100},{100,160},{170,100},{200,90},{160,90},{130,160},{140,140}};
+        boxes.hurtbox.body.size[FighterState::JumpForward]={{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70}};
+        boxes.hurtbox.head.offset[FighterState::JumpForward]={{-4,85},{-59,188},{61,98},{38,-22},{15,-52},{-66,-68},{-184,-52},{-193,-29},{-192,65},{-62,188},{-10,86}};
+        boxes.hurtbox.body.offset[FighterState::JumpForward]={{-25,42},{-61,152},{10,115},{-7,16},{-7,-2},{-69,-14},{-143,-14},{-154,7},{-126,85},{-59,145},{-27,45}};
+        boxes.hurtbox.leg.offset[FighterState::JumpForward]={{-26,-51},{-49,33},{-79,34},{-127,19},{-111,75},{-72,113},{-57,71},{-28,18},{-52,67},{-54,28},{-28,-51}};
+
+        std::vector<glm::vec2> reversedhurtbox = boxes.hurtbox.head.offset[FighterState::JumpForward];
+        std::reverse(reversedhurtbox.begin(), reversedhurtbox.end());
+        boxes.hurtbox.head.offset[FighterState::JumpBackward]=reversedhurtbox;
+
+        std::vector<glm::vec2> reversedsize = boxes.hurtbox.body.size[FighterState::JumpForward];
+        std::reverse(reversedsize.begin(), reversedsize.end());
+        boxes.hurtbox.body.size[FighterState::JumpBackward]=reversedsize;
+
+        reversedhurtbox = boxes.hurtbox.body.offset[FighterState::JumpForward];
+        std::reverse(reversedhurtbox.begin(), reversedhurtbox.end());
+        boxes.hurtbox.body.offset[FighterState::JumpBackward]=reversedhurtbox;
+
+        reversedsize = boxes.hurtbox.leg.size[FighterState::JumpForward];
+        std::reverse(reversedsize.begin(), reversedsize.end());
+        boxes.hurtbox.leg.size[FighterState::JumpBackward]=reversedsize;
+
+        reversedhurtbox = boxes.hurtbox.leg.offset[FighterState::JumpForward];
+        std::reverse(reversedhurtbox.begin(), reversedhurtbox.end());
+        boxes.hurtbox.leg.offset[FighterState::JumpBackward]=reversedhurtbox;
+
+        boxes.hurtbox.body.size[FighterState::JumpLP]={{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::JumpLP]={{140,140},{140,130},{140,110}};
+        boxes.hurtbox.head.offset[FighterState::JumpLP]={{49,77},{63,78},{64,83}};
+        boxes.hurtbox.body.offset[FighterState::JumpLP]={{11,43},{21,42},{28,43}};
+        boxes.hurtbox.leg.offset[FighterState::JumpLP]={{-10,-29},{12,-30},{9,-34}};
+
+        boxes.hurtbox.body.size[FighterState::JumpMP]={{100,70},{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::JumpMP]={{150,90},{150,90},{130,100},{130,100}};
+        boxes.hurtbox.head.offset[FighterState::JumpMP]={{27,57},{22,53},{27,60},{27,64}};
+        boxes.hurtbox.body.offset[FighterState::JumpMP]={{-19,29},{-14,15},{-9,25},{-10,25}};
+        boxes.hurtbox.leg.offset[FighterState::JumpMP]={{-33,-57},{-34,-64},{-29,-51},{-31,-55}};
+
+        boxes.hurtbox.body.size[FighterState::JumpHP]={{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::JumpHP]={{150,90},{150,90},{130,100},{130,100},{130,100},{150,90},{150,90}};
+        boxes.hurtbox.head.offset[FighterState::JumpHP]={{27,57},{22,53},{27,60},{27,64},{27,60},{22,53},{27,57}};
+        boxes.hurtbox.body.offset[FighterState::JumpHP]={{-19,29},{-14,15},{-9,25},{-10,25},{-9,25},{-14,15},{-19,29}};
+        boxes.hurtbox.leg.offset[FighterState::JumpHP]={{-33,-57},{-34,-64},{-29,-51},{-31,-55},{-29,-51},{-34,-64},{-33,-57}};
+
+        boxes.hurtbox.body.size[FighterState::JumpLK]={{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::JumpLK]={{140,140},{130,140},{110,140}};
+        boxes.hurtbox.head.offset[FighterState::JumpLK]={{-5,108},{8,114},{48,102}};
+        boxes.hurtbox.body.offset[FighterState::JumpLK]={{-15,60},{-6,69},{22,60}};
+        boxes.hurtbox.leg.offset[FighterState::JumpLK]={{-18,-38},{-3,-31},{5,-40}};
+
+        boxes.hurtbox.body.size[FighterState::JumpMK]={{100,70},{100,70},{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::JumpMK]={{140,140},{130,140},{110,140},{130,140},{140,140}};
+        boxes.hurtbox.head.offset[FighterState::JumpMK]={{-5,108},{8,114},{48,102},{8,114},{-5,108}};
+        boxes.hurtbox.body.offset[FighterState::JumpMK]={{-15,60},{-6,69},{22,60},{-6,69},{-15,60}};
+        boxes.hurtbox.leg.offset[FighterState::JumpMK]={{-18,-38},{-3,-31},{5,-40},{-3,-31},{-18,-38}};
+
+        boxes.hurtbox.body.size[FighterState::JumpHK]={{100,70},{100,70},{100,70},{100,70},{100,70}};
+        boxes.hurtbox.leg.size[FighterState::JumpHK]={{150,110},{180,100},{220,100},{180,100},{150,110}};
+        boxes.hurtbox.head.offset[FighterState::JumpHK]={{14,62},{-55,65},{-97,52},{-55,65},{14,62}};
+        boxes.hurtbox.body.offset[FighterState::JumpHK]={{-6,23},{-53,23},{-70,8},{-53,23},{-6,23}};
+        boxes.hurtbox.leg.offset[FighterState::JumpHK]={{4,-40},{-36,-39},{16,-31},{-36,-39},{4,-40}};
+
+        boxes.hurtbox.head.offset[FighterState::JumpAttackEnd]={{-6,87}};
+        boxes.hurtbox.body.offset[FighterState::JumpAttackEnd]={{-23,45}};
+        boxes.hurtbox.leg.offset[FighterState::JumpAttackEnd]={{-30,-44}};
         //hitbox Crouch Attack
         boxes.hitbox.size[FighterState::CrouchLP]={145,40};
         boxes.hitbox.offset[FighterState::CrouchLP]={{-1,-1},{-1,-1},{147,21},{-1,-1},{-1,-1}};
@@ -278,6 +378,20 @@ namespace Util {
         boxes.hitbox.offset[FighterState::MK]={{-1,-1},{-1,-1},{91,100},{-1,-1},{-1,-1}};
         boxes.hitbox.size[FighterState::HK]={140,95};
         boxes.hitbox.offset[FighterState::HK]={{-1,-1},{-1,-1},{-1,-1},{196,130},{-1,-1},{-1,-1},{-1,-1}};
+
+        //hitbox Jump Attack
+        boxes.hitbox.size[FighterState::JumpLP]={150,120};
+        boxes.hitbox.offset[FighterState::JumpLP]={{-1,-1},{-1,-1},{100,13}};
+        boxes.hitbox.size[FighterState::JumpMP]={150,140};
+        boxes.hitbox.offset[FighterState::JumpMP]={{-1,-1},{-1,-1},{-1,-1},{81,15}};
+        boxes.hitbox.size[FighterState::JumpHP]={150,140};
+        boxes.hitbox.offset[FighterState::JumpHP]={{-1,-1},{-1,-1},{-1,-1},{81,15},{-1,-1},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::JumpLK]={150,190};
+        boxes.hitbox.offset[FighterState::JumpLK]={{-1,-1},{-1,-1},{65,44}};
+        boxes.hitbox.size[FighterState::JumpMK]={150,190};
+        boxes.hitbox.offset[FighterState::JumpMK]={{-1,-1},{-1,-1},{65,44},{-1,-1},{-1,-1}};
+        boxes.hitbox.size[FighterState::JumpHK]={260,90};
+        boxes.hitbox.offset[FighterState::JumpHK]={{-1,-1},{-1,-1},{53,-33},{-1,-1},{-1,-1}};
     }
     void Chunli::LoadSpecialMove() {
         animations[FighterState::Special_1]=ActionInit(12, "Special_1");
