@@ -36,17 +36,18 @@ namespace Util {
             mode = m_NowScene->getmode();
             std::cout << "Mode selected: " << static_cast<int>(mode) << std::endl;
             Enemies.clear();
-            ChangeSceneType(SceneType::Slect);
-            /*ChangeSceneType(SceneType::Battle);
-            EnemySlect();*/
+            //ChangeSceneType(SceneType::Slect);
+            ChangeSceneType(SceneType::Battle);
+            EnemySlect();
         }
     }
     void SceneManager::SlectSceneEnter() {
-        auto next = std::make_shared<SlectScene>();
+        auto next = std::make_shared<SlectScene>(PassedGame);
         next->SetMode(mode);
         ChangeScene(next);
     }
     void SceneManager::SlectSceneUpdate() {
+        DetectedPassedGame();
         if(m_NowScene->getSenseEnd()) {
             auto Now_Scene = std::dynamic_pointer_cast<SlectScene>(m_NowScene);
             player=Now_Scene->GetPlayer1Character();
@@ -147,6 +148,15 @@ namespace Util {
 
             for (const auto& enemy : Enemies) {
                 std::cout << "Enemy: " << enemy->GetName() << std::endl;
+            }
+        }
+    }
+    void SceneManager::DetectedPassedGame() {
+        if(Input::IsKeyDown(Keycode::K)) {
+            PassedGame=true;
+            if(NowSceneType==SceneType::Slect) {
+                auto NowScene=std::dynamic_pointer_cast<SlectScene>(m_NowScene);
+                NowScene->SetPassedGame(true);
             }
         }
     }

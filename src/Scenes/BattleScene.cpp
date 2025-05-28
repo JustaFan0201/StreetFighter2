@@ -83,13 +83,17 @@ namespace Util {
         }
     }
     void BattleScene::addEffects(HitStrength strength,BeHitType behittype, glm::vec2 position) {
+        HitStrength newStr = strength;
         std::shared_ptr<Effect> effect;
+        if(strength==HitStrength::SP) {
+            newStr=HitStrength::H;
+        }
         switch (behittype) {
             case BeHitType::Hit:
-                effect= HitEffectFactory[strength]();
+                effect= HitEffectFactory[newStr]();
             break;
             case BeHitType::Block:
-                effect= BlockEffectFactory[strength]();
+                effect= BlockEffectFactory[newStr]();
             break;
             default:
                 return;

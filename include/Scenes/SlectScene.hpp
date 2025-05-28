@@ -36,7 +36,8 @@ namespace Util {
             {FighterList::Ken,     []() { return std::make_shared<Ken>(); }},
             {FighterList::Chunli,  []() { return std::make_shared<Chunli>(); }},
             {FighterList::Zangief, []() { return std::make_shared<Zangief>(); }},
-            {FighterList::Dhalsim, []() { return std::make_shared<Dhalsim>(); }}
+            {FighterList::Dhalsim, []() { return std::make_shared<Dhalsim>(); }},
+            {FighterList::Vega, []() { return std::make_shared<Vega>(); }}
         };
         std::vector<FighterList> index_to_enum = {
             FighterList::Ryu,
@@ -46,20 +47,29 @@ namespace Util {
             FighterList::Ken,
             FighterList::Chunli,
             FighterList::Zangief,
-            FighterList::Dhalsim
+            FighterList::Dhalsim,
+            FighterList::Vega,
         };
         PlayerData player1data;
         PlayerData player2data;
-
         std::vector<std::shared_ptr<ImageSpace>> countries_dark;
+
+        std::shared_ptr<ImageSpace> Boss_Icon;
+        bool PassedGame=false;
         public:
-        SlectScene();
+        SlectScene(bool PassedGame):PassedGame(PassedGame){}
         void PlayerDataInit(PlayerData &playerdata) const;
         void PlayerDataUpdate(PlayerData &playerdata);
         static void PlayerDataRender(PlayerData &playerdata);
         void Init(std::shared_ptr<Core::Context> context) override;
         void Update(std::shared_ptr<Core::Context> context) override;
         void Render() override;
+        void SetPassedGame(bool result){PassedGame=result;BossSlectable();}
+        void BossSlectable() {
+            if(PassedGame) {Boss_Icon=std::make_shared<ImageSpace>(characters[FighterList::Vega]()->GetIcon());}
+            else {Boss_Icon=std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/slect/Secret.png");}
+            Boss_Icon->SetDrawData(characters[FighterList::Vega]()->GetFacePosition(),Boss_Icon->GetScaledSize()*glm::vec2{3.3,3.2},1.0f);
+        }
         [[nodiscard]] std::shared_ptr<Fighter> GetPlayer1Character() const{return player1data.player;}//回傳1p玩家角色
         [[nodiscard]] std::shared_ptr<Fighter> GetPlayer2Character() const{return player2data.player;}//回傳1p玩家角色
     };

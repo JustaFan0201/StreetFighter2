@@ -76,7 +76,7 @@ namespace Util {
 
         P1name_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/" + P1->GetName()+ ".png");
         P2name_image =  std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/"+ P2->GetName() +".png");
-        for (int i=0; i<8; i++) {
+        for (int i=0; i<offset.size(); i++) {
             if (P1->GetName()== namebox[i]) offsetnum[0] = i;
             if (P2->GetName() == namebox[i]) offsetnum[1] = i;
         }

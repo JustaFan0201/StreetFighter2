@@ -57,6 +57,7 @@ add_executable(${PROJECT_NAME}
         src/Fighters/Guile.cpp
         src/Fighters/Dhalsim.cpp
         src/Fighters/Zangief.cpp
+        src/Fighters/Vega.cpp
 
         src/FlyingObject/FlyingObject.cpp
         src/FlyingObject/FireBall.cpp
@@ -96,6 +97,7 @@ add_executable(${PROJECT_NAME}
         include/Fighters/Guile.hpp
         include/Fighters/Dhalsim.hpp
         include/Fighters/Zangief.hpp
+        include/Fighters/Vega.hpp
 
         include/Others/FlyingObjectInfo.hpp
         include/FlyingObject/FlyingObject.hpp

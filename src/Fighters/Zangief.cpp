@@ -5,13 +5,9 @@
 #include "Fighters/Zangief.hpp"
 namespace Util {
     Zangief::Zangief(): Fighter("Zangief") {
-        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Zangief/WinWord.png");
-        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Zangief/Zangief_LossFace.png");
-        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Zangief/Zangief_face.png");
-        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Zangief/Zangief_nametag.png");
+        LoadFighterData();
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/ussr.png");
         country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/ussr_dark.png");
-        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/ZangiefTheme.mp3");
         country_position={{-244, 220},0,{1,1}};
         face_postion={{54, -253},0,{1,1}};
         BackgroundInit(8);
@@ -276,7 +272,7 @@ namespace Util {
 
         SpecialMoveData.animationData[FighterState::Special_1].initialvelocitys[Keys::LP]={4,0};
         SpecialMoveData.attackdata[FighterState::Special_1].attack[Keys::LP]=10;
-        SpecialMoveData.attackdata[FighterState::Special_1].HitStrength[Keys::LP]=HitStrength::H;
+        SpecialMoveData.attackdata[FighterState::Special_1].HitStrength[Keys::LP]=HitStrength::SP;
 
         StateEnter[FighterState::Special_1]=[this] { DoubleLariatStateEnter(); };
         StateUpdate[FighterState::Special_1]=[this] { DoubleLariatStateUpdate(); };

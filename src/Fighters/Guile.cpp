@@ -5,13 +5,9 @@
 #include "Fighters/Guile.hpp"
 namespace Util {
     Guile::Guile():Fighter("Guile"){
-        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Guile/WinWord.png");
-        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Guile/Guile_LossFace.png");
-        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Guile/Guile_face.png");
-        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Guile/Guile_nametag.png");
+        LoadFighterData();
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/usa.png");
         country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/usa_dark.png");
-        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/GuileTheme.mp3");
         country_position={{350, 140},0,{1,1}};
         face_postion={{161, -150},0,{1,1}};
         BackgroundInit(5);
@@ -434,9 +430,9 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MK]=15;
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HK]=22;
 
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LK]=HitStrength::L;
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MK]=HitStrength::M;
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HK]=HitStrength::H;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LK]=HitStrength::SP;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MK]=HitStrength::SP;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HK]=HitStrength::SP;
 
         StateEnter[FighterState::Special_2]=[this] { SommersaultStateEnter(); };
         StateUpdate[FighterState::Special_2]=[this] { SommersaultStateUpdate(); };

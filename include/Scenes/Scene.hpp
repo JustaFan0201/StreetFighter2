@@ -29,6 +29,7 @@
 #include "Fighters/Blanka.hpp"
 #include "Fighters/Ken.hpp"
 #include "Fighters/Honda.hpp"
+#include "Fighters/Vega.hpp"
 enum class ModeType {
     Story,
     Battle

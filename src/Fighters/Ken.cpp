@@ -5,13 +5,9 @@
 #include "Fighters/Ken.hpp"
 namespace Util {
     Ken::Ken(): Fighter("Ken") {
-        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/WinWord.png");
-        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_LossFace.png");
-        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_face.png");
-        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ken/Ken_nametag.png");
+        LoadFighterData();
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/usa.png");
         country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/usa_dark.png");
-        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/KenTheme.mp3");
         country_position={{338, 245},0,{1,1}};
         face_postion={{-160, -253},0,{1,1}};
         BackgroundInit(14);
@@ -428,9 +424,9 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=15;
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HP]=22;
 
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::L;
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::M;
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HP]=HitStrength::H;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::SP;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::SP;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HP]=HitStrength::SP;
 
         StateEnter[FighterState::Special_2]=[this] { ShoryukenStateEnter(); };
         StateUpdate[FighterState::Special_2]=[this] { ShoryukenStateUpdate(); };

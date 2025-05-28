@@ -5,13 +5,9 @@
 #include "Fighters/Honda.hpp"
 namespace Util {
     Honda::Honda():Fighter("Honda"){
-        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/WinWord.png");
-        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_LossFace.png");
-        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_face.png");
-        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Honda/Honda_nametag.png");
+        LoadFighterData();
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/japan.png");
         country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/japan_dark.png");
-        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/HondaTheme.mp3");
         country_position={{28, 168},0,{1,1}};
         face_postion={{-53, -150},0,{1,1}};
         BackgroundInit(7);

@@ -1,5 +1,13 @@
 #include "Fighters/Fighter.hpp"
 namespace Util {
+    void Fighter::LoadFighterData() {
+        icon=std::string(RESOURCE_DIR"/ScenePicture/Fighters/" + GetName()  +"/"+ GetName()  +".png");
+        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/" + GetName()  +"/WinWord.png");
+        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/" + GetName()  +"/LossFace.png");
+        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/" + GetName()  +"/Face.png");
+        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/" + GetName()  +"/Nametag.png");
+        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/" + GetName()  +"Theme.mp3");
+    }
     void Fighter::LoadCommonVelocities() {
         Initialvelocity.x[FighterState::Forward]=8;
         Initialvelocity.x[FighterState::Backward]=-8;
@@ -504,6 +512,9 @@ namespace Util {
     }
 
     FighterState Fighter::GetBeHitState(HitStrength Strength,HitLocation Location) {
+        if(Strength==HitStrength::SP) {
+            return FighterState::KnockDownH;
+        }
         if(!enemy->GetCharacterIsOnFloor()) {
             switch (Strength) {
                 case HitStrength::L:

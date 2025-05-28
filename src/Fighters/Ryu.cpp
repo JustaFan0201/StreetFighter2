@@ -5,13 +5,9 @@
 #include "Fighters/Ryu.hpp"
 namespace Util {
     Ryu::Ryu(): Fighter("Ryu") {
-        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/WinWord.png");
-        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu_LossFace.png");
-        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu_face.png");
-        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu_nametag.png");
+        LoadFighterData();
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/japan.png");
         country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/japan_dark.png");
-        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/RyuTheme.mp3");
         country_position={{14,90},0,{1,1}};
         face_postion={{-160, -150},0,{1,1}};
         BackgroundInit(15);
@@ -430,9 +426,9 @@ namespace Util {
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=15;
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::HP]=22;
 
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::L;
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::M;
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HP]=HitStrength::H;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::SP;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::MP]=HitStrength::SP;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::HP]=HitStrength::SP;
 
         StateEnter[FighterState::Special_2]=[this] { ShoryukenStateEnter(); };
         StateUpdate[FighterState::Special_2]=[this] { ShoryukenStateUpdate(); };

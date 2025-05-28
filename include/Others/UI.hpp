@@ -21,7 +21,7 @@
 #include "Fighters/Blanka.hpp"
 #include "Fighters/Ken.hpp"
 #include "Fighters/Honda.hpp"
-
+#include "Fighters/Vega.hpp"
 namespace Util {
     enum class State{
         Null,
@@ -56,9 +56,9 @@ namespace Util {
         std::shared_ptr<Fighter> P1;
         std::shared_ptr<Fighter> P2;
 
-        std::vector<std::string> namebox = {"Ryu", "Honda", "Blanka", "Guile", "Ken", "Chunli", "Zangief", "Dhalsim"};
+        std::vector<std::string> namebox = {"Ryu", "Honda", "Blanka", "Guile", "Ken", "Chunli", "Zangief", "Dhalsim","Vega"};
         std::vector<int> offsetnum = {0, 0};
-        std::vector<int> offset = {430, 375, 360, 405, 430, 370, 370, 370};
+        std::vector<int> offset = {430, 375, 360, 405, 430, 370, 370, 370, 405};
         float P1blood = 100.0f;
         float P2blood = 100.0f;
         std::shared_ptr<ImageSpace> P1name_image;

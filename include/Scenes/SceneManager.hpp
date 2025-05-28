@@ -44,6 +44,7 @@ namespace Util {
         void Update();
         void Render();
         void EnemySlect();//生成敵人vector Enemies
+        void DetectedPassedGame();
         void SetContext(std::shared_ptr<Core::Context> context);
         [[nodiscard]] ModeType GetMode() const{return mode;}//取模式
         void UpdateState() const;
@@ -69,8 +70,8 @@ namespace Util {
 
         ModeType mode=ModeType::Story;//0=story 1=battle
         ChooseResult ContinueOrNot=ChooseResult::Null;//0=story 1=battle
-        std::shared_ptr<Fighter> player=std::make_shared<Ryu>();
-        std::shared_ptr<Fighter> enemy=std::make_shared<Ken>();
+        std::shared_ptr<Fighter> player=std::make_shared<Vega>();
+        std::shared_ptr<Fighter> enemy=std::make_shared<Vega>();
 
         std::pmr::unordered_map<FighterList, std::function<std::shared_ptr<Fighter>()>> characters = {
             {FighterList::Ryu,     []() { return std::make_shared<Ryu>(); }},
@@ -80,10 +81,12 @@ namespace Util {
             {FighterList::Ken,     []() { return std::make_shared<Ken>(); }},
             {FighterList::Chunli,  []() { return std::make_shared<Chunli>(); }},
             {FighterList::Zangief, []() { return std::make_shared<Zangief>(); }},
-            {FighterList::Dhalsim, []() { return std::make_shared<Dhalsim>(); }}
+            {FighterList::Dhalsim, []() { return std::make_shared<Dhalsim>(); }},
+            {FighterList::Vega, []() { return std::make_shared<Vega>(); }}
         };
         std::vector<std::shared_ptr<Fighter>> Enemies = {};//敵人vector
         int stage_count=0;//目前關卡
+        bool PassedGame=false;
         FinalResult finalresult=FinalResult::Null;
     };
 }

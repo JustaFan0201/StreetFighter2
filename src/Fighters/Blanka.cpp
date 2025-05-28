@@ -5,13 +5,9 @@
 #include "Fighters/Blanka.hpp"
 namespace Util {
     Blanka::Blanka(): Fighter("Blanka") {
-        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/WinWord.png");
-        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/Blanka_LossFace.png");
-        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/Blanka_face.png");
-        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Blanka/Blanka_nametag.png");
+        LoadFighterData();
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/brazil.png");
         country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/brazil_dark.png");
-        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/BlankaTheme.mp3");
         country_position={{323, 23},0,{1,1}};
         face_postion={{54, -150},0,{1,1}};
         BackgroundInit(4);
@@ -396,7 +392,7 @@ namespace Util {
         boxes.hitbox.offset[FighterState::Special_1]={{-1,-1},{-1,-1},{17,-7},{-1,-1}};
 
         SpecialMoveData.attackdata[FighterState::Special_1].attack[Keys::LP]=20;
-        SpecialMoveData.attackdata[FighterState::Special_1].HitStrength[Keys::LP]=HitStrength::H;
+        SpecialMoveData.attackdata[FighterState::Special_1].HitStrength[Keys::LP]=HitStrength::SP;
 
         StateEnter[FighterState::Special_1]=[this] { ElectricThunderStateEnter(); };
         StateUpdate[FighterState::Special_1]=[this] { ElectricThunderStateUpdate(); };

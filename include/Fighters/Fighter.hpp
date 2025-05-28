@@ -76,12 +76,13 @@ namespace Util {
         virtual void LossStateEnter();
         virtual void LossStateUpdate();
         //Loader
+        void LoadFighterData();
         virtual void LoadAnimations(){}
         virtual void LoadOffsetVelocity(){}
         void LoadCommonVelocities();
         virtual void LoadAllBox(){}
-        virtual void LoadAttackSound();
-        virtual void LoadAttackAndType();
+        void LoadAttackSound();
+        void LoadAttackAndType();
         virtual void LoadSpecialMove(){};
         void LoadCurrentSpecialMove(Keys ButtonType);
         //Setter
@@ -91,6 +92,7 @@ namespace Util {
         void SetEffectAdder(std::function<void(HitStrength strength,BeHitType behittype, glm::vec2 position)> effectfunc) {addEffectFunc = effectfunc;}
         //Getter ForScene
         std::string GetFace() const { return face; }
+        std::string GetIcon() const { return icon; }
         std::string GetWinWord() const { return winword; }
         std::string GetLossFace() const { return lossface; }
         std::string GetNameTag() const { return nametag; }
@@ -119,7 +121,7 @@ namespace Util {
             };
         }
 
-        HitStrength GetHitStrength(){return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
+        HitStrength GetHitStrength() {return hitstrength.count(currentState)?hitstrength[currentState]:HitStrength::Null;}
         AttackType GetAttackType(){return attacktype.count(currentState)?attacktype[currentState]:AttackType::Null;}
         FighterState GetBeHitState(HitStrength Strength,HitLocation Location);
         FighterState GetBlockState();
@@ -247,6 +249,7 @@ namespace Util {
 
     protected:
         std::string m_name;
+        std::string icon;
         std::string winword;
         std::string lossface;
         std::string face;

@@ -5,16 +5,12 @@
 #include "Fighters/Chunli.hpp"
 namespace Util {
     Chunli::Chunli(): Fighter("Chunli") {
-        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/WinWord.png");
-        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_LossFace.png");
-        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_face.png");
-        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Chunli/Chunli_nametag.png");
+        LoadFighterData();
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/china.png");
         country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/china_dark.png");
-        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/ChunliTheme.mp3");
         country_position={{-113, 193},0,{1,1}};
         face_postion={{-53, -253},0,{1,1}};
-        BackgroundInit(29);
+        BackgroundInit(14);
         StateInit();
         LoadCommonVelocities();
         Chunli::LoadAnimations();

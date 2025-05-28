@@ -20,7 +20,8 @@ namespace Util {
         Ken=4,
         Chunli=5,
         Zangief=6,
-        Dhalsim=7
+        Dhalsim=7,
+        Vega=8
     };
     constexpr float StageFloor = -310.0f;
     enum class FighterDirection {
@@ -90,7 +91,8 @@ namespace Util {
         Null=-1,
         L = 0,
         M = 1,
-        H = 2
+        H = 2,
+        SP = 3
     };
     enum class AttackType {
         Null=-1,

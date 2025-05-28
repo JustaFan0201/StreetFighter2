@@ -5,13 +5,9 @@
 #include "Fighters/Dhalsim.hpp"
 namespace Util {
     Dhalsim::Dhalsim(): Fighter("Dhalsim") {
-        winword=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/WinWord.png");
-        lossface=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/Dhalsim_LossFace.png");
-        face=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/Dhalsim_face.png");
-        nametag=std::string(RESOURCE_DIR"/ScenePicture/Fighters/Dhalsim/Dhalsim_nametag.png");
+        LoadFighterData();
         country=std::string(RESOURCE_DIR"/ScenePicture/slect/india.png");
         country_dark=std::string(RESOURCE_DIR"/ScenePicture/slect/india_dark.png");
-        m_BGM=std::make_shared<BGM>(RESOURCE_DIR"/music/Theme/DhalsimTheme.mp3");
         country_position={{-228, 97},0,{1,1}};
         face_postion={{161, -253},0,{1,1}};
         BackgroundInit(13);
@@ -312,7 +308,7 @@ namespace Util {
 
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LP]=15;
 
-        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::H;
+        SpecialMoveData.attackdata[FighterState::Special_2].HitStrength[Keys::LP]=HitStrength::SP;
 
         StateEnter[FighterState::Special_2]=[this] { YogaFlameStateEnter(); };
         StateUpdate[FighterState::Special_2]=[this] { YogaFlameStateUpdate(); };
