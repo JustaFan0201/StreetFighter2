@@ -195,8 +195,8 @@ namespace Util {
         StateEnter[FighterState::Idle] = [this] { IdleStateEnter(); };
         StateEnter[FighterState::Forward] = [this] { WalkStateEnter(); };
         StateEnter[FighterState::Backward] = [this] { WalkStateEnter(); };
-        StateEnter[FighterState::JumpUP] = [this] { JumpStateEnter(); };
-        StateEnter[FighterState::JumpForward] = [this] { JumpStateEnter(); };
+        StateEnter[FighterState::JumpUP] = [this] {JumpStateEnter(); };
+        StateEnter[FighterState::JumpForward] = [this] {JumpStateEnter(); };
         StateEnter[FighterState::JumpBackward] = [this] { JumpStateEnter(); };
         StateEnter[FighterState::Crouch] = [this] { CrouchEnter(); };
         StateEnter[FighterState::CrouchDown] = [this] { CrouchEnter(); };
@@ -216,13 +216,13 @@ namespace Util {
         StateEnter[FighterState::CrouchMK] = [this] { AttackStateEnter(); };
         StateEnter[FighterState::CrouchHK] = [this] { AttackStateEnter(); };
 
-        StateEnter[FighterState::JumpLP] = [this] { JumpAttackStateEnter(); };
-        StateEnter[FighterState::JumpMP] = [this] { JumpAttackStateEnter(); };
-        StateEnter[FighterState::JumpHP] = [this] { JumpAttackStateEnter(); };
-        StateEnter[FighterState::JumpLK] = [this] { JumpAttackStateEnter(); };
-        StateEnter[FighterState::JumpMK] = [this] { JumpAttackStateEnter(); };
-        StateEnter[FighterState::JumpHK] = [this] { JumpAttackStateEnter(); };
-        StateEnter[FighterState::JumpAttackEnd] = [this] { JumpAttackEndStateEnter(); };
+        StateEnter[FighterState::JumpLP] = [this] {JumpAttackStateEnter(); };
+        StateEnter[FighterState::JumpMP] = [this] {JumpAttackStateEnter(); };
+        StateEnter[FighterState::JumpHP] = [this] {JumpAttackStateEnter(); };
+        StateEnter[FighterState::JumpLK] = [this] {JumpAttackStateEnter(); };
+        StateEnter[FighterState::JumpMK] = [this] {JumpAttackStateEnter(); };
+        StateEnter[FighterState::JumpHK] = [this] {JumpAttackStateEnter(); };
+        StateEnter[FighterState::JumpAttackEnd] = [this] {JumpAttackEndStateEnter(); };
 
         StateEnter[FighterState::HurtHeadL] = [this] { HurtStateEnter(); };
         StateEnter[FighterState::HurtHeadM] = [this] { HurtStateEnter(); };
