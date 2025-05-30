@@ -26,8 +26,8 @@ namespace Util {
         animations[FighterState::Idle] = ActionInit(6,"Idle");
         animations[FighterState::Backward] = ActionInit(7,"Backward");
         animations[FighterState::Forward] = ActionInit(7,"Forward");
-        animations[FighterState::JumpUP] = ActionInit(7, "JumpUP");
-        animations[FighterState::JumpForward] = ActionInit(7, "JumpForward");
+        animations[FighterState::JumpUP] = ActionInit(5, "JumpUP");
+        animations[FighterState::JumpForward] = ActionInit(5, "JumpForward");
         std::vector<std::string> reversedAnimations = animations[FighterState::JumpForward];
         std::reverse(reversedAnimations.begin(), reversedAnimations.end());
         animations[FighterState::JumpBackward] = reversedAnimations;
@@ -63,8 +63,8 @@ namespace Util {
         frames[FighterState::Idle]={100,100,100,100,100,100};
         frames[FighterState::Forward]={100,100,100,100,100,100,100};
         frames[FighterState::Backward]={100,100,100,100,100,100,100};
-        frames[FighterState::JumpUP]={60,60,60,60,60,60,60,};
-        frames[FighterState::JumpForward]={60,60,60,60,60,60,60};
+        frames[FighterState::JumpUP]={90,120,150,120,90};
+        frames[FighterState::JumpForward]={90,120,150,120,90};
         frames[FighterState::JumpBackward]=frames[FighterState::JumpForward];
         frames[FighterState::Crouch]={60};
         frames[FighterState::CrouchDown]={60,60,60};
@@ -266,9 +266,9 @@ namespace Util {
         animations[FighterState::Special_1]=ActionInit(6, "Special_1");
         offset[FighterState::Special_1]={{-6,-10},{-48,-9},{-76,1},{1,2},{30,-6},{50,-6}};
 
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={60,60,90,60,60,210};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={60,90,90,60,90,240};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={60,120,90,60,120,270};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={90,90,90,90,120,300};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={90,90,90,90,150,360};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,90,90,90,180,420};
 
         boxes.hurtbox.body.size[FighterState::Special_1]={{100,80},{100,80},{120,100},{100,100},{120,100},{120,80}};
         boxes.hurtbox.leg.size[FighterState::Special_1]={{100,150},{100,140},{100,160},{100,160},{100,160},{100,150}};

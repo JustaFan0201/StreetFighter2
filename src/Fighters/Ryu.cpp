@@ -84,7 +84,7 @@ namespace Util {
         frames[FighterState::CrouchDown]={60,60};
         frames[FighterState::CrouchUp]={60,60};
 
-        frames[FighterState::LP]={30,60,90};
+        frames[FighterState::LP]={60,90,120};
         frames[FighterState::MP]={30,60,120,60,30};
         frames[FighterState::HP]={60,90,180,90,60,60};
         frames[FighterState::LK]={30,60,90,60};
@@ -106,12 +106,12 @@ namespace Util {
         frames[FighterState::JumpHK]={120,120,480,120,120};
         frames[FighterState::JumpAttackEnd]={120,90};
 
-        frames[FighterState::HurtHeadL] = {150,150};
-        frames[FighterState::HurtHeadM] = {180,180};
-        frames[FighterState::HurtHeadH] = {240,240};
-        frames[FighterState::HurtBodyL] = {150,150};
-        frames[FighterState::HurtBodyM] = {180,180};
-        frames[FighterState::HurtBodyH] = {240,240};
+        frames[FighterState::HurtHeadL] = {100,100};
+        frames[FighterState::HurtHeadM] = {150,150};
+        frames[FighterState::HurtHeadH] = {200,200};
+        frames[FighterState::HurtBodyL] = {100,100};
+        frames[FighterState::HurtBodyM] = {150,150};
+        frames[FighterState::HurtBodyH] = {200,200};
 
         frames[FighterState::KnockDownL] = {60,75,120,75,60};
         frames[FighterState::KnockDownM] = {75,90,120,90,75};
@@ -382,9 +382,9 @@ namespace Util {
         animations[FighterState::Special_1]=ActionInit(4, "Special_1");
         offset[FighterState::Special_1]={{-23,1},{-23,-11},{-31,-9},{-12,-19}};
 
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={60,90,60,210};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={60,120,90,240};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,150,120,270};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={90,90,120,240};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={90,90,150,300};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,90,180,360};
 
         boxes.hurtbox.leg.size[FighterState::Special_1]={{150,100},{200,100},{200,100},{200,100}};
         boxes.hurtbox.head.offset[FighterState::Special_1]={{-12,111},{-31,89},{-1,80},{72,72}};

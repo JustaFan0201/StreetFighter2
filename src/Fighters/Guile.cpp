@@ -78,26 +78,26 @@ namespace Util {
         frames[FighterState::Crouch]={60};
         frames[FighterState::CrouchDown]={60,60,60};
         frames[FighterState::CrouchUp]={60,60,60};
-        frames[FighterState::LP]={70,90,70};
-        frames[FighterState::MP]={70,80,90,80,80};
-        frames[FighterState::HP]={80,80,110,100,100};
-        frames[FighterState::LK]={80,80,90};
-        frames[FighterState::MK]={80,80,90,90,90,90};
-        frames[FighterState::HK]={70,70,90,100,100,100};
+        frames[FighterState::LP]={60,90,120};
+        frames[FighterState::MP]={60,90,150,120,60};
+        frames[FighterState::HP]={60,90,120,180,90};
+        frames[FighterState::LP]={60,90,120};
+        frames[FighterState::MK]={60,60,90,90,180,90};
+        frames[FighterState::HK]={60,90,240,120,90,60};
 
-        frames[FighterState::CrouchLP]={80,90,80};
-        frames[FighterState::CrouchMP]={70,90,90,70};
-        frames[FighterState::CrouchHP]={80,80,110,130,90};
-        frames[FighterState::CrouchLK]={80,90,90};
-        frames[FighterState::CrouchMK]={70,70,70,70,70};
-        frames[FighterState::CrouchHK]={70,70,70,70,70,70,70,70,70,70,70};
+        frames[FighterState::CrouchLP]={60,90,60};
+        frames[FighterState::CrouchMP]={60,120,90,60};
+        frames[FighterState::CrouchHP]={60,90,120,210,90};
+        frames[FighterState::CrouchLK]={30,60,90};
+        frames[FighterState::CrouchMK]={60,90,150,90,60};
+        frames[FighterState::CrouchHK]={60,90,180,120,90,60,90,90,240,120,90};
 
-        frames[FighterState::JumpLP]={150,150,150};
-        frames[FighterState::JumpMP]={140,140,180};
-        frames[FighterState::JumpHP]={120,160,160};
-        frames[FighterState::JumpLK]={120,120,200};
-        frames[FighterState::JumpMK]={120,120,120,180};
-        frames[FighterState::JumpHK]={100,140,200,140,100};
+        frames[FighterState::JumpLP]={60,60,360};
+        frames[FighterState::JumpMP]={60,90,480};
+        frames[FighterState::JumpHP]={90,120,600};
+        frames[FighterState::JumpLK]={60,60,360};
+        frames[FighterState::JumpMK]={60,90,90,480};
+        frames[FighterState::JumpHK]={90,120,600,120,90};
         frames[FighterState::JumpAttackEnd]={80};
 
         frames[FighterState::HurtHeadL] = {100,100};
@@ -107,7 +107,7 @@ namespace Util {
         frames[FighterState::HurtBodyM] = {150,150};
         frames[FighterState::HurtBodyH] = {200,200};
 
-        frames[FighterState::BackwardBlock] = {150,150,150};
+        frames[FighterState::BackwardBlock] = {100,100,100};
         frames[FighterState::CrouchBlock] = {150,150};
 
         frames[FighterState::WinStart]={200, 200};
@@ -383,9 +383,9 @@ namespace Util {
         animations[FighterState::Special_1]=ActionInit(4, "Special_1");
         offset[FighterState::Special_1]={{-1,-14},{-47,-4},{4,-12},{89,-6}};
 
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={60,90,60,60};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={60,120,90,60};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,150,120,90};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={90,90,90,150};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={90,90,120,180};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,90,150,240};
 
         boxes.hurtbox.head.offset[FighterState::Special_1]={{38,90},{74,75},{76,76},{76,76}};
         boxes.hurtbox.body.offset[FighterState::Special_1]={{13,45},{20,44},{15,47},{7,50}};
@@ -403,9 +403,9 @@ namespace Util {
         };
         SpecialMoveData.SkillCommand[FighterState::Special_1].requiredAttack=AttackButton::ANY_PUNCH;
         SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Pressed;
-        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::LP]=250;
-        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::MP]=500;
-        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::HP]=750;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::LP]=500;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::MP]=750;
+        SpecialMoveData.SkillCommand[FighterState::Special_1].chargetime[Keys::HP]=1000;
 
         animations[FighterState::Special_2]=ActionInit(10, "Special_2");
         offset[FighterState::Special_2]={{9,-37},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
@@ -446,9 +446,9 @@ namespace Util {
         };
         SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ANY_KICK;
         SpecialMoveData.SkillCommand[FighterState::Special_2].commandtype=CommandType::Pressed;
-        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::LK]=250;
-        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::MK]=500;
-        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::HK]=750;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::LK]=500;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::MK]=750;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::HK]=1000;
         SpecificStates.borderCheckStates.insert(FighterState::Special_2);
 
         soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Guile/Win.wav");
