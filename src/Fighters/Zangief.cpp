@@ -258,16 +258,13 @@ namespace Util {
         boxes.hurtbox.body.offset[FighterState::HK]={{-9,78},{-31,89},{-16,82}};
         boxes.hurtbox.leg.offset[FighterState::HK]={{3,-62},{3,-58},{5,-60}};
 
-        /*boxes.hurtbox.head.offset[FighterState::JumpUP]={{40,181},{5,165},{-2,133},{5,165},{40,181}};
-        boxes.hurtbox.body.offset[FighterState::JumpUP]={{22,123},{-20,104},{-26,78},{-20,104},{22,123}};
-        boxes.hurtbox.leg.size[FighterState::JumpUP]={{150,160},{170,160},{180,160},{170,160},{150,160}};
-        boxes.hurtbox.leg.offset[FighterState::JumpUP]={{-20,-5},{-49,4},{-47,0},{-49,4},{-20,-5}};
 
-        boxes.hurtbox.head.offset[FighterState::JumpForward]={{40,181},{5,165},{-2,133},{5,165},{40,181}};
-        boxes.hurtbox.body.offset[FighterState::JumpForward]={{22,123},{-20,104},{-26,78},{-20,104},{22,123}};
-        boxes.hurtbox.leg.size[FighterState::JumpForward]={{150,160},{170,160},{180,160},{170,160},{150,160}};
-        boxes.hurtbox.leg.offset[FighterState::JumpForward]={{-20,-5},{-49,4},{-47,0},{-49,4},{-20,-5}};
-
+        boxes.hurtbox.head.size[FighterState::JumpForward]=boxes.hurtbox.head.size[FighterState::JumpUP]={{50,50},{50,50},{50,50},{50,50},{50,50}};
+        boxes.hurtbox.body.size[FighterState::JumpForward]=boxes.hurtbox.body.size[FighterState::JumpUP]={{170,80},{170,80},{170,80},{150,100},{170,80}};
+        boxes.hurtbox.leg.size[FighterState::JumpForward]=boxes.hurtbox.leg.size[FighterState::JumpUP]={{150,160},{170,160},{180,160},{170,160},{150,160}};
+        boxes.hurtbox.head.offset[FighterState::JumpForward]=boxes.hurtbox.head.offset[FighterState::JumpUP]={{4,129},{-17,115},{-31,85},{-20,109},{6,131}};
+        boxes.hurtbox.body.offset[FighterState::JumpForward]=boxes.hurtbox.body.offset[FighterState::JumpUP]={{-21,65},{-59,41},{-71,25},{-58,43},{-12,62}};
+        boxes.hurtbox.leg.offset[FighterState::JumpForward]=boxes.hurtbox.leg.offset[FighterState::JumpUP]={{-53,-38},{-70,-40},{-69,-31},{-86,-38},{-64,-38}};
 
         std::vector<glm::vec2> reversedhurtbox = boxes.hurtbox.head.offset[FighterState::JumpForward];
         std::reverse(reversedhurtbox.begin(), reversedhurtbox.end());
@@ -287,7 +284,7 @@ namespace Util {
 
         reversedhurtbox = boxes.hurtbox.leg.offset[FighterState::JumpForward];
         std::reverse(reversedhurtbox.begin(), reversedhurtbox.end());
-        boxes.hurtbox.leg.offset[FighterState::JumpBackward]=reversedhurtbox;*/
+        boxes.hurtbox.leg.offset[FighterState::JumpBackward]=reversedhurtbox;
 
         boxes.hurtbox.body.size[FighterState::JumpMP]=boxes.hurtbox.body.size[FighterState::JumpLP]={{170,80},{170,80},{190,80},{140,120}};
         boxes.hurtbox.leg.size[FighterState::JumpMP]=boxes.hurtbox.leg.size[FighterState::JumpLP]={{180,160},{180,160},{180,160},{160,160}};
