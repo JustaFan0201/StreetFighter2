@@ -485,8 +485,13 @@ namespace Util {
 
         soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/Win.wav");
         soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ken/Loss.wav");
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].SpecialNumer=SpecialNumer::Special_1;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].SpecialNumer=SpecialNumer::Special_2;
+        SpecialMoveData.SkillCommand[FighterState::Special_3].SpecialNumer=SpecialNumer::Special_3;
     }
     void Ken::HandoukenStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
@@ -498,6 +503,7 @@ namespace Util {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Ken::ShoryukenStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
@@ -515,6 +521,7 @@ namespace Util {
         if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
     void Ken::TatsumakiSenpuStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);

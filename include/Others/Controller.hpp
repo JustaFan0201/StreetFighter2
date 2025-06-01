@@ -19,14 +19,24 @@ namespace Util {
     private:
         PlayerType Player;
         std::unordered_map<Keys, Keycode> keyMap;
-        float timeForAi=0;
-        int AiMove=0;
         ControllerState currentState=ControllerState::Pause;
+
+        float timeForAiMove=0;
+        float timeForAiAttack=0;
+        float timeForAiSpecial=0;
+        float RandomtimeForAiMove=0;
+        float RandomtimeForAiAttack=0;
+        float RandomtimeForAiSpecial=0;
+        int AiSpecialMoves=0;
+
+        AiMove AiMove=AiMove::None;
+        AiAttack AiAttack=AiAttack::None;
+        SpecialNumer AiSpecial=SpecialNumer::None;
 
         Keys CurrentAttack=Keys::Null;
         float MoveDelay=250;
         float AtLeastChargeTime=250;
-        int MaxInput=10;
+        int MaxInput=30;
         std::deque<InputRecord> inputBuffer;
         void InitializeKeyMap() {
             if (Player == PlayerType::Player1) {
@@ -74,13 +84,42 @@ namespace Util {
             InitializeKeyMap();
         }
         void SetState(ControllerState state){currentState=state;}
+        void SetAiSpecials(int number){AiSpecialMoves=number;}
+        void ClearAiAttack() {
+            if (Player == PlayerType::Ai) {
+                AiAttack=AiAttack::None;
+            }
+        }
+        void ClearAiSpecial() {
+            if (Player == PlayerType::Ai) {
+                AiSpecial=SpecialNumer::None;
+            }
+        }
+        void AiMovement() {
+            timeForAiMove += Time::GetDeltaTimeMs();
+            timeForAiAttack += Time::GetDeltaTimeMs();
+            timeForAiSpecial += Time::GetDeltaTimeMs();
+            if (timeForAiMove > RandomtimeForAiMove) {
+                RandomtimeForAiMove=static_cast<float>(randomNum(800,1200));
+                AiMove= static_cast<enum AiMove>(randomNum(1,7));
+                timeForAiMove=0;
+            }
+            if (timeForAiAttack > RandomtimeForAiAttack) {
+                RandomtimeForAiAttack=static_cast<float>(randomNum(700,1500));
+                AiAttack= static_cast<enum AiAttack>(randomNum(1,6));
+                timeForAiAttack=0;
+            }
+            if (timeForAiSpecial > RandomtimeForAiSpecial) {
+                RandomtimeForAiSpecial=static_cast<float>(randomNum(2500,5000));
+                AiSpecial= static_cast<SpecialNumer>(randomNum(0,AiSpecialMoves));
+                timeForAiSpecial=0;
+            }
+        }
         void Update(int direction,float currentTime) {
             if(currentState==ControllerState::Pause){return;}
             if (Player == PlayerType::Ai) {
-                timeForAi += Time::GetDeltaTimeMs();
-                if (timeForAi > 1000) {AiMove= randomNum(8); }
+                AiMovement();
             }
-
             InputRecord currentRecord = { GetCurrentMove(direction), currentTime, GetCurrentAttacks() };
             if (inputBuffer.empty() || IsInputRecordDifferent(currentRecord, inputBuffer.front())) {
                 //debug
@@ -142,6 +181,11 @@ namespace Util {
         }
 
         bool IsSpecialMove(SpecialMoveInput special) {
+            if(currentState==ControllerState::Pause){return false;}
+            if (Player == PlayerType::Ai) {
+                if (AiSpecial==special.SpecialNumer){CurrentAttack=GetPunchOrKick(inputBuffer[0],special.requiredAttack); return true;}
+                return false;
+            }
             if(special.commandtype==CommandType::Null) {
                 return Nullskill(special);
             }
@@ -311,15 +355,19 @@ namespace Util {
                 std::cout <<" Time:"<<input.timestamp<< "\n";
             }
         }
-        int randomNum(int range) {
-            timeForAi=0;
+        int randomNum(int range_lower,int range_higher) {
             std::random_device rd;
             std::mt19937 gen(rd());
-            std::uniform_int_distribution<> dis(0, range);
+            std::uniform_int_distribution<> dis(range_lower, range_higher);
             return dis(gen);
         }
         void SetPlayerController(PlayerType playerNum) {
             Player = playerNum;
+            if (playerNum == PlayerType::Ai) {
+                RandomtimeForAiMove=static_cast<float>(randomNum(800,1200));
+                RandomtimeForAiAttack=static_cast<float>(randomNum(800,1500));
+                RandomtimeForAiSpecial=static_cast<float>(randomNum(2500,5000));
+            }
             InitializeKeyMap();
         }
         Keycode GetKey(Keys keyNow) {
@@ -327,7 +375,10 @@ namespace Util {
         }
         bool IsForward(int direction) {
             if(currentState==ControllerState::Pause){return false;}
-            if (Player == PlayerType::Ai&&AiMove==0){return true;}
+            if (Player == PlayerType::Ai) {
+                if (AiMove==AiMove::Forward||AiMove==AiMove::JumpForward){return true;}
+                return false;
+            }
             if(direction==static_cast<int>(FighterDirection::Left)) {
                 return Input::IsKeyPressed(keyMap[Keys::RIGHT]);
             }
@@ -338,7 +389,10 @@ namespace Util {
         }
         bool IsBackward(int direction) {
             if(currentState==ControllerState::Pause){return false;}
-            if (Player == PlayerType::Ai&&AiMove==1){return true;}
+            if (Player == PlayerType::Ai) {
+                if (AiMove==AiMove::Backward||AiMove==AiMove::JumpBackward){return true;}
+                return false;
+            }
             if(direction==static_cast<int>(FighterDirection::Right)) {
                 return Input::IsKeyPressed(keyMap[Keys::RIGHT]);
             }
@@ -349,32 +403,43 @@ namespace Util {
         }
         bool IsKeyPressed(Keys keyNow) {
             if(currentState==ControllerState::Pause){return false;}
-            if (Player == PlayerType::Ai&&AiMove==2){return true;}
+            if (Player == PlayerType::Ai) {
+                if (AiMove==AiMove::Crouch&&keyNow==Keys::DOWN){return true;}
+                return false;
+            }
             return Input::IsKeyPressed(keyMap[keyNow]);
         }
         bool IsKeyDown(Keys keyNow) {
             if(currentState==ControllerState::Pause){return false;}
-            if (Player == PlayerType::Ai&&AiMove==3){return true;}
+            if (Player == PlayerType::Ai) {
+                if ((AiMove==AiMove::JumpUP||AiMove==AiMove::JumpForward||AiMove==AiMove::JumpBackward)&&keyNow==Keys::UP){AiMove=AiMove::None;return true;}
+                if(AiAttack==AiAttack::LP&&keyNow==Keys::LP){return true;}
+                if(AiAttack==AiAttack::MP&&keyNow==Keys::MP){return true;}
+                if(AiAttack==AiAttack::HP&&keyNow==Keys::HP){return true;}
+                if(AiAttack==AiAttack::LK&&keyNow==Keys::LK){return true;}
+                if(AiAttack==AiAttack::MK&&keyNow==Keys::MK){return true;}
+                if(AiAttack==AiAttack::HK&&keyNow==Keys::HK){return true;}
+                return false;
+            }
             return Input::IsKeyDown(keyMap[keyNow]);
         }
         bool IsKeyUp(Keys keyNow) {
             if(currentState==ControllerState::Pause){return false;}
-            if (Player == PlayerType::Ai&&AiMove==4){return true;}
             return Input::IsKeyUp(keyMap[keyNow]);
         }
         Keys GetPunchOrKick(InputRecord record,AttackButton request) {
             if (Player == PlayerType::Ai) {
-                if(request==AttackButton::ALL_PUNCH&&AiMove==5){
+                if(request==AttackButton::ALL_PUNCH){
                     return Keys::LP;
                 }
-                if(request==AttackButton::ANY_PUNCH&&AiMove==6) {
-                    return ButtonList::punch[randomNum(2)];
+                if(request==AttackButton::ANY_PUNCH) {
+                    return ButtonList::punch[randomNum(0,2)];
                 }
-                if(request==AttackButton::ALL_KICK&&AiMove==7) {
+                if(request==AttackButton::ALL_KICK) {
                     return Keys::LK;
                 }
-                if(request==AttackButton::ANY_KICK&&AiMove==8) {
-                    return ButtonList::kick[randomNum(2)];
+                if(request==AttackButton::ANY_KICK) {
+                    return ButtonList::kick[randomNum(0,2)];
                 }
             }
             if(record.attacks[0]){return Keys::LP;}

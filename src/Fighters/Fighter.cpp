@@ -712,10 +712,10 @@ namespace Util {
     }
     void Fighter::ForwardStateUpdate() {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
-        if (!controller->IsForward(direction)) {ChangeState(FighterState::Idle);}
-        if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpForward);}
-        if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::CrouchDown);}
-        if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
+        else if (!controller->IsForward(direction)) {ChangeState(FighterState::Idle);}
+        else if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpForward);}
+        else if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::CrouchDown);}
+        else if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::MP);}
         else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::HP);}
         else if (controller->IsKeyDown(Keys::LK)) {ChangeState(FighterState::LK);}
@@ -725,10 +725,10 @@ namespace Util {
     }
     void Fighter::BackwardStateUpdate() {
         if (GetAnimationIsEnd()) {ActionNow->AnimationPlay();}
-        if (!controller->IsBackward(direction)) {ChangeState(FighterState::Idle);}
-        if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpBackward);}
-        if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::CrouchDown);}
-        if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
+        else if (!controller->IsBackward(direction)) {ChangeState(FighterState::Idle);}
+        else if (controller->IsKeyDown(Keys::UP)) {ChangeState(FighterState::JumpBackward);}
+        else if (controller->IsKeyPressed(Keys::DOWN)) {ChangeState(FighterState::CrouchDown);}
+        else if (controller->IsKeyDown(Keys::LP)) {ChangeState(FighterState::LP);}
         else if (controller->IsKeyDown(Keys::MP)) {ChangeState(FighterState::MP);}
         else if (controller->IsKeyDown(Keys::HP)) {ChangeState(FighterState::HP);}
         else if (controller->IsKeyDown(Keys::LK)) {ChangeState(FighterState::LK);}
@@ -774,6 +774,7 @@ namespace Util {
     }
 
     void Fighter::AttackStateEnter() {
+        controller->ClearAiAttack();
         ResetVelocity();
         velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
@@ -788,6 +789,7 @@ namespace Util {
         else if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Fighter::JumpAttackStateEnter() {
+        controller->ClearAiAttack();
         PlayCurrentSound();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }

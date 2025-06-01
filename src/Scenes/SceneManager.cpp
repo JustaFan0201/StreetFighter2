@@ -70,7 +70,9 @@ namespace Util {
         }
     }
     void SceneManager::BattleSceneEnter() {
-        ChangeScene(std::make_shared<BattleScene>(player,enemy));
+        auto next = std::make_shared<BattleScene>(player,enemy);
+        next->SetMode(mode);
+        ChangeScene(next);
     }
     void SceneManager::BattleSceneUpdate() {
         if (m_NowScene->getSenseEnd()) {

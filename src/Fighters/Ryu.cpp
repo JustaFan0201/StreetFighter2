@@ -487,8 +487,13 @@ namespace Util {
 
         soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ryu/Win.wav");
         soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Ryu/Loss.wav");
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].SpecialNumer=SpecialNumer::Special_1;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].SpecialNumer=SpecialNumer::Special_2;
+        SpecialMoveData.SkillCommand[FighterState::Special_3].SpecialNumer=SpecialNumer::Special_3;
     }
     void Ryu::HandoukenStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
@@ -501,6 +506,7 @@ namespace Util {
     }
 
     void Ryu::ShoryukenStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
@@ -519,6 +525,7 @@ namespace Util {
         if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
     void Ryu::TatsumakiSenpuStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);

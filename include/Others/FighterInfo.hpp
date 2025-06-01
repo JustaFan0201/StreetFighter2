@@ -28,6 +28,32 @@ namespace Util {
         Left  = 1,
         Right = -1
     };
+    enum class AiMove {
+        None = 0,
+        Idle = 1,
+        Forward=2,
+        Backward=3,
+        Crouch=4,
+        JumpUP=5,
+        JumpForward=6,
+        JumpBackward=7,
+    };
+    enum class AiAttack {
+        None = 0,
+        LP=1,
+        MP=2,
+        HP=3,
+        LK=4,
+        MK=5,
+        HK=6,
+    };
+    enum class SpecialNumer {
+        None = 0,
+        Special_1=1,
+        Special_2=2,
+        Special_3=3,
+        Special_4=4,
+    };
     enum class FighterState {
         Null,
         Idle,
@@ -61,9 +87,11 @@ namespace Util {
         Special_1,
         Special_2,
         Special_3,
+        Special_4,
         SpecialRecovery_1,
         SpecialRecovery_2,
         SpecialRecovery_3,
+        SpecialRecovery_4,
         HurtHeadL,
         HurtHeadM,
         HurtHeadH,
@@ -212,6 +240,7 @@ namespace Util {
         AttackButton requiredAttack;
         CommandType commandtype;
         std::unordered_map<Keys, float> chargetime;
+        SpecialNumer SpecialNumer;
     };
     struct SpecialSkillAnimation {
         std::unordered_map<Keys, std::vector<int>> frames;

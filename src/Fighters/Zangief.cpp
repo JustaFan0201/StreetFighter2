@@ -369,8 +369,10 @@ namespace Util {
 
         soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Zangief/Win.wav");
         soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Zangief/Loss.wav");
+        SpecialMoveData.SkillCommand[FighterState::Special_1].SpecialNumer=SpecialNumer::Special_1;
     }
     void Zangief::DoubleLariatStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);

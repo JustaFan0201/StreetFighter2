@@ -402,8 +402,12 @@ namespace Util {
 
         soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Dhalsim/Win.wav");
         soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Dhalsim/Loss.wav");
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].SpecialNumer=SpecialNumer::Special_1;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].SpecialNumer=SpecialNumer::Special_2;
     }
     void Dhalsim::YogaFireStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);
@@ -415,6 +419,7 @@ namespace Util {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Dhalsim::YogaFlameStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);

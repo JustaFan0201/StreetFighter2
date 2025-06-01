@@ -25,23 +25,20 @@ namespace Util {
         ui->JudgeWinCount(PlayerWinCounter,EnemyWinCounter);
         RoundStart(context);
     }
-    void BattleScene::RoundStart(std::shared_ptr<Core::Context> context) {
-        defeatedType=DefeatedType::Null;
-        lossType=LossType::Null;
-        float scaleFactor = context->GetWindowHeight() / m_Animation->GetScaledSize().y;
-        camera->Init(player,enemy);
-        camera->SetMaxOffsetX((m_Animation->GetScaledSize().x * scaleFactor - context->GetWindowWidth())/2);
-        m_Animation->SetDrawData({{0, 0}, 0, {1,1}},
-                    {m_Animation->GetScaledSize().x * scaleFactor, context->GetWindowHeight()},
-                    0);
-        //背景初始位置
-        start_time = Time::GetElapsedTimeMs();
+    void BattleScene::InitControllerSetting() {
         playerController->SetState(ControllerState::Pause);
         enemyController->SetState(ControllerState::Pause);
         playerController->SetPlayerController(PlayerType::Player1);
-        enemyController->SetPlayerController(PlayerType::Player2);
+        if (mode==ModeType::Story){enemyController->SetPlayerController(PlayerType::Ai);}
+        else{enemyController->SetPlayerController(PlayerType::Player2);}
+
+        playerController->SetAiSpecials(static_cast<int>(player->GetSpecificState().SpecialStates.size()));
+        enemyController->SetAiSpecials(static_cast<int>(enemy->GetSpecificState().SpecialStates.size()));
+    }
+    void BattleScene::InitPlayerSetting() {
         player->InitPosition({-350, StageFloor },static_cast<int>(FighterDirection::Left),playerController,camera->GetMaxOffsetX());
         enemy->InitPosition({350, StageFloor},static_cast<int>(FighterDirection::Right),enemyController,camera->GetMaxOffsetX());
+
         player->SetEntityAdder([this](FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {
             this->addEntities(type, sender, strength);
         });
@@ -56,6 +53,20 @@ namespace Util {
         });
         player->SetEnemy(enemy);
         enemy->SetEnemy(player);
+    }
+    void BattleScene::RoundStart(std::shared_ptr<Core::Context> context) {
+        defeatedType=DefeatedType::Null;
+        lossType=LossType::Null;
+        float scaleFactor = context->GetWindowHeight() / m_Animation->GetScaledSize().y;
+        camera->Init(player,enemy);
+        camera->SetMaxOffsetX((m_Animation->GetScaledSize().x * scaleFactor - context->GetWindowWidth())/2);
+        m_Animation->SetDrawData({{0, 0}, 0, {1,1}},
+                    {m_Animation->GetScaledSize().x * scaleFactor, context->GetWindowHeight()},
+                    0);
+        //背景初始位置
+        start_time = Time::GetElapsedTimeMs();
+        InitControllerSetting();
+        InitPlayerSetting();
         ui->Init(player, enemy);
     }
     void BattleScene::addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength) {

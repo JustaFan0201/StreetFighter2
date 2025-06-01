@@ -442,8 +442,12 @@ namespace Util {
 
         soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Honda/Win.wav");
         soundeffect[FighterState::DefeatedLoss]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Honda/Loss.wav");
+
+        SpecialMoveData.SkillCommand[FighterState::Special_1].SpecialNumer=SpecialNumer::Special_1;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].SpecialNumer=SpecialNumer::Special_2;
     }
     void Honda::HeadbuttStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         SkillErrorPrevent(ButtonType,ButtonList::punch);
@@ -472,6 +476,7 @@ namespace Util {
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Honda::HundredSlapStateEnter() {
+        controller->ClearAiSpecial();
         ResetVelocity();
         ButtonType=controller->GetCurrentAttackKey();
         LoadCurrentSpecialMove(ButtonType);

@@ -74,6 +74,8 @@ namespace Util {
         void Init(std::shared_ptr<Core::Context> context) override;
         void Update(std::shared_ptr<Core::Context> context) override;
         void Render() override;
+        void InitPlayerSetting() ;
+        void InitControllerSetting() ;
         void addEntities(FlyingObjectType type, std::shared_ptr<Fighter> sender, Keys strength);
         void addEffects(HitStrength strength,BeHitType behittype, glm::vec2 position);
         void UpdateFlyingObjects(std::vector<std::shared_ptr<FlyingObject>>& flyingObjects,glm::vec2 cameraOffset);
