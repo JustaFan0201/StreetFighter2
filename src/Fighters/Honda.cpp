@@ -46,6 +46,9 @@ namespace Util {
         animations[FighterState::HurtHeadL] = animations[FighterState::HurtHeadM] = animations[FighterState::HurtHeadH] =ActionInit(2, "HurtHead");
         animations[FighterState::HurtBodyL] = animations[FighterState::HurtBodyM] = animations[FighterState::HurtBodyH] = ActionInit(2, "HurtBody");
 
+        animations[FighterState::KnockDownL] = animations[FighterState::KnockDownM] = animations[FighterState::KnockDownH] =ActionInit(4, "KnockDown");
+        animations[FighterState::GetUp] = ActionInit(3, "GetUp");
+
         animations[FighterState::BackwardBlock]=ActionInit(2, "BackwardBlock");
         animations[FighterState::CrouchBlock]=ActionInit(2, "CrouchBlock");
 
@@ -107,6 +110,11 @@ namespace Util {
         frames[FighterState::HurtBodyM] = {150,150};
         frames[FighterState::HurtBodyH] = {200,200};
 
+        frames[FighterState::KnockDownL] = {60,80,120,100};
+        frames[FighterState::KnockDownM] = {70,100,140,100};
+        frames[FighterState::KnockDownH] = {80,110,160,120};
+        frames[FighterState::GetUp] = {150,150,150};
+
         frames[FighterState::BackwardBlock] = {150,150};
         frames[FighterState::CrouchBlock] = {150,150};
 
@@ -139,6 +147,9 @@ namespace Util {
 
         offset[FighterState::HurtHeadL]=offset[FighterState::HurtHeadM]=offset[FighterState::HurtHeadH]={{-4,7},{-38,1}};
         offset[FighterState::HurtBodyL]=offset[FighterState::HurtBodyM]=offset[FighterState::HurtBodyH]={{10,0},{-7,-6}};
+
+        offset[FighterState::KnockDownL]=offset[FighterState::KnockDownM]=offset[FighterState::KnockDownH]={{-40,3},{-72,-68},{-158,-80},{-194,-72}};
+        offset[FighterState::GetUp]={{-177,-60},{-115,3},{-119,7}};
 
         offset[FighterState::BackwardBlock]={{-18,5},{-33,20}};
         offset[FighterState::CrouchBlock]={{6,-23},{-9,-26}};

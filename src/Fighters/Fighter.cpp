@@ -284,10 +284,10 @@ namespace Util {
         StateUpdate[FighterState::HurtBodyM] = [this] { HurtStateUpdate(); };
         StateUpdate[FighterState::HurtBodyH] = [this] { HurtStateUpdate(); };
 
-        StateUpdate[FighterState::KnockDownL] = [this] { KnockDownStateUpdate(); };
+        StateUpdate[FighterState::KnockDownL] = [this] {KnockDownStateUpdate(); };
         StateUpdate[FighterState::KnockDownM] = [this] { KnockDownStateUpdate(); };
         StateUpdate[FighterState::KnockDownH] = [this] { KnockDownStateUpdate(); };
-        StateUpdate[FighterState::GetUp] = [this] { GetUpStateUpdate(); };
+        StateUpdate[FighterState::GetUp] = [this] {GetUpStateUpdate(); };
 
         StateUpdate[FighterState::BackwardBlock] = [this] {BlockStateUpdate(); };
         StateUpdate[FighterState::CrouchBlock] = [this] {BlockStateUpdate(); };

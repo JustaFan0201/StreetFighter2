@@ -166,7 +166,7 @@ namespace Util {
         offset[FighterState::HurtBodyL]=offset[FighterState::HurtBodyM]=offset[FighterState::HurtBodyH]={{2,-7},{10,-17}};
 
         offset[FighterState::KnockDownL]=offset[FighterState::KnockDownM]=offset[FighterState::KnockDownH]={{-29,20},{-38,12},{-31,-15},{-58,-61},{-15,-83}};
-        offset[FighterState::GetUp]={{11,-28},{-8,41},{-63,10},{9,20}};;
+        offset[FighterState::GetUp]={{11,-28},{-8,41},{-63,10},{9,20}};
 
         offset[FighterState::BackwardBlock]={{-3,3},{1,5}};
         offset[FighterState::CrouchBlock]={{35,-44},{16,-38}};
