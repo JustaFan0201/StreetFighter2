@@ -289,7 +289,7 @@ namespace Util {
         int direction;
         float FloorOfCharacter=0;
         float Gravity=-98;
-        float Friction=16;
+        float Friction=24;
         float MaxWidth;
         int MaxCameraOffsetX;
         float currentCameraX;

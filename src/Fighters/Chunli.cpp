@@ -77,47 +77,47 @@ namespace Util {
         frames[FighterState::Forward]={120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120};
         frames[FighterState::Backward]={120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120};
         frames[FighterState::JumpUP]={60,90,120,120,120,90,60};
-        frames[FighterState::JumpForward]={60,90,90,120,120,120,90,90,60};
-        frames[FighterState::JumpBackward]={60,90,90,120,120,120,90,90,60};
+        frames[FighterState::JumpForward]={60,60,90,120,120,120,90,60,60};
+        frames[FighterState::JumpBackward]={60,60,90,120,120,120,90,60,60};
         frames[FighterState::Crouch]={60};
-        frames[FighterState::CrouchDown]={120,60,60};
-        frames[FighterState::CrouchUp]={60,120};
-        frames[FighterState::LP]={60,120,90,60,60};
-        frames[FighterState::MP]={30,60,180,90,60};
-        frames[FighterState::HP]={60,90,240,120,90};
-        frames[FighterState::LK]={30,60,90,60,30};
+        frames[FighterState::CrouchDown]={40,40,40};
+        frames[FighterState::CrouchUp]={40,40,40};
+        frames[FighterState::LP]={60,90,60,60,30};
+        frames[FighterState::MP]={30,60,120,90,60};
+        frames[FighterState::HP]={60,90,180,120,90};
+        frames[FighterState::LK]={30,60,90,60,60};
         frames[FighterState::MK]={60,90,150,90,60};
         frames[FighterState::HK]={60,90,90,210,120,60};
 
         frames[FighterState::CrouchLP]={60,60,90,60,30};
         frames[FighterState::CrouchMP]={60,60,150,90,60};
         frames[FighterState::CrouchHP]={60,90,210,120,60};
-        frames[FighterState::CrouchLK]={30,60,90,60,30};
-        frames[FighterState::CrouchMK]={90,120,90};
+        frames[FighterState::CrouchLK]={30,60,90,60,60};
+        frames[FighterState::CrouchMK]={90,150,90};
         frames[FighterState::CrouchHK]={60,90,180,120,90};
 
-        frames[FighterState::JumpLP]={60,60,360};
-        frames[FighterState::JumpMP]={60,60,90,480};
-        frames[FighterState::JumpHP]={60,90,120,600,120,90,60};
-        frames[FighterState::JumpLK]={60,60,360};
-        frames[FighterState::JumpMK]={60,90,480,90,60};
-        frames[FighterState::JumpHK]={90,120,600,120,90};
+        frames[FighterState::JumpLP]={60,60,240};
+        frames[FighterState::JumpMP]={30,60,90,360};
+        frames[FighterState::JumpHP]={60,60,90,480,120,90,60};
+        frames[FighterState::JumpLK]={60,60,240};
+        frames[FighterState::JumpMK]={60,90,360,90,60};
+        frames[FighterState::JumpHK]={90,120,480,120,90};
         frames[FighterState::JumpAttackEnd]={100};
 
-        frames[FighterState::HurtHeadL] = {100,100};
-        frames[FighterState::HurtHeadM] = {150,150};
-        frames[FighterState::HurtHeadH] = {200,200};
-        frames[FighterState::HurtBodyL] = {100,100};
-        frames[FighterState::HurtBodyM] = {150,150};
-        frames[FighterState::HurtBodyH] = {200,200};
+        frames[FighterState::HurtHeadL] = {90,90};
+        frames[FighterState::HurtHeadM] = {160,160};
+        frames[FighterState::HurtHeadH] = {210,210};
+        frames[FighterState::HurtBodyL] = {90,90};
+        frames[FighterState::HurtBodyM] = {160,160};
+        frames[FighterState::HurtBodyH] = {210,210};
 
         frames[FighterState::KnockDownL] = {60,75,120,75,60};
         frames[FighterState::KnockDownM] = {75,90,120,90,75};
         frames[FighterState::KnockDownH] = {90,120,180,120,90};
-        frames[FighterState::GetUp] = {200,240};
+        frames[FighterState::GetUp] = {240,210};
 
-        frames[FighterState::BackwardBlock] = {150,150};
-        frames[FighterState::CrouchBlock] = {150,150};
+        frames[FighterState::BackwardBlock] = {60,60};
+        frames[FighterState::CrouchBlock] = {60,60};
 
         frames[FighterState::WinStart]={200};
         frames[FighterState::Win]={200, 200, 200, 200, 200};
@@ -432,9 +432,9 @@ namespace Util {
         animations[FighterState::Special_2]=ActionInit(23, "Special_2");
         offset[FighterState::Special_2]={{6,-8},{-51,33},{40,29},{88,34},{72,49},{75,52},{83,43},{76,51},{47,27},{-20,20},{57,14},{80,14},{25,13},{10
 ,13},{45,9},{120,13},{76,51},{83,43},{75,52},{59,51},{100,48},{44,49},{-52,35}};
-        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LK]={30,30,30,30,30,60,60,60,60,60,60,120,60,60,60,120,75,60,60,30,30,30,30};
-        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::MK]={30,30,30,30,30,60,60,60,75,75,75,150,75,75,75,150,90,75,60,30,30,30,30};
-        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::HK]={30,30,30,30,30,60,60,60,90,90,90,180,90,90,90,240,120,90,60,30,30,30,30};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LK]={30,30,30,30,30,30,30,30,30,30,30,90,60,60,60,90,120,90,60,60,60,30,30};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::MK]={30,30,30,30,30,30,30,30,30,30,30,120,60,60,60,120,150,120,90,60,60,30,30};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::HK]={30,30,30,30,30,30,30,30,30,30,30,150,60,60,60,150,180,120,90,60,60,30,30};
 
         boxes.hurtbox.body.size[FighterState::Special_2]={{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70},{100,70}};
         boxes.hurtbox.leg.size[FighterState::Special_2]={{150,125},{100,150},{100,125},{200,100},{150,100},{100,150},{100,150},{100,150},{100,50},{100,50},{100,50},{100,50},{100,50},{100,50},{100,50},{100,50},{100,150},{100,150},{100,150},{100,150},{150,125}};
@@ -452,9 +452,9 @@ namespace Util {
 
         SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Chunli/SP2.wav");
 
-        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::LK]={9,0};
-        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::MK]={12,0};
-        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::HK]={15,0};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::LK]={12,0};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::MK]={16,0};
+        SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::HK]={20,0};
 
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LK]=5;
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MK]=8;
@@ -468,9 +468,9 @@ namespace Util {
         };
         SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ANY_KICK;
         SpecialMoveData.SkillCommand[FighterState::Special_2].commandtype=CommandType::Pressed;
-        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::LK]=250;
-        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::MK]=500;
-        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::HK]=750;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::LK]=500;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::MK]=750;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::HK]=1000;
         SpecificStates.InvincibleForFlyObj.insert(FighterState::Special_2);
         SpecificStates.borderCheckStates.insert(FighterState::Special_2);
 

@@ -17,18 +17,18 @@ namespace Util {
         Initialvelocity.y[FighterState::JumpBackward]=38;
         Initialvelocity.y[FighterState::JumpUP]=38;
 
-        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-6;
-        Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-8;
-        Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-10;
+        Initialvelocity.x[FighterState::HurtBodyL]=Initialvelocity.x[FighterState::HurtHeadL]=-10;
+        Initialvelocity.x[FighterState::HurtBodyM]=Initialvelocity.x[FighterState::HurtHeadM]=-11;
+        Initialvelocity.x[FighterState::HurtBodyH]=Initialvelocity.x[FighterState::HurtHeadH]=-12;
 
-        Initialvelocity.x[FighterState::KnockDownL]=-12;
-        Initialvelocity.x[FighterState::KnockDownM]=-14;
-        Initialvelocity.x[FighterState::KnockDownH]=-16;
-        Initialvelocity.y[FighterState::KnockDownL]=20;
-        Initialvelocity.y[FighterState::KnockDownM]=24;
-        Initialvelocity.y[FighterState::KnockDownH]=28;
+        Initialvelocity.x[FighterState::KnockDownL]=-16;
+        Initialvelocity.x[FighterState::KnockDownM]=-18;
+        Initialvelocity.x[FighterState::KnockDownH]=-20;
+        Initialvelocity.y[FighterState::KnockDownL]=26;
+        Initialvelocity.y[FighterState::KnockDownM]=28;
+        Initialvelocity.y[FighterState::KnockDownH]=30;
 
-        Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-4;
+        Initialvelocity.x[FighterState::BackwardBlock]=Initialvelocity.x[FighterState::CrouchBlock]=-6;
         Initialvelocity.x[FighterState::DefeatedLoss]=-10;
         Initialvelocity.y[FighterState::DefeatedLoss]=35;
     }

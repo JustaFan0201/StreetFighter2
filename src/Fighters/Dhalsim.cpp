@@ -75,44 +75,44 @@ namespace Util {
         frames[FighterState::JumpForward]={90,120,150,120,90};
         frames[FighterState::JumpBackward]=frames[FighterState::JumpForward];
         frames[FighterState::Crouch]={60};
-        frames[FighterState::CrouchDown]={60,60,60};
-        frames[FighterState::CrouchUp]={60,60,60};
-        frames[FighterState::LP]={80,90,100,90,80};
-        frames[FighterState::MP]={80,80,140,170,140,100,80};
-        frames[FighterState::HP]={80,80,160,190,160,100,80};
-        frames[FighterState::LK]={80,100,140,100,80};
-        frames[FighterState::MK]={80,100,160,100,80};
-        frames[FighterState::HK]={100,100,100,100,140,100};
+        frames[FighterState::CrouchDown]={40,40,40};
+        frames[FighterState::CrouchUp]={40,40,40};
+        frames[FighterState::LP]={60,60,90,60,60};
+        frames[FighterState::MP]={90,90,120,120,150,210,120};
+        frames[FighterState::HP]={90,120,180,210,240,180,150};
+        frames[FighterState::LK]={90,120,150,120,120};
+        frames[FighterState::MK]={120,120,180,210,150};
+        frames[FighterState::HK]={90,120,120,150,180,180};
 
-        frames[FighterState::CrouchLP]={110,140};
-        frames[FighterState::CrouchMP]={100,100,120,160,120,100,100};
-        frames[FighterState::CrouchHP]={100,100,120,190,120,100,100};
-        frames[FighterState::CrouchLK]={150,350};
-        frames[FighterState::CrouchMK]={150,360};
-        frames[FighterState::CrouchHK]={150,380};
+        frames[FighterState::CrouchLP]={150,180};
+        frames[FighterState::CrouchMP]={90,120,120,180,150,120,90};
+        frames[FighterState::CrouchHP]={90,120,180,210,240,180,150};
+        frames[FighterState::CrouchLK]={180,270};
+        frames[FighterState::CrouchMK]={180,300};
+        frames[FighterState::CrouchHK]={180,330};
 
-        frames[FighterState::JumpLP]={100,100,140};
-        frames[FighterState::JumpMP]={100,100,180};
-        frames[FighterState::JumpHP]={100,100,220};
-        frames[FighterState::JumpLK]={100,100,140};
-        frames[FighterState::JumpMK]={100,100,180};
-        frames[FighterState::JumpHK]={100,100,220};
+        frames[FighterState::JumpLP]={90,90,240};
+        frames[FighterState::JumpMP]={90,120,360};
+        frames[FighterState::JumpHP]={120,120,480};
+        frames[FighterState::JumpLK]={90,90,240};
+        frames[FighterState::JumpMK]={90,120,360};
+        frames[FighterState::JumpHK]={120,120,480};
         frames[FighterState::JumpAttackEnd]={100};
 
-        frames[FighterState::HurtHeadL] = {100,100};
-        frames[FighterState::HurtHeadM] = {150,150};
-        frames[FighterState::HurtHeadH] = {200,200};
-        frames[FighterState::HurtBodyL] = {100,100};
-        frames[FighterState::HurtBodyM] = {150,150};
-        frames[FighterState::HurtBodyH] = {200,200};
+        frames[FighterState::HurtHeadL] = {90,90};
+        frames[FighterState::HurtHeadM] = {160,160};
+        frames[FighterState::HurtHeadH] = {210,210};
+        frames[FighterState::HurtBodyL] = {90,90};
+        frames[FighterState::HurtBodyM] = {160,160};
+        frames[FighterState::HurtBodyH] = {210,210};
 
-        frames[FighterState::KnockDownL] = {120,120,160};
+        frames[FighterState::KnockDownL] = {120,120,150};
         frames[FighterState::KnockDownM] = {140,140,170};
-        frames[FighterState::KnockDownH] = {160,160,180};
-        frames[FighterState::GetUp] = {140,140,160};
+        frames[FighterState::KnockDownH] = {180,180,220};
+        frames[FighterState::GetUp] = {150,150,150};
 
-        frames[FighterState::BackwardBlock] = {150,150};
-        frames[FighterState::CrouchBlock] = {150,150};
+        frames[FighterState::BackwardBlock] = {60,60};
+        frames[FighterState::CrouchBlock] = {60,60};
 
         frames[FighterState::WinStart]={180};
         frames[FighterState::Win]={180,180};
@@ -123,9 +123,9 @@ namespace Util {
 
     }
     void Dhalsim::LoadOffsetVelocity() {
-        Initialvelocity.x[FighterState::CrouchLK] = 2;
-        Initialvelocity.x[FighterState::CrouchMK] = 3;
-        Initialvelocity.x[FighterState::CrouchHK] = 4;
+        Initialvelocity.x[FighterState::CrouchLK] = 3;
+        Initialvelocity.x[FighterState::CrouchMK] = 4;
+        Initialvelocity.x[FighterState::CrouchHK] = 5;
         attacktype[FighterState::CrouchHK]=attacktype[FighterState::CrouchMK]=attacktype[FighterState::CrouchLK]=AttackType::Lower;
         offset[FighterState::Idle]={{-3,-1},{-11,2},{-10,-8},{-3,-16},{3,-17},{-1,-8}};
         offset[FighterState::Crouch]={{-7,-56}};
@@ -386,7 +386,7 @@ namespace Util {
         offset[FighterState::Special_2]={{-7,-6},{-48,-8},{-75,1},{1,8},{32,-1},{56,-5},{119,-11},{129,-11},{149,-13},{159,-12},{164,-12},{173,-13},{170,
 -14},{173,-9},{167,-13},{158,-14},{150,-13},{138,-13},{134,-14}};
 
-        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LP]={60,90,120,60,60,60,60,60,60,60,60,60,60,60,60,60,120,90,60};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LP]={60,90,120,60,60,60,60,60,60,60,60,60,60,60,60,60,240,180,120};
 
         boxes.hurtbox.body.size[FighterState::Special_2]={{100,100},{100,100},{120,120},{100,120},{120,120},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80},{140,80}};
         boxes.hurtbox.leg.size[FighterState::Special_2]={{100,140},{100,140},{100,150},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140},{100,140}};

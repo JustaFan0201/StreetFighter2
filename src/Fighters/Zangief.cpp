@@ -78,47 +78,47 @@ namespace Util {
         frames[FighterState::JumpForward]=frames[FighterState::JumpUP];
         frames[FighterState::JumpBackward]=frames[FighterState::JumpUP];
         frames[FighterState::Crouch]={60};
-        frames[FighterState::CrouchDown]={120,60,60};
-        frames[FighterState::CrouchUp]={60,60,120};
-        frames[FighterState::LP]={60,120,60};
-        frames[FighterState::MP]={60,90,180,90};
-        frames[FighterState::HP]={60,90,240,120,90,60,60};
-        frames[FighterState::LK]={30,60,90};
-        frames[FighterState::MK]={60,90,180,90,60};
-        frames[FighterState::HK]={90,240,120};
+        frames[FighterState::CrouchDown]={40,40,40};
+        frames[FighterState::CrouchUp]={40,40,40};
+        frames[FighterState::LP]={60,120,90};
+        frames[FighterState::MP]={60,90,150,60};
+        frames[FighterState::HP]={60,90,180,90,90,60,30};
+        frames[FighterState::LK]={60,90,120};
+        frames[FighterState::MK]={60,90,150,90,60};
+        frames[FighterState::HK]={90,210,120};
 
-        frames[FighterState::CrouchLP]={60,90};
-        frames[FighterState::CrouchLK]={60,120,60};
-        frames[FighterState::CrouchHP]={60,90,180,120,60};
-        frames[FighterState::CrouchMP]=frames[FighterState::CrouchHP];
-        frames[FighterState::CrouchMK]=frames[FighterState::CrouchLK];
-        frames[FighterState::CrouchHK]=frames[FighterState::CrouchLK];
+        frames[FighterState::CrouchLP]={120,150};
+        frames[FighterState::CrouchMP]={60,90,150,90,60};
+        frames[FighterState::CrouchHP]={60,90,180,120,90};
+        frames[FighterState::CrouchLK]={60,120,90};
+        frames[FighterState::CrouchMK]={90,150,90};
+        frames[FighterState::CrouchHK]={120,180,120};
 
-        frames[FighterState::HurtHeadL] = {100,100};
-        frames[FighterState::HurtHeadM] = {150,150};
-        frames[FighterState::HurtHeadH] = {200,200};
-        frames[FighterState::HurtBodyL] = {100,100};
-        frames[FighterState::HurtBodyM] = {150,150};
-        frames[FighterState::HurtBodyH] = {200,200};
+        frames[FighterState::HurtHeadL] = {90,90};
+        frames[FighterState::HurtHeadM] = {160,160};
+        frames[FighterState::HurtHeadH] = {210,210};
+        frames[FighterState::HurtBodyL] = {90,90};
+        frames[FighterState::HurtBodyM] = {160,160};
+        frames[FighterState::HurtBodyH] = {210,210};
 
-        frames[FighterState::KnockDownL] = {120,120,160};
+        frames[FighterState::KnockDownL] = {120,120,150};
         frames[FighterState::KnockDownM] = {140,140,170};
-        frames[FighterState::KnockDownH] = {160,160,180};
-        frames[FighterState::GetUp] = {140,140,160};
+        frames[FighterState::KnockDownH] = {180,180,220};
+        frames[FighterState::GetUp] = {150,150,150};
 
         animations[FighterState::KnockDownL] = animations[FighterState::KnockDownM] = animations[FighterState::KnockDownH] =ActionInit(3, "KnockDown");
         animations[FighterState::GetUp] = ActionInit(3, "GetUp");
 
-        frames[FighterState::JumpLP]={60,90,360};
-        frames[FighterState::JumpMP]={90,120,480};
-        frames[FighterState::JumpHP]={90,90,560,120,90,60,60};
-        frames[FighterState::JumpLK]={60,360};
-        frames[FighterState::JumpMK]={90,480};
-        frames[FighterState::JumpHK]={90,600};
+        frames[FighterState::JumpLP]={60,60,240};
+        frames[FighterState::JumpMP]={60,90,360};
+        frames[FighterState::JumpHP]={90,120,480,120,90,60,60};
+        frames[FighterState::JumpLK]={60,240};
+        frames[FighterState::JumpMK]={90,360};
+        frames[FighterState::JumpHK]={150,480};
         frames[FighterState::JumpAttackEnd]={100};
 
-        frames[FighterState::BackwardBlock] = {150,150};
-        frames[FighterState::CrouchBlock] = {150,150};
+        frames[FighterState::BackwardBlock] = {60,60};
+        frames[FighterState::CrouchBlock] = {60,60};
 
         frames[FighterState::WinStart]={180};
         frames[FighterState::Win]={180, 180};

@@ -84,10 +84,10 @@ namespace Util {
         frames[FighterState::CrouchDown]={60,60};
         frames[FighterState::CrouchUp]={60,60};
 
-        frames[FighterState::LP]={60,90,120};
+        frames[FighterState::LP]={60,60,90};
         frames[FighterState::MP]={30,60,120,60,30};
         frames[FighterState::HP]={60,90,180,90,60,60};
-        frames[FighterState::LK]={30,60,90,60};
+        frames[FighterState::LK]={30,30,90,60};
         frames[FighterState::MK]={30,60,120,60,30};
         frames[FighterState::HK]={60,90,180,90,90};
 
@@ -98,28 +98,28 @@ namespace Util {
         frames[FighterState::CrouchMK]={30,60,120,60,30};
         frames[FighterState::CrouchHK]={60,180,120,90,60};
 
-        frames[FighterState::JumpLP]={120,360};
-        frames[FighterState::JumpMP]={120,120,420};
-        frames[FighterState::JumpHP]={120,120,480};
-        frames[FighterState::JumpLK]={120,360};
-        frames[FighterState::JumpMK]={120,120,420};
-        frames[FighterState::JumpHK]={120,120,480,120,120};
+        frames[FighterState::JumpLP]={60,240};
+        frames[FighterState::JumpMP]={60,60,360};
+        frames[FighterState::JumpHP]={90,90,480};
+        frames[FighterState::JumpLK]={60,240};
+        frames[FighterState::JumpMK]={60,60,360};
+        frames[FighterState::JumpHK]={90,90,480,90,90};
         frames[FighterState::JumpAttackEnd]={120,90};
 
-        frames[FighterState::HurtHeadL] = {100,100};
-        frames[FighterState::HurtHeadM] = {150,150};
-        frames[FighterState::HurtHeadH] = {200,200};
-        frames[FighterState::HurtBodyL] = {100,100};
-        frames[FighterState::HurtBodyM] = {150,150};
-        frames[FighterState::HurtBodyH] = {200,200};
+        frames[FighterState::HurtHeadL] = {90,90};
+        frames[FighterState::HurtHeadM] = {160,160};
+        frames[FighterState::HurtHeadH] = {210,210};
+        frames[FighterState::HurtBodyL] = {90,90};
+        frames[FighterState::HurtBodyM] = {160,160};
+        frames[FighterState::HurtBodyH] = {210,210};
 
         frames[FighterState::KnockDownL] = {60,75,120,75,60};
         frames[FighterState::KnockDownM] = {75,90,120,90,75};
         frames[FighterState::KnockDownH] = {90,120,180,120,90};
         frames[FighterState::GetUp] = {120,120,120,90};
 
-        frames[FighterState::BackwardBlock] = {150,150};
-        frames[FighterState::CrouchBlock] = {150,150};
+        frames[FighterState::BackwardBlock] = {60,60};
+        frames[FighterState::CrouchBlock] = {60,60};
 
         frames[FighterState::WinStart]={180,180,180};
         frames[FighterState::Win]={180};
@@ -447,10 +447,12 @@ namespace Util {
         animations[FighterState::Special_3]=ActionInit(10, "Special_3");
         offset[FighterState::Special_3]={{104,23},{83,9},{24,39},{161,44},{34,44},{-10,44},{111,39},{161,44},{99,30},{30,6}};
         SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::LK]={9,0};
-        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::MK]={12,0};
-        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::HK]={15,0};
+        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::MK]={11,0};
+        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::HK]={13,0};
 
-        SpecialMoveData.animationData[FighterState::Special_3].frames[Keys::LK]={60,60,90,180,90,180,90,180,60,60};
+        SpecialMoveData.animationData[FighterState::Special_3].frames[Keys::LK]={30,60,90,90,60,90,60,90,120,90};
+        SpecialMoveData.animationData[FighterState::Special_3].frames[Keys::MK]={30,60,90,120,60,120,60,120,150,120};
+        SpecialMoveData.animationData[FighterState::Special_3].frames[Keys::HK]={30,60,90,150,60,150,60,150,180,120};
 
         boxes.hurtbox.leg.size[FighterState::Special_3]={{100,150},{100,100},{100,50},{50,150},{100,150},{50,150},{50,150},{50,150},{100,150},{100,150}};
         boxes.hurtbox.head.offset[FighterState::Special_3]={{-13,133},{-13,88},{-115,92},{7,139},{-79,132},{-75,133},{-4,134},{7,139},{9,119},{-79,92}};
@@ -539,6 +541,9 @@ namespace Util {
         }
         else if (ActionNow->GetCurrentFrameIndex() <= 7) {
             velocity.x -= velocity.x * 0.1f * Time::GetDeltaTimeMs() / 1000.0f;
+        }
+        else {
+            ResetVelocity();
         }
         if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
