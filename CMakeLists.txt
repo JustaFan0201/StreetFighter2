@@ -42,6 +42,7 @@ add_executable(${PROJECT_NAME}
         src/Scenes/BattleScene.cpp
         src/Scenes/WinLossScene.cpp
         src/Scenes/ContinueScene.cpp
+        src/Scenes/EndingScene.cpp
 
         include/Others/FighterInfo.hpp
         include/Others/Camera.hpp
@@ -84,6 +85,7 @@ add_executable(${PROJECT_NAME}
         include/Scenes/BattleScene.hpp
         include/Scenes/WinLossScene.hpp
         include/Scenes/ContinueScene.hpp
+        include/Scenes/EndingScene.hpp
 
         src/Others/Camera.cpp
         src/Others/UI.cpp

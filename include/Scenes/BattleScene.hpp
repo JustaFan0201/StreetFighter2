@@ -88,6 +88,7 @@ namespace Util {
         void EndForRound(std::shared_ptr<Core::Context> context);
         void JudgeBattleEnd();
         FinalResult GetFinalResult() const {return finalresult;}
+        void LetSomeoneLoss() const;
     };
 }
 #endif //BATTLESCENE_HPP

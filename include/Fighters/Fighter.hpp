@@ -90,6 +90,7 @@ namespace Util {
         void SetEnemy(std::shared_ptr<Fighter> enemy){this->enemy=enemy;}
         void SetEntityAdder(std::function<void(FlyingObjectType type, std::shared_ptr<Fighter>, Keys)> entityfunc) {addEntityFunc = entityfunc;}
         void SetEffectAdder(std::function<void(HitStrength strength,BeHitType behittype, glm::vec2 position)> effectfunc) {addEffectFunc = effectfunc;}
+        void SetHP(float hp) {this->hp=hp;}
         //Getter ForScene
         std::string GetFace() const { return face; }
         std::string GetIcon() const { return icon; }

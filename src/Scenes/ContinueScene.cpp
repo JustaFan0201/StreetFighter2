@@ -18,6 +18,11 @@ namespace Util {
                 {300,player_face->GetScaledSize().y*300/player_face->GetScaledSize().x},
                 2.0f);
         time_picture=std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/ContinueScene/9.png");
+        continue_picture=std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/ContinueScene/Continue.png");
+        continue_picture->SetVisible(true);
+        continue_picture->SetDrawData({{0, -280},0,{1,1}},
+                continue_picture->GetScaledSize()*glm::vec2{3,3},
+                10.0f);
         gameover_picture=std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/ContinueScene/GameOver.png");
         gameover_picture->SetDrawData({{0, 0},0,{1,1}},
                 gameover_picture->GetScaledSize()*glm::vec2{5,5},
@@ -42,6 +47,7 @@ namespace Util {
                 gameoversound->Play();
                 m_BGM->Pause();
                 gameover_picture->SetVisible(true);
+                continue_picture->SetVisible(false);
             }
             if(timer>0&&Input::IsKeyDown(Keycode::RETURN)) {
                 player_face=std::make_shared<ImageSpace>(player->GetFace());
@@ -52,11 +58,12 @@ namespace Util {
                 Result=ChooseResult::Continue;
                 currentstate=ContinueSceneState::WaitForEnd;
                 start_time=Time::GetElapsedTimeMs();
+                continue_picture->SetVisible(false);
             }
         }
         else if(currentstate==ContinueSceneState::WaitForEnd) {
             if(GetPassedTime()>3500) {
-                SenseEnd=true;
+                SceneEnd=true;
             }
         }
         time_picture = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/ContinueScene/" + std::to_string(timer) + ".png");
@@ -65,7 +72,7 @@ namespace Util {
             2.0f);
     }
     void ContinueScene::Render() {
-        AllPictures={player_face,time_picture,gameover_picture};
+        AllPictures={player_face,time_picture,gameover_picture,continue_picture};
         for (const auto& image : AllPictures) {
             image->custom_Draw();
         }

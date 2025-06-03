@@ -12,6 +12,7 @@
 #include "BattleScene.hpp"
 #include "WinLossScene.hpp"
 #include "ContinueScene.hpp"
+#include "EndingScene.hpp"
 namespace Util {
     enum class SceneType {
         Null,
@@ -20,7 +21,8 @@ namespace Util {
         Pass,
         Battle,
         WinLoss,
-        Continue
+        Continue,
+        Ending
     };
     class SceneManager {
     public:
@@ -31,6 +33,7 @@ namespace Util {
             StateEnter[SceneType::Battle] = [this] { BattleSceneEnter(); };
             StateEnter[SceneType::WinLoss] = [this] { WinLossSceneEnter(); };
             StateEnter[SceneType::Continue] = [this] { ContinueSceneEnter(); };
+            StateEnter[SceneType::Ending] = [this] { EndingSceneEnter(); };
 
             StateUpdate[SceneType::Start] = [this] {StartSceneUpdate(); };
             StateUpdate[SceneType::Slect] = [this] {SlectSceneUpdate(); };
@@ -38,6 +41,7 @@ namespace Util {
             StateUpdate[SceneType::Battle] = [this] {BattleSceneUpdate(); };
             StateUpdate[SceneType::WinLoss] = [this] {WinLossSceneUpdate(); };
             StateUpdate[SceneType::Continue] = [this] {ContinueSceneUpdate();};
+            StateUpdate[SceneType::Ending] = [this] {EndingSceneUpdate();};
         }
         void ChangeSceneType(SceneType newtype);//切場景
         void ChangeScene(const std::shared_ptr<Scene> &NewScene){m_NowScene=NewScene;m_NowScene->Init(context);}//切場景
@@ -46,6 +50,7 @@ namespace Util {
         void EnemySlect();//生成敵人vector Enemies
         void DetectedPassedGame();
         void SetContext(std::shared_ptr<Core::Context> context);
+        void BackToTitle();
         [[nodiscard]] ModeType GetMode() const{return mode;}//取模式
         void UpdateState() const;
         void StartSceneEnter();
@@ -60,6 +65,8 @@ namespace Util {
         void WinLossSceneUpdate();
         void ContinueSceneEnter();
         void ContinueSceneUpdate();
+        void EndingSceneEnter();
+        void EndingSceneUpdate();
     private:
         std::shared_ptr<Core::Context> context;
 

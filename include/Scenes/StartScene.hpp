@@ -8,13 +8,19 @@
 
 #include "Scene.hpp"
 namespace Util {
+    enum class StartSceneState {
+        Null,
+        Start,
+        WaitForSlect,
+        WaitForEnd
+    };
     class StartScene : public Scene {
     private:
-        bool m_WaitingForEnter=true;
         std::shared_ptr<SFX> soundEffect = std::make_shared<Util::SFX>(RESOURCE_DIR"/voice/01 Select Screen & World Map/SFII_01 - Mode Select.wav");
 
         std::shared_ptr<ImageSpace> storymode;
         std::shared_ptr<ImageSpace> battlemode;
+        StartSceneState m_state = StartSceneState::Null;
     public:
         StartScene();
         void Init(std::shared_ptr<Core::Context> context) override;

@@ -38,7 +38,7 @@ namespace Util {
     }
     void WinLossScene::Update(std::shared_ptr<Core::Context> context){
         if(GetPassedTime()>5000) {
-            SenseEnd=true;
+            SceneEnd=true;
         }
     }
     void WinLossScene::Render() {

@@ -122,6 +122,14 @@ namespace Util {
             Effects = newEffects;
         }
     }
+    void BattleScene::LetSomeoneLoss() const {
+        if(Input::IsKeyDown(Keycode::NUM_9)) {
+            player->SetHP(0);
+        }
+        if(Input::IsKeyDown(Keycode::NUM_0)) {
+            enemy->SetHP(0);
+        }
+    }
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {
         ControllerState();
         if(!ui->GetRoundStartIsEnd()) {ui->RoundStart(round);}
@@ -137,6 +145,7 @@ namespace Util {
         UpdateFlyingObjects(PlayerFlyingObjects,camera->GetCameraPos());
         UpdateFlyingObjects(EnemyFlyingObjects,camera->GetCameraPos());
         UpdateEffects();
+
         switch (ui->GetState()) {
             case State::WaitForEnd:case State::TimeOver:
                 LossJudge();
@@ -153,7 +162,8 @@ namespace Util {
             default:
                 break;
         }
-        if (Input::IsKeyDown(Keycode::RETURN)) {SenseEnd = true;}
+        //debug
+        LetSomeoneLoss();
     }
     void BattleScene::ControllerState() {
         if(ui->GetState()==State::WaitForEnd) {
@@ -261,15 +271,15 @@ namespace Util {
         //std::cout<<PlayerWinCounter<<"JudgeBattleEnd"<<EnemyWinCounter<<std::endl;
         if(PlayerWinCounter==2&&EnemyWinCounter==2) {
             finalresult=FinalResult::Tie;
-            SenseEnd= true;
+            SceneEnd= true;
         }
         else if(PlayerWinCounter==2) {
             finalresult=FinalResult::Player1Win;
-            SenseEnd= true;
+            SceneEnd= true;
         }
         else if(EnemyWinCounter==2) {
             finalresult=FinalResult::Player2Win;
-            SenseEnd= true;
+            SceneEnd= true;
         }
     }
     void BattleScene::Render() {

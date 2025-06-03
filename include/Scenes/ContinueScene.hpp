@@ -23,6 +23,7 @@ namespace Util {
         std::shared_ptr<SFX> countsound;
         std::shared_ptr<SFX> continuesound;
         std::shared_ptr<SFX> gameoversound;
+        std::shared_ptr<ImageSpace> continue_picture;
         std::shared_ptr<ImageSpace> player_face;//1p角色臉
         std::shared_ptr<ImageSpace> time_picture;
         std::shared_ptr<ImageSpace> gameover_picture;

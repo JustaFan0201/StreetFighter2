@@ -3,8 +3,8 @@
 //
 #include "Scenes/Scene.hpp"
 namespace Util{
-    bool Scene::getSenseEnd() const {
-        return SenseEnd;
+    bool Scene::GetSceneEnd() const {
+        return SceneEnd;
     }
 }
 

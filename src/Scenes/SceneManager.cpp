@@ -17,6 +17,12 @@ namespace Util {
             }
         }
     }
+    void SceneManager::BackToTitle() {
+        if(Input::IsKeyDown(Keycode::TAB)) {
+            stage_count=0;
+            ChangeSceneType(SceneType::Start);
+        }
+    }
     void SceneManager::UpdateState() const {
         auto currentEnter = StateUpdate.find(NowSceneType);
         currentEnter->second();
@@ -26,13 +32,14 @@ namespace Util {
             m_NowScene->Update(context);
         }
         UpdateState();
+        BackToTitle();
     }
     void SceneManager::StartSceneEnter() {
         ChangeScene(std::make_shared<StartScene>());
         m_NowScene->Init(context);
     }
     void SceneManager::StartSceneUpdate() {
-        if(m_NowScene->getSenseEnd()) {
+        if(m_NowScene->GetSceneEnd()) {
             mode = m_NowScene->getmode();
             std::cout << "Mode selected: " << static_cast<int>(mode) << std::endl;
             Enemies.clear();
@@ -48,7 +55,7 @@ namespace Util {
     }
     void SceneManager::SlectSceneUpdate() {
         DetectedPassedGame();
-        if(m_NowScene->getSenseEnd()) {
+        if(m_NowScene->GetSceneEnd()) {
             auto Now_Scene = std::dynamic_pointer_cast<SlectScene>(m_NowScene);
             player=Now_Scene->GetPlayer1Character();
             if(mode==ModeType::Story) {
@@ -65,7 +72,7 @@ namespace Util {
         ChangeScene(std::make_shared<PassScene>(player,enemy));
     }
     void SceneManager::PassSceneUpdate() {
-        if(m_NowScene->getSenseEnd()) {
+        if(m_NowScene->GetSceneEnd()) {
             ChangeSceneType(SceneType::Battle);
         }
     }
@@ -75,7 +82,7 @@ namespace Util {
         ChangeScene(next);
     }
     void SceneManager::BattleSceneUpdate() {
-        if (m_NowScene->getSenseEnd()) {
+        if (m_NowScene->GetSceneEnd()) {
             std::shared_ptr<Scene> nextScene;
             if(mode==ModeType::Battle) {
                 ChangeSceneType(SceneType::Slect);
@@ -91,7 +98,7 @@ namespace Util {
         ChangeScene(std::make_shared<WinLossScene>(player,enemy,finalresult));
     }
     void SceneManager::WinLossSceneUpdate() {
-        if (m_NowScene->getSenseEnd()) {
+        if (m_NowScene->GetSceneEnd()) {
             if(finalresult==FinalResult::Player2Win) {
                 ChangeSceneType(SceneType::Continue);
             }
@@ -99,8 +106,11 @@ namespace Util {
                 if (stage_count<7) {
                     stage_count++;//每過一關+1
                     enemy=Enemies[stage_count];
+                    ChangeSceneType(SceneType::Pass);
                 }
-                ChangeSceneType(SceneType::Pass);
+                else if (stage_count==characters.size()-2) {
+                    ChangeSceneType(SceneType::Ending);
+                }
             }
             finalresult=FinalResult::Null;
         }
@@ -109,7 +119,7 @@ namespace Util {
         ChangeScene(std::make_shared<ContinueScene>(player));
     }
     void SceneManager::ContinueSceneUpdate() {
-        if (m_NowScene->getSenseEnd()) {
+        if (m_NowScene->GetSceneEnd()) {
             auto NowScene=std::dynamic_pointer_cast<ContinueScene>(m_NowScene);
             ContinueOrNot=NowScene->GetChooseResult();
             if(ContinueOrNot==ChooseResult::GameOver) {
@@ -120,6 +130,16 @@ namespace Util {
                 ChangeSceneType(SceneType::Pass);
             }
             ContinueOrNot=ChooseResult::Null;
+        }
+    }
+    void SceneManager::EndingSceneEnter() {
+        ChangeScene(std::make_shared<EndingScene>());
+    }
+    void SceneManager::EndingSceneUpdate() {
+        if (m_NowScene->GetSceneEnd()) {
+            PassedGame=true;
+            stage_count=0;
+            ChangeSceneType(SceneType::Start);
         }
     }
     void SceneManager::Render() {

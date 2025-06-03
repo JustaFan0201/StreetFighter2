@@ -49,7 +49,7 @@ namespace Util {
     }
     void PassScene::Update(std::shared_ptr<Core::Context> context) {
         if (GetPassedTime() > 4500){
-            SenseEnd=true;
+            SceneEnd=true;
         }
     }
     void PassScene::Render() {

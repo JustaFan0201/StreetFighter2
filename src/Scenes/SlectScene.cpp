@@ -52,7 +52,7 @@ namespace Util {
         PlayerDataUpdate(player1data);
         if(mode==ModeType::Battle){PlayerDataUpdate(player2data);}
         if(player1data.Ready&&player2data.Ready&&(GetPassedTime()>600)) {
-            SenseEnd=true;
+            SceneEnd=true;
         }
     }
 
@@ -93,7 +93,7 @@ namespace Util {
     }
     void SlectScene::PlayerDataUpdate(PlayerData &playerdata) {
         const int maxIndex = PassedGame ? 9 : 8;  // 可選角色總數
-        if (!SenseEnd) {
+        if (!SceneEnd) {
             if (playerdata.controller->IsKeyDown(Keys::UP)) {
                 // index 4~7 -> 上移 -4；index 8 -> 無法上移
                 if (playerdata.chooseIndex >= 4 && playerdata.chooseIndex < 8) {
