@@ -130,7 +130,7 @@ namespace Util {
             timer[1] = (99 - static_cast<int>(GetTime()) / 1000 ) % 10 ;
             if(timer[0]<0){timer[0]=0;}
             if(timer[1]<0){timer[1]=0;}
-            //if(timer[0]==0&&timer[1]==0){currentState=State::TimeOver;}
+            if(timer[0]==0&&timer[1]==0){currentState=State::TimeOver;}
         }
         if (Input::IsKeyDown(Keycode::L)) {currentState=State::TimeOver;}
 

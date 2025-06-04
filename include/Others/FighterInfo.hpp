@@ -92,6 +92,10 @@ namespace Util {
         SpecialRecovery_2,
         SpecialRecovery_3,
         SpecialRecovery_4,
+        SpecialDerive_1,
+        SpecialDerive_2,
+        SpecialDerive_3,
+        SpecialDerive_4,
         HurtHeadL,
         HurtHeadM,
         HurtHeadH,
@@ -265,6 +269,7 @@ namespace Util {
         std::unordered_set<FighterState> CrouchAttackStates;
         std::unordered_set<FighterState> HurtStates;
         std::unordered_set<FighterState> SpecialStates;
+        std::unordered_set<FighterState> SpecialAttackStates;
         std::unordered_set<FighterState> IdleStates;
         std::unordered_set<FighterState> StandStates;
         std::unordered_set<FighterState> CrouchStates;
@@ -272,6 +277,7 @@ namespace Util {
         std::unordered_set<FighterState> CanBlockStates;
         std::unordered_set<FighterState> InvincibleForFlyObj;
         std::unordered_set<FighterState> Invincible;
+        std::unordered_set<FighterState> CrossState;
     };
 }
 

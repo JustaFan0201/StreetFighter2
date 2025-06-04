@@ -479,6 +479,12 @@ namespace Util {
 
         SpecialMoveData.SkillCommand[FighterState::Special_1].SpecialNumer=SpecialNumer::Special_1;
         SpecialMoveData.SkillCommand[FighterState::Special_2].SpecialNumer=SpecialNumer::Special_2;
+
+        SpecificStates.SpecialStates.insert(FighterState::Special_1);
+        SpecificStates.SpecialStates.insert(FighterState::Special_2);
+
+        SpecificStates.SpecialAttackStates.insert(FighterState::Special_1);
+        SpecificStates.SpecialAttackStates.insert(FighterState::Special_2);
     }
     void Chunli::HyakurretsuKyakuStateEnter() {
         controller->ClearAiSpecial();

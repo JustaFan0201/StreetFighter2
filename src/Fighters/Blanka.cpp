@@ -415,10 +415,6 @@ namespace Util {
         SpecialMoveData.SkillCommand[FighterState::Special_1].commandtype=CommandType::Null;
 
         animations[FighterState::Special_2]=ActionInit(8, "Special_2");
-        animations[FighterState::SpecialRecovery_2]=ActionInit(7, "SpecialRecovery_2");
-
-        offset[FighterState::SpecialRecovery_2]={{-34,14},{-33,15},{-30,17},{-14,16},{-30,15},{50,-12},{61,-2}};
-        frames[FighterState::SpecialRecovery_2]={90,90,90,90,120,120,120,150};
         SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LP]={45,45,45,45,45,45,45,45};
 
         boxes.hurtbox.body.size[FighterState::Special_2]={{180,80},{180,80},{180,80},{180,80},{180,80},{180,80},{180,80},{180,80}};
@@ -427,28 +423,17 @@ namespace Util {
         boxes.hurtbox.body.offset[FighterState::Special_2]={{19,-24},{-2,-28},{-28,-7},{-26,6},{-11,14},{9,20},{-2,19},{0,2}};
         boxes.hurtbox.leg.offset[FighterState::Special_2]={{-7,45},{24,40},{54,5},{44,-15},{0,-38},{-26,-28},{-74,2},{-64,20}};
 
-        boxes.hurtbox.body.size[FighterState::SpecialRecovery_2]={{180,80},{180,80},{150,120},{180,90},{180,80},{100,250},{100,180}};
-        boxes.hurtbox.leg.size[FighterState::SpecialRecovery_2]={{180,125},{180,125},{180,125},{180,125},{240,100},{180,100}};
-        boxes.hurtbox.head.offset[FighterState::SpecialRecovery_2]={{37,-41},{85,2},{91,78},{-47,104},{-115,-60},{6,-24},{65,-53}};
-        boxes.hurtbox.body.offset[FighterState::SpecialRecovery_2]={{33,29},{-2,34},{19,26},{-15,23},{-78,3},{-13,-24},{68,-47}};
-        boxes.hurtbox.leg.offset[FighterState::SpecialRecovery_2]={{-53,-23},{-45,-48},{-20,-69},{57,-34},{87,32},{122,90},{172,73}};
-
         boxes.hitbox.size[FighterState::Special_2]={220,200};
         boxes.hitbox.offset[FighterState::Special_2]={{-1,-1},{-1,-1},{-1,-1},{2,2},{9,2},{14,6},{11,9},{15,0}};
 
         StateEnter[FighterState::Special_2]=[this] { RollingAttackStateEnter(); };
         StateUpdate[FighterState::Special_2]=[this] { RollingAttackStateUpdate(); };
-        StateEnter[FighterState::SpecialRecovery_2]=[this] { RollingAttackRecoveryStateEnter(); };
-        StateUpdate[FighterState::SpecialRecovery_2]=[this] { RollingAttackRecoveryStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_2].sound[Keys::LP]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Blanka/SP2.wav");
 
         SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::LP]={20,0};
         SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::MP]={25,0};
         SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::HP]={30,0};
-
-        Initialvelocity.x[FighterState::SpecialRecovery_2]=-10;
-        Initialvelocity.y[FighterState::SpecialRecovery_2]=38;
 
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::LP]=10;
         SpecialMoveData.attackdata[FighterState::Special_2].attack[Keys::MP]=15;
@@ -466,6 +451,23 @@ namespace Util {
         SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::MP]=750;
         SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::HP]=1000;
         SpecificStates.borderCheckStates.insert(FighterState::Special_2);
+
+        animations[FighterState::SpecialRecovery_2]=ActionInit(7, "SpecialRecovery_2");
+
+        offset[FighterState::SpecialRecovery_2]={{-34,14},{-33,15},{-30,17},{-14,16},{-30,15},{50,-12},{61,-2}};
+        frames[FighterState::SpecialRecovery_2]={90,90,90,90,120,120,120,150};
+
+        boxes.hurtbox.body.size[FighterState::SpecialRecovery_2]={{180,80},{180,80},{150,120},{180,90},{180,80},{100,250},{100,180}};
+        boxes.hurtbox.leg.size[FighterState::SpecialRecovery_2]={{180,125},{180,125},{180,125},{180,125},{240,100},{180,100}};
+        boxes.hurtbox.head.offset[FighterState::SpecialRecovery_2]={{37,-41},{85,2},{91,78},{-47,104},{-115,-60},{6,-24},{65,-53}};
+        boxes.hurtbox.body.offset[FighterState::SpecialRecovery_2]={{33,29},{-2,34},{19,26},{-15,23},{-78,3},{-13,-24},{68,-47}};
+        boxes.hurtbox.leg.offset[FighterState::SpecialRecovery_2]={{-53,-23},{-45,-48},{-20,-69},{57,-34},{87,32},{122,90},{172,73}};
+
+        StateEnter[FighterState::SpecialRecovery_2]=[this] { RollingAttackRecoveryStateEnter(); };
+        StateUpdate[FighterState::SpecialRecovery_2]=[this] { RollingAttackRecoveryStateUpdate(); };
+
+        Initialvelocity.x[FighterState::SpecialRecovery_2]=-10;
+        Initialvelocity.y[FighterState::SpecialRecovery_2]=38;
         SpecificStates.borderCheckStates.insert(FighterState::SpecialRecovery_2);
 
         soundeffect[FighterState::WinStart]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Blanka/Win.wav");
@@ -473,6 +475,12 @@ namespace Util {
 
         SpecialMoveData.SkillCommand[FighterState::Special_1].SpecialNumer=SpecialNumer::Special_1;
         SpecialMoveData.SkillCommand[FighterState::Special_2].SpecialNumer=SpecialNumer::Special_2;
+
+        SpecificStates.SpecialStates.insert(FighterState::Special_1);
+        SpecificStates.SpecialStates.insert(FighterState::Special_2);
+
+        SpecificStates.SpecialAttackStates.insert(FighterState::Special_1);
+        SpecificStates.SpecialAttackStates.insert(FighterState::Special_2);
     }
     void Blanka::ElectricThunderStateEnter() {
         controller->ClearAiSpecial();

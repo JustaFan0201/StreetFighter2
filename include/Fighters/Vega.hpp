@@ -14,6 +14,18 @@ namespace Util {
         void LoadOffsetVelocity() override;
         void LoadAllBox()override;
         void LoadSpecialMove()override;
+        void DoubleKneePressStateEnter();
+        void DoubleKneePressStateUpdate();
+        void PsychoCrusherStateEnter();
+        void PsychoCrusherStateUpdate();
+        void HeadStompStateEnter();
+        void HeadStompStateUpdate();
+        void HeadStompAttackStateEnter();
+        void HeadStompAttackStateUpdate();
+        void HeadStompRecoveryStateEnter();
+        void HeadStompRecoveryStateUpdate();
+        void HeadStompDeriveStateEnter();
+        void HeadStompDeriveStateUpdate();
     };
 }
 #endif //VEGA_HPP

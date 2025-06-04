@@ -20,7 +20,12 @@ namespace Util {
     void SceneManager::BackToTitle() {
         if(Input::IsKeyDown(Keycode::TAB)) {
             stage_count=0;
-            ChangeSceneType(SceneType::Start);
+            if(NowSceneType==SceneType::Battle) {
+                ChangeSceneType(SceneType::Slect);
+            }
+            else {
+                ChangeSceneType(SceneType::Start);
+            }
         }
     }
     void SceneManager::UpdateState() const {
@@ -43,9 +48,9 @@ namespace Util {
             mode = m_NowScene->getmode();
             std::cout << "Mode selected: " << static_cast<int>(mode) << std::endl;
             Enemies.clear();
-            //ChangeSceneType(SceneType::Slect);
-            ChangeSceneType(SceneType::Battle);
-            EnemySlect();
+            ChangeSceneType(SceneType::Slect);
+            /*ChangeSceneType(SceneType::Battle);
+            EnemySlect();*/
         }
     }
     void SceneManager::SlectSceneEnter() {

@@ -425,8 +425,8 @@ namespace Util {
         SpecialMoveData.animationData[FighterState::Special_2].initialvelocitys[Keys::HK]={5,11};
 
         SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::LK]={30,30,30,60,60,90,120,90,90,60};
-        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::MP]={30,30,30,60,90,120,180,120,120,90};
-        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::HP]={30,30,30,90,90,120,240,180,180,120};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::MK]={30,30,30,60,90,120,180,120,120,90};
+        SpecialMoveData.animationData[FighterState::Special_2].frames[Keys::HK]={30,30,30,90,90,120,240,180,180,120};
 
         boxes.hurtbox.body.size[FighterState::Special_2]={{100,100},{100,100},{100,100},{100,100},{100,100},{100,100},{100,100},{100,100},{100,100},{100,100}};
         boxes.hurtbox.leg.size[FighterState::Special_2]={{120,85},{100,80},{100,85},{100,125},{100,125},{100,125},{100,125},{100,125},{100,125},{100,125}};
@@ -467,6 +467,11 @@ namespace Util {
 
         SpecialMoveData.SkillCommand[FighterState::Special_1].SpecialNumer=SpecialNumer::Special_1;
         SpecialMoveData.SkillCommand[FighterState::Special_2].SpecialNumer=SpecialNumer::Special_2;
+
+        SpecificStates.SpecialStates.insert(FighterState::Special_1);
+        SpecificStates.SpecialStates.insert(FighterState::Special_2);
+
+        SpecificStates.SpecialAttackStates.insert(FighterState::Special_2);
     }
     void Guile::SonicBoomStateEnter() {
         controller->ClearAiSpecial();

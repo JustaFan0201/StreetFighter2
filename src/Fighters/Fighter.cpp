@@ -97,13 +97,13 @@ namespace Util {
         if (atk.attack.count(ButtonType)) {
             attacks[currentState] = atk.attack[ButtonType];
         }
-        else {
+        else if(atk.attack.count(fallbackKey)){
             attacks[currentState] = atk.attack[fallbackKey];
         }
         if (atk.HitStrength.count(ButtonType)) {
             hitstrength[currentState] = atk.HitStrength[ButtonType];
         }
-        else {
+        else if (atk.HitStrength.count(fallbackKey)){
             hitstrength[currentState] = atk.HitStrength[fallbackKey];
         }
         //sound
@@ -163,7 +163,8 @@ namespace Util {
         };
         SpecificStates.HurtStates={
             FighterState::HurtBodyL, FighterState::HurtBodyM, FighterState::HurtBodyH,
-            FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH
+            FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH,
+            FighterState::KnockDownL, FighterState::KnockDownM, FighterState::KnockDownH
         };
         SpecificStates.BlockStates={
             FighterState::BackwardBlock, FighterState::CrouchBlock
@@ -173,9 +174,6 @@ namespace Util {
             FighterState::Backward, FighterState::Crouch,
             FighterState::CrouchDown,FighterState::CrouchUp,
             FighterState::BackwardBlock, FighterState::CrouchBlock
-        };
-        SpecificStates.SpecialStates={
-            FighterState::Special_1, FighterState::Special_2, FighterState::Special_3
         };
         SpecificStates.IdleStates={
             FighterState::Idle, FighterState::Forward, FighterState::Backward,
@@ -364,7 +362,8 @@ namespace Util {
             }
         }
 
-        if (PushboxIsCollidedEnemy() && !SpecificStates.HurtStates.count(currentState)) {
+        if (PushboxIsCollidedEnemy() && !SpecificStates.HurtStates.count(currentState)&&
+            !(SpecificStates.CrossState.count(currentState)||enemy->GetSpecificState().CrossState.count(enemy->currentState))) {
             glm::vec2 myPos = GetCurrentPosition() + GetCurrentPushboxOffset();
             glm::vec2 enemyPos = enemy->GetCurrentPosition() + enemy->GetCurrentPushboxOffset();
             glm::vec2 myPushboxSize = GetCurrentPushbox();
@@ -457,7 +456,7 @@ namespace Util {
                 glm::vec2 EffectPos=enemyPos+BodyOffset-glm::vec2{12,12}+glm::vec2{GetRandomNum(0,24),GetRandomNum(0,24)};
                 if(!SpecificStates.Invincible.count(enemy->currentState)) {
                     if(enemy->IsBlocking()) {
-                        if(SpecificStates.SpecialStates.count(currentState)) {enemy->GetAttack(GetAttackNum()/5);}
+                        if(SpecificStates.SpecialAttackStates.count(currentState)) {enemy->GetAttack(GetAttackNum()/10);}
                         enemy->AddEffect(GetHitStrength(),BeHitType::Block,EffectPos);
                         enemy->AttackBlock();
                         HitEnemy=true;
@@ -591,13 +590,13 @@ namespace Util {
             ChangeState(FighterState::JumpLP);
         }
         if (Input::IsKeyDown(Keycode::NUM_2)) {
-            ChangeState(FighterState::JumpMK);
+            ChangeState(FighterState::JumpLK);
         }
         if (Input::IsKeyDown(Keycode::NUM_3)) {
-            ChangeState(FighterState::JumpHK);
+            ChangeState(FighterState::JumpMK);
         }
         if (Input::IsKeyDown(Keycode::NUM_4)) {
-            ChangeState(FighterState::JumpAttackEnd);
+            ChangeState(FighterState::JumpHK);
         }
         if (Input::IsKeyDown(Keycode::NUM_5)) {
             ChangeState(FighterState::JumpAttackEnd);
