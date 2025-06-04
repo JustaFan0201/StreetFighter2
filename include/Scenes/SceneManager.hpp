@@ -77,7 +77,7 @@ namespace Util {
 
         ModeType mode=ModeType::Story;//0=story 1=battle
         ChooseResult ContinueOrNot=ChooseResult::Null;//0=story 1=battle
-        std::shared_ptr<Fighter> player=std::make_shared<Ryu>();
+        std::shared_ptr<Fighter> player=std::make_shared<Vega>();
         std::shared_ptr<Fighter> enemy=std::make_shared<Ken>();
 
         std::pmr::unordered_map<FighterList, std::function<std::shared_ptr<Fighter>()>> characters = {
