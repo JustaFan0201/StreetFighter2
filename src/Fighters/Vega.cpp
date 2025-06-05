@@ -421,9 +421,9 @@ namespace Util {
 
         animations[FighterState::Special_3]=ActionInit(5, "Special_3");
         offset[FighterState::Special_3]={{-1,-21},{28,34},{2,29},{5,27},{1,23}};
-        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::LK]={10,38};
+        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::LK]={9,38};
         SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::MK]={17,38};
-        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::HK]={24,38};
+        SpecialMoveData.animationData[FighterState::Special_3].initialvelocitys[Keys::HK]={25,38};
 
         SpecialMoveData.animationData[FighterState::Special_3].frames[Keys::LK]={90,120,180,120,120};
         SpecialMoveData.animationData[FighterState::Special_3].frames[Keys::MK]={90,120,180,120,120};
@@ -477,7 +477,7 @@ namespace Util {
         animations[FighterState::SpecialRecovery_4]=ActionInit(6, "SpecialRecovery_4");
 
         offset[FighterState::SpecialRecovery_4]={{-11,-2},{-75,32},{-11,22},{-1,45},{-55,18},{5,-2}};
-        frames[FighterState::SpecialRecovery_4]={120,150,180,150,150,120};
+        frames[FighterState::SpecialRecovery_4]={120,150,150,150,120,120};
 
         boxes.hurtbox.body.size[FighterState::SpecialRecovery_4]={{140,100},{100,100},{120,80},{100,100},{100,100},{140,100}};
         boxes.hurtbox.leg.size[FighterState::SpecialRecovery_4]={{140,125},{140,125},{160,110},{120,125},{120,125},{140,125}};
@@ -496,7 +496,7 @@ namespace Util {
         animations[FighterState::SpecialDerive_4]=ActionInit(2, "SpecialDerive_4");
 
         offset[FighterState::SpecialDerive_4]={{62,23},{82,8}};
-        frames[FighterState::SpecialDerive_4]={90,240};
+        frames[FighterState::SpecialDerive_4]={90,160};
 
         attacktype[FighterState::SpecialDerive_4]=AttackType::Upper;
         hitstrength[FighterState::SpecialDerive_4]=HitStrength::H;
