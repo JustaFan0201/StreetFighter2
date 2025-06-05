@@ -36,6 +36,8 @@ namespace Util {
     };
     class UI {
     private:
+        std::shared_ptr<ImageSpace> P1_icon;
+        std::shared_ptr<ImageSpace> P2_icon;
         std::shared_ptr<ImageSpace> bloodback_image;
         std::shared_ptr<ImageSpace> ko_image;
         std::shared_ptr<ImageSpace> bloodfrontP1_image;

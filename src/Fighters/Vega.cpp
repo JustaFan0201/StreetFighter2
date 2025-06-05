@@ -412,9 +412,9 @@ namespace Util {
         };
         SpecialMoveData.SkillCommand[FighterState::Special_2].requiredAttack=AttackButton::ANY_PUNCH;
         SpecialMoveData.SkillCommand[FighterState::Special_2].commandtype=CommandType::Pressed;
-        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::LP]=750;
-        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::MP]=1000;
-        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::HP]=1250;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::LP]=500;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::MP]=750;
+        SpecialMoveData.SkillCommand[FighterState::Special_2].chargetime[Keys::HP]=1000;
         SpecificStates.borderCheckStates.insert(FighterState::Special_2);
         SpecificStates.InvincibleForFlyObj.insert(FighterState::Special_2);
         SpecificStates.CrossState.insert(FighterState::Special_2);
@@ -445,9 +445,9 @@ namespace Util {
         };
         SpecialMoveData.SkillCommand[FighterState::Special_3].requiredAttack=AttackButton::ANY_KICK;
         SpecialMoveData.SkillCommand[FighterState::Special_3].commandtype=CommandType::Pressed;
-        SpecialMoveData.SkillCommand[FighterState::Special_3].chargetime[Keys::LK]=750;
-        SpecialMoveData.SkillCommand[FighterState::Special_3].chargetime[Keys::MK]=1000;
-        SpecialMoveData.SkillCommand[FighterState::Special_3].chargetime[Keys::HK]=1250;
+        SpecialMoveData.SkillCommand[FighterState::Special_3].chargetime[Keys::LK]=500;
+        SpecialMoveData.SkillCommand[FighterState::Special_3].chargetime[Keys::MK]=750;
+        SpecialMoveData.SkillCommand[FighterState::Special_3].chargetime[Keys::HK]=1000;
         SpecificStates.borderCheckStates.insert(FighterState::Special_3);
 
         animations[FighterState::Special_4]=ActionInit(2, "Special_4");

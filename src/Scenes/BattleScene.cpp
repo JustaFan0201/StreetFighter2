@@ -123,11 +123,13 @@ namespace Util {
         }
     }
     void BattleScene::LetSomeoneLoss() const {
-        if(Input::IsKeyDown(Keycode::NUM_9)) {
-            player->SetHP(0);
-        }
-        if(Input::IsKeyDown(Keycode::NUM_0)) {
-            enemy->SetHP(0);
+        if(Input::IsKeyPressed(Keycode::LSHIFT)) {
+            if(Input::IsKeyDown(Keycode::NUM_9)) {
+                player->SetHP(0);
+            }
+            if(Input::IsKeyDown(Keycode::NUM_0)) {
+                enemy->SetHP(0);
+            }
         }
     }
     void BattleScene::Update(std::shared_ptr<Core::Context> context) {

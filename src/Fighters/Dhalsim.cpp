@@ -358,9 +358,9 @@ namespace Util {
         animations[FighterState::Special_1]=ActionInit(6, "Special_1");
         offset[FighterState::Special_1]={{-6,-10},{-48,-9},{-76,1},{1,2},{30,-6},{50,-6}};
 
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={90,90,90,90,120,300};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={90,90,90,90,150,360};
-        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,90,90,90,180,420};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::LP]={90,90,90,90,120,360};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::MP]={90,90,90,90,150,420};
+        SpecialMoveData.animationData[FighterState::Special_1].frames[Keys::HP]={90,90,90,90,180,480};
 
         boxes.hurtbox.body.size[FighterState::Special_1]={{100,80},{100,80},{120,100},{100,100},{120,100},{120,80}};
         boxes.hurtbox.leg.size[FighterState::Special_1]={{100,150},{100,140},{100,160},{100,160},{100,160},{100,150}};

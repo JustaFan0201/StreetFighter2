@@ -163,8 +163,7 @@ namespace Util {
         };
         SpecificStates.HurtStates={
             FighterState::HurtBodyL, FighterState::HurtBodyM, FighterState::HurtBodyH,
-            FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH,
-            FighterState::KnockDownL, FighterState::KnockDownM, FighterState::KnockDownH
+            FighterState::HurtHeadL, FighterState::HurtHeadM, FighterState::HurtHeadH
         };
         SpecificStates.BlockStates={
             FighterState::BackwardBlock, FighterState::CrouchBlock
@@ -636,23 +635,25 @@ namespace Util {
     }
 
     void Fighter::PushBoxTester() {
-        if(Input::IsKeyDown(Keycode::I)) {
-            pushboxPicture->SetVisible(!pushboxPicture->GetVisible());
-        }
-        if(Input::IsKeyDown(Keycode::O)) {
-            headPicture->SetVisible(!headPicture->GetVisible());
-            bodyPicture->SetVisible(!bodyPicture->GetVisible());
-            legPicture->SetVisible(!legPicture->GetVisible());
-        }
-        if(Input::IsKeyDown(Keycode::P)) {
-            hitPicture->SetVisible(!hitPicture->GetVisible());
+        if(Input::IsKeyPressed(Keycode::LSHIFT)) {
+            if(Input::IsKeyDown(Keycode::I)) {
+                pushboxPicture->SetVisible(!pushboxPicture->GetVisible());
+            }
+            if(Input::IsKeyDown(Keycode::O)) {
+                headPicture->SetVisible(!headPicture->GetVisible());
+                bodyPicture->SetVisible(!bodyPicture->GetVisible());
+                legPicture->SetVisible(!legPicture->GetVisible());
+            }
+            if(Input::IsKeyDown(Keycode::P)) {
+                hitPicture->SetVisible(!hitPicture->GetVisible());
+            }
         }
     }
 
     void Fighter::Update(std::shared_ptr<Core::Context> context,std::shared_ptr<Controller> controller,glm::vec2 cameraOffset) {
-        PostionTester();
+        //PostionTester();
         PushBoxTester();
-        PrintPostion();
+        //PrintPostion();
 
         this->controller=controller;
         SkillDetection();

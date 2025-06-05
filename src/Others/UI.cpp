@@ -24,6 +24,8 @@ namespace Util {
             std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/WinCount.png"),
             std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/WinCount.png")
         };
+        P1_icon=std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu.png");
+        P2_icon=std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Fighters/Ryu/Ryu.png");
     }
     void UI::JudgeWinCount(int PlayerWinCounter,int EnemyWinCounter) {
         this->PlayerWinCounter=PlayerWinCounter;
@@ -76,6 +78,9 @@ namespace Util {
 
         P1name_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/" + P1->GetName()+ ".png");
         P2name_image =  std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/"+ P2->GetName() +".png");
+
+        P1_icon=std::make_shared<ImageSpace>(P1->GetIcon());
+        P2_icon=std::make_shared<ImageSpace>(P2->GetIcon());
         for (int i=0; i<offset.size(); i++) {
             if (P1->GetName()== namebox[i]) offsetnum[0] = i;
             if (P2->GetName() == namebox[i]) offsetnum[1] = i;
@@ -88,6 +93,9 @@ namespace Util {
         round_image->SetDrawData({{-30, 100}, 0, {1, 1}}, {round_image->GetScaledSize().x * 3.8, round_image->GetScaledSize().y * 3.8}, 10.0f);
         roundnum_image->SetDrawData({{118, 100}, 0, {1, 1}}, {roundnum_image->GetScaledSize().x * 5, roundnum_image->GetScaledSize().y * 5.7}, 10.0f);
         fight_image->SetDrawData({{0, 100}, 0, {1, 1}}, {fight_image->GetScaledSize().x * 4, fight_image->GetScaledSize().y * 4.2}, 10.0f);
+
+        P1_icon->SetDrawData({{-590, 190}, 0, {1, 1}}, P1_icon->GetScaledSize()*glm::vec2{3.3,3.2}, 10.0f);
+        P2_icon->SetDrawData({{590, 190}, 0, {1, 1}}, P2_icon->GetScaledSize()*glm::vec2{3.3,3.2}, 10.0f);
     }
 
     void UI::RoundStart(int round) {
@@ -132,7 +140,9 @@ namespace Util {
             if(timer[1]<0){timer[1]=0;}
             if(timer[0]==0&&timer[1]==0){currentState=State::TimeOver;}
         }
-        if (Input::IsKeyDown(Keycode::L)) {currentState=State::TimeOver;}
+        if(Input::IsKeyPressed(Keycode::LSHIFT)) {
+            if (Input::IsKeyDown(Keycode::L)) {currentState=State::TimeOver;}
+        }
 
         timerTens_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/" + std::to_string(timer[0]) + ".png");
         timerUnits_image = std::make_shared<ImageSpace>(RESOURCE_DIR"/ScenePicture/Battle/Bloodstick/" + std::to_string(timer[1]) + ".png");
@@ -156,7 +166,8 @@ namespace Util {
             P1name_image,P2name_image,
             roundnum_image,round_image,
             PlayerWinCountImage[0],EnemyWinCountImage[0],
-            PlayerWinCountImage[1],EnemyWinCountImage[1]
+            PlayerWinCountImage[1],EnemyWinCountImage[1],
+            P1_icon,P2_icon
         };
         for(const auto& i:AllPictures) {
             i->custom_Draw();
