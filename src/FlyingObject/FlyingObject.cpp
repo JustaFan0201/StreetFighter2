@@ -98,7 +98,7 @@ namespace Util {
         this->EnemyFlyingObjects=EnemyFlyingObjects;
         this->fighter=fighter;
         enemy=fighter->GetEnemy();
-        direction=fighter->GetNewDirection();
+            direction=fighter->GetDirection();
         velocity.x=FlyingObjVelocity[Strength];
         this->Strength=Strength;
         ChangeState(FlyingObjectState::Start);
