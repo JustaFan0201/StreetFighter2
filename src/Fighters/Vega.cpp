@@ -439,6 +439,7 @@ namespace Util {
         StateUpdate[FighterState::Special_3]=[this] { HeadStompStateUpdate(); };
 
         SpecialMoveData.sounddata[FighterState::Special_3].sound[Keys::LK]=std::make_shared<SFX>(RESOURCE_DIR"/voice/SF6/Vega/SP3.wav");
+
         SpecialMoveData.SkillCommand[FighterState::Special_3].command={
             SpecialMoveDirection::Up,
             SpecialMoveDirection::down
@@ -621,8 +622,10 @@ namespace Util {
     void Vega::HeadStompRecoveryStateUpdate() {
         if(GetCharacterIsOnFloor()&&velocity.y<0){velocity.y=0;}
         else{velocity.y+=Gravity*Time::GetDeltaTimeMs()/1000;}
-        if(controller->IsKeyDown(Keys::LP)||controller->IsKeyDown(Keys::MP)||controller->IsKeyDown(Keys::HP)) {
-            ChangeState(FighterState::SpecialDerive_4);
+        if(ActionNow->GetCurrentFrameIndex()>=2) {
+            if(controller->IsKeyDown(Keys::LP)||controller->IsKeyDown(Keys::MP)||controller->IsKeyDown(Keys::HP)) {
+                ChangeState(FighterState::SpecialDerive_4);
+            }
         }
         if (GetAnimationIsEnd()&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }

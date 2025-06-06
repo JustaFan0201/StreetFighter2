@@ -124,8 +124,8 @@ namespace Util {
     }
     void Dhalsim::LoadOffsetVelocity() {
         Initialvelocity.x[FighterState::CrouchLK] = 3;
-        Initialvelocity.x[FighterState::CrouchMK] = 4;
-        Initialvelocity.x[FighterState::CrouchHK] = 5;
+        Initialvelocity.x[FighterState::CrouchMK] = 3;
+        Initialvelocity.x[FighterState::CrouchHK] = 3;                  ;
         attacktype[FighterState::CrouchHK]=attacktype[FighterState::CrouchMK]=attacktype[FighterState::CrouchLK]=AttackType::Lower;
         offset[FighterState::Idle]={{-3,-1},{-11,2},{-10,-8},{-3,-16},{3,-17},{-1,-8}};
         offset[FighterState::Crouch]={{-7,-56}};

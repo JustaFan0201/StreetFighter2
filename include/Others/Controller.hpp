@@ -442,12 +442,16 @@ namespace Util {
                     return ButtonList::kick[randomNum(0,2)];
                 }
             }
-            if(record.attacks[0]){return Keys::LP;}
-            if(record.attacks[1]){return Keys::MP;}
-            if(record.attacks[2]){return Keys::HP;}
-            if(record.attacks[3]){return Keys::LK;}
-            if(record.attacks[4]){return Keys::MK;}
-            if(record.attacks[5]){return Keys::HK;}
+            if(request==AttackButton::ALL_PUNCH||request==AttackButton::ANY_PUNCH) {
+                if(record.attacks[0]){return Keys::LP;}
+                if(record.attacks[1]){return Keys::MP;}
+                if(record.attacks[2]){return Keys::HP;}
+            }
+            if(request==AttackButton::ALL_KICK||request==AttackButton::ANY_KICK) {
+                if(record.attacks[3]){return Keys::LK;}
+                if(record.attacks[4]){return Keys::MK;}
+                if(record.attacks[5]){return Keys::HK;}
+            }
             return Keys::Null;
         }
         Keys GetCurrentAttackKey(){Keys now=CurrentAttack;CurrentAttack=Keys::Null; return now;}
