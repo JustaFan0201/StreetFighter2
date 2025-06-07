@@ -813,18 +813,19 @@ namespace Util {
     void Fighter::HurtStateEnter() {
         ResetVelocity();
         velocity=GetInitialvelocity();
+        direction=GetNewDirection();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::HurtStateUpdate() {
         velocity.x+=Friction*Time::GetDeltaTimeMs()/1000;
         velocity.y+=Gravity*Time::GetDeltaTimeMs()/1000;
-        direction=GetNewDirection();
         if (GetAnimationIsEnd()&&velocity.x>=0&&GetCharacterIsOnFloor()) {ChangeState(FighterState::Idle);}
     }
 
     void Fighter::KnockDownStateEnter() {
         ResetVelocity();
         velocity=GetInitialvelocity();
+        direction=GetNewDirection();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::KnockDownStateUpdate() {
@@ -836,6 +837,7 @@ namespace Util {
 
     void Fighter::GetUpStateEnter() {
         ResetVelocity();
+        direction=GetNewDirection();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
     }
     void Fighter::GetUpStateUpdate() {

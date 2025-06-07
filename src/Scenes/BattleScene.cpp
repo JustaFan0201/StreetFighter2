@@ -16,7 +16,7 @@ namespace Util {
             0
         );
         m_BGM = enemy->GetBGM();
-        m_BGM->SetVolume(15);
+        m_BGM->SetVolume(20);
         m_BGM->Play(-1);
         //BGM設定
         round=1;

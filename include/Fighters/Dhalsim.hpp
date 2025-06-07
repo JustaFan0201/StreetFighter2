@@ -19,6 +19,9 @@ namespace Util {
         void YogaFireStateUpdate();
         void YogaFlameStateEnter();
         void YogaFlameStateUpdate();
+
+        void CrouchAttackStateEnter();
+        void CrouchAttackStateUpdate();
     };
 }
 #endif //DHALSIM_HPP

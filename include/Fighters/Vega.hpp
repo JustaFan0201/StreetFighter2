@@ -26,6 +26,9 @@ namespace Util {
         void HeadStompRecoveryStateUpdate();
         void HeadStompDeriveStateEnter();
         void HeadStompDeriveStateUpdate();
+
+        void HKStateEnter();
+        void HKStateUpdate();
     };
 }
 #endif //VEGA_HPP

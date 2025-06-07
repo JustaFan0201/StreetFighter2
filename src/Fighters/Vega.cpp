@@ -78,7 +78,7 @@ namespace Util {
         frames[FighterState::HP]={30,60,60,180,90,60,60};
         frames[FighterState::LK]={60,90,120,90,60};
         frames[FighterState::MK]={90,120,180,120,90};
-        frames[FighterState::HK]={90,180,120};
+        frames[FighterState::HK]={120,180,240};
 
         frames[FighterState::CrouchLP]={30,30,60,90,60,30,30};
         frames[FighterState::CrouchMP]={30,60,60,120,90,60,30};
@@ -117,7 +117,11 @@ namespace Util {
         frames[FighterState::DefeatedLoss]={180,180,180,180,180};
     }
     void Vega::LoadOffsetVelocity() {
-        Initialvelocity.x[FighterState::HK]=7;
+        StateEnter[FighterState::HK] = [this] { HKStateEnter(); };
+        StateUpdate[FighterState::HK] = [this] {HKStateUpdate(); };
+        Initialvelocity.x[FighterState::HK]=4;
+        attacktype[FighterState::HK]=AttackType::Lower;
+        attacktype[FighterState::CrouchLK]=attacktype[FighterState::CrouchMK]=attacktype[FighterState::CrouchHK]=AttackType::Lower;
         offset[FighterState::Idle]={{0,0},{0,-2},{-3,-7},{-1,-4}};
         offset[FighterState::Crouch]={{-1,-52}};
         offset[FighterState::CrouchDown]={{-1,-10},{1,-38}};
@@ -333,8 +337,6 @@ namespace Util {
         boxes.hitbox.offset[FighterState::JumpHK]={{-1,-1},{140,-60},{-1,-1}};
     }
     void Vega::LoadSpecialMove() {
-        attacktype[FighterState::HK]=AttackType::Lower;
-        attacktype[FighterState::CrouchLK]=attacktype[FighterState::CrouchMK]=attacktype[FighterState::CrouchHK]=AttackType::Lower;
         animations[FighterState::Special_1]=ActionInit(9, "Special_1");
         offset[FighterState::Special_1]={{-31,-22},{23,-4},{-12,51},{-23,49},{-60,-4},{-29,-21},{-2,-56},{-1,-38},{-3,-11}};
         SpecialMoveData.animationData[FighterState::Special_1].initialvelocitys[Keys::LK]={9,0};
@@ -533,6 +535,22 @@ namespace Util {
         SpecificStates.SpecialAttackStates.insert(FighterState::Special_2);
         SpecificStates.SpecialAttackStates.insert(FighterState::Special_4);
         SpecificStates.SpecialAttackStates.insert(FighterState::SpecialDerive_4);
+    }
+    void Vega::HKStateEnter() {
+        controller->ClearAiAttack();
+        ResetVelocity();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+        PlayCurrentSound();
+    }
+    void Vega::HKStateUpdate() {
+        if(ActionNow->GetCurrentFrameIndex()==1) {velocity=GetInitialvelocity();}
+        else {ResetVelocity();}
+        if(enemy->GetCharacterIsInBorder()&&HitEnemy
+    &&(enemy->GetSpecificState().HurtStates.count(enemy->GetCurrentState())||
+        enemy->GetSpecificState().BlockStates.count(enemy->GetCurrentState())))
+        {velocity.x=enemy->GetVelocity().x;}
+        if (GetAnimationIsEnd()&&SpecificStates.CrouchAttackStates.count(currentState)) {ChangeState(FighterState::Crouch);}
+        else if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Vega::DoubleKneePressStateEnter() {
         controller->ClearAiSpecial();

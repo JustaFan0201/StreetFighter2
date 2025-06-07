@@ -87,9 +87,9 @@ namespace Util {
         frames[FighterState::CrouchLP]={150,180};
         frames[FighterState::CrouchMP]={90,120,120,180,150,120,90};
         frames[FighterState::CrouchHP]={90,120,180,210,240,180,150};
-        frames[FighterState::CrouchLK]={180,270};
-        frames[FighterState::CrouchMK]={180,300};
-        frames[FighterState::CrouchHK]={180,330};
+        frames[FighterState::CrouchLK]={240,240};
+        frames[FighterState::CrouchMK]={270,270};
+        frames[FighterState::CrouchHK]={300,300};
 
         frames[FighterState::JumpLP]={90,90,240};
         frames[FighterState::JumpMP]={90,120,360};
@@ -123,9 +123,13 @@ namespace Util {
 
     }
     void Dhalsim::LoadOffsetVelocity() {
-        Initialvelocity.x[FighterState::CrouchLK] = 3;
-        Initialvelocity.x[FighterState::CrouchMK] = 3;
-        Initialvelocity.x[FighterState::CrouchHK] = 3;                  ;
+        StateEnter[FighterState::CrouchLK] = [this] {CrouchAttackStateEnter(); };
+        StateEnter[FighterState::CrouchMK] = [this] {CrouchAttackStateEnter(); };
+        StateEnter[FighterState::CrouchHK] = [this] {CrouchAttackStateEnter(); };
+        StateUpdate[FighterState::CrouchLK] = [this] {CrouchAttackStateUpdate(); };
+        StateUpdate[FighterState::CrouchMK] = [this] {CrouchAttackStateUpdate(); };
+        StateUpdate[FighterState::CrouchHK] = [this] {CrouchAttackStateUpdate(); };
+        Initialvelocity.x[FighterState::CrouchLK] = Initialvelocity.x[FighterState::CrouchMK] = Initialvelocity.x[FighterState::CrouchHK] = 3;
         attacktype[FighterState::CrouchHK]=attacktype[FighterState::CrouchMK]=attacktype[FighterState::CrouchLK]=AttackType::Lower;
         offset[FighterState::Idle]={{-3,-1},{-11,2},{-10,-8},{-3,-16},{3,-17},{-1,-8}};
         offset[FighterState::Crouch]={{-7,-56}};
@@ -421,6 +425,22 @@ namespace Util {
         SpecificStates.SpecialStates.insert(FighterState::Special_2);
 
         SpecificStates.SpecialAttackStates.insert(FighterState::Special_2);
+    }
+    void Dhalsim::CrouchAttackStateEnter() {
+        controller->ClearAiAttack();
+        ResetVelocity();
+        SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
+        PlayCurrentSound();
+    }
+    void Dhalsim::CrouchAttackStateUpdate() {
+        if(ActionNow->GetCurrentFrameIndex()==1) {velocity=GetInitialvelocity();}
+        else {ResetVelocity();}
+        if(enemy->GetCharacterIsInBorder()&&HitEnemy
+    &&(enemy->GetSpecificState().HurtStates.count(enemy->GetCurrentState())||
+        enemy->GetSpecificState().BlockStates.count(enemy->GetCurrentState())))
+        {velocity.x=enemy->GetVelocity().x;}
+        if (GetAnimationIsEnd()&&SpecificStates.CrouchAttackStates.count(currentState)) {ChangeState(FighterState::Crouch);}
+        else if (GetAnimationIsEnd()) {ChangeState(FighterState::Idle);}
     }
     void Dhalsim::YogaFireStateEnter() {
         controller->ClearAiSpecial();
