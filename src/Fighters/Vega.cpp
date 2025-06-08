@@ -119,7 +119,7 @@ namespace Util {
     void Vega::LoadOffsetVelocity() {
         StateEnter[FighterState::HK] = [this] { HKStateEnter(); };
         StateUpdate[FighterState::HK] = [this] {HKStateUpdate(); };
-        Initialvelocity.x[FighterState::HK]=4;
+        Initialvelocity.x[FighterState::HK]=6;
         attacktype[FighterState::HK]=AttackType::Lower;
         attacktype[FighterState::CrouchLK]=attacktype[FighterState::CrouchMK]=attacktype[FighterState::CrouchHK]=AttackType::Lower;
         offset[FighterState::Idle]={{0,0},{0,-2},{-3,-7},{-1,-4}};
@@ -544,7 +544,7 @@ namespace Util {
     }
     void Vega::HKStateUpdate() {
         if(ActionNow->GetCurrentFrameIndex()==1) {velocity=GetInitialvelocity();}
-        else {ResetVelocity();}
+        else if(velocity.x > 0) {ResetVelocity();}
         if(enemy->GetCharacterIsInBorder()&&HitEnemy
     &&(enemy->GetSpecificState().HurtStates.count(enemy->GetCurrentState())||
         enemy->GetSpecificState().BlockStates.count(enemy->GetCurrentState())))

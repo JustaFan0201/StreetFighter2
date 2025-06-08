@@ -779,7 +779,6 @@ namespace Util {
     void Fighter::AttackStateEnter() {
         controller->ClearAiAttack();
         ResetVelocity();
-        velocity=GetInitialvelocity();
         SetAnimation(currentState,frames[currentState],GetCurrentOffsets());
         PlayCurrentSound();
     }

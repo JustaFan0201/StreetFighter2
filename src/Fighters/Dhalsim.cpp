@@ -87,9 +87,9 @@ namespace Util {
         frames[FighterState::CrouchLP]={150,180};
         frames[FighterState::CrouchMP]={90,120,120,180,150,120,90};
         frames[FighterState::CrouchHP]={90,120,180,210,240,180,150};
-        frames[FighterState::CrouchLK]={240,240};
-        frames[FighterState::CrouchMK]={270,270};
-        frames[FighterState::CrouchHK]={300,300};
+        frames[FighterState::CrouchLK]={300,180};
+        frames[FighterState::CrouchMK]={330,210};
+        frames[FighterState::CrouchHK]={360,240};
 
         frames[FighterState::JumpLP]={90,90,240};
         frames[FighterState::JumpMP]={90,120,360};
@@ -434,7 +434,7 @@ namespace Util {
     }
     void Dhalsim::CrouchAttackStateUpdate() {
         if(ActionNow->GetCurrentFrameIndex()==1) {velocity=GetInitialvelocity();}
-        else {ResetVelocity();}
+        else if(velocity.x > 0) {ResetVelocity();}
         if(enemy->GetCharacterIsInBorder()&&HitEnemy
     &&(enemy->GetSpecificState().HurtStates.count(enemy->GetCurrentState())||
         enemy->GetSpecificState().BlockStates.count(enemy->GetCurrentState())))
